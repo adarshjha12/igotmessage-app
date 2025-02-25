@@ -13,5 +13,4 @@ app.use(cookieParser())
 
 app.listen(PORT, () =>{
     console.log(`running on ${PORT}`);
-    
 })
