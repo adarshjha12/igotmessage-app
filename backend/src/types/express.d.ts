@@ -1,13 +1,9 @@
 import { Request } from "express";
+import { IUser } from "../models/userModel";
 
 declare global {
   namespace Express {
-    interface User{
-      googleId?: string
-      email?: string
-      title?: string
-      avatar?: string
-    }
+    interface User extends IUser{}
 
     interface Request {
       user?: User; 
