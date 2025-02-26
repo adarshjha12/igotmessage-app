@@ -1,12 +1,18 @@
-
-import { IUser } from "../models/userModel";
+import { Request } from "express";
 
 declare global {
   namespace Express {
-    interface User extends IUser{}
+    interface User{
+      googleId?: string
+      email?: string
+      title?: string
+      avatar?: string
+    }
 
     interface Request {
       user?: User; 
     }
   }
 }
+
+export {}
