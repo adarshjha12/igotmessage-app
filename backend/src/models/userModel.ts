@@ -1,6 +1,6 @@
 import mongoose, {Document} from 'mongoose'
 
-interface User extends Document{
+export interface IUser extends Document{
     googleId?: string
     email?: string
     title?: string
@@ -18,4 +18,4 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now().toLocaleString },
 })
 
-export const UserModel = mongoose.model<User>('User', userSchema)
+export const UserModel = mongoose.model<IUser>('User', userSchema)
