@@ -6,7 +6,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDb from './db/connection'
 import passport from 'passport'
-import authRouter from './routers/authRoute'
+import authRouter from './routers/googleRoute'
 
 const PORT = process.env.PORT
 const app = express()
