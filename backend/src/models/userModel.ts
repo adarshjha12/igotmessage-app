@@ -2,6 +2,7 @@ import mongoose, {Document} from 'mongoose'
 
 export interface IUser extends Document{
     googleId?: string
+    firebaseId?: string
     email?: string
     title?: string
     avatar?: string
@@ -11,6 +12,7 @@ export interface IUser extends Document{
 
 const userSchema = new mongoose.Schema({
     googleId: { type: String, unique: true},
+    firebaseId: { type: String, unique: true},
     email: { type: String, unique: true},
     title: { type: String},
     avatar: { type: String},

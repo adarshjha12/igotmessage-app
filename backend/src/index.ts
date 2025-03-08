@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import connectDb from './db/connection'
 import passport from 'passport'
 import authRouter from './routers/googleRoute'
+import firebaseRouter from './routers/firebaseRoute'
 
 const PORT = process.env.PORT
 const app = express()
@@ -20,6 +21,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 app.use('/verify/google', authRouter)
+app.use('/verify/firebase', firebaseRouter)
 
 
 app.listen(PORT, () =>{
