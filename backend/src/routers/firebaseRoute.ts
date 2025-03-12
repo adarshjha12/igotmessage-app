@@ -2,12 +2,10 @@ import express, { Request, Response } from 'express';
 import admin from '../services/firebaseAdmin';
 import { UserModel } from '../models/userModel';
 import jwt from 'jsonwebtoken';
-import { use } from 'passport';
 
 const firebaseRouter = express.Router();
 
 firebaseRouter.post('/verify-otp', async (req: Request, res: Response) : Promise<any> => {
-    // ask gpt that why we used promise<any> here above
     try {
         const { phoneNo, idToken } = req.body;
         const decodedToken = await admin.auth().verifyIdToken(idToken);
