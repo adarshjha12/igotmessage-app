@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Pacifico } from "next/font/google";
+import { Montez, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,11 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const pacifico = Pacifico({
-  variable: "--font-pacifico",
-  subsets: ["latin"],
-  weight: "400"
-})
+
+const montez = Montez({ subsets: ["latin"], weight: "400", variable: "--font-montez" });
 
 export const metadata: Metadata = {
   title: " Next App",
@@ -31,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex items-center justify-center min-h-screen ${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}
+        className={`flex items-center justify-center min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${montez.variable} `}
       >
         {children}
       </body>
