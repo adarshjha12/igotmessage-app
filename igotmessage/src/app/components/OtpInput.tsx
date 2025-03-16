@@ -2,17 +2,17 @@ import React, {useRef} from 'react'
 
 function OtpInput() {
   
-  const inputsRef = useRef<Array<HTMLInputElement | null>>([])
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([])
 
-  const moveNext = function (current: HTMLInputElement, index: number ) {
-    if (current.value.length === 1 && index < inputsRef.current.length - 1) {
-      inputsRef.current[index + 1]?.focus()
+  const moveNext = function (userInput: HTMLInputElement, index: number ) {
+    if (userInput.value.length === 1 && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1]?.focus()
     }
   }
 
-  const getBack = (current: HTMLInputElement, index: number) => {
-    if (current.value.length === 0 && index > 0) {
-      inputsRef.current[index - 1]?.focus();
+  const moveBack = (userInput: HTMLInputElement, index: number) => {
+    if (userInput.value.length === 0 && index > 0) {
+      inputRefs.current[index - 1]?.focus();
     }
   };
   
@@ -25,11 +25,13 @@ function OtpInput() {
             <input 
             key={i}
             type="text"
-            ref={(el) => {inputsRef.current[i] = el}}
+            ref={(el) => {
+              inputRefs.current[i] = el
+            }}
             onInput={(e) => moveNext(e.target as HTMLInputElement, i)}
             onKeyDown={(e) =>{
               if (e.key === 'Backspace') {
-                getBack(e.target as HTMLInputElement, i)
+                moveBack(e.target as HTMLInputElement, i)
               }
             }}
             maxLength={1}
