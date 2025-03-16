@@ -1,11 +1,8 @@
 'use client'
 import React from 'react'
+import OtpInput from '../components/OtpInput'
 
 function page() {
-
-  const moveNext = function name(current: HTMLInputElement, index: number) {
-    
-  }
 
   return (
     <div className='font-sans w-full min-h-screen gap-2 flex items-center justify-center flex-col bg-gradient-to-r to-blue-600'>
@@ -18,19 +15,17 @@ function page() {
         <p className='text-[15px] tracking-widest'>please <span className='text-xl'>login</span> to continue</p>
         <form action="" className='flex flex-col gap-1'>
           <label htmlFor=""></label>
-          <input type="text" className='bg-amber-50'/>
-          
           <div>
-            <input type="text" maxLength={1} className="otp-input" onInput={(e) => moveNext(e.target as HTMLInputElement, 0)}
-            />
-            <input type="text" maxLength={1} className="otp-input" onInput={(e) => moveNext(e.target as HTMLInputElement, 1)}
-            />
-            <input type="text" maxLength={1} className="otp-input" onInput={(e) => moveNext(e.target as HTMLInputElement, 2)}
-            />
-            <input type="text" maxLength={1} className="otp-input" onInput={(e) => moveNext(e.target as HTMLInputElement, 3)}
-            />
-            
+            <select name="" id="" className=''>
+              <option className='text-black' value="">+91</option>
+              <option className='text-black' value="">+11</option>
+              <option className='text-black' value="">+32</option>
+            </select>
+            <input type="text" className='bg-amber-50 opacity-70 pl-2 rounded-md text-black outline-none'/>
           </div>
+
+          <OtpInput/>
+
         </form>
       </div>
     </div>

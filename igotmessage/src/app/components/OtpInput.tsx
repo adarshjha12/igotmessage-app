@@ -1,8 +1,12 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
 function OtpInput() {
+  
+  // const move
   return (
-    <div>OtpInput</div>
+    <div>
+      
+    </div>
   )
 }
 
