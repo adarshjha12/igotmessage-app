@@ -18,11 +18,11 @@ function page() {
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col bg-gradient-to-r to-blue-600'>
-      <div className='border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10'>
+        <div className={`${otpSent ? 'test-slide' : 'right-slide'} border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
 
         <div className='flex flex-col items-center'>
           <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" />
-          <p className='text-5xl font-montez h-fit'>Igotmessage</p>
+          <p className={` text-5xl font-montez h-fit hover:scale-125 transition-all hover:ease-in`}>Igotmessage</p>
         </div>
         <hr className='w-[100px] bg-white'/>
         <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>

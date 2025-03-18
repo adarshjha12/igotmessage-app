@@ -43,7 +43,7 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
   
   return (
     <div className={`${showOtpField ? 'flex': 'hidden'} flex-col items-center gap-3 justify-center`}>
-      <p className=''>please enter 4 digit otp</p>
+      <p className='font-exo2'>please enter 4 digit otp</p>
       <form action='' className='flex flex-col gap-2.5 justify-center items-center'>
         <div className='flex gap-2.5 '>
           {Array.from({length: 4}, (_, i) => {
@@ -56,7 +56,7 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
               ref={(element) => {
                 inputRefs.current[i] = element
               }}
-              className='w-[30px] pl-2 rounded-md text-white bg-blue-800 outline-none border-2 border-white  opacity-75'
+              className='w-[30px] pl-2 rounded-md font-bold text-white bg-blue-800 outline-none border-2 border-white  opacity-75'
               onInput={(e) => {
                 moveNext(e.target as HTMLInputElement, i)
               }}
