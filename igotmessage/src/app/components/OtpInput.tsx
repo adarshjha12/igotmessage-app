@@ -20,6 +20,21 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
     }
   }  
 
+  const handlePaste  = function (e: React.ClipboardEvent<HTMLInputElement>) {
+    e.preventDefault()
+    const pasteData = e.clipboardData.getData('text').trim()
+
+    if (pasteData.length === inputRefs.current.length) {
+      pasteData.split('').forEach((char: string, index: number) =>{
+        if (inputRefs.current[index]) {
+          inputRefs.current[index]!.value = char
+        }
+      })
+      inputRefs.current[inputRefs.current.length - 1]?.focus()
+    }
+  }
+
+
   useEffect(() => {
     if (showOtpField) {
       inputRefs.current[0]?.focus()
@@ -51,6 +66,8 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
                   moveBack(e.target as HTMLInputElement, i)
                 }
               }}
+
+              onPaste={handlePaste}
               />
             )
           })}
