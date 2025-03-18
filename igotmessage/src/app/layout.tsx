@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montez, Geist, Geist_Mono } from "next/font/google";
+import { Montez, Geist, Geist_Mono, Exo_2 } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 
 
 const montez = Montez({ subsets: ["latin"], weight: "400", variable: "--font-montez" });
+const exo2 = Exo_2({ subsets: ["latin"], weight: "400", variable: "--font-exo2" });
 
 export const metadata: Metadata = {
   title: " Next App",
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex items-center justify-center min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${montez.variable} `}
+        className={`flex items-center justify-center min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${montez.variable} ${exo2.variable} `}
       >
         {children}
       </body>

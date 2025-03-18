@@ -1,6 +1,11 @@
-import React, {useRef, useEffect} from 'react'
+'use client'
+import React, {useEffect, useRef, useState} from 'react'
 
-function OtpInput() {
+interface otpInputProps {
+  showOtpField: boolean
+}
+
+const OtpInput = ({showOtpField} : otpInputProps) => {
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
 
@@ -13,32 +18,45 @@ function OtpInput() {
     if (userInput.value.length === 0 && index > 0) {
       inputRefs.current[index - 1]?.focus()
     }
-  }
+  }  
 
+  useEffect(() => {
+    if (showOtpField) {
+      inputRefs.current[0]?.focus()
+    }
+  }, [showOtpField])
+  
   return (
-    <div className='flex gap-2.5'>
-        {Array.from({length: 4}, (_, i) => {
-          return (
-            <input 
-            type="text"
-            maxLength={1}
-            key={i} 
-            ref={(element) => {
-              inputRefs.current[i] = element
-            }}
-            className='w-[30px] pl-2 rounded-md  bg-blue-800 outline-none border-2 border-white  opacity-75'
-            onInput={(e) => {
-              moveNext(e.target as HTMLInputElement, i)
-            }}
+    <div className={`${showOtpField ? 'flex': 'hidden'} flex-col items-center gap-3 justify-center`}>
+      <p className=''>please enter 4 digit otp</p>
+      <form action='' className='flex flex-col gap-2.5 justify-center items-center'>
+        <div className='flex gap-2.5 '>
+          {Array.from({length: 4}, (_, i) => {
+            return (
+              <input 
+              type="text"
+              maxLength={1}
+              required={true}
+              key={i} 
+              ref={(element) => {
+                inputRefs.current[i] = element
+              }}
+              className='w-[30px] pl-2 rounded-md text-white bg-blue-800 outline-none border-2 border-white  opacity-75'
+              onInput={(e) => {
+                moveNext(e.target as HTMLInputElement, i)
+              }}
 
-            onKeyDown={(e) =>{
-              if (e.key === 'Backspace') {
-                moveBack(e.target as HTMLInputElement, i)
-              }
-            }}
-            />
-          )
-        })}
+              onKeyDown={(e) =>{
+                if (e.key === 'Backspace') {
+                  moveBack(e.target as HTMLInputElement, i)
+                }
+              }}
+              />
+            )
+          })}
+        </div>
+        <button type='submit' className='h-[30px] w-fit font-exo2 font-semibold text-sm tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'> Sign in</button>
+     </form>
     </div>
   )
 }
