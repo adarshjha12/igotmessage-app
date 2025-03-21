@@ -34,7 +34,6 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
     }
   }
 
-
   useEffect(() => {
     if (showOtpField) {
       inputRefs.current[0]?.focus()
