@@ -27,7 +27,7 @@ function page() {
         <hr className='w-[100px] bg-white'/>
         <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
           <form action="" onSubmit={handleSubmit} className='flex flex-col gap-1 items-center'>
-            <label htmlFor="" className=' font-exo2 pb-2.5'>Please continue with phone number</label>
+            <label htmlFor="" className=' font-exo2 text-xs pb-2.5'>Please continue with phone number</label>
             <div className='flex gap-2'>
               <div className='border-1 flex justify-center items-center border-white h-[40px] rounded-md'>
                 <select name="" id="" className='border-none outline-none'>
@@ -42,9 +42,10 @@ function page() {
           </form>
           <p className='font-exo2 px-1 rounded-sm text-3xl'>or</p>
 
-          <button onClick={() => handleGoogleButtonClick()} className={`${buttonClick ? 'bg-green-700' : null} flex cursor-pointer justify-center items-center border-2 rounded-2xl px-2`}>
-            <p className='font-exo2 mr-2 rounded-2xl px-1'>Continue with</p>
-            <img src="/images/google.png" className='w-[70px] h-auto relative top-0.5' alt="google" />
+          <button onClick={() => handleGoogleButtonClick()} className={`${buttonClick ? 'bg-green-700' : null} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700 cursor-pointer justify-between items-center border-2 rounded-2xl py-1.5 px-2`}>
+            
+            <img src="/images/google.png" className='w-[20px] h-auto' alt="google" />
+            <p className='font-exo2 text-xs rounded-2xl font-semibold tracking-wider px-1'>Continue with google</p>
           </button>
         </div>
         <OtpInput showOtpField={otpSent}/>
