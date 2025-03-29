@@ -8,6 +8,7 @@ function page() {
   const [otpSent, setOtpSent] = useState(false)
   
   const handleGoogleButtonClick = function () {
+    window.location.href = "http://localhost:5000/google/auth/google";
     setButtonClick(true)
   }
 

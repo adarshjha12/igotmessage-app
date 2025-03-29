@@ -4,7 +4,7 @@ import { UserModel } from "../models/userModel";
 
 const clientID = process.env.CLIENT_ID!
 const clientSecret = process.env.CLIENT_SECRET!
-const callbackURL =  '/api/auth/callback/google'
+const callbackURL =  '/google/auth/callback/redirect'
 
 passport.use(new googleStrategy({
     clientID,

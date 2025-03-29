@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true},
     title: { type: String},
     avatar: { type: String},
-    mobileNo: { type: Number, unique: true},
-    createdAt: { type: Date, default: Date.now().toLocaleString },
+    mobileNo: { type: Number},
+    createdAt: { type: Date, default: Date.now()},
 })
 
 export const UserModel = mongoose.model<IUser>('User', userSchema)
