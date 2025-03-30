@@ -23,7 +23,6 @@ passport.use(new googleStrategy({
         })
     }
        return done(null, user)
-
     } catch (error) {
         return done(error, undefined)
     }

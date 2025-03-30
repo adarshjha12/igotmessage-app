@@ -38,7 +38,7 @@ authRouter.get('/auth/callback/redirect',
             })
 
             res.redirect(FRONTEND_URL)
-
+            
         } catch (error) {
             console.log(error);
             res.redirect('/login')
