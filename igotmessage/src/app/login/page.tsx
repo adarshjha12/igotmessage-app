@@ -1,6 +1,6 @@
 'use client'
 import React, {useState} from 'react'
-import OtpInput from '../components/OtpInput'
+import OtpInput from '../../components/OtpInput'
 
 function page() {
 
