@@ -1,4 +1,4 @@
-import {createSlice, nanoid} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
     title: '',
@@ -9,8 +9,9 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        hello: function () {
-            
+        addCurrentUserToStore: function (state, action) {
+            state.title = action.payload.title
+            state.email = action.payload.email
         }
     }
 })
