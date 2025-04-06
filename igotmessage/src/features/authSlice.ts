@@ -15,3 +15,6 @@ const authSlice = createSlice({
         }
     }
 })
+
+export const {addCurrentUserToStore} = authSlice.actions
+export default authSlice.reducer
