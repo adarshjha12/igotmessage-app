@@ -1,28 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, nanoid} from '@reduxjs/toolkit'
 
-interface UserDetails{
-    title: string,
-    id: string,
-    email: string
-}
-
-interface InitialState{
-    userDetails : UserDetails
-}
-
-const initialState : InitialState = {
-    userDetails : {
-        title: '',
-        id: '',
-        email: ''
-    }
+const initialState = {
+    title: '',
+    email: '',
 }
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: initialState,
-    reducers:{
-        signInUser: () =>{},
-        signOutUser: () =>{}
+    initialState,
+    reducers: {
+        hello: function () {
+            
+        }
     }
 })
