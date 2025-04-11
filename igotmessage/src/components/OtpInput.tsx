@@ -1,14 +1,21 @@
 'use client'
-import React, {useEffect, useRef, useState} from 'react'
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react'
 
 interface otpInputProps {
-  showOtpField: boolean
+  showOtpField: boolean,
+  otp: (value : string) => void
 }
 
-const OtpInput = ({showOtpField} : otpInputProps) => {
+const OtpInput = ({showOtpField, otp} : otpInputProps) => {
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
+  const [inputValues, setInputValues] = useState<string[]>(['', '', '', ''])
 
+  useEffect(() => {
+    const finalInput = inputValues.join('')
+    otp(finalInput)
+
+  }, [inputValues]);
   const moveNext = function (userInput: HTMLInputElement, index: number) {
     if (userInput.value.length === 1 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1]?.focus()
@@ -23,6 +30,7 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
   const handlePaste  = function (e: React.ClipboardEvent<HTMLInputElement>) {
     e.preventDefault()
     const pasteData = e.clipboardData.getData('text').trim()
+    setInputValues(pasteData.split(''))
 
     if (pasteData.length === inputRefs.current.length) {
       pasteData.split('').forEach((char: string, index: number) =>{
@@ -54,6 +62,11 @@ const OtpInput = ({showOtpField} : otpInputProps) => {
               key={i} 
               ref={(element) => {
                 inputRefs.current[i] = element
+              }}
+              onChange={(e) => {
+                let newInputValues = [...inputValues]
+                newInputValues[i] = e.target.value
+                setInputValues(newInputValues)
               }}
               className='w-[30px] pl-2 rounded-md font-bold text-white bg-blue-800 outline-none border-2 border-white  opacity-75'
               onInput={(e) => {

@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
 
 function page() {
@@ -7,6 +7,10 @@ function page() {
   const [buttonClick, setButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   
+  const [phoneNo, setPhoneNo] = useState('')
+  const [otp, setOtp] = useState('')
+  const [confirmationResult, setConfirmationResult] = useState(null)
+
   const handleGoogleButtonClick = function () {
     window.location.href = "http://localhost:5000/google/auth/google";
     setButtonClick(true)
@@ -16,6 +20,14 @@ function page() {
     e.preventDefault()
     setOtpSent(true)
   }
+
+  useEffect(() => {
+    console.log(otp);
+    
+    return () => {
+      
+    };
+  }, [otp]);
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col bg-gradient-to-r to-blue-600'>
@@ -49,7 +61,7 @@ function page() {
             <p className='font-exo2 text-xs rounded-2xl font-semibold tracking-wider px-1'>Continue with google</p>
           </button>
         </div>
-        <OtpInput showOtpField={otpSent}/>
+        <OtpInput showOtpField={otpSent} otp={setOtp}/>
       </div>
     </div>
   )
