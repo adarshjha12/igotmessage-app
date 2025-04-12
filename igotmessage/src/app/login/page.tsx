@@ -1,15 +1,20 @@
 'use client'
 import React, {useState, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
+import OtpSentSuccess from '@/components/popups/OtpSentSuccess'
 
 function page() {
 
   const [buttonClick, setButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
-  
+  const [showOtpPopup, setShowOtpPopup] = useState(false)
+
+  const [countryCode, setCountryCode] = useState('+91')
   const [phoneNo, setPhoneNo] = useState('')
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
+
+  
 
   const handleGoogleButtonClick = function () {
     window.location.href = "http://localhost:5000/google/auth/google";
@@ -19,15 +24,12 @@ function page() {
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setOtpSent(true)
-  }
+    setShowOtpPopup(true)
 
-  useEffect(() => {
-    console.log(otp);
-    
-    return () => {
-      
-    };
-  }, [otp]);
+    setTimeout(() => {
+      setShowOtpPopup(false)
+    }, 5000);
+  }
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col bg-gradient-to-r to-blue-600'>
@@ -43,12 +45,15 @@ function page() {
             <label htmlFor="" className=' font-exo2 text-xs pb-2.5'>Please continue with phone number</label>
             <div className='flex gap-2'>
               <div className='border-1 flex justify-center items-center border-white h-[40px] rounded-md'>
-                <select name="" id="" className='border-none outline-none'>
-                  <option className='text-black' value="+91">+91</option>
-                  <option className='text-black' value="+11">+11</option>
-                  <option className='text-black' value="+32">+32</option>
+                <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} className='border-none outline-none'>
+                  <option className='text-black bg-green-500 font-semibold' value="+91">IND +91</option>
+                  <option className='text-black' value="+1">USA +1 </option>
+                  <option className='text-black' value="+32">SCT +32 </option>
+                  <option className='text-black' value="+44">UK +44 </option>
+                  <option className='text-black' value="+52">MXC +52 </option>
+                  <option className='text-black' value="+86">CHN +86 </option>
                 </select>
-                <input type="text" autoFocus={true} maxLength={10} className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
+                <input type="text" minLength={10} value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} autoFocus={true} maxLength={10} className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
               <button type='submit' className='h-[40px] font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
             </div>
@@ -63,6 +68,7 @@ function page() {
         </div>
         <OtpInput showOtpField={otpSent} otp={setOtp}/>
       </div>
+      <OtpSentSuccess showPopup={showOtpPopup} phone={phoneNo}/>
     </div>
   )
 }
