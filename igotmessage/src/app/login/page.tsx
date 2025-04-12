@@ -1,7 +1,7 @@
 'use client'
 import React, {useState, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
-import OtpSentSuccess from '@/components/popups/OtpSentSuccess'
+import OtpSentSuccess from '@/components/popups/PopupMessages'
 
 function page() {
 
@@ -68,7 +68,7 @@ function page() {
         </div>
         <OtpInput showOtpField={otpSent} otp={setOtp}/>
       </div>
-      <OtpSentSuccess showPopup={showOtpPopup} phone={phoneNo}/>
+      <OtpSentSuccess showPopup={showOtpPopup} message={`Otp sent successfully to ${phoneNo}`}/>
     </div>
   )
 }
