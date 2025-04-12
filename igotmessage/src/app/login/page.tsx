@@ -11,6 +11,8 @@ function page() {
 
   const [countryCode, setCountryCode] = useState('+91')
   const [phoneNo, setPhoneNo] = useState('')
+  console.log(typeof phoneNo);
+  
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
 
@@ -53,7 +55,16 @@ function page() {
                   <option className='text-black' value="+52">MXC +52 </option>
                   <option className='text-black' value="+86">CHN +86 </option>
                 </select>
-                <input type="text" minLength={10} value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} autoFocus={true} maxLength={10} className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
+                <input type="text" 
+                minLength={10} 
+                value={phoneNo} 
+                onChange={(e) => {
+                  setPhoneNo(e.target.value)
+                 }
+                } 
+                autoFocus={true} 
+                maxLength={10} 
+                className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
               <button type='submit' className='h-[40px] font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
             </div>
