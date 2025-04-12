@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
 import OtpSentSuccess from '@/components/popups/PopupMessages'
+import {phoneSchema} from '../../lib/zod'
 
 function page() {
 
@@ -62,6 +63,7 @@ function page() {
                   setPhoneNo(e.target.value)
                  }
                 } 
+                inputMode='numeric'
                 autoFocus={true} 
                 maxLength={10} 
                 className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
