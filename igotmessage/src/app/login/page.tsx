@@ -2,7 +2,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
-import {phoneSchema} from '../../lib/zod'
 
 function page() {
 
