@@ -1,23 +1,37 @@
 'use client'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import OtpInput from '../../components/OtpInput'
-import OtpSentSuccess from '@/components/popups/PopupMessages'
+import PopupMessage from '@/components/popups/PopupMessages'
 import {phoneSchema} from '../../lib/zod'
 
 function page() {
 
   const [buttonClick, setButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
-  const [showOtpPopup, setShowOtpPopup] = useState(false)
-
-  const [countryCode, setCountryCode] = useState('+91')
-  const [phoneNo, setPhoneNo] = useState('')
-  console.log(typeof phoneNo);
+  const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
   
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [countryCode, setCountryCode] = useState('+91')
+  const [phoneNo, setPhoneNo] = useState('')  
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
+  const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
+  const [showPopupForWrongNumber, setShowPopupForWrongNumber] = useState(false)
+  const testInput = /^\d+$/.test(phoneNo)
 
+useEffect(() => {
+  if (testInput) {
+    console.log('nicely going');
+    
+  } else if(phoneNo.length > 0 && !testInput){
+    console.log('stop that shit');
+    setShowPopupForWrongNumber(true)
   
+    setTimeout(() => {
+      setShowPopupForWrongNumber(false)
+    }, 5000);
+  }
+}, [phoneNo, testInput]);
 
   const handleGoogleButtonClick = function () {
     window.location.href = "http://localhost:5000/google/auth/google";
@@ -26,11 +40,23 @@ function page() {
 
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    console.log(typeof phoneNo);
+    
+    if (!phoneNo) {
+      setShowPopupForEmptyInput(true)
+      inputRef.current?.focus()
+
+      setTimeout(() => {
+        setShowPopupForEmptyInput(false)
+      }, 5000);
+      return
+    }
+
     setOtpSent(true)
-    setShowOtpPopup(true)
+    setShowOtpSentSuccessPopup(true)
 
     setTimeout(() => {
-      setShowOtpPopup(false)
+      setShowOtpSentSuccessPopup(false)
     }, 5000);
   }
 
@@ -57,6 +83,7 @@ function page() {
                   <option className='text-black' value="+86">CHN +86 </option>
                 </select>
                 <input type="text" 
+                ref={inputRef}
                 minLength={10} 
                 value={phoneNo} 
                 onChange={(e) => {
@@ -81,7 +108,9 @@ function page() {
         </div>
         <OtpInput showOtpField={otpSent} otp={setOtp}/>
       </div>
-      <OtpSentSuccess showPopup={showOtpPopup} message={`Otp sent successfully to ${phoneNo}`}/>
+      <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${phoneNo}`}/>
+      <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter phone number' firstClass='bg-red-700' secondClass='bg-red-400'/>
+      <PopupMessage showPopup={showPopupForWrongNumber} message='Please enter only digits' firstClass='bg-red-700' secondClass='bg-red-400'/>
     </div>
   )
 }
