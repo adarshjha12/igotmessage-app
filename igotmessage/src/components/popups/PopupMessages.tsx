@@ -13,7 +13,7 @@ function PopupMessages({ showPopup, message, firstClass, secondClass}: OtpProps)
         <div className=''>
             <p className='px-3'>{message}</p>
         </div>
-        <hr className={` ${showPopup ? 'popup-animation' : ''} border-t-0 border-r-4 border-amber-50 ${secondClass ? secondClass : 'bg-green-400'}  rounded-xs outline-none  w-0 h-1.5`} />
+        <hr className={` ${showPopup ? 'popup-animation' : ''} border-t-0 border-r-4 border-amber-50 ${secondClass ? secondClass : 'bg-green-400'}  rounded-xs outline-none  w-0 h-1`} />
         {/* <button className='text-2xl cursor-pointer font-extralight'>x</button> */}
     </div>
   )
