@@ -2,6 +2,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
+import axios from 'axios'
 
 function page() {
 
@@ -11,16 +12,18 @@ function page() {
   
   const inputRef = useRef<HTMLInputElement>(null)
   const [countryCode, setCountryCode] = useState('+91')
-  const [phoneNo, setPhoneNo] = useState('')  
+  const [phoneNo, setPhoneNo] = useState('+917079393887')  
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
   const [showPopupForWrongNumber, setShowPopupForWrongNumber] = useState(false)
   const testInput = /^\d+$/.test(phoneNo)
 
+
+  
 useEffect(() => {
   if (testInput) {
-    console.log('nicely going');
+    console.log('nicely going');    
     
   } else if(phoneNo.length > 0 && !testInput){
     console.log('stop that shit');
@@ -95,6 +98,7 @@ useEffect(() => {
                 className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
               <button type='submit' className='h-[40px] font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
+              
             </div>
           </form>
           <p className='font-exo2 px-1 rounded-sm text-3xl'>or</p>
@@ -110,6 +114,8 @@ useEffect(() => {
       <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${phoneNo}`}/>
       <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter phone number' firstClass='bg-red-700' secondClass='bg-red-400'/>
       <PopupMessage showPopup={showPopupForWrongNumber} message='Please enter only digits' firstClass='bg-red-700' secondClass='bg-red-400'/>
+
+      <div id="recaptcha-container"></div>
     </div>
   )
 }
