@@ -12,7 +12,7 @@ function page() {
   
   const inputRef = useRef<HTMLInputElement>(null)
   const [countryCode, setCountryCode] = useState('+91')
-  const [phoneNo, setPhoneNo] = useState('+917079393887')  
+  const [phoneNo, setPhoneNo] = useState('')  
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
