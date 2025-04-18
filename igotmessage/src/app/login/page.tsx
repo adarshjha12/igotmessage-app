@@ -1,10 +1,9 @@
 'use client'
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useRef} from 'react'
 import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
-import axios from 'axios'
 
-function page() {
+function Page() {
 
   const [buttonClick, setButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
@@ -110,4 +109,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
