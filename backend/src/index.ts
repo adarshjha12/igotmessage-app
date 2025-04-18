@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser'
 import connectDb from './db/connection'
 import passport from 'passport'
 import authRouter from './routers/googleRoute'
-import firebaseRouter from './routers/firebaseRoute'
 
 const PORT = process.env.PORT
 const app = express()
@@ -15,13 +14,12 @@ connectDb()
 
 app.use(passport.initialize())
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
+    origin: '*',
+    credentials: false
 }))
 app.use(express.json())
 app.use(cookieParser())
 app.use('/google', authRouter)
-app.use('/firebase', firebaseRouter)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})

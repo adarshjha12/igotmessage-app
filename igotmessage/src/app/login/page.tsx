@@ -11,29 +11,28 @@ function page() {
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
-  const [countryCode, setCountryCode] = useState('+91')
-  const [phoneNo, setPhoneNo] = useState('')  
+  const [email, setEmail] = useState('')  
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
   const [showPopupForWrongNumber, setShowPopupForWrongNumber] = useState(false)
-  const testInput = /^\d+$/.test(phoneNo)
+  // const testInput = /^\d+$/.test(email)
 
 
   
-useEffect(() => {
-  if (testInput) {
-    console.log('nicely going');    
+// useEffect(() => {
+//   if (testInput) {
+//     console.log('nicely going');    
     
-  } else if(phoneNo.length > 0 && !testInput){
-    console.log('stop that shit');
-    setShowPopupForWrongNumber(true)
+//   } else if(email.length > 0 && !testInput){
+//     console.log('stop that shit');
+//     setShowPopupForWrongNumber(true)
   
-    setTimeout(() => {
-      setShowPopupForWrongNumber(false)
-    }, 5000);
-  }
-}, [phoneNo, testInput]);
+//     setTimeout(() => {
+//       setShowPopupForWrongNumber(false)
+//     }, 5000);
+//   }
+// }, [email, testInput]);
 
   const handleGoogleButtonClick = function () {
     window.location.href = "http://localhost:5000/google/auth/google";
@@ -42,9 +41,8 @@ useEffect(() => {
 
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    console.log(typeof phoneNo);
     
-    if (!phoneNo) {
+    if (!email) {
       setShowPopupForEmptyInput(true)
       inputRef.current?.focus()
 
@@ -73,31 +71,23 @@ useEffect(() => {
         <hr className='w-[100px] bg-white'/>
         <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
           <form action="" onSubmit={handleSubmit} className='flex flex-col gap-1 items-center'>
-            <label htmlFor="" className=' font-exo2 text-xs pb-2.5'>Please continue with phone number</label>
-            <div className='flex gap-2'>
-              <div className='border-1 flex justify-center items-center border-white h-[40px] rounded-md'>
-                <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} className='border-none outline-none'>
-                  <option className='text-black bg-green-500 font-semibold' value="+91">IND +91</option>
-                  <option className='text-black' value="+1">USA +1 </option>
-                  <option className='text-black' value="+32">SCT +32 </option>
-                  <option className='text-black' value="+44">UK +44 </option>
-                  <option className='text-black' value="+52">MXC +52 </option>
-                  <option className='text-black' value="+86">CHN +86 </option>
-                </select>
+            <label htmlFor="" className=' font-exo2 text-xs pb-2.5'>Please continue with your email</label>
+            <div className='grid grid-cols-[2fr_1fr] gap-3 place-items-center'>
+              <div className='border-1 w-full flex justify-center items-center border-white h-[40px] rounded-md'>
+                
                 <input type="text" 
                 ref={inputRef}
-                minLength={10} 
-                value={phoneNo} 
+                value={email} 
                 onChange={(e) => {
-                  setPhoneNo(e.target.value)
+                  setEmail(e.target.value)
                  }
                 } 
-                inputMode='numeric'
+                placeholder='abc@gmail.com'
+                inputMode='text'
                 autoFocus={true} 
-                maxLength={10} 
-                className='w-38 text-white pl-1 rounded-sm outline-none font-semibold tracking-widest'/>
+                className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='submit' className='h-[40px] font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
+              <button type='submit' className='h-full text-white text-xs font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Verify with email</button>
               
             </div>
           </form>
@@ -111,8 +101,8 @@ useEffect(() => {
         </div>
         <OtpInput showOtpField={otpSent} otp={setOtp}/>
       </div>
-      <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${phoneNo}`}/>
-      <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter phone number' firstClass='bg-red-700' secondClass='bg-red-400'/>
+      <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${email}`}/>
+      <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' firstClass='bg-red-700' secondClass='bg-red-400'/>
       <PopupMessage showPopup={showPopupForWrongNumber} message='Please enter only digits' firstClass='bg-red-700' secondClass='bg-red-400'/>
 
       <div id="recaptcha-container"></div>
