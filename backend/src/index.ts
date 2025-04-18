@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
-import '../src/services/googleOauth'
+import './services/googleOauth'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDb from './db/connection'
