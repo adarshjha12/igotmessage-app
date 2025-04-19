@@ -14,8 +14,8 @@ connectDb()
 
 app.use(passport.initialize())
 app.use(cors({
-    origin: '*',
-    credentials: false
+    origin: 'https://igotmessage-app-frontend.vercel.app/',
+    credentials: true
 }))
 app.use(express.json())
 app.use(cookieParser())

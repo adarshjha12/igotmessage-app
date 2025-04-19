@@ -34,7 +34,7 @@ function Page() {
 // }, [email, testInput]);
 
   const handleGoogleButtonClick = function () {
-    window.location.href = "http://localhost:5000/google/auth/google";
+    window.location.href = "https://igotmessage-app-backend.onrender.com/google/auth/google";
     setButtonClick(true)
   }
 
