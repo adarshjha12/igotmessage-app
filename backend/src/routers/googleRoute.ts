@@ -37,7 +37,7 @@ authRouter.get('https://igotmessage-app-backend.onrender.com/google/auth/callbac
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.redirect(FRONTEND_URL)
+            res.redirect('https://www.youtube.com/')
             
         } catch (error) {
             console.log(error);
