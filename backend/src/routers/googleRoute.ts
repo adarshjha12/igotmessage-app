@@ -16,7 +16,7 @@ authRouter.get('/auth/google',
     })
   );
 
-authRouter.get('https://igotmessage-app-backend.onrender.com/google/auth/callback/redirect', 
+authRouter.get('/auth/callback/redirect', 
     passport.authenticate('google', {session: false}),
     async function (req: Request, res: Response) {
         try {
@@ -37,7 +37,7 @@ authRouter.get('https://igotmessage-app-backend.onrender.com/google/auth/callbac
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.redirect('https://www.youtube.com/')
+            res.redirect(FRONTEND_URL)
             
         } catch (error) {
             console.log(error);
