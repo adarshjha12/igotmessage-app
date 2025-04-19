@@ -37,7 +37,7 @@ authRouter.get('/auth/callback/redirect',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.redirect('https://www.youtube.com/')
+            res.redirect('https://www.youtube.com')
             
         } catch (error) {
             console.log(error);

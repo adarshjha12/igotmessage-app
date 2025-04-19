@@ -12,9 +12,11 @@ const PORT = process.env.PORT
 const app = express()
 connectDb()
 
+const allowedOrigins = ['http://localhost:3000', 'https://igotmessage-app-frontend.vercel.app/']
+
 app.use(passport.initialize())
 app.use(cors({
-    origin: 'https://igotmessage-app-frontend.vercel.app/',
+    origin: allowedOrigins,
     credentials: true
 }))
 app.use(express.json())
