@@ -16,7 +16,7 @@ authRouter.get('/auth/google',
     })
   );
 
-authRouter.get('/auth/callback/redirect', 
+authRouter.get('https://igotmessage-app-backend.onrender.com/google/auth/callback/redirect', 
     passport.authenticate('google', {session: false}),
     async function (req: Request, res: Response) {
         try {
