@@ -74,20 +74,21 @@ function Page() {
           <p className='capitalize font-montez'>the social app</p>
         </div>
         <hr className='w-[100px] bg-white'/>
-        <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
-        { emailButtonClick ? '' : <p className=' font-exo2 text-center'> Choose one of the options below to experience something very cool</p>
+        { emailButtonClick ? '' : <p className=' text-center mb-2'> Choose one of the options below to experience something very cool</p>
         }
+        <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
+        
 
-          <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'bg-green-700' : null} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700 cursor-pointer justify-between items-center border-2 rounded-3xl py-0.5 px-2`}>
+          <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'bg-green-700' : null} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700 cursor-pointer justify-center items-center border-2 rounded-3xl py-0.5 px-2`}>
             
             <img src="/images/google.png" className='w-[20px] h-auto' alt="google" />
-            <p className='font-exo2 text-xl rounded-2xl font-semibold tracking-wider px-1'>Continue with google</p>
+            <p className='text-xl rounded-2xl font-semibold px-1'>Continue with google</p>
           </button>
 
           <p className={`text-2xl ${emailButtonClick ? 'hidden' : ''}`}>or</p>
           {emailButtonClick && <form action="" onSubmit={handleSubmit} className='flex flex-col gap-1 items-center'>
             <label htmlFor="" className=' font-exo2 pb-2.5'>Please enter your email</label>
-            <div className='grid grid-cols-[2fr_1fr] gap-3 place-items-center'>
+            <div className='grid grid-cols-[2fr_1fr] gap-1 place-items-center'>
               <div className='border-1 w-full flex justify-center items-center border-white h-[40px] rounded-md'>
                 
                 <input type="email" 
@@ -102,16 +103,16 @@ function Page() {
                 autoFocus={true} 
                 className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='submit' className='h-full text-white text-xs font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
+              <button type='submit' className='h-full text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
               
             </div>
           </form>
           }
           
-          <button onClick={() => handleEmailButtonClick()} className={`${emailButtonClick ? 'hidden' : null} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700  gap-4 cursor-pointer justify-between items-center border-2 rounded-3xl py-0.5 px-3`}>
+          <button onClick={() => handleEmailButtonClick()} className={`${emailButtonClick ? 'hidden' : null} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700  gap-4 cursor-pointer justify-center items-center border-2 rounded-3xl py-0.5 px-3`}>
             
             <img src="/images/gmail.png" className='w-[20px] h-auto' alt="google" />
-            <p className='font-exo2 text-xl rounded-2xl font-semibold tracking-wider px-1'>Verify with email</p>
+            <p className=' text-xl rounded-2xl font-semibold px-1'>Verify with email</p>
           </button>
           
         </div>

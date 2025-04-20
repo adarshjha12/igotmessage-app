@@ -51,7 +51,7 @@ const OtpInput = ({showOtpField, otp} : otpInputProps) => {
   return (
     <div className={`${showOtpField ? 'flex': 'hidden'} flex-col items-center gap-3 justify-center`}>
       <p className='font-exo2'>please enter 4 digit otp</p>
-      <form action='' className='flex flex-col gap-2.5 justify-center items-center'>
+      <form action='' className='flex flex-col gap-4.5 justify-center items-center'>
         <div className='flex gap-1.5 '>
           {Array.from({length: 4}, (_, i) => {
             return (
@@ -87,7 +87,7 @@ const OtpInput = ({showOtpField, otp} : otpInputProps) => {
             )
           })}
         </div>
-        <button type='submit' className='h-[30px] w-fit font-exo2 font-semibold text-sm tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'> Sign in</button>
+        <button type='submit' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'> Sign in</button>
      </form>
     </div>
   )
