@@ -65,7 +65,7 @@ function Page() {
   }
 
   return (
-    <div className='w-full down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
+    <div className='w-full text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
         <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
 
         <div className='flex flex-col items-center'>
@@ -73,13 +73,13 @@ function Page() {
           <p className={` text-5xl font-montez h-fit hover:scale-125 transition-all hover:ease-in mb-2`}>Igotmessage</p>
           <p className='capitalize font-montez'>the social app</p>
         </div>
-        <hr className='w-[100px] bg-white'/>
+        <hr className='w-[100px] text-white'/>
         { emailButtonClick ? '' : <p className=' text-center mb-2'> Choose one of the options below to experience something very cool</p>
         }
         <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
         
 
-          <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'bg-green-700' : null} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700 cursor-pointer justify-center items-center border-2 rounded-3xl py-0.5 px-2`}>
+          <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'bg-green-700' : null} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700 cursor-pointer justify-center items-center border-2 border-white-400 rounded-3xl py-0.5 px-2`}>
             
             <img src="/images/google.png" className='w-[20px] h-auto' alt="google" />
             <p className='text-xl rounded-2xl font-semibold px-1'>Continue with google</p>
@@ -109,7 +109,7 @@ function Page() {
           </form>
           }
           
-          <button onClick={() => handleEmailButtonClick()} className={`${emailButtonClick ? 'hidden' : null} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700  gap-4 cursor-pointer justify-center items-center border-2 rounded-3xl py-0.5 px-3`}>
+          <button onClick={() => handleEmailButtonClick()} className={`${emailButtonClick ? 'hidden' : null} hover:scale-105 transition-all hover:ease-in flex hover:border-amber-700  gap-4 cursor-pointer justify-center items-center border-2 border-white rounded-3xl py-0.5 px-3`}>
             
             <img src="/images/gmail.png" className='w-[20px] h-auto' alt="google" />
             <p className=' text-xl rounded-2xl font-semibold px-1'>Verify with email</p>
