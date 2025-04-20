@@ -29,6 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="color-scheme" content="light only" />
+      </head>
       <body
         className={`flex items-center justify-center min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${montez.variable} ${exo2.variable} `}
       >
