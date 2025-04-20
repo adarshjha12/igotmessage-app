@@ -87,9 +87,9 @@ function Page() {
 
           <p className={`text-2xl ${emailButtonClick ? 'hidden' : ''}`}>or</p>
           {emailButtonClick && <form action="" onSubmit={handleSubmit} className='flex flex-col gap-1 items-center'>
-            <label htmlFor="" className=' font-exo2 pb-2.5'>Please enter your email</label>
-            <div className='grid grid-cols-[2fr_1fr] gap-1 place-items-center'>
-              <div className='border-1 w-full flex justify-center items-center border-white h-[40px] rounded-md'>
+            <label htmlFor="email" className=' font-exo2 pb-2.5'>Please enter your email</label>
+            <div className='flex flex-wrap gap-4 justify-center items-center'>
+              <div className='border-1 w-fit flex justify-center items-center border-white h-[40px] rounded-md'>
                 
                 <input type="email" 
                 ref={inputRef}
@@ -98,12 +98,13 @@ function Page() {
                   setEmail(e.target.value)
                  }
                 } 
+                id='email'
                 placeholder='abc@gmail.com'
                 inputMode='email'
                 autoFocus={true} 
                 className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='submit' className='h-full text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'>Get otp</button>
+              <button type='submit' className='text-xl text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2 py-1'>Get otp</button>
               
             </div>
           </form>
