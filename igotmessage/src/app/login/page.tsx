@@ -65,7 +65,7 @@ function Page() {
   }
 
   return (
-    <div className='w-full text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
+    <div className='w-screen text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
         <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
 
         <div className='flex flex-col items-center'>
