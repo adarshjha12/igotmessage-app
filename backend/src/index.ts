@@ -6,7 +6,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDb from './db/connection'
 import passport from 'passport'
-import authRouter from './routers/googleRoute'
+import gAuthRouter from './routers/googleRoute'
 
 const PORT = process.env.PORT
 const app = express()
@@ -21,7 +21,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(cookieParser())
-app.use('/google', authRouter)
+app.use('/google', gAuthRouter)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})

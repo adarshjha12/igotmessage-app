@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import { UserModel } from "../models/userModel";
 
-const authRouter = express.Router()
+const gAuthRouter = express.Router()
 const JWT_SECRET = process.env.JWT_SECRET!
 const FRONTEND_URL = process.env.FRONTEND_URL!
 
-authRouter.get('/auth/google',
+gAuthRouter.get('/auth/google',
     passport.authenticate('google', { 
       scope: ['profile', 'email'],
       accessType: 'offline',
@@ -16,7 +16,7 @@ authRouter.get('/auth/google',
     })
   );
 
-authRouter.get('/auth/callback/redirect', 
+gAuthRouter.get('/auth/callback/redirect', 
     passport.authenticate('google', {session: false}),
     async function (req: Request, res: Response) {
         try {
@@ -45,4 +45,4 @@ authRouter.get('/auth/callback/redirect',
         }
     }
 )
-export default authRouter
+export default gAuthRouter
