@@ -1,7 +1,6 @@
 import passport from "passport";
 import {Strategy as googleStrategy} from 'passport-google-oauth20'
-import { UserModel } from "../models/userModel";
-
+import prisma from "../prisma/client";
 const clientID = process.env.CLIENT_ID!
 const clientSecret = process.env.CLIENT_SECRET!
 const callbackURL =  'https://igotmessage-app-backend.onrender.com/google/auth/callback/redirect'
@@ -12,15 +11,19 @@ passport.use(new googleStrategy({
     callbackURL
 }, async (accessToken, refreshToken, profile, done) =>{
     try {
-    let user = await UserModel.findOne({googleId: profile.id})
+    let user = await prisma.user.findFirst({where: {googleId: profile.id}})
 
     if (!user) {
-         user = await UserModel.create({
-            googleId: profile.id,
-            email: profile.emails?.[0]?.value || '',
-            title: profile.displayName,
-            avatar: profile.photos?.[0]?.value || ''
-        })
+         user = await prisma.user.create(
+            {
+                data: {
+                    googleId: profile.id,
+                    email: profile.emails?.[0]?.value || '',
+                    title: profile.displayName,
+                    avatar: profile.photos?.[0]?.value || ''
+                }
+            }
+         )
     }
        return done(null, user)
     } catch (error) {

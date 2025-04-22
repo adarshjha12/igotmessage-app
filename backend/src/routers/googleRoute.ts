@@ -2,11 +2,10 @@ import '../services/googleOauth'
 import express, {Request, Response} from "express";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import { UserModel } from "../models/userModel";
+import prisma from '../prisma/client';
 
 const gAuthRouter = express.Router()
 const JWT_SECRET = process.env.JWT_SECRET!
-const FRONTEND_URL = process.env.FRONTEND_URL!
 
 gAuthRouter.get('/auth/google',
     passport.authenticate('google', { 
@@ -20,9 +19,9 @@ gAuthRouter.get('/auth/callback/redirect',
     passport.authenticate('google', {session: false}),
     async function (req: Request, res: Response) {
         try {
-            let userInDb = await UserModel.findOne({googleId: req.user?.googleId})
+            let userInDb = await prisma.user.findFirst({where: {googleId: req.user?.googleId}})
             const payload = {
-                id: userInDb?._id,
+                id: userInDb?.id,
                 title: userInDb?.title,
                 email: userInDb?.email,
             }

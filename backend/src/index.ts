@@ -4,14 +4,12 @@ dotenv.config()
 import './services/googleOauth'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import connectDb from './db/connection'
 import passport from 'passport'
 import gAuthRouter from './routers/googleRoute'
 import emailAuthRouter from './routers/emailAuth'
 
 const PORT = process.env.PORT
 const app = express()
-connectDb()
 
 const allowedOrigins = ['http://localhost:3000', 'https://igotmessage-app-frontend.vercel.app/']
 

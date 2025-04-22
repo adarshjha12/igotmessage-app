@@ -13,8 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model bvh{
+model User{
   id Int @id @default(autoincrement())
-  name String
+  googleId String @unique
   email String @unique
+  phoneNo Int? @unique
+  title String
+  avatar String
+  createdAt DateTime @default(now())
 }
