@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import passport from 'passport'
 import gAuthRouter from './routers/googleRoute'
 import emailAuthRouter from './routers/emailAuth'
+import prisma from './prisma/client'
 
 const PORT = process.env.PORT
 const app = express()
@@ -27,6 +28,17 @@ app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})
 })
 
+app.get('/status', async (req, res) => {
+    try {
+      const dbTime = await prisma.$queryRaw`SELECT NOW()`;
+      console.log('connected to postgres with neon');
+      
+      res.send({ success: true, dbTime });
+    } catch (err) {
+      res.status(500).send({ error: 'DB not connected', details: err });
+    }
+  });
+  
 app.listen(PORT, () =>{
     console.log(`running on ${PORT}`);
 })
