@@ -3,7 +3,9 @@ import {Strategy as googleStrategy} from 'passport-google-oauth20'
 import prisma from "../prisma/client";
 const clientID = process.env.CLIENT_ID!
 const clientSecret = process.env.CLIENT_SECRET!
-const callbackURL =  'https://igotmessage-app-backend.onrender.com/google/auth/callback/redirect'
+const callbackURL =  process.env.NODE_ENV === 'production' 
+? 'https://igotmessage-app-backend.onrender.com/google/auth/callback/redirect' 
+: 'http://localhost:5000/google/auth/callback/redirect'
 
 passport.use(new googleStrategy({
     clientID,

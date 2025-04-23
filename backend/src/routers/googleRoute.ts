@@ -36,7 +36,7 @@ gAuthRouter.get('/auth/callback/redirect',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.redirect('https://www.youtube.com')
+            res.redirect('http://localhost:3000')
             
         } catch (error) {
             console.log(error);

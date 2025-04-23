@@ -35,8 +35,13 @@ function Page() {
 // }, [email, testInput]);
 
   const handleGoogleButtonClick = function () {
-    window.location.href = "https://igotmessage-app-backend.onrender.com/google/auth/google";
     setGoogleButtonClick(true)
+
+   const googleAuthUrl = process.env.NODE_ENV === 'production' 
+   ? "https://igotmessage-app-backend.onrender.com/google/auth/google"
+   : 'http://localhost:5000/google/auth/google'
+
+   window.location.href = googleAuthUrl
   }
 
   const handleEmailButtonClick = function () {

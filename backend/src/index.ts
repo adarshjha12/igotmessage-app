@@ -31,7 +31,7 @@ app.get('/', (req, res) =>{
 app.get('/status', async (req, res) => {
     try {
       const dbTime = await prisma.$queryRaw`SELECT NOW()`;
-      console.log('connected to postgres with neon');
+      console.log('connected to postgres');
       
       res.send({ success: true, dbTime });
     } catch (err) {

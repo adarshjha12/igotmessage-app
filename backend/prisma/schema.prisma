@@ -15,10 +15,10 @@ datasource db {
 
 model User{
   id Int @id @default(autoincrement())
-  googleId String @unique
-  email String @unique
+  googleId String? @unique
+  email String? @unique
   phoneNo Int? @unique
-  title String
-  avatar String
+  title String?
+  avatar String?
   createdAt DateTime @default(now())
 }

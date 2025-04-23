@@ -16,22 +16,21 @@ require("../services/googleOauth");
 const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
-const userModel_1 = require("../models/userModel");
-const authRouter = express_1.default.Router();
+const client_1 = __importDefault(require("../prisma/client"));
+const gAuthRouter = express_1.default.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
-const FRONTEND_URL = process.env.FRONTEND_URL;
-authRouter.get('/auth/google', passport_1.default.authenticate('google', {
+gAuthRouter.get('/auth/google', passport_1.default.authenticate('google', {
     scope: ['profile', 'email'],
     accessType: 'offline',
     prompt: 'consent'
 }));
-authRouter.get('/auth/callback/redirect', passport_1.default.authenticate('google', { session: false }), function (req, res) {
+gAuthRouter.get('/auth/callback/redirect', passport_1.default.authenticate('google', { session: false }), function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         try {
-            let userInDb = yield userModel_1.UserModel.findOne({ googleId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.googleId });
+            let userInDb = yield client_1.default.user.findFirst({ where: { googleId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.googleId } });
             const payload = {
-                id: userInDb === null || userInDb === void 0 ? void 0 : userInDb._id,
+                id: userInDb === null || userInDb === void 0 ? void 0 : userInDb.id,
                 title: userInDb === null || userInDb === void 0 ? void 0 : userInDb.title,
                 email: userInDb === null || userInDb === void 0 ? void 0 : userInDb.email,
             };
@@ -43,7 +42,7 @@ authRouter.get('/auth/callback/redirect', passport_1.default.authenticate('googl
                 sameSite: "none",
                 maxAge: 30 * 24 * 60 * 60 * 1000
             });
-            res.redirect(FRONTEND_URL);
+            res.redirect('https://www.youtube.com');
         }
         catch (error) {
             console.log(error);
@@ -51,4 +50,4 @@ authRouter.get('/auth/callback/redirect', passport_1.default.authenticate('googl
         }
     });
 });
-exports.default = authRouter;
+exports.default = gAuthRouter;
