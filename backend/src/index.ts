@@ -22,7 +22,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 app.use('/google', gAuthRouter)
-app.use('/email', emailAuthRouter)
+app.use('/email/auth', emailAuthRouter)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})
@@ -31,9 +31,9 @@ app.get('/', (req, res) =>{
 app.get('/status', async (req, res) => {
     try {
       const dbTime = await prisma.$queryRaw`SELECT NOW()`;
-      console.log('connected to postgres');
+      console.log('connected to postgres', req);
       
-      res.send({ success: true, dbTime });
+       res.send({ success: true, dbTime });
     } catch (err) {
       res.status(500).send({ error: 'DB not connected', details: err });
     }

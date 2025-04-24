@@ -36,7 +36,7 @@ gAuthRouter.get('/auth/callback/redirect',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.redirect('http://localhost:3000')
+            res.status(201).json({success: true, message: 'user verified successfully', userData: req.user})
             
         } catch (error) {
             console.log(error);
