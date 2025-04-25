@@ -1,45 +1,31 @@
 'use client'
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
+import { sendOtp, verifyOtp } from '@/utils/api'
+import Loader from '@/components/Loader'
 
 function Page() {
-
+  
+  const [loading, setLoading] = useState(false)
   const [googleButtonClick, setGoogleButtonClick] = useState(false)
   const [emailButtonClick, setEmailButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
+  const [signInbuttonClick, setSignInButtonClick] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
   const [email, setEmail] = useState('')  
-  const [otp, setOtp] = useState('')
-  const [confirmationResult, setConfirmationResult] = useState(null)
+  // const [otp, setOtp] = useState('')
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
   const [showPopupForWrongNumber, setShowPopupForWrongNumber] = useState(false)
-  // const testInput = /^\d+$/.test(email)
-
-
-  
-// useEffect(() => {
-//   if (testInput) {
-//     console.log('nicely going');    
-    
-//   } else if(email.length > 0 && !testInput){
-//     console.log('stop that shit');
-//     setShowPopupForWrongNumber(true)
-  
-//     setTimeout(() => {
-//       setShowPopupForWrongNumber(false)
-//     }, 5000);
-//   }
-// }, [email, testInput]);
 
   const handleGoogleButtonClick = function () {
     setGoogleButtonClick(true)
 
    const googleAuthUrl = process.env.NODE_ENV === 'production' 
-   ? "https://igotmessage-app-backend.onrender.com/google/auth/google"
-   : 'http://localhost:5000/google/auth/google'
+   ? `${process.env.PRODUCTION_BACKEND_URL}/google/auth/google`
+   : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/google/auth/google`
 
    window.location.href = googleAuthUrl
   }
@@ -48,7 +34,7 @@ function Page() {
     setEmailButtonClick(true)
   }
 
-  const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     
     if (!email) {
@@ -60,10 +46,17 @@ function Page() {
       }, 5000);
       return
     }
+    
+    setLoading(true)
+    const response = await sendOtp(email)
+    console.log(response);
+  
+    if (response?.data.success === true) {
+      setLoading(false)
+    }
 
     setOtpSent(true)
     setShowOtpSentSuccessPopup(true)
-
     setTimeout(() => {
       setShowOtpSentSuccessPopup(false)
     }, 5000);
@@ -122,13 +115,15 @@ function Page() {
           </button>
           
         </div>
-        <OtpInput showOtpField={otpSent} otp={setOtp}/>
+        <OtpInput showOtpField={otpSent} email={email} />
       </div>
       <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${email}`}/>
       <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' firstClass='bg-red-700' secondClass='bg-red-400'/>
       <PopupMessage showPopup={showPopupForWrongNumber} message='Please enter only digits' firstClass='bg-red-700' secondClass='bg-red-400'/>
 
       <div id="recaptcha-container"></div>
+      {loading && <Loader/>}
+      
     </div>
   )
 }

@@ -1,8 +1,12 @@
 import axios from "axios";
 
 const sendOtp = async function (email: string) {
+    const url = process.env.NODE_ENV === 'production' 
+    ? `${process.env.PRODUCTION_BACKEND_URL}/email/auth/send-otp`
+    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/email/auth/send-otp`;
+
     try {
-        return await axios.post('https://igotmessage-app-backend.onrender.com/email/auth/send-otp', email)
+        return await axios.post(url, {email})
     } catch (error) {
         console.log(error);
         
@@ -10,10 +14,17 @@ const sendOtp = async function (email: string) {
 }
 
 const verifyOtp = async function (email: string, otp: string) {
+
+    const url = process.env.NODE_ENV === 'production' 
+    ? `${process.env.PRODUCTION_BACKEND_URL}/email/auth/verify-otp`
+    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/email/auth/verify-otp`;
+
+    
     try {
-        return await axios.post('https://igotmessage-app-backend.onrender.com/email/auth/verify-otp', {email, otp})
+        return await axios.post(url, {email, otp})
     } catch (error) {
         console.log(error);
+        throw error
     }
 }
 

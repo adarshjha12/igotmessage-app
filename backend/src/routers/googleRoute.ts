@@ -29,14 +29,14 @@ gAuthRouter.get('/auth/callback/redirect',
             console.log(req.user);
             
             const token = jwt.sign(payload, JWT_SECRET)
-            res.cookie('googleToken', token, {
+            res.cookie('authToken', token, {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.status(201).json({success: true, message: 'user verified successfully', userData: req.user})
+            res.status(201).json({success: true, message: 'user verified successfully', userData: userInDb})
             
         } catch (error) {
             console.log(error);

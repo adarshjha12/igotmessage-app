@@ -1,21 +1,29 @@
 'use client'
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState} from 'react'
+import { verifyOtp } from '@/utils/api'
+import { useRouter } from 'next/navigation'
+import PopupMessages from './popups/PopupMessages'
 
 interface otpInputProps {
   showOtpField: boolean,
-  otp: (value : string) => void
+  // otp: (value : string) => void,
+  email: string
 }
 
-const OtpInput = ({showOtpField, otp} : otpInputProps) => {
-
+const OtpInput = ({showOtpField, email} : otpInputProps) => {
+  const router = useRouter()
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [inputValues, setInputValues] = useState<string[]>(['', '', '', ''])
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+
+  let finalInputOtp: string;
 
   useEffect(() => {
-    const finalInput = inputValues.join('')
-    otp(finalInput)
-
+     finalInputOtp = inputValues.join('')
+     console.log(finalInputOtp);
+    
   }, [inputValues]);
+
   const moveNext = function (userInput: HTMLInputElement, index: number) {
     if (userInput.value.length === 1 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1]?.focus()
@@ -46,7 +54,26 @@ const OtpInput = ({showOtpField, otp} : otpInputProps) => {
     if (showOtpField) {
       inputRefs.current[0]?.focus()
     }
+    console.log(email);
+    
   }, [showOtpField])
+
+  const handleSignin = async function () {
+    try {
+      const response = await verifyOtp(email, finalInputOtp)
+      console.log(response);
+      if (response.data?.success === true) {
+        setShowSuccessPopup(true)
+        router.push('/dash')
+        setTimeout(() => {
+          setShowSuccessPopup(false)
+        }, 5000);
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   
   return (
     <div className={`${showOtpField ? 'flex': 'hidden'} flex-col items-center gap-3 justify-center`}>
@@ -87,8 +114,9 @@ const OtpInput = ({showOtpField, otp} : otpInputProps) => {
             )
           })}
         </div>
-        <button type='submit' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'> Sign in</button>
+        <button onClick={handleSignin} type='button' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'> Sign in</button>
      </form>
+     {showSuccessPopup && <PopupMessages showPopup={true} message='congrats! verification successfull'/>}
     </div>
   )
 }
