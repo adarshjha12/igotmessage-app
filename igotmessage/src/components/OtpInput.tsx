@@ -6,7 +6,6 @@ import PopupMessages from './popups/PopupMessages'
 
 interface otpInputProps {
   showOtpField: boolean,
-  // otp: (value : string) => void,
   email: string
 }
 
