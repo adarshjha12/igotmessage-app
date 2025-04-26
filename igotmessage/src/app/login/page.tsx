@@ -23,11 +23,19 @@ function Page() {
   const [resendOtp, setResendOtp] = useState(false)
 
   const timer = function () {
-   setTimeout(() => {
-    resendTimer = resendTimer - 1
-   }, 1000);
-    
+    const interval = setInterval(() => {
+      setResendTimer(prev => {
+        if (prev <= 1) { 
+          clearInterval(interval);
+          setCanResend(true);
+          return 0;
+        }
+        setCanResend(false)
+        return prev - 1;
+      });
+    }, 1000);
   }
+  
 
   const handleGoogleButtonClick = function () {
     setGoogleButtonClick(true)
@@ -43,8 +51,7 @@ function Page() {
     setEmailButtonClick(true)
   }
 
-  const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  const handleSendOtp = async function () {
     
     if (!email) {
       setShowPopupForEmptyInput(true)
@@ -83,6 +90,16 @@ function Page() {
 
   }
 
+  useEffect(() => {
+    if (canResend && resendOtp) {
+      handleSendOtp()
+      setResendTimer(59)
+      setResendOtp(false)
+    }
+    
+  }, [canResend, resendOtp]);
+  
+
   return (
     <div key={`${emailButtonClick} ${otpSent} `} className='w-screen text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
         <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} m-3 w-fit border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
@@ -105,7 +122,7 @@ function Page() {
           </button>
 
           <p className={`text-2xl ${emailButtonClick ? 'hidden' : ''}`}>or</p>
-          {emailButtonClick && <form action="" onSubmit={handleSubmit} className='flex flex-col gap-1 items-center'>
+          {emailButtonClick && <form action="" className='flex flex-col gap-1 items-center'>
             <label htmlFor="email" className=' font-exo2 pb-2.5'>Please enter your email</label>
             <div className='flex flex-wrap gap-4 justify-center items-center'>
               <div className='border-1 w-fit flex justify-center items-center border-white py-1 rounded-md'>
@@ -123,7 +140,7 @@ function Page() {
                 autoFocus={true} 
                 className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='submit' className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-800 border-1 rounded-md px-2 py-1'>Get otp</button>
+              <button type='button' onClick={handleSendOtp} className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-800 border-1 rounded-md px-2 py-1'>Get otp</button>
               
             </div>
           </form>
@@ -139,6 +156,7 @@ function Page() {
         <OtpInput showOtpField={otpSent} email={email} resendCounter={resendTimer} setResendOtp={setResendOtp} canResend={canResend} />
       </div>
       <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${email}`}/>
+
       <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' firstClass='bg-red-700' secondClass='bg-red-400'/>
 
       <PopupMessage showPopup={errorSendingEmail} message={`${email} is invalid`} firstClass='bg-red-700' secondClass='bg-red-400'/>

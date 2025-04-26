@@ -143,8 +143,8 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
        <button onClick={handleSignin} type='button' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-800 border-1 rounded-md px-2'> Sign in</button>
 
         <div className='flex flex-col  justify-center items-center'>
-          <button onClick={() => (console.log('button clicked')
-          )} disabled={true} className={`px-2 text-xs font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 border-white rounded-sm`}>Resend</button>
+          <button onClick={() => {setResendOtp(true), console.log('button clicked');
+          }} disabled={canResend ? false : true} className={`px-2 text-xs font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 ${canResend ? 'bg-gradient-to-r from-green-600 to-green-900' : 'border-red-500'} rounded-sm`}>Resend</button>
 
           <span className='text-xs'>00 : {resendCounter}</span>
         </div>
