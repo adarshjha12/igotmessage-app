@@ -12,13 +12,22 @@ function Page() {
   const [emailButtonClick, setEmailButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
-  const [signInbuttonClick, setSignInButtonClick] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
-  const [email, setEmail] = useState('')  
-  // const [otp, setOtp] = useState('')
+  let [email, setEmail] = useState('')
+  const [errorSendingEmail, setErrorSendingEmail] = useState(false)  
+
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
-  const [showPopupForWrongNumber, setShowPopupForWrongNumber] = useState(false)
+  let [resendTimer, setResendTimer] = useState(59)
+  const [canResend, setCanResend] = useState(false)
+  const [resendOtp, setResendOtp] = useState(false)
+
+  const timer = function () {
+   setTimeout(() => {
+    resendTimer = resendTimer - 1
+   }, 1000);
+    
+  }
 
   const handleGoogleButtonClick = function () {
     setGoogleButtonClick(true)
@@ -48,18 +57,30 @@ function Page() {
     }
     
     setLoading(true)
-    const response = await sendOtp(email)
-    console.log(response);
-  
-    if (response?.data.success === true) {
-      setLoading(false)
+    try {
+      const response = await sendOtp(email)
+      console.log(response);
+    
+      if (response?.data.success === true) {
+        timer()
+        setOtpSent(true)
+        setShowOtpSentSuccessPopup(true)
+        setTimeout(() => {
+          setShowOtpSentSuccessPopup(false)
+        }, 5000);
+      }      
+
+    } catch (error) {
+      setErrorSendingEmail(true)
+      console.log(error);
+      
+    } finally{
+        setLoading(false)
+        setTimeout(() => {
+          setErrorSendingEmail(false)
+        }, 5000);
     }
 
-    setOtpSent(true)
-    setShowOtpSentSuccessPopup(true)
-    setTimeout(() => {
-      setShowOtpSentSuccessPopup(false)
-    }, 5000);
   }
 
   return (
@@ -72,7 +93,7 @@ function Page() {
           <p className='capitalize font-montez text-yellow-400'>the social app</p>
         </div>
         <hr className='w-[100px] text-white'/>
-        { emailButtonClick ? '' : <p className=' text-center mb-2'> Choose one of the options below to experience something very cool</p>
+        { emailButtonClick ? '' : <p className={`${otpSent ? 'hidden' : ''} text-center mb-2`}> Choose one of the options below to experience something very cool</p>
         }
         <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
         
@@ -87,7 +108,7 @@ function Page() {
           {emailButtonClick && <form action="" onSubmit={handleSubmit} className='flex flex-col gap-1 items-center'>
             <label htmlFor="email" className=' font-exo2 pb-2.5'>Please enter your email</label>
             <div className='flex flex-wrap gap-4 justify-center items-center'>
-              <div className='border-1 w-fit flex justify-center items-center border-white h-[40px] rounded-md'>
+              <div className='border-1 w-fit flex justify-center items-center border-white py-1 rounded-md'>
                 
                 <input type="email" 
                 ref={inputRef}
@@ -102,7 +123,7 @@ function Page() {
                 autoFocus={true} 
                 className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='submit' className='text-xl text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2 py-1'>Get otp</button>
+              <button type='submit' className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-800 border-1 rounded-md px-2 py-1'>Get otp</button>
               
             </div>
           </form>
@@ -115,12 +136,13 @@ function Page() {
           </button>
           
         </div>
-        <OtpInput showOtpField={otpSent} email={email} />
+        <OtpInput showOtpField={otpSent} email={email} resendCounter={resendTimer} setResendOtp={setResendOtp} canResend={canResend} />
       </div>
       <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${email}`}/>
       <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' firstClass='bg-red-700' secondClass='bg-red-400'/>
-      <PopupMessage showPopup={showPopupForWrongNumber} message='Please enter only digits' firstClass='bg-red-700' secondClass='bg-red-400'/>
 
+      <PopupMessage showPopup={errorSendingEmail} message={`${email} is invalid`} firstClass='bg-red-700' secondClass='bg-red-400'/>
+      
       <div id="recaptcha-container"></div>
       {loading && <Loader/>}
       

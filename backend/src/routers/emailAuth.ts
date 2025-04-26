@@ -24,13 +24,13 @@ emailAuthRouter.post('/send-otp', async (req, res) => {
 
   const {email} = req.body
   if (!email) {
-     res.status(400).json({ error: "Email is required" });
+     res.status(400).json({success: false, message: "Email is required" });
      return
   }
   
   const otp = generateOTP()
 
-  await client.set(`otp:${email}`, otp, 'EX', 3000)
+  await client.set(`otp:${email}`, otp, 'EX', 300)
   
   const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi()
 
@@ -46,7 +46,7 @@ emailAuthRouter.post('/send-otp', async (req, res) => {
     res.status(200).json({ success: true, message: 'OTP sent' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: 'Failed to send OTP' });
+    res.status(403).json({ success: false, message: 'invalid email provided' });
   }
 
 })
@@ -55,10 +55,9 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
   const {email, otp} = req.body
   const storedOtp = await client.get(`otp:${email}`)
 
-  console.log(email, otp, storedOtp);
   
   if (!storedOtp) {
-      res.status(400).json({success: false, message: 'otp expired. please resend again'})
+      res.status(400).json({success: false, expired:true, message: 'otp expired. please resend again'})
       return
   }
 
@@ -67,7 +66,31 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
      return
   }
 
-  const token = jwt.sign(email, process.env.JWT_SECRET!)
+  let user;
+  try {
+     user = await prisma.user.findFirst({where: {email: email}})
+
+     if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: email
+        }
+      })
+     }
+   
+  } catch (error) {
+    res.status(500).json({success: false, message: 'user not created', userData: user})
+    console.log(error);
+    
+  }
+
+  console.log(user);
+
+  const payload = {
+    id: user?.id,
+    email: user?.email
+  }
+  const token = jwt.sign(payload, process.env.JWT_SECRET!)
 
   res.cookie('authToken', token, {
     httpOnly: true,
@@ -75,12 +98,7 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
     secure: true,
     maxAge: 30 * 24 * 60 * 60 * 1000
   })
-
-  const user = await prisma.user.create({
-    data: {
-      email: email
-    }
-  })
+  
   res.status(200).json({success: true, message: 'otp verification successfull', userData: user})
 })
 

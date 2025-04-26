@@ -3,18 +3,26 @@ import React, { useEffect, useRef, useState} from 'react'
 import { verifyOtp } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import PopupMessages from './popups/PopupMessages'
+import Loader from './Loader'
 
 interface otpInputProps {
   showOtpField: boolean,
-  email: string
+  email: string,
+  resendCounter: number,
+  canResend: boolean,
+  setResendOtp: (value: boolean) => void
 }
 
-const OtpInput = ({showOtpField, email} : otpInputProps) => {
+const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} : otpInputProps) => {
+
   const router = useRouter()
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [inputValues, setInputValues] = useState<string[]>(['', '', '', ''])
   const [showSuccessPopup, setShowSuccessPopup] = useState(false)
-
+  const [showErrorPopup, setShowErrorPopup] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [otpExpired, setOtpExpired] = useState(false)
+  
   let finalInputOtp: string;
 
   useEffect(() => {
@@ -58,21 +66,39 @@ const OtpInput = ({showOtpField, email} : otpInputProps) => {
   }, [showOtpField])
 
   const handleSignin = async function () {
+    setLoading(true);
     try {
-      const response = await verifyOtp(email, finalInputOtp)
+      const response = await verifyOtp(email, finalInputOtp);
       console.log(response);
+  
       if (response.data?.success === true) {
-        setShowSuccessPopup(true)
-        router.push('/dash')
-        setTimeout(() => {
-          setShowSuccessPopup(false)
-        }, 5000);
+        setShowSuccessPopup(true);
+        router.push('/dash');
+        
+      } else if (response.data.expired === true) {
+          setShowErrorPopup(true)
+          setOtpExpired(true)
+      } else {
+        window.location.reload()
+        router.push('/login');
+        setShowErrorPopup(true)
       }
     } catch (error) {
       console.log(error);
-      
+      window.location.reload()
+      router.push('/login'); 
+      setShowErrorPopup(true)
+
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+        setShowErrorPopup(false)
+        setOtpExpired(false)
+      }, 5000);
     }
-  }
+  };
+  
   
   return (
     <div className={`${showOtpField ? 'flex': 'hidden'} flex-col items-center gap-3 justify-center`}>
@@ -113,9 +139,21 @@ const OtpInput = ({showOtpField, email} : otpInputProps) => {
             )
           })}
         </div>
-        <button onClick={handleSignin} type='button' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-green-700 hover:bg-amber-700 border-1 rounded-md px-2'> Sign in</button>
+      <div className='flex gap-5'>
+       <button onClick={handleSignin} type='button' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-800 border-1 rounded-md px-2'> Sign in</button>
+
+        <div className='flex flex-col  justify-center items-center'>
+          <button onClick={() => (console.log('button clicked')
+          )} disabled={true} className={`px-2 text-xs font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 border-white rounded-sm`}>Resend</button>
+
+          <span className='text-xs'>00 : {resendCounter}</span>
+        </div>
+      </div>
      </form>
      {showSuccessPopup && <PopupMessages showPopup={true} message='congrats! verification successfull'/>}
+     {loading && <Loader/>}
+     {showErrorPopup && <PopupMessages showPopup={true}  message='invalid credentials. please login again' firstClass='bg-red-700' secondClass='bg-red-400'/> }
+     {otpExpired && <PopupMessages showPopup={true}  message='otp expired. click on resend' firstClass='bg-red-700' secondClass='bg-red-400'/>}
     </div>
   )
 }

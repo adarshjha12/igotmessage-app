@@ -26,7 +26,7 @@ const sendOtp = async function (email: string) {
         return await axios.post(url, {email})
     } catch (error) {
         console.log(error);
-        
+        throw error
     }
 }
 
@@ -38,7 +38,7 @@ const verifyOtp = async function (email: string, otp: string) {
 
     
     try {
-        return await axios.post(url, {email, otp})
+        return await axios.post(url, {email, otp}, {withCredentials: true})
     } catch (error) {
         console.log(error);
         throw error
