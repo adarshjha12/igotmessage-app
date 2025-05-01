@@ -1,8 +1,23 @@
 import {createSlice} from '@reduxjs/toolkit'
 
-const initialState = {
-    title: '',
-    email: '',
+interface UserAuthInterface {
+    id : number,
+    googleId? : string,
+    email? : string,
+    phoneNo? : number,
+    title? : string,
+    avatar? : string,
+    createdAt : Date,
+}
+
+const initialState : UserAuthInterface = {
+    id : 1,
+    googleId : '',
+    email : '',
+    phoneNo : 1234235659,
+    title : '',
+    avatar : '',
+    createdAt : new Date(),
 }
 
 const authSlice = createSlice({
@@ -10,8 +25,8 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         addCurrentUserToStore: function (state, action) {
-            state.title = action.payload.title
-            state.email = action.payload.email
+            state = action.payload
+            state = action.payload
         }
     }
 })

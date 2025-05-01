@@ -22,7 +22,6 @@ gAuthRouter.get('/auth/callback/redirect',
             let userInDb = await prisma.user.findFirst({where: {googleId: req.user?.googleId}})
             const payload = {
                 id: userInDb?.id,
-                title: userInDb?.title,
                 email: userInDb?.email,
             }
 
@@ -37,6 +36,7 @@ gAuthRouter.get('/auth/callback/redirect',
             })
 
             res.status(201).json({success: true, message: 'user verified successfully', userData: userInDb})
+            res.redirect('/dash')
             
         } catch (error) {
             console.log(error);

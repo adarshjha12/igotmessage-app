@@ -4,6 +4,8 @@ import { verifyOtp } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import PopupMessages from './popups/PopupMessages'
 import Loader from './Loader'
+import { useDispatch } from 'react-redux'
+import { addCurrentUserToStore } from '@/features/authSlice'
 
 interface otpInputProps {
   showOtpField: boolean,
@@ -73,6 +75,8 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
   
       if (response.data?.success === true) {
         setShowSuccessPopup(true);
+        const dispatch = useDispatch()
+        dispatch(addCurrentUserToStore(response.data.user))
         router.push('/dash');
         
       } else if (response.data.expired === true) {

@@ -5,7 +5,7 @@ import prisma from "../prisma/client";
 const getCurrentUser = Router()
 
 interface userPayload {
-    id?: number | undefined
+    id?: number
     email?: string
 }
 
@@ -25,7 +25,7 @@ getCurrentUser.get('/get-current-user', async (req, res) =>{
             return
         }
 
-        res.status(200).json({success: true, message: 'user verified successfully', user: verifyUser})
+        res.status(200).json({success: true, message: 'user verified successfully', userData: verifyUser})
         return
     } catch (error) {
         console.log(error);

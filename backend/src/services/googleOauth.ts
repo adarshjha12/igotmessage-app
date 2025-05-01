@@ -1,11 +1,14 @@
 import passport from "passport";
 import {Strategy as googleStrategy} from 'passport-google-oauth20'
 import prisma from "../prisma/client";
+import { User } from "@prisma/client";
+
 const clientID = process.env.CLIENT_ID!
 const clientSecret = process.env.CLIENT_SECRET!
 const callbackURL =  process.env.NODE_ENV === 'production' 
 ? 'https://igotmessage-app-backend.onrender.com/google/auth/callback/redirect' 
 : 'http://localhost:5000/google/auth/callback/redirect'
+
 
 passport.use(new googleStrategy({
     clientID,
@@ -19,7 +22,7 @@ passport.use(new googleStrategy({
          user = await prisma.user.create(
             {
                 data: {
-                    googleId: profile.id,
+                    googleId: profile.id!,
                     email: profile.emails?.[0]?.value || '',
                     title: profile.displayName,
                     avatar: profile.photos?.[0]?.value || ''
