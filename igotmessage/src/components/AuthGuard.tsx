@@ -24,7 +24,6 @@ function AuthGuard({children} : {children: React.ReactNode}) {
             setVerified(true)
           } else{
             router.replace('/login')
-
           }
   
         } catch (error) {
