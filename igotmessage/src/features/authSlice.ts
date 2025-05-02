@@ -7,7 +7,7 @@ interface UserAuthInterface {
     phoneNo? : number,
     title? : string,
     avatar? : string,
-    createdAt : Date,
+    createdAt : string,
 }
 
 const initialState : UserAuthInterface = {
@@ -17,7 +17,7 @@ const initialState : UserAuthInterface = {
     phoneNo : 1234235659,
     title : '',
     avatar : '',
-    createdAt : new Date(),
+    createdAt : '',
 }
 
 const authSlice = createSlice({

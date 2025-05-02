@@ -57,20 +57,20 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
 
   
   if (!storedOtp) {
-      res.status(400).json({success: false, expired:true, message: 'otp expired. please resend again'})
+      res.status(400).json({success: false, expired:true, message: 'otp expired. please resend again'})      
       return
   }
 
   if (storedOtp !== otp) {
-     res.status(400).json({success: false, message: 'invalid otp'})
-     return
+    res.status(400).json({success: false, message: 'invalid otp'})
+    return
   }
 
   let user;
   try {
      user = await prisma.user.findFirst({where: {email: email}})
 
-     if (!user) {
+     if (!user) {      
       user = await prisma.user.create({
         data: {
           email: email
@@ -81,7 +81,7 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
   } catch (error) {
     res.status(500).json({success: false, message: 'user not created', userData: user})
     console.log(error);
-    
+    return
   }
 
   console.log(user);

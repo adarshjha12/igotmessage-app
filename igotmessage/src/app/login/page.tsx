@@ -4,14 +4,17 @@ import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
 import { sendOtp, verifyOtp } from '@/utils/api'
 import Loader from '@/components/Loader'
+import { useSearchParams } from 'next/navigation'
 
 function Page() {
   
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [googleButtonClick, setGoogleButtonClick] = useState(false)
   const [emailButtonClick, setEmailButtonClick] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
+  const [unauthorized, setUnauthorized] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
   let [email, setEmail] = useState('')
@@ -41,8 +44,8 @@ function Page() {
     setGoogleButtonClick(true)
 
    const googleAuthUrl = process.env.NODE_ENV === 'production' 
-   ? `${process.env.PRODUCTION_BACKEND_URL}/google/auth/google`
-   : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/google/auth/google`
+   ? `${process.env.PRODUCTION_BACKEND_URL}/api/google/auth/google`
+   : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/google/auth/google`
 
    window.location.href = googleAuthUrl
   }
@@ -52,7 +55,6 @@ function Page() {
   }
 
   const handleSendOtp = async function () {
-    
     if (!email) {
       setShowPopupForEmptyInput(true)
       inputRef.current?.focus()
@@ -98,7 +100,16 @@ function Page() {
     }
     
   }, [canResend, resendOtp]);
-  
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error === 'unauthorized') {
+      setUnauthorized(true)
+    }
+      setTimeout(() => {
+        setUnauthorized(false)
+      }, 5000);
+  }, [searchParams]);
 
   return (
     <div key={`${emailButtonClick} ${otpSent} `} className='w-screen text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
@@ -160,6 +171,8 @@ function Page() {
       <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' firstClass='bg-red-700' secondClass='bg-red-400'/>
 
       <PopupMessage showPopup={errorSendingEmail} message={`${email} is invalid`} firstClass='bg-red-700' secondClass='bg-red-400'/>
+
+      <PopupMessage showPopup={unauthorized} message={`you are unauthorized. please select option below to continue`} firstClass='bg-red-700' secondClass='bg-red-400'/>
       
       <div id="recaptcha-container"></div>
       {loading && <Loader/>}

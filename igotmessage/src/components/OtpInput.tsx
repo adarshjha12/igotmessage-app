@@ -17,6 +17,7 @@ interface otpInputProps {
 
 const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} : otpInputProps) => {
 
+  const dispatch = useDispatch()
   const router = useRouter()
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [inputValues, setInputValues] = useState<string[]>(['', '', '', ''])
@@ -25,19 +26,14 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
   const [loading, setLoading] = useState(false)
   const [otpExpired, setOtpExpired] = useState(false)
   
-  let finalInputOtp: string;
-
-  useEffect(() => {
-     finalInputOtp = inputValues.join('')
-     console.log(finalInputOtp);
-    
-  }, [inputValues]);
+  let finalInputOtp = inputValues.join('')  ;
 
   const moveNext = function (userInput: HTMLInputElement, index: number) {
     if (userInput.value.length === 1 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1]?.focus()
     }
   }
+
   const moveBack = function (userInput: HTMLInputElement, index: number) {
     if (userInput.value.length === 0 && index > 0) {
       inputRefs.current[index - 1]?.focus()
@@ -63,21 +59,19 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
     if (showOtpField) {
       inputRefs.current[0]?.focus()
     }
-    console.log(email);
-    
+
+
   }, [showOtpField])
 
   const handleSignin = async function () {
     setLoading(true);
     try {
       const response = await verifyOtp(email, finalInputOtp);
-      console.log(response);
   
       if (response.data?.success === true) {
         setShowSuccessPopup(true);
-        const dispatch = useDispatch()
         dispatch(addCurrentUserToStore(response.data.user))
-        router.push('/dash');
+        router.push('/dash?verification=success');
         
       } else if (response.data.expired === true) {
           setShowErrorPopup(true)
@@ -102,7 +96,6 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
       }, 5000);
     }
   };
-  
   
   return (
     <div className={`${showOtpField ? 'flex': 'hidden'} flex-col items-center gap-3 justify-center`}>

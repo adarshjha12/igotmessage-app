@@ -2,8 +2,8 @@ import axios from "axios";
 
 const checkAuth = async function () {
     const url = process.env.NODE_ENV === 'production' 
-    ? `${process.env.PRODUCTION_BACKEND_URL}/current-user/get-current-user`
-    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/current-user/get-current-user`;
+    ? `${process.env.PRODUCTION_BACKEND_URL}/api/current-user/get-current-user`
+    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/current-user/get-current-user`;
 
     try {
         return await axios.get(url, {
@@ -19,8 +19,8 @@ const checkAuth = async function () {
 
 const sendOtp = async function (email: string) {
     const url = process.env.NODE_ENV === 'production' 
-    ? `${process.env.PRODUCTION_BACKEND_URL}/email/auth/send-otp`
-    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/email/auth/send-otp`;
+    ? `${process.env.PRODUCTION_BACKEND_URL}/api/email/auth/send-otp`
+    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/email/auth/send-otp`;
 
     try {
         return await axios.post(url, {email})
@@ -33,11 +33,13 @@ const sendOtp = async function (email: string) {
 const verifyOtp = async function (email: string, otp: string) {
 
     const url = process.env.NODE_ENV === 'production' 
-    ? `${process.env.PRODUCTION_BACKEND_URL}/email/auth/verify-otp`
-    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/email/auth/verify-otp`;
+    ? `${process.env.PRODUCTION_BACKEND_URL}/api/email/auth/verify-otp`
+    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/email/auth/verify-otp`;
 
     
     try {
+        // console.log('+++++++++++++', otp);
+        
         return await axios.post(url, {email, otp}, {withCredentials: true})
     } catch (error) {
         console.log(error);

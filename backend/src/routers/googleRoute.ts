@@ -7,6 +7,8 @@ import prisma from '../prisma/client';
 const gAuthRouter = express.Router()
 const JWT_SECRET = process.env.JWT_SECRET!
 
+const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.PROD_FRONTEND_URL}/dash` : `${process.env.DEV_FRONTEND_URL}/dash`
+
 gAuthRouter.get('/auth/google',
     passport.authenticate('google', { 
       scope: ['profile', 'email'],
@@ -35,8 +37,7 @@ gAuthRouter.get('/auth/callback/redirect',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.status(201).json({success: true, message: 'user verified successfully', userData: userInDb})
-            res.redirect('/dash')
+            res.redirect(redirectUrl)
             
         } catch (error) {
             console.log(error);

@@ -12,6 +12,8 @@ interface userPayload {
 getCurrentUser.get('/get-current-user', async (req, res) =>{
     const token = req.cookies.authToken
     if (!token) {
+        console.log('no token provided');
+        
         res.status(401).json({success: false, message: 'no token provided'})
         return
     }
@@ -25,6 +27,8 @@ getCurrentUser.get('/get-current-user', async (req, res) =>{
             return
         }
 
+        console.log('user is authorized');
+        
         res.status(200).json({success: true, message: 'user verified successfully', userData: verifyUser})
         return
     } catch (error) {

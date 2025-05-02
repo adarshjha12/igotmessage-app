@@ -23,9 +23,9 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/google', gAuthRouter)
-app.use('/email/auth', emailAuthRouter)
-app.use('/current-user', getCurrentUser)
+app.use('/api/google', gAuthRouter)
+app.use('/api/email/auth', emailAuthRouter)
+app.use('/api/current-user', getCurrentUser)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})
