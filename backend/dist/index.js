@@ -21,6 +21,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const passport_1 = __importDefault(require("passport"));
 const googleRoute_1 = __importDefault(require("./routers/googleRoute"));
 const emailAuth_1 = __importDefault(require("./routers/emailAuth"));
+const currentUser_1 = __importDefault(require("./routers/currentUser"));
 const client_1 = __importDefault(require("./prisma/client"));
 const PORT = process.env.PORT;
 const app = (0, express_1.default)();
@@ -32,15 +33,16 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.use('/google', googleRoute_1.default);
-app.use('/email', emailAuth_1.default);
+app.use('/api/google', googleRoute_1.default);
+app.use('/api/email/auth', emailAuth_1.default);
+app.use('/api/current-user', currentUser_1.default);
 app.get('/', (req, res) => {
     res.json({ mesage: 'welcome to igotmessage' });
 });
 app.get('/status', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dbTime = yield client_1.default.$queryRaw `SELECT NOW()`;
-        console.log('connected to postgres with neon');
+        console.log('connected to postgres', req);
         res.send({ success: true, dbTime });
     }
     catch (err) {

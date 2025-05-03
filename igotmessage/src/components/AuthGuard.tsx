@@ -25,7 +25,7 @@ function AuthGuard({children} : {children: React.ReactNode}) {
           } else{
             router.replace('/login')
           }
-  
+    
         } catch (error) {
           router.replace('/login?error=unauthorized')
           console.log(error);

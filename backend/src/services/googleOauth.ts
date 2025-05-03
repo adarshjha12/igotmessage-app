@@ -1,7 +1,6 @@
 import passport from "passport";
 import {Strategy as googleStrategy} from 'passport-google-oauth20'
 import prisma from "../prisma/client";
-import { User } from "@prisma/client";
 
 const clientID = process.env.CLIENT_ID!
 const clientSecret = process.env.CLIENT_SECRET!

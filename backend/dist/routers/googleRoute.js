@@ -19,6 +19,7 @@ const passport_1 = __importDefault(require("passport"));
 const client_1 = __importDefault(require("../prisma/client"));
 const gAuthRouter = express_1.default.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
+const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.PROD_FRONTEND_URL}/dash` : `${process.env.DEV_FRONTEND_URL}/dash`;
 gAuthRouter.get('/auth/google', passport_1.default.authenticate('google', {
     scope: ['profile', 'email'],
     accessType: 'offline',
@@ -31,18 +32,17 @@ gAuthRouter.get('/auth/callback/redirect', passport_1.default.authenticate('goog
             let userInDb = yield client_1.default.user.findFirst({ where: { googleId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.googleId } });
             const payload = {
                 id: userInDb === null || userInDb === void 0 ? void 0 : userInDb.id,
-                title: userInDb === null || userInDb === void 0 ? void 0 : userInDb.title,
                 email: userInDb === null || userInDb === void 0 ? void 0 : userInDb.email,
             };
             console.log(req.user);
             const token = jsonwebtoken_1.default.sign(payload, JWT_SECRET);
-            res.cookie('googleToken', token, {
+            res.cookie('authToken', token, {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
                 maxAge: 30 * 24 * 60 * 60 * 1000
             });
-            res.redirect('https://www.youtube.com');
+            res.redirect(redirectUrl);
         }
         catch (error) {
             console.log(error);
