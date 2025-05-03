@@ -7,6 +7,9 @@
     "build": "tsc",
     "start": "node dist/index.js"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "author": "adarsh jha",
   "license": "MIT",
   "dependencies": {
