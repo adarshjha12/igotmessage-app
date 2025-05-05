@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import 'swiper/css';
+@import 'swiper/css/effect-coverflow';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
 
 @theme {
   --font-sans: var(--font-geist-sans);
@@ -80,4 +85,9 @@ body {
 
 .popup-animation {
   animation: popup 5s linear;
+}
+
+.coverflow-swiper .swiper-slide {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 12px;
 }
