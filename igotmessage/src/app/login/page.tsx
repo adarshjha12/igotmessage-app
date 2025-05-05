@@ -2,7 +2,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
-import { sendOtp, verifyOtp } from '@/utils/api'
+import { sendOtp } from '@/utils/api'
 import Loader from '@/components/Loader'
 import { useSearchParams } from 'next/navigation'
 
@@ -15,6 +15,7 @@ function Page() {
   const [otpSent, setOtpSent] = useState(false)
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
   const [unauthorized, setUnauthorized] = useState(false)
+  const [emailFocus, setEmailFocus] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
   let [email, setEmail] = useState('')
@@ -133,8 +134,8 @@ function Page() {
           </button>
 
           <p className={`text-2xl ${emailButtonClick ? 'hidden' : ''}`}>or</p>
-          {emailButtonClick && <form action="" className='flex flex-col gap-1 items-center'>
-            <label htmlFor="email" className=' font-exo2 pb-2.5'>Please enter your email</label>
+          {emailButtonClick && <form action="" className='flex flex-col gap-1 items-start'>
+            <label htmlFor="email" className={`${emailFocus ? '-translate-y-8 scale-90' : ''} transform transition-all ease-in duration-150 relative top-10 left-4 font-exo2 pb-2.5 text-sm cursor-text `}>Please enter your email</label>
             <div className='flex flex-wrap gap-4 justify-center items-center'>
               <div className='border-1 w-fit flex justify-center items-center border-white py-1 rounded-md'>
                 
@@ -146,12 +147,11 @@ function Page() {
                  }
                 } 
                 id='email'
-                placeholder='abc@gmail.com'
+                onFocus={() => setEmailFocus(true)}
                 inputMode='email'
-                autoFocus={true} 
                 className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='button' onClick={handleSendOtp} className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-800 border-1 rounded-md px-2 py-1'>Get otp</button>
+              <button type='button' onClick={handleSendOtp} className=' text-black font-exo2 border-black font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-white to-white hover:bg-gradient-to-r hover:from-red-500 hover:to-black border-1 rounded-full px-2 py-1'>Get otp</button>
               
             </div>
           </form>
