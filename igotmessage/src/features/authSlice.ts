@@ -1,23 +1,29 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 interface UserAuthInterface {
-    id : number,
-    googleId? : string,
-    email? : string,
-    phoneNo? : number,
-    title? : string,
-    avatar? : string,
-    createdAt : string,
+    authenticated: boolean,
+    user: {
+        id : number,
+        googleId? : string,
+        email? : string,
+        phoneNo? : number,
+        title? : string,
+        avatar? : string,
+        createdAt : string,
+    }
 }
 
 const initialState : UserAuthInterface = {
-    id : 1,
-    googleId : '',
-    email : '',
-    phoneNo : 1234235659,
-    title : '',
-    avatar : '',
-    createdAt : '',
+    authenticated: false,
+    user: {
+        id : 1,
+        googleId : '',
+        email : '',
+        phoneNo : 1234235659,
+        title : '',
+        avatar : '',
+        createdAt : '',
+    }
 }
 
 const authSlice = createSlice({
@@ -25,11 +31,14 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         addCurrentUserToStore: function (state, action) {
-            state = action.payload
-            state = action.payload
+            state.user = action.payload
+        },
+
+        setAuthStatus: function (state, action) {
+            state.authenticated = action.payload
         }
     }
 })
 
-export const {addCurrentUserToStore} = authSlice.actions
+export const {addCurrentUserToStore, setAuthStatus} = authSlice.actions
 export default authSlice.reducer

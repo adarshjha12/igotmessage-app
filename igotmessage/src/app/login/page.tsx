@@ -2,12 +2,20 @@
 import React, {useState, useRef, useEffect} from 'react'
 import OtpInput from '../../components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
-import { sendOtp, verifyOtp } from '@/utils/api'
+import { sendOtp } from '@/utils/api'
 import Loader from '@/components/Loader'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { RootState } from "@/store/store";
+import { useSelector, useDispatch } from "react-redux";
+import { setAuthStatus } from '@/features/authSlice';
+import { checkAuth } from '@/utils/api'
 
 function Page() {
   
+  const authStatus = useSelector( (state: RootState) => state.auth.authenticated)
+  const dispatch = useDispatch()
+
+  const router = useRouter()
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [googleButtonClick, setGoogleButtonClick] = useState(false)
@@ -15,6 +23,8 @@ function Page() {
   const [otpSent, setOtpSent] = useState(false)
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false)
   const [unauthorized, setUnauthorized] = useState(false)
+  const [inputFocus, setInputFocus] = useState(false)
+  const [checkingAuthStatus, setCheckingAuthStatus] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
   let [email, setEmail] = useState('')
@@ -24,6 +34,32 @@ function Page() {
   let [resendTimer, setResendTimer] = useState(59)
   const [canResend, setCanResend] = useState(false)
   const [resendOtp, setResendOtp] = useState(false)
+
+  useEffect(() => {
+    const check = async () => {
+      setCheckingAuthStatus(true)
+      try {
+        const res = await checkAuth();
+
+        if (res.data.success === true) {
+          dispatch(setAuthStatus(true));
+          setCheckingAuthStatus(false)
+          router.push('/dash');
+        } 
+
+      } catch (error) {
+        setCheckingAuthStatus(false)
+        dispatch(setAuthStatus(false));
+      } finally{
+        setCheckingAuthStatus(false)
+      }
+    };
+
+    check();
+
+    return (() => setCheckingAuthStatus(false))
+
+  }, []);
 
   const timer = function () {
     const interval = setInterval(() => {
@@ -111,6 +147,10 @@ function Page() {
       }, 5000);
   }, [searchParams]);
 
+  if (checkingAuthStatus) {
+    return <Loader/>
+  }
+
   return (
     <div key={`${emailButtonClick} ${otpSent} `} className='w-screen text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
         <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} m-3 w-fit border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
@@ -134,25 +174,29 @@ function Page() {
 
           <p className={`text-2xl ${emailButtonClick ? 'hidden' : ''}`}>or</p>
           {emailButtonClick && <form action="" className='flex flex-col gap-1 items-center'>
-            <label htmlFor="email" className=' font-exo2 pb-2.5'>Please enter your email</label>
-            <div className='flex flex-wrap gap-4 justify-center items-center'>
-              <div className='border-1 w-fit flex justify-center items-center border-white py-1 rounded-md'>
+            <div className=''>
+             
+              <div className='flex flex-wrap gap-4 justify-center items-center'>
+                <div className='border-1 relative w-fit flex justify-center items-center border-white py-1 rounded-md'>
+                  <label htmlFor="email" className={` ${inputFocus ? '-translate-y-8  -translate-x-7 scale-90' : 'text-red-400 animate-pulse font-semibold'}  text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-5 font-exo2 pb-2.5 text-sm`} >*Please enter your email</label>
+                  <input type="email" 
+                  ref={inputRef}
+                  value={email} 
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                  }
+                  } 
+                  id='email'
+                  name='email'
+                  autoComplete='email'
+                  onFocus={() => setInputFocus(true)}
+                  placeholder={inputFocus ? 'eg- abc@gmail.com' : ''}
+                  inputMode='email'
+                  className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest placeholder:text-xs placeholder:pl-2.5'/>
+                </div>
+                <button type='button' onClick={handleSendOtp} className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-black border-1 rounded-full px-2 py-1'>Get otp</button>
                 
-                <input type="email" 
-                ref={inputRef}
-                value={email} 
-                onChange={(e) => {
-                  setEmail(e.target.value)
-                 }
-                } 
-                id='email'
-                placeholder='abc@gmail.com'
-                inputMode='email'
-                autoFocus={true} 
-                className=' text-white w-full pl-2 rounded-sm outline-none font-semibold tracking-widest'/>
               </div>
-              <button type='button' onClick={handleSendOtp} className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-800 border-1 rounded-md px-2 py-1'>Get otp</button>
-              
             </div>
           </form>
           }

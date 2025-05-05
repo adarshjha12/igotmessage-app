@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addCurrentUserToStore } from "@/features/authSlice";
+import { addCurrentUserToStore, setAuthStatus } from "@/features/authSlice";
 import { checkAuth } from "@/utils/api";
 import Loader from "./Loader";
 
@@ -20,8 +20,10 @@ function AuthGuard({children} : {children: React.ReactNode}) {
           const response = await checkAuth()
           if (response.data?.success === true) {
             dispatch(addCurrentUserToStore(response.data.userData))
+            dispatch(setAuthStatus(true))
             console.log('user verified successfully');
             setVerified(true)
+            
           } else{
             router.replace('/login')
           }

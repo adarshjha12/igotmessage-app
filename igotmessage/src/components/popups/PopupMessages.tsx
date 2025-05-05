@@ -9,7 +9,7 @@ type OtpProps = {
 
 function PopupMessages({ showPopup, message, firstClass, secondClass}: OtpProps) {
   return (
-    <div className={`${showPopup ? 'flex down-slide' : 'hidden'} absolute top-0 left-[40%] border-3 ${firstClass ? 'border-red-700' : 'border-green-700' } rounded-md `}>
+    <div className={`${showPopup ? 'flex down-slide' : 'hidden'} absolute top-0 border-3 ${firstClass ? 'border-red-700' : 'border-green-700' } rounded-md `}>
       <div className={`${showPopup ? 'flex down-slide' : 'hidden'}  py-1 flex-col   gap-2.5 rounded-md ${firstClass ? firstClass : 'bg-green-700'}  text-white font-semibold m-0.5`}> 
         <div className=''>
             <p className='px-3'>{message}</p>
