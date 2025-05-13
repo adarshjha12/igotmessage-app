@@ -15,13 +15,17 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --borderColor: #000000;
+  --textColor: #000000;
 }
 
 .dark {
   --background: #000000;
   --foreground: #ffffff;
-  --red: #fff000;
+  --borderColor: #ffffff;
+  --textColor: #ffffff;
+
 }
 
 
@@ -33,6 +37,14 @@ body {
   color: var(--foreground);
   background: var(--background);
 }
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
 
 @keyframes slideIn {
   0% {

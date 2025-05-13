@@ -27,24 +27,24 @@ function Page() {
   
 
   return (
-    <div className="w-full min-h-screen flex items-start bg-[var(--background)] text-[var(--foreground)] transition-colors duration-200 relative">
+    <div className="w-full min-h-screen flex items-start bg-[var(--background)] text-[var(--textColor)] p-2 transition-colors duration-200 relative">
       <div className="">
           <div className=" grid grid-cols-[1fr_3fr_2fr] items-start [@media(max-width:600px)]:grid-cols-1">
-            <nav className="hidden [@media(max-width:600px)]:inline-block w-full bg-[var(--background)] text-[var(--foreground)]">
+            <nav className="hidden py-1 px-3 [@media(max-width:600px)]:flex items-center gap-2 w-full bg-[var(--background)] text-[var(--textColor)]">
               <button type="button" onClick={enableDarkMode} className={`text-black`}>
                 <Toggle dark={isDark}/>
-              </button>
-              <p className="font-montez text-3xl font-bold [@media(max-width:600px)]:inline">Igotmessage</p>
-              <input type="search" name="" id="" />
+              </button> 
+           
+              <p className="font-montez hidden font-bold [@media(max-width:600px)]:inline [@media(max-width:600px)]:text-[28px] ">Igotmessage</p>
+              <input type="search" placeholder="search" className="outline-none rounded-2xl w-full text-xs placeholder:text-xs placeholder:pl-2 border-1 px-2 py-1 border-[var(--borderColor)]" name="" id="" />
             </nav>
             <div className=" flex flex-col justify-center items-start [@media(max-width:600px)]:flex-row ">
               <div className=" flex justify-center items-center">
-                  <p className="font-montez text-3xl font-bold [@media(max-width:600px)]:hidden">Igotmessage</p>
-                  <div><Brand color=""/></div>
+                  <p className="font-montez text-3xl font-bold [@media(max-width:600px)]:hidden ">Igotmessage</p>
               </div>
               <div className={`[@media(max-width:600px)]:w-full [@media(max-width:600px)]:fixed [@media(max-width:600px)]:bottom-0 flex justify-start border-1 ${isDark ? 'border-white' : 'border-black'}`}>
                 <ul className="flex flex-col items-start  [@media(max-width:600px)]:items-center [@media(max-width:600px)]:pl-0
-                [@media(max-width:600px)]:flex-row [@media(max-width:600px)]:justify-evenly [@media(max-width:600px)]:w-full [@media(max-width:600px)]:bg-[var(--background)] text-[var(--foreground)] ">
+                [@media(max-width:600px)]:flex-row [@media(max-width:600px)]:justify-evenly [@media(max-width:600px)]:w-full [@media(max-width:600px)]:bg-[var(--background)] text-[var(--textColor)] ">
 
                   <li className="flex items-center gap-2">
                     <Home className="[@media(max-width:600px)]:w-3"/> 
@@ -71,7 +71,7 @@ function Page() {
               </p>
               <Button text="Send"/>
             </div>
-            <div className="bg-[var(--background)] text-[var(--foreground)] flex justify-center ">
+            <div className="bg-[var(--background)] text-[var(--textColor)] flex justify-center ">
               
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni facere consectetur eum explicabo minus natus quisquam tempore delectus dolorem iste sed voluptatibus, sit fugit, cumque nobis! Consequuntur vel nemo commodi.
             </div>
@@ -83,3 +83,4 @@ function Page() {
 }
 
 export default Page
+
