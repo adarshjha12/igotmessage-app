@@ -5,6 +5,7 @@ import PopupMessage from '@/components/popups/PopupMessages'
 import { sendOtp } from '@/utils/api'
 import Loader from '@/components/Loader'
 import { useSearchParams } from 'next/navigation'
+import Brand from './Brand'
 
 
 function Login() {
@@ -23,7 +24,7 @@ function Login() {
     const [errorSendingEmail, setErrorSendingEmail] = useState(false)  
 
     const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false)
-    let [resendTimer, setResendTimer] = useState(59)
+    let [resendTimer, setResendTimer] = useState(30)
     const [canResend, setCanResend] = useState(false)
     const [resendOtp, setResendOtp] = useState(false)
 
@@ -96,7 +97,7 @@ function Login() {
       useEffect(() => {
         if (canResend && resendOtp) {
           handleSendOtp()
-          setResendTimer(59)
+          setResendTimer(30)
           setResendOtp(false)
         }
         
@@ -118,7 +119,8 @@ function Login() {
     <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} m-3 w-fit border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
 
     <div className='flex flex-col items-center'>
-      <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" />
+      {/* <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" /> */}
+      <Brand color='white'/>
       <p className={` text-5xl font-montez h-fit hover:scale-125 transition-all hover:ease-in mb-2`}>Igotmessage</p>
       <p className='capitalize font-montez text-yellow-400'>the social app</p>
     </div>
@@ -140,7 +142,7 @@ function Login() {
          
           <div className='flex flex-wrap gap-4 justify-center items-center'>
             <div className='border-1 relative w-fit flex justify-center items-center border-white py-1 rounded-md'>
-              <label htmlFor="email" className={` ${inputFocus ? '-translate-y-8  -translate-x-7 scale-90' : 'text-red-400 animate-pulse font-semibold'}  text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-5 font-exo2 pb-2.5 text-sm`} >*Please enter your email</label>
+              <label htmlFor="email" className={` ${inputFocus ? '-translate-y-8  -translate-x-7 scale-90' : ' text-transparent bg-clip-text bg-gradient-to-r from-white via-red-500 to-red-600 animate-pulse font-semibold'}  text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-5 font-exo2 pb-2.5 text-sm`} >*Please enter your email</label>
               <input type="email" 
               ref={inputRef}
               value={email} 
@@ -172,13 +174,13 @@ function Login() {
     </div>
     <OtpInput showOtpField={otpSent} email={email} resendCounter={resendTimer} setResendOtp={setResendOtp} canResend={canResend} />
   </div>
-  <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${email}`}/>
+  <PopupMessage showPopup={showOtpSentSuccessPopup} message={`Otp sent successfully to ${email}`} success={true} />
 
-  <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' firstClass='bg-red-700' secondClass='bg-red-400'/>
+  <PopupMessage showPopup={showPopupForEmptyInput} message='Please enter email address' success={false} />
 
-  <PopupMessage showPopup={errorSendingEmail} message={`${email} is invalid`} firstClass='bg-red-700' secondClass='bg-red-400'/>
+  <PopupMessage showPopup={errorSendingEmail} message={`${email} is invalid`} success={false} />
 
-  <PopupMessage showPopup={unauthorized} message={`you are unauthorized. please select option below to continue`} firstClass='bg-red-700' secondClass='bg-red-400'/>
+  <PopupMessage showPopup={unauthorized} message={`you are unauthorized. please select option below to continue`} success={false} />
   
   <div id="recaptcha-container"></div>
   {loading && <Loader/>}

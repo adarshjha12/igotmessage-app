@@ -1,3 +1,4 @@
+import Brand from '@/components/Brand';
 import CoverflowSwiper from '@/components/CustomSwiper';
 
 export default function HomePage() {
@@ -15,6 +16,7 @@ export default function HomePage() {
       <h1 className="text-2xl font-bold mb-4">Coverflow Carousel</h1>
         <div className='flex flex-wrap'>
           <CoverflowSwiper slides={slides} />
+          <Brand />
         </div>
     </main>
   );

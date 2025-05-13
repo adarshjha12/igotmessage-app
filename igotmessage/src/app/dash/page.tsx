@@ -7,16 +7,20 @@ import Skeleton from "react-loading-skeleton";
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Toggle from "@/components/Toggle";
+import Brand from "@/components/Brand";
 
 function Page() {
   const [isDark, setIsDark] = useState(false)
+  const theme = localStorage.getItem('theme')
 
   const enableDarkMode = function () {
     if (isDark) {
       document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
       setIsDark(prev => !prev)
     } else {
       document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
       setIsDark(prev => !prev)
     }
   }
@@ -30,11 +34,13 @@ function Page() {
               <button type="button" onClick={enableDarkMode} className={`text-black`}>
                 <Toggle dark={isDark}/>
               </button>
+              <p className="font-montez text-3xl font-bold [@media(max-width:600px)]:inline">Igotmessage</p>
+              <input type="search" name="" id="" />
             </nav>
             <div className=" flex flex-col justify-center items-start [@media(max-width:600px)]:flex-row ">
               <div className=" flex justify-center items-center">
                   <p className="font-montez text-3xl font-bold [@media(max-width:600px)]:hidden">Igotmessage</p>
-                  <img src="/images/logo.png" className="hidden [@media(max-width:600px)]:inline-block rounded-md w-8 h-auto border-2 border-black" alt="" />
+                  <div><Brand color=""/></div>
               </div>
               <div className={`[@media(max-width:600px)]:w-full [@media(max-width:600px)]:fixed [@media(max-width:600px)]:bottom-0 flex justify-start border-1 ${isDark ? 'border-white' : 'border-black'}`}>
                 <ul className="flex flex-col items-start  [@media(max-width:600px)]:items-center [@media(max-width:600px)]:pl-0

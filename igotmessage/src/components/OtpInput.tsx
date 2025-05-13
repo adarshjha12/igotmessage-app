@@ -25,6 +25,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
   const [showErrorPopup, setShowErrorPopup] = useState(false)
   const [loading, setLoading] = useState(false)
   const [otpExpired, setOtpExpired] = useState(false)
+  const [canSignIn, setCanSignIn] = useState(false)
   
   let finalInputOtp = inputValues.join('')  ;
 
@@ -60,8 +61,13 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
       inputRefs.current[0]?.focus()
     }
 
-
   }, [showOtpField])
+
+  useEffect(() => {
+    const allField = inputValues.every(val => val.trim() !== '')
+    setCanSignIn(allField)
+
+  }, [inputValues])
 
   const handleSignin = async function () {
     setLoading(true);
@@ -73,23 +79,27 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
         dispatch(addCurrentUserToStore(response.data.user))
         dispatch(setAuthStatus(true))
         router.push('/dash?verification=success');
-        
+        setLoading(false);
       } else if (response.data.expired === true) {
           setShowErrorPopup(true)
           setOtpExpired(true)
+          setLoading(false);
+
       } else {
         window.location.reload()
         router.push('/login');
         setShowErrorPopup(true)
+        setLoading(false);
+
       }
     } catch (error) {
       console.log(error);
       window.location.reload()
       router.push('/login'); 
       setShowErrorPopup(true)
+      setLoading(false);
 
     } finally {
-      setLoading(false);
       setTimeout(() => {
         setShowSuccessPopup(false);
         setShowErrorPopup(false)
@@ -138,20 +148,24 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
           })}
         </div>
       <div className='flex gap-5'>
-       <button onClick={handleSignin} type='button' className='h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-800 border-1 rounded-md px-2'> Sign in</button>
+       <button onClick={handleSignin} disabled={canSignIn ? false : true} type='button' className={`h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r ${canSignIn ? 'hover:from-green-600 hover:to-green-900' : 'hover:from-red-500 hover:to-red-900'} border-1 rounded-md px-2`}> Sign in</button>
 
         <div className='flex flex-col  justify-center items-center'>
-          <button onClick={() => {setResendOtp(true), console.log('button clicked');
-          }} disabled={canResend ? false : true} className={`px-2 text-xs font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 ${canResend ? 'bg-gradient-to-r from-green-600 to-green-900' : 'border-red-500'} rounded-sm`}>Resend</button>
+          <button 
+          onClick={() => {setResendOtp(true)
+            inputRefs.current.forEach((input) => {
+            if (input) input.value = '';
+          });
+          }} disabled={canResend ? false : true} type='button' className={`px-2 text-xs font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 ${canResend ? 'bg-gradient-to-r from-green-600 to-green-900' : 'border-red-500'} rounded-sm`}>Resend</button>
 
           <span className='text-xs'>00 : {resendCounter}</span>
         </div>
       </div>
      </form>
-     {showSuccessPopup && <PopupMessages showPopup={true} message='congrats! verification successfull'/>}
+     {showSuccessPopup && <PopupMessages showPopup={true} success={true} message='congrats! verification successfull'/>}
      {loading && <Loader/>}
-     {showErrorPopup && <PopupMessages showPopup={true}  message='invalid credentials. please login again' firstClass='bg-red-700' secondClass='bg-red-400'/> }
-     {otpExpired && <PopupMessages showPopup={true}  message='otp expired. click on resend' firstClass='bg-red-700' secondClass='bg-red-400'/>}
+     {showErrorPopup && <PopupMessages showPopup={true}  message='invalid credentials. please login again' success={false} /> }
+     {otpExpired && <PopupMessages showPopup={true}  message='otp expired. click on resend' success={false} />}
     </div>
   )
 }
