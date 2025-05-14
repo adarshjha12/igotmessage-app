@@ -13,7 +13,7 @@ import prisma from './prisma/client'
 const PORT = process.env.PORT
 const app = express()
 
-const allowedOrigins = ['http://localhost:3000', 'https://igotmessage-app-frontend.vercel.app/']
+const allowedOrigins = ['http://localhost:3000', 'https://igotmessage-app-frontend.vercel.app']
 
 app.use(passport.initialize())
 app.use(cors({
