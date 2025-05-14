@@ -27,10 +27,10 @@ function Page() {
   
 
   return (
-    <div className="w-full bg-blue-600 sm:bg-amber-500 min-h-screen flex items-start p-2 transition-colors duration-200 relative">
+    <div className="w-full min-h-screen flex items-start p-2 transition-colors duration-200 relative">
       <div className="">
-          <div className=" grid grid-cols-[1fr_3fr_2fr] sm:grid-cols-1 items-start ">
-            <nav className=" py-1 px-3 items-center gap-2 w-full bg-[var(--background)] text-[var(--textColor)]">
+          <div className=" grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start ">
+            <nav className=" w-full flex py-1 px-3 items-center gap-2 bg-[var(--background)] text-[var(--textColor)]">
               <button type="button" onClick={enableDarkMode} className={`text-black`}>
                 <Toggle dark={isDark}/>
               </button> 
@@ -38,28 +38,28 @@ function Page() {
               <p className="font-montez  font-bold ">Igotmessage</p>
               <input type="search" placeholder="search" className="outline-none rounded-2xl w-full text-xs placeholder:text-xs placeholder:pl-2 border-1 px-2 py-1 border-[var(--borderColor)]" name="" id="" />
             </nav>
-            <div className=" flex flex-col justify-center items-start ">
+            <div className="w-full flex flex-col justify-center items-start ">
               <div className=" flex justify-center items-center">
-                  <p className="font-montez font-bold ">Igotmessage</p>
+                  <p className="font-montez font-bold hidden ">Igotmessage</p>
               </div>
-              <div className={` flex justify-start border-1 ${isDark ? 'border-white' : 'border-black'}`}>
-                <ul className="flex flex-col items-start text-[var(--textColor)] ">
+              <div className={`w-full flex justify-center border-[var(--borderColor)] `}>
+                <ul className="flex bg-[var(--background)] w-full px-5 justify-between fixed bottom-0 flex-row text-[var(--textColor)] ">
 
                   <li className="flex items-center gap-2">
-                    <Home className=""/> 
-                    <span className="font-semibold">Home</span>
+                    <Home className="" /> 
+                    <span className="font-semibold hidden">Home</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <MessageCircleIcon className=""/> 
-                    <span className="font-semibold">Messages</span>
+                    <span className="font-semibold hidden">Messages</span>
                   </li>
                   <li className="flex items-center gap-2"> 
                     <VideoIcon className=""/> 
-                    <span className="font-semibold">Calls</span>
+                    <span className="font-semibold hidden">Calls</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Settings className="[@media(max-width:600px)]:w-3"/> 
-                    <span className="font-semibold [@media(max-width:600px)]:hidden">Settings</span>
+                    <Settings className=""/> 
+                    <span className="font-semibold hidden ">Settings</span>
                   </li>
                 </ul>
               </div>
