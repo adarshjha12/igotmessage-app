@@ -10,11 +10,13 @@ const compat: any = new FlatCompat({
 });
 
 export default [
-  ...compat.extend([
-    "next/core-web-vitals",       
-    "next",                     
-    "plugin:@typescript-eslint/recommended", 
-  ]),
+  ...compat.config({
+    extends: [
+      "next/core-web-vitals",       
+      "next",
+      "plugin:@typescript-eslint/recommended",
+    ],
+  }),
 
   {
     rules: {
