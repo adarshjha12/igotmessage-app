@@ -31,6 +31,10 @@ app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})
 })
 
+app.get('/healthCheck', (req, res) =>{
+    res.status(200).json({message: 'health is good'})
+})
+
 app.get('/status', async (req, res) => {
     try {
       const dbTime = await prisma.$queryRaw`SELECT NOW()`;

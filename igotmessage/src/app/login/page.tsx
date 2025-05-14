@@ -43,7 +43,7 @@ function Page() {
   }, []);
 
   if (loading) {
-    return <Loader color='black' scaleMd={true} />
+    return <Loader color='black' scaleMd={true} animate={true} />
   } 
 
   if (authStatusChecked && !authenticated) {
