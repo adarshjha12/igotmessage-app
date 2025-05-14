@@ -5,28 +5,25 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Set up compat for legacy configs
+// This creates a compat instance for using old-style config in new flat config
 const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-// Export a flat config array
+// Export config — must be an array
 export default [
-  // Legacy config support (e.g. extends)
-  ...compat.extend([
-    "next/core-web-vitals",
-    "next",
-    "plugin:@typescript-eslint/recommended"
-  ]),
+  // Spread the result of compat.config() or compat.extends()
+  ...compat.config({
+    extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  }),
 
-  // Custom flat config block
   {
     rules: {
       "no-unused-vars": "warn",
       "no-console": "off",
       "react/prop-types": "off",
       "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/no-explicit-any": "warn"
-    }
-  }
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
 ];
