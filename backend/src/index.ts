@@ -32,7 +32,7 @@ app.get('/', (req, res) =>{
 })
 
 app.get('/healthCheck', (req, res) =>{
-    res.status(200).json({message: 'health is good'})
+    res.status(200);
 })
 
 app.get('/status', async (req, res) => {
