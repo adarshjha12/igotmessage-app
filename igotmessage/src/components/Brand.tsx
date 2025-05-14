@@ -5,7 +5,7 @@ interface BrandProps {
   scaleSm?: boolean,
   scaleMd?: boolean,
   scaleLg?: boolean,
-  color: string
+  color?: string
 }
 
 function Brand({animate, scaleSm, scaleMd, scaleLg, color} : BrandProps) {
