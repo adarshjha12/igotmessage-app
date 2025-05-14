@@ -45,10 +45,15 @@ function Login() {
       const handleGoogleButtonClick = function () {
         setGoogleButtonClick(true)
     
+        console.log('Prod URL:', process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL);
+        console.log('Local URL:', process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL);
+
        const googleAuthUrl = process.env.NODE_ENV === 'production' 
-       ? `${process.env.PRODUCTION_BACKEND_URL}/api/google/auth/google`
+       ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/google/auth/google`
        : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/google/auth/google`
     
+       console.log('Full Google Auth URL:', googleAuthUrl);
+
        window.location.href = googleAuthUrl
       }
 
