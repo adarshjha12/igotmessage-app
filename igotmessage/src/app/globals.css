@@ -20,7 +20,7 @@
   --textColor: #000000;
 }
 
-.dark :root {
+.dark {
   --background: #000000;
   --foreground: #ffffff;
   --borderColor: #ffffff;
@@ -28,6 +28,9 @@
 
 }
 
+html {
+  color-scheme: light;
+}
 
 body {
   width: 100%;

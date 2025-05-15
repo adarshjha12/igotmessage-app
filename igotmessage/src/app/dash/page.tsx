@@ -26,7 +26,7 @@ function Page() {
   }
   
   return (
-    <div className="w-full min-h-screen bg-amber-50  flex items-start p-2 transition-colors duration-200 relative">
+    <div className="w-full min-h-screen bg-[var(--background)] text-[var(--textColor)]  flex items-start p-2 transition-colors duration-200 relative">
       <div className="">
           <div className=" grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start ">
             <nav className=" w-full flex py-1 px-3 items-center gap-2 bg-[var(--background)] text-[var(--textColor)]">
