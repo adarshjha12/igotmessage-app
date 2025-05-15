@@ -3,6 +3,7 @@ import SibApiV3Sdk from 'sib-api-v3-sdk'
 import Redis from 'ioredis'
 import jwt from 'jsonwebtoken'
 import prisma from '../prisma/client'
+import { getOtpEmailHtml } from '../utils/loadTemplate'
 
 const client = new Redis(process.env.REDIS_URL!)
 
@@ -32,13 +33,14 @@ emailAuthRouter.post('/send-otp', async (req, res) => {
 
   await client.set(`otp:${email}`, otp, 'EX', 300)
   
+  const htmlContent = getOtpEmailHtml({otp});
   const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi()
 
   const sendSmtpEmail = {
     to: [{ email }],
     sender: { email: process.env.EMAIL_FROM!, name: 'igotmessage' },
     subject: 'Your verification Code',
-    htmlContent: `<h3>Your OTP is: ${otp}</h3><p>Expires in 5 minutes.</p>`,
+    htmlContent: htmlContent,
   };
 
   try {
