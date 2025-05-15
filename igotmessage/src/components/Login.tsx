@@ -147,7 +147,7 @@ function Login() {
          
           <div className='flex flex-wrap gap-4 justify-center items-center'>
             <div className='border-1 relative w-fit flex justify-center items-center border-white py-1 rounded-md'>
-              <label htmlFor="email" className={` ${inputFocus ? '-translate-y-8  -translate-x-7 scale-90' : ' text-transparent bg-clip-text bg-gradient-to-r from-white via-red-500 to-red-600 animate-pulse font-semibold'}  text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-5 font-exo2 pb-2.5 text-sm`} >*Please enter your email</label>
+              <label htmlFor="email" className={` ${inputFocus ? '-translate-y-8  -translate-x-7 scale-90' : ' animate-pulse font-semibold'}  text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-5 font-exo2 text-white pb-2.5 text-sm`} >*Please enter your email</label>
               <input type="email" 
               ref={inputRef}
               value={email} 
@@ -188,7 +188,7 @@ function Login() {
   <PopupMessage showPopup={unauthorized} message={`you are unauthorized. please select option below to continue`} success={false} />
   
   <div id="recaptcha-container"></div>
-  {loading && <Loader/>}
+  {loading && <Loader animate={true} color='white' scaleMd={true} />}
   
 </div>
   )
