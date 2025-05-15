@@ -26,7 +26,7 @@ function Page() {
   }
   
   return (
-    <div className={`w-full min-h-screen flex items-start p-2 transition-colors duration-200 relative `}>
+    <div className={`w-full bg-[var(--bgColor)] text-[var(--textColor)] min-h-screen flex items-start p-2 transition-colors duration-200 relative `}>
       <div className="">
           <div className=" grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start ">
             <nav className=" w-full flex py-1 px-3 items-center gap-2 ">
@@ -35,13 +35,13 @@ function Page() {
               </button> 
            
               <p className="font-montez bg-red-500 font-bold ">Igotmessage</p>
-              <input type="search" placeholder="search" className="outline-none rounded-2xl w-full text-xs placeholder:text-xs placeholder:pl-2 border-1 px-2 py-1 border-[var(--borderColor)]" name="" id="" />
+              <input type="search" placeholder="search" className="outline-none rounded-2xl w-full text-xs placeholder:text-xs placeholder:pl-2 border-1 px-2 py-1" name="" id="" />
             </nav>
             <div className="w-full flex flex-col justify-center items-start ">
               <div className=" flex justify-center items-center">
                   <p className="font-montez font-bold hidden ">Igotmessage</p>
               </div>
-              <div className={`w-full flex justify-center border-[var(--borderColor)] `}>
+              <div className={`w-full flex justify-center `}>
                 <ul className="flex w-full px-5 justify-between fixed bottom-0 flex-row  ">
 
                   <li className="flex items-center gap-2">
