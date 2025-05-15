@@ -120,14 +120,14 @@ function Login() {
     
       
   return (
-  <div key={`${emailButtonClick} ${otpSent} `} className='w-screen text-white down-slide min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
-    <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} m-1 w-fit min-h-full border-1 p-6 border-white rounded-xl flex flex-col items-center gap-10`}>
+  <div key={`${emailButtonClick} ${otpSent} `} className='w-screen text-white down-slide flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
+    <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} m-3 w-[90%] min-h-[90%] sm:h-full sm:min-w-[70%] border-1 py-12 px-2 border-white rounded-xl flex flex-col justify-center items-center gap-10`}>
 
     <div className='flex flex-col items-center'>
       {/* <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" /> */}
       <Brand color='white'/>
-      <p className={` text-5xl font-montez h-fit hover:scale-125 transition-all hover:ease-in my-2`}>IGotMessage</p>
-      <p className='capitalize text-xl font-montez text-yellow-400'>the social app</p>
+      <p className={` text-5xl font-medium font-montez h-fit hover:scale-125 transition-all hover:ease-in my-2`}>IGotMessage</p>
+      <p className='capitalize text-xl font-medium font-montez text-yellow-400'>the social app</p>
     </div>
     <hr className='w-[100px] text-white'/>
     { emailButtonClick ? '' : <p className={`${otpSent ? 'hidden' : ''} text-center mb-2`}> Choose one of the options below to experience something very cool</p>
@@ -163,7 +163,7 @@ function Login() {
               inputMode='email'
               className=' text-white pl-2 w-fit rounded-sm outline-none font-semibold tracking-widest placeholder:text-xs'/>
             </div>
-            <button type='button' onClick={handleSendOtp} className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-green-900 hover:bg-gradient-to-r hover:from-red-500 hover:to-black border-1 rounded-full px-2 py-1'>Get otp</button>
+            <button type='button' onClick={handleSendOtp} className=' text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-black hover:bg-gradient-to-r hover:from-red-500 hover:to-black border-1 rounded-full px-2 py-1'>Get otp</button>
             
           </div>
         </div>

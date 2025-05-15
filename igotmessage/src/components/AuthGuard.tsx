@@ -48,7 +48,7 @@ function AuthGuard({children} : {children: React.ReactNode}) {
     }
 
     if (loading) {
-      return <Loader/>
+      return <Loader animate={true} scaleMd={true} color="white" />
     }
 
   return (
