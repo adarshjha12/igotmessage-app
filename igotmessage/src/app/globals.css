@@ -20,7 +20,7 @@
   --textColor: #000000;
 }
 
-.dark {
+.dark :root {
   --background: #000000;
   --foreground: #ffffff;
   --borderColor: #ffffff;
