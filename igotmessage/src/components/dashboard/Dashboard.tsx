@@ -1,5 +1,5 @@
 'use client'
-import { Home, Search, LucideDelete, MessageCircleIcon, Settings, VideoIcon, Heart, User2 } from "lucide-react";
+import { Home, Search, PlusSquare, PhoneCall, VideoOff, LucideDelete, MessageCircleIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon } from "lucide-react";
 import { coconut, batBall } from '@lucide/lab';
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
@@ -8,11 +8,22 @@ import { ReactNode, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Toggle from "@/components/Toggle";
 import Brand from "@/components/Brand";
+import { useRouter, usePathname } from "next/navigation";
 
 function Dashboard({children} : {children: ReactNode}) {
   const [isDark, setIsDark] = useState(false)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const navItems = [
+    {name: 'Home', path: '/home', icon: <HomeIcon/>},
+    {name: 'Create', path: '/create', icon: <PlusSquare/>},
+    {name: 'Messages', path: '/message', icon: <MessageCircleIcon/>},
+    {name: 'Calls', path: '/calls', icon: <VideoIcon/>},
+    {name: 'Profile', path: '/profile', icon: <User2/>},
+  ]
 
   useEffect(() => {
     const theme = localStorage.getItem('theme')
@@ -60,36 +71,18 @@ function Dashboard({children} : {children: ReactNode}) {
                 </div>
               </button>
             </div>
-            <div className="w-full flex flex-col justify-center items-start ">
-              <div className=" flex justify-center items-center">
-                  <p className="font-montez font-bold hidden ">Igotmessage</p>
-              </div>
-              <div className={`w-full flex justify-center `}>
-
-                {/* <ul className="flex w-full px-5 justify-between fixed bottom-0 flex-row  ">
-
-                  <li className="flex items-center gap-2">
-                    <Home className="" /> 
-                    <span className="font-semibold hidden">Home</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <MessageCircleIcon className=""/> 
-                    <span className="font-semibold hidden">Messages</span>
-                  </li>
-                  <li className="flex items-center gap-2"> 
-                    <VideoIcon className=""/> 
-                    <span className="font-semibold hidden">Calls</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <User2 className=""/> 
-                    <span className="font-semibold hidden ">Settings</span>
-                  </li>
-                </ul> */}
-                
-              </div>
+            <div className="w-screen flex justify-center ">
+                <div className=" flex ">
+                    {navItems.map((item) => (
+                    <button key={item.path} className="" onClick={() => router.push(item.path)}>
+                        {item.icon}
+                        {item.name}
+                    </button>
+                    ))}
+                </div>
             </div>
             <div className="">
-              
+              {children}
             </div>
             <div className="flex justify-center ">
               
