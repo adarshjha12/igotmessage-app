@@ -117,7 +117,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
             return (
               <div key={i}>
                 <input 
-                  type="text"
+                  type="number"
                   maxLength={1}
                   required={true}
                   key={i} 
