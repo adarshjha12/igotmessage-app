@@ -9,7 +9,9 @@ function layout({children} : {children: React.ReactNode}) {
       <Suspense fallback={<Loader animate={true} scaleMd={true} />} >
       <AuthGuard>
         <Dashboard>
-          {children}
+          <div className='w-full flex justify-center'>
+            {children}
+          </div>
         </Dashboard>
       </AuthGuard>
       </Suspense>

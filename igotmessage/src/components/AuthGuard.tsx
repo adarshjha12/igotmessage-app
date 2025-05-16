@@ -52,7 +52,7 @@ function AuthGuard({children} : {children: React.ReactNode}) {
     }
 
   return (
-    <div>
+    <div className="w-full min-h-screen">
         {children}        
     </div>
   )

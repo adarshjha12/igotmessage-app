@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montez.variable} ${exo2.variable}`}>
-      <body className="flex items-center justify-center min-h-screen w-full">
+      <body className="flex items-center justify-center min-h-screen w-screen">
         <ReduxProvider>
           {children}
         </ReduxProvider>

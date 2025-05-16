@@ -14,16 +14,12 @@ function Dashboard({children} : {children: ReactNode}) {
   const [isDark, setIsDark] = useState(false)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
+  const [navClick, setNavClick] = useState({
+    
+  })
+
   const router = useRouter()
   const pathname = usePathname()
-
-  const navItems = [
-    {name: 'Home', path: '/dash/home', icon: <HomeIcon/>},
-    {name: 'Create', path: '/dash/create', icon: <PlusSquare/>},
-    {name: 'Messages', path: '/dash/chats', icon: <MessageCircleIcon/>},
-    {name: 'Calls', path: '/dash/calls', icon: <VideoIcon/>},
-    {name: 'Profile', path: '/dash/profile', icon: <User2/>},
-  ]
 
   useEffect(() => {
     const theme = localStorage.getItem('theme')
@@ -37,7 +33,7 @@ function Dashboard({children} : {children: ReactNode}) {
   }, []);
 
   useEffect(() => {
-  if (heartClicked && pathname === '/dash/home') {
+  if (heartClicked && pathname !== '/dash/likes') {
     router.push('/dash/likes');
   } else if (!heartClicked && pathname === '/dash/likes') {
     router.back();
@@ -57,12 +53,21 @@ function Dashboard({children} : {children: ReactNode}) {
       setIsDark(true)
     }
   }
+
+  function handleNavClick(path:string) {
+    if (pathname === path && pathname !== '/dash/home') {
+      router.back()
+    } else {
+      router.push(path)
+    }
+  }
   
   return (
-    <div className={`w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)] flex items-start transition-colors duration-200 relative `}>
-          <div className="mt-2 grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start px-2">
+    <div className="w-screen min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center">
+      <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
+          <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className="mb-3 sm:hidden w-full flex py-1 px-3 items-center gap-3">
+            <header className="mb-3 border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-3 py-2 px-3 items-center ">
               <button type="button" onClick={enableDarkMode} className={`text-black`}>
                 <Toggle dark={isDark}/>
               </button> 
@@ -71,56 +76,147 @@ function Dashboard({children} : {children: ReactNode}) {
               <div className="flex px-2 bg-[var(--inputBg)] rounded-md justify-center items-center">
                 <Search className="w-4"/>
                 <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} type="search" placeholder="search" className="outline-none rounded-2xl border-none w-full h-full text-sm placeholder:text-sm placeholder:pl-2 px-1 py-1.5" name="" id="" />
-                <button type="button" onClick={() => setSearchInput('')}>
+                <button className={`${searchInput.length >= 1? 'flex cursor-pointer' : 'opacity-0 '}`} type="button" onClick={() => setSearchInput('')}>
                     <LucideDelete className="w-4"/>
                 </button>
               </div>
               <button
                onClick={
                 () => {
-                  setHeartClicked(prev => !prev)
+                  handleNavClick('/dash/likes')
                 }
               }
-
                type="button">
                 <div>
-                    <Heart className="" fill={heartClicked ? (isDark? 'white' : 'red') : (isDark? '' : 'white')} />
+                    <Heart className=""
+                    strokeWidth={1.5}
+                     fill={pathname === '/dash/likes'? (isDark? '#107aeb' : 'red') : (isDark? '' : 'white')}
+                    />
                 </div>
               </button>
             </header>
             {/* header ends here */}
 
             {/* nav starts here */}
-            <nav className=" hidden sm:flex flex-col gap-2 sm:w-fit justify-center ">
+            <nav className=" hidden sm:flex flex-col gap-3 sm:w-fit justify-center ">
                 <p className="font-montez text-3xl font-[600] ">IGotMessage</p>
-                <div className="w-full gap-3 items-start flex sm:flex-col">
-                    {navItems.map((item) => (
-                    <button key={item.path} className="flex" onClick={() => router.push(item.path)}>
-                        {item.icon}
-                        {item.name}
-                    </button>
-                    ))}
-                </div>
+
+                <button
+                  onClick={() => handleNavClick('/dash/home')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                    <Home 
+                    strokeWidth={1.5}
+                    fill={pathname === '/dash/home'? 'red' : (isDark? '' : 'white')}
+                    />
+                  </button>
+
+                  <button
+                  onClick={() => handleNavClick('/dash/create')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                  <PlusSquare
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/create'? 'red' : (isDark? '' : 'white')}
+                  
+                  />
+                  </button>
+
+                  <button 
+                  onClick={() => handleNavClick('/dash/chats')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                  <MessageCircleIcon
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/chats'? 'red' : (isDark? '' : 'white')}
+                  />
+                  </button>
+
+                  <button 
+                  onClick={() => handleNavClick('/dash/calls')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                  <VideoIcon
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/calls'? 'red' : (isDark? '' : 'white')}
+                  />
+                  </button>
+
+                  <button
+                  onClick={() => handleNavClick('/dash/profile')}
+                  type="button" 
+                  className="flex gap-1 cursor-pointer">
+                  <User2
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/profile'? 'red' : (isDark? '' : 'white')}
+                  />
+                  </button>
             </nav>
             {/* nav ends here */}
 
             {/* main starts here */}
-            <main>
+            <main className="pb-10 mb-2.5">
               {children}
+              <div className="bg-amber-400">ff</div>
             </main>
             {/* main ends here */}
             
-            <nav className="w-full px-2 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
-                    {navItems.map((item) => (
-                    <button key={item.path} className="flex" onClick={() => router.push(item.path)}>
-                        {item.icon}
-                    </button>
-                    ))}
+                  <button
+                  onClick={() => handleNavClick('/dash/home')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                    <Home 
+                    strokeWidth={1.5}
+                    fill={pathname === '/dash/home'? 'red' : (isDark? '' : 'white')}
+                    />
+                  </button>
+
+                  <button
+                  onClick={() => handleNavClick('/dash/create')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                  <PlusSquare
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/create'? 'red' : (isDark? '' : 'white')}
+                  
+                  />
+                  </button>
+
+                  <button 
+                  onClick={() => handleNavClick('/dash/chats')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                  <MessageCircleIcon
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/chats'? 'red' : (isDark? '' : 'white')}
+                  />
+                  </button>
+
+                  <button 
+                  onClick={() => handleNavClick('/dash/calls')}
+                  type="button"
+                  className="flex gap-1 cursor-pointer">
+                  <VideoIcon
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/calls'? 'red' : (isDark? '' : 'white')}
+                  />
+                  </button>
+
+                  <button
+                  onClick={() => handleNavClick('/dash/profile')}
+                  type="button" 
+                  className="flex gap-1 cursor-pointer">
+                  <User2
+                  strokeWidth={1.5}
+                  fill={pathname === '/dash/profile'? 'red' : (isDark? '' : 'white')}
+                  />
+                  </button>
                 </div>
             </nav>
-            <div className="bg-amber-400">ff</div>
           </div>
+      </div>
     </div>
    
   )
