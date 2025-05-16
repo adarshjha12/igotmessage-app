@@ -49,10 +49,10 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className={`w-full bg-[var(--bgColor)] text-[var(--textColor)] min-h-screen flex items-start p-2 transition-colors duration-200 relative `}>
-      <div className="">
-          <div className=" grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start ">
-            <div className="mb-3 w-full flex py-1 px-3 items-center gap-3">
+    <div className={`w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)] flex items-start transition-colors duration-200 relative `}>
+          <div className="mt-2 grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start px-2">
+            {/* header starts here */}
+            <header className="mb-3 sm:hidden w-full flex py-1 px-3 items-center gap-3">
               <button type="button" onClick={enableDarkMode} className={`text-black hidden`}>
                 <Toggle dark={isDark}/>
               </button> 
@@ -70,25 +70,41 @@ function Dashboard({children} : {children: ReactNode}) {
                     <Heart fill={heartClicked ? 'white' : ''} />
                 </div>
               </button>
-            </div>
-            <div className="w-screen flex justify-center ">
-                <div className=" flex ">
+            </header>
+            {/* header ends here */}
+
+            {/* nav starts here */}
+            <nav className=" hidden sm:flex flex-col gap-2 sm:w-fit justify-center ">
+                <p className="font-montez text-3xl font-[600] ">IGotMessage</p>
+                <div className="w-full  gap-3 items-start flex sm:flex-col">
                     {navItems.map((item) => (
-                    <button key={item.path} className="" onClick={() => router.push(item.path)}>
+                    <button key={item.path} className="flex" onClick={() => router.push(item.path)}>
                         {item.icon}
                         {item.name}
                     </button>
                     ))}
                 </div>
-            </div>
-            <div className="">
+            </nav>
+            {/* nav ends here */}
+
+            {/* main starts here */}
+            <main>
               {children}
-            </div>
-            <div className="flex justify-center ">
-              
-            </div>
+            </main>
+            {/* main ends here */}
+            
+            <nav className="w-full sm:hidden justify-center fixed bottom-0 ">
+                <div className="w-full items-start flex ">
+                    {navItems.map((item) => (
+                    <button key={item.path} className="flex" onClick={() => router.push(item.path)}>
+                        {item.icon}
+                        {item.name}
+                    </button>
+                    ))}
+                </div>
+            </nav>
+            <div className="bg-amber-400">ff</div>
           </div>
-      </div>
     </div>
    
   )

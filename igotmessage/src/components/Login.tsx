@@ -120,7 +120,7 @@ function Login() {
     
       
   return (
-  <div key={`${emailButtonClick} ${otpSent} `} className='w-screen text-white down-slide flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
+  <div key={`${emailButtonClick} ${otpSent} `} className='w-screen min-h-screen text-white down-slide flex items-center justify-center flex-col bg-gradient-to-r from-black to-blue-600'>
     <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : ''} ${emailButtonClick ? 'test-slide' : ''} m-3 w-[90%] min-h-[90%] sm:h-full sm:min-w-[70%] border-1 py-12 px-2 border-white rounded-xl flex flex-col justify-center items-center gap-10`}>
 
     <div className='flex flex-col items-center'>
