@@ -61,8 +61,8 @@ input[type="search"]::-webkit-search-results-decoration {
   }
 }
 
-.test-slide {
-  animation: slideIn 0.5s ease-out forwards;
+.left-slide {
+  animation: slideIn 0.5s ease-out backwards;
 }
 
 @keyframes slideRight {

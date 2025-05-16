@@ -1,11 +1,7 @@
 'use client'
-import { Home, Search, PlusSquare, PhoneCall, VideoOff, LucideDelete, MessageCircleIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon } from "lucide-react";
-import { coconut, batBall } from '@lucide/lab';
-import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
+import { Home, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
-import Button from "@/components/Button";
 import Toggle from "@/components/Toggle";
 import Brand from "@/components/Brand";
 import { useRouter, usePathname } from "next/navigation";
@@ -14,9 +10,7 @@ function Dashboard({children} : {children: ReactNode}) {
   const [isDark, setIsDark] = useState(false)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
-  const [navClick, setNavClick] = useState({
-    
-  })
+  const [menuClick, setMenuClick] = useState(false)
 
   const router = useRouter()
   const pathname = usePathname()
@@ -63,7 +57,7 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-screen min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center">
+    <div className="w-screen min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
@@ -72,7 +66,7 @@ function Dashboard({children} : {children: ReactNode}) {
                 <Toggle dark={isDark}/>
               </button> 
            
-              <p className="font-montez text-2xl font-[600] ">IGotMessage</p>
+              <p onClick={() => router.push('/dash/home')} className="font-montez text-2xl font-[600] cursor-pointer">IGotMessage</p>
               <div className="flex px-2 bg-[var(--inputBg)] rounded-md justify-center items-center">
                 <Search className="w-4"/>
                 <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} type="search" placeholder="search" className="outline-none rounded-2xl border-none w-full h-full text-sm placeholder:text-sm placeholder:pl-2 px-1 py-1.5" name="" id="" />
@@ -161,7 +155,7 @@ function Dashboard({children} : {children: ReactNode}) {
             </main>
             {/* main ends here */}
             
-            <nav className="w-full px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full z-50 px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/home')}
@@ -213,10 +207,26 @@ function Dashboard({children} : {children: ReactNode}) {
                   fill={pathname === '/dash/profile'? 'red' : (isDark? '' : 'white')}
                   />
                   </button>
+
+                  <button
+                  onClick={() => (setMenuClick(prev => !prev))}
+                  type="button" 
+                  className="flex gap-1 cursor-pointer z-10">
+                  <MenuIcon
+                  className="bg-red-500"
+                  strokeWidth={1.5}
+                  />
+                  </button>
                 </div>
             </nav>
+
           </div>
+          
       </div>
+      {menuClick && 
+      <div className="w-full z-10 h-full left-slide absolute right-0 top-0 bg-[var(--inputBg)] ">
+
+      </div>}
     </div>
    
   )
