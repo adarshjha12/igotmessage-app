@@ -18,11 +18,11 @@ function Dashboard({children} : {children: ReactNode}) {
   const pathname = usePathname()
 
   const navItems = [
-    {name: 'Home', path: '/home', icon: <HomeIcon/>},
-    {name: 'Create', path: '/create', icon: <PlusSquare/>},
-    {name: 'Messages', path: '/message', icon: <MessageCircleIcon/>},
-    {name: 'Calls', path: '/calls', icon: <VideoIcon/>},
-    {name: 'Profile', path: '/profile', icon: <User2/>},
+    {name: 'Home', path: '/dash/home', icon: <HomeIcon/>},
+    {name: 'Create', path: '/dash/create', icon: <PlusSquare/>},
+    {name: 'Messages', path: '/dash/chats', icon: <MessageCircleIcon/>},
+    {name: 'Calls', path: '/dash/calls', icon: <VideoIcon/>},
+    {name: 'Profile', path: '/dash/profile', icon: <User2/>},
   ]
 
   useEffect(() => {
@@ -110,12 +110,11 @@ function Dashboard({children} : {children: ReactNode}) {
             </main>
             {/* main ends here */}
             
-            <nav className="w-full sm:hidden justify-center fixed bottom-0 ">
-                <div className="w-full items-start flex ">
+            <nav className="w-full px-2 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
+                <div className="w-full items-center flex justify-between">
                     {navItems.map((item) => (
                     <button key={item.path} className="flex" onClick={() => router.push(item.path)}>
                         {item.icon}
-                        {item.name}
                     </button>
                     ))}
                 </div>

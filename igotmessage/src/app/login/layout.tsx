@@ -6,7 +6,7 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
   
 
   return (
-    <Suspense fallback={<Loader/>}>
+    <Suspense fallback={<Loader animate={true} scaleMd={true}  />}>
       
       {children}
     </Suspense>
