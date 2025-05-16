@@ -36,6 +36,16 @@ function Dashboard({children} : {children: ReactNode}) {
     }
   }, []);
 
+  useEffect(() => {
+  if (heartClicked && pathname === '/dash/home') {
+    router.push('/dash/likes');
+  } else if (!heartClicked && pathname === '/dash/likes') {
+    router.back();
+  }
+
+}, [heartClicked]);
+
+
   const enableDarkMode = function () {
     if (isDark) {
       document.documentElement.classList.remove('dark')
@@ -53,7 +63,7 @@ function Dashboard({children} : {children: ReactNode}) {
           <div className="mt-2 grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-start px-2">
             {/* header starts here */}
             <header className="mb-3 sm:hidden w-full flex py-1 px-3 items-center gap-3">
-              <button type="button" onClick={enableDarkMode} className={`text-black hidden`}>
+              <button type="button" onClick={enableDarkMode} className={`text-black`}>
                 <Toggle dark={isDark}/>
               </button> 
            
@@ -65,9 +75,16 @@ function Dashboard({children} : {children: ReactNode}) {
                     <LucideDelete className="w-4"/>
                 </button>
               </div>
-              <button onClick={() => setHeartClicked((prev => !prev))} type="button">
+              <button
+               onClick={
+                () => {
+                  setHeartClicked(prev => !prev)
+                }
+              }
+
+               type="button">
                 <div>
-                    <Heart fill={heartClicked ? 'white' : ''} />
+                    <Heart className="" fill={heartClicked ? (isDark? 'white' : 'red') : (isDark? '' : 'white')} />
                 </div>
               </button>
             </header>
@@ -76,7 +93,7 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* nav starts here */}
             <nav className=" hidden sm:flex flex-col gap-2 sm:w-fit justify-center ">
                 <p className="font-montez text-3xl font-[600] ">IGotMessage</p>
-                <div className="w-full  gap-3 items-start flex sm:flex-col">
+                <div className="w-full gap-3 items-start flex sm:flex-col">
                     {navItems.map((item) => (
                     <button key={item.path} className="flex" onClick={() => router.push(item.path)}>
                         {item.icon}

@@ -17,13 +17,14 @@
   --bgColor: #ffffff;
   --borderColor: #000000;
   --textColor: #000000;
-  --inputBg: #393939;
+  --inputBg: #bbb9b9;
 }
 
 .dark {
   --bgColor: #000000;
   --borderColor: #ffffff;
   --textColor: #ffffff;
+  --inputBg: #393939;
 }
 
 html {
