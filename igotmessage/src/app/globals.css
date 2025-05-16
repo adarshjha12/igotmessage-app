@@ -65,6 +65,32 @@ input[type="search"]::-webkit-search-results-decoration {
   animation: slideIn 0.5s ease-out backwards;
 }
 
+@keyframes slideup {
+  0% {
+    transform: translateY(100px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.up-slide {
+  animation: slideup 0.5s ease-out backwards;
+}
+
+@keyframes slidedown {
+  0% {
+    transform: translateY(-100px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.down-slide {
+  animation: slidedown 0.5s ease-out backwards;
+}
+
 @keyframes slideRight {
   0% {
     transform: translateX(-100px);

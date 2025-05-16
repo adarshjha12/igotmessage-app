@@ -78,7 +78,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
         setShowSuccessPopup(true);
         dispatch(addCurrentUserToStore(response.data.user))
         dispatch(setAuthStatus(true))
-        router.push('/dash?verification=success');
+        router.push('/dash/home?verification=success');
         setLoading(false);
       } else if (response.data.expired === true) {
           setShowErrorPopup(true)

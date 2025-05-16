@@ -57,11 +57,11 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-screen min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className="mb-3 border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-3 py-2 px-3 items-center ">
+            <header className="mb-3 down-slide border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-3 py-2 px-3 items-center ">
               <button type="button" onClick={enableDarkMode} className={`text-black`}>
                 <Toggle dark={isDark}/>
               </button> 
@@ -92,7 +92,7 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* header ends here */}
 
             {/* nav starts here */}
-            <nav className=" hidden sm:flex flex-col gap-3 sm:w-fit justify-center ">
+            <nav className=" right-slide hidden sm:flex flex-col gap-3 sm:w-fit justify-center ">
                 <p className="font-montez text-3xl font-[600] ">IGotMessage</p>
 
                 <button
@@ -155,7 +155,7 @@ function Dashboard({children} : {children: ReactNode}) {
             </main>
             {/* main ends here */}
             
-            <nav className="w-full z-50 px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full up-slide border-t-1 pt-2 border-[var(--shadowBorder)] z-50 px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/home')}
@@ -201,7 +201,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className="flex gap-1 cursor-pointer">
+                  className={`flex gap-1 cursor-pointer `}>
                   <User2
                   strokeWidth={1.5}
                   fill={pathname === '/dash/profile'? 'red' : (isDark? '' : 'white')}
@@ -213,20 +213,14 @@ function Dashboard({children} : {children: ReactNode}) {
                   type="button" 
                   className="flex gap-1 cursor-pointer z-10">
                   <MenuIcon
-                  className="bg-red-500"
+                  className={`${menuClick ? 'text-green-500 transition-transform rotate-180' : ''} rounded-md`}
                   strokeWidth={1.5}
                   />
                   </button>
                 </div>
-            </nav>
-
+              </nav>
           </div>
-          
       </div>
-      {menuClick && 
-      <div className="w-full z-10 h-full left-slide absolute right-0 top-0 bg-[var(--inputBg)] ">
-
-      </div>}
     </div>
    
   )
