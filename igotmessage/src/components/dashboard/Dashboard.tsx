@@ -5,12 +5,18 @@ import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
 import Brand from "@/components/Brand";
 import { useRouter, usePathname } from "next/navigation";
+import { useTransition } from "react";
+import Panel from "../Panel";
+import { UseSelector, useDispatch } from "react-redux";
 
 function Dashboard({children} : {children: ReactNode}) {
+
+
   const [isDark, setIsDark] = useState(false)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [menuClick, setMenuClick] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const router = useRouter()
   const pathname = usePathname()
@@ -25,15 +31,6 @@ function Dashboard({children} : {children: ReactNode}) {
       setIsDark(false)
     }
   }, []);
-
-  useEffect(() => {
-  if (heartClicked && pathname !== '/dash/likes') {
-    router.push('/dash/likes');
-  } else if (!heartClicked && pathname === '/dash/likes') {
-    router.back();
-  }
-
-}, [heartClicked]);
 
 
   const enableDarkMode = function () {
@@ -80,11 +77,12 @@ function Dashboard({children} : {children: ReactNode}) {
                   handleNavClick('/dash/likes')
                 }
               }
+              className="cursor-pointer"
                type="button">
                 <div>
                     <Heart className=""
                     strokeWidth={1.5}
-                     fill={pathname === '/dash/likes'? (isDark? '#107aeb' : 'red') : (isDark? '' : 'white')}
+                     fill={pathname === '/dash/likes'? (isDark? 'red' : 'red') : (isDark? '' : 'white')}
                     />
                 </div>
               </button>
@@ -218,8 +216,10 @@ function Dashboard({children} : {children: ReactNode}) {
                   />
                   </button>
                 </div>
+                
               </nav>
           </div>
+          <Panel menuClick={menuClick} />
       </div>
     </div>
    

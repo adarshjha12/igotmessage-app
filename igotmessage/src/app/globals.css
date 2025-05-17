@@ -126,6 +126,22 @@ input[type="search"]::-webkit-search-results-decoration {
   }
 }
 
+@keyframes panel {
+  0% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+}
+
+.panel-slide {
+  animation: panel 0.5s ease-out backwards;
+}
+
+
 .popup-animation {
   animation: popup 5s linear;
 }
