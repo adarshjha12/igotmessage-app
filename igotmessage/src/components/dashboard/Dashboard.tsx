@@ -7,13 +7,12 @@ import Brand from "@/components/Brand";
 import { useRouter, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import Panel from "../Panel";
-import { UseSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/store/store";
 
 function Dashboard({children} : {children: ReactNode}) {
 
-
-
-  const [isDark, setIsDark] = useState(false)
+  const isDark = useSelector( (state : RootState) => state.auth.isDark)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [menuClick, setMenuClick] = useState(false)

@@ -31,7 +31,7 @@
 
 html {
   color-scheme: light;
-  
+  transition: background-color 0.3s, color 0.3s;
 }
 
 body {
@@ -138,7 +138,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .panel-slide {
-  animation: panel 0.5s ease-out backwards;
+  animation: panel 0.2s ease-out backwards;
 }
 
 

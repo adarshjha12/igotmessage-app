@@ -4,7 +4,7 @@ import Toggle from './Toggle'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 import { setDarkMode } from '@/features/authSlice'
-import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface PanelProps {
   menuClick: boolean,
@@ -14,17 +14,7 @@ function Panel({menuClick} : PanelProps) {
 
   const isDark = useSelector( (state : RootState) => state.auth.isDark)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    const theme = localStorage.getItem('theme')
-    if (theme === 'dark') {
-      dispatch(setDarkMode(true))
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      dispatch(setDarkMode(false))
-    }
-  }, []);
+  const router = useRouter()
 
   const enableDarkMode = function () {
     if (isDark) {
@@ -57,7 +47,10 @@ function Panel({menuClick} : PanelProps) {
               </button> 
             </div>
             <div>
-              <button>About dev</button>
+              <button
+               type='button' 
+               onClick={() => router.push('/about-dev')}
+               className='ease-in duration-200 cursor-pointer transform transition-all hover:scale-110'>About dev</button>
             </div>
         </div>
     </div>
