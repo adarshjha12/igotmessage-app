@@ -1,5 +1,5 @@
 'use client'
-import { Home, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon } from "lucide-react";
+import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
@@ -12,6 +12,7 @@ import { UseSelector, useDispatch } from "react-redux";
 function Dashboard({children} : {children: ReactNode}) {
 
 
+
   const [isDark, setIsDark] = useState(false)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
@@ -21,29 +22,6 @@ function Dashboard({children} : {children: ReactNode}) {
   const router = useRouter()
   const pathname = usePathname()
 
-  useEffect(() => {
-    const theme = localStorage.getItem('theme')
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-      setIsDark(true)
-    } else {
-      document.documentElement.classList.remove('dark')
-      setIsDark(false)
-    }
-  }, []);
-
-
-  const enableDarkMode = function () {
-    if (isDark) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-      setIsDark(false)
-    } else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-      setIsDark(true)
-    }
-  }
 
   function handleNavClick(path:string) {
     if (pathname === path && pathname !== '/dash/home') {
@@ -59,9 +37,6 @@ function Dashboard({children} : {children: ReactNode}) {
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
             <header className="mb-3 down-slide border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-3 py-2 px-3 items-center ">
-              <button type="button" onClick={enableDarkMode} className={`text-black`}>
-                <Toggle dark={isDark}/>
-              </button> 
            
               <p onClick={() => router.push('/dash/home')} className="font-montez text-2xl font-[600] cursor-pointer">IGotMessage</p>
               <div className="flex px-2 bg-[var(--inputBg)] rounded-md justify-center items-center">
@@ -99,8 +74,9 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                     <Home 
                     strokeWidth={1.5}
-                    fill={pathname === '/dash/home'? 'red' : (isDark? '' : 'white')}
+                    fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                     />
+                    <div className="bg-[var(--bgColor)] rounded-xs absolute w-[11px] h-[10px] left-[25%] bottom-1"></div>
                   </button>
 
                   <button
@@ -109,9 +85,10 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                   <PlusSquare
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/create'? 'red' : (isDark? '' : 'white')}
-                  
+                  fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
+                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')}`}
                   />
+
                   </button>
 
                   <button 
@@ -120,8 +97,9 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                   <MessageCircleIcon
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/chats'? 'red' : (isDark? '' : 'white')}
+                  fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
+                  <div className=" border-y-2 border-dashed border-[var(--bgColor)] absolute w-[11px] h-[6px] left-[25%] bottom-2"></div>
                   </button>
 
                   <button 
@@ -130,7 +108,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                   <VideoIcon
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/calls'? 'red' : (isDark? '' : 'white')}
+                  fill={pathname === '/dash/calls'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
                   </button>
 
@@ -140,7 +118,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                   <User2
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/profile'? 'red' : (isDark? '' : 'white')}
+                  fill={pathname === '/dash/profile'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
                   </button>
             </nav>
@@ -153,16 +131,20 @@ function Dashboard({children} : {children: ReactNode}) {
             </main>
             {/* main ends here */}
             
-            <nav className="w-full up-slide border-t-1 pt-2 border-[var(--shadowBorder)] z-50 px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full up-slide border-t-1 pt-2 border-[var(--shadowBorder)] px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/home')}
                   type="button"
-                  className="flex gap-1 cursor-pointer">
+                  className="flex relative gap-1 cursor-pointer">
                     <Home 
                     strokeWidth={1.5}
-                    fill={pathname === '/dash/home'? 'red' : (isDark? '' : 'white')}
+                    fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                     />
+                    <div className="bg-[var(--bgColor)] rounded-xs absolute w-[11px] h-[10px] left-[25%] bottom-1">
+
+                    </div>
+
                   </button>
 
                   <button
@@ -171,7 +153,9 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                   <PlusSquare
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/create'? 'red' : (isDark? '' : 'white')}
+                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')}`}
+
+                  fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   
                   />
                   </button>
@@ -179,11 +163,12 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className="flex gap-1 cursor-pointer">
+                  className="flex gap-1 relative cursor-pointer">
                   <MessageCircleIcon
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/chats'? 'red' : (isDark? '' : 'white')}
+                  fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
+                   <div className=" border-y-2 border-dashed border-[var(--bgColor)] absolute w-[11px] h-[6px] left-[25%] bottom-2"></div>
                   </button>
 
                   <button 
@@ -192,7 +177,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex gap-1 cursor-pointer">
                   <VideoIcon
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/calls'? 'red' : (isDark? '' : 'white')}
+                  fill={pathname === '/dash/calls'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
                   </button>
 
@@ -202,7 +187,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   className={`flex gap-1 cursor-pointer `}>
                   <User2
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/profile'? 'red' : (isDark? '' : 'white')}
+                  fill={pathname === '/dash/profile'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
                   </button>
 
@@ -210,16 +195,25 @@ function Dashboard({children} : {children: ReactNode}) {
                   onClick={() => (setMenuClick(prev => !prev))}
                   type="button" 
                   className="flex gap-1 cursor-pointer z-10">
-                  <MenuIcon
-                  className={`${menuClick ? 'text-green-500 transition-transform rotate-180' : ''} rounded-md`}
-                  strokeWidth={1.5}
-                  />
+                    {menuClick? 
+                    <XIcon
+                    className="" 
+                    strokeWidth={2}
+                    /> : <MenuIcon
+                    className="ease-in duration-200 cursor-pointer transform transition-all hover:scale-125"
+                    />}
                   </button>
                 </div>
                 
               </nav>
           </div>
-          <Panel menuClick={menuClick} />
+          <Panel menuClick={menuClick}/>
+           <button
+            className={` ease-in duration-500 cursor-pointer transform transition-all z-40 ${menuClick? 'flex  rotate-180 scale-100 opacity-100' : 'opacity-0 scale-0'} fixed bottom-3 right-3`}
+            type='button'
+            onClick={() => setMenuClick(false)}>
+              <XIcon className="text-white ease-in duration-200 cursor-pointer transform transition-all hover:scale-150"/>
+           </button>
       </div>
     </div>
    
