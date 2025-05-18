@@ -35,7 +35,7 @@ function Dashboard({children} : {children: ReactNode}) {
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className="mb-3 down-slide border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-4 py-2 px-3 items-center ">
+            <header className=" down-slide border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-4 py-2 px-3 items-center ">
            
               <p onClick={() => router.push('/dash/home')} className="font-montez text-2xl font-[600] cursor-pointer">IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
@@ -153,9 +153,8 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* nav ends here */}
 
             {/* main starts here */}
-            <main className="pb-10 sm:p-2 mb-2.5">
+            <main className="pb-10 sm:p-2 my-2.5">
               {children}
-              <div className="bg-amber-400">ff</div>
             </main>
             {/* main ends here */}
             
