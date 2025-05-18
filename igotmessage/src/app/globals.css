@@ -63,17 +63,19 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 
-@keyframes slideIn {
+@keyframes leftSlide {
   0% {
-    transform: translateX(100px);
+    transform: scaleX(0);
+    transform-origin: right;  
   }
   100% {
-    transform: translateX(0);
+    transform: scaleX(1);
+    transform-origin: right;
   }
 }
 
 .left-slide {
-  animation: slideIn 0.5s ease-out backwards;
+  animation: leftSlide 0.3s ease-out backwards;
 }
 
 @keyframes slideup {
