@@ -40,7 +40,7 @@ function Panel({menuClick} : PanelProps) {
                strokeWidth={1}
                 className='text-amber-300'/>
                 : <SunIcon
-                strokeWidth={2}
+                strokeWidth={3}
                 className='text-amber-600 rounded-full text-md'
                 />}
               <button type="button" onClick={enableDarkMode} className={`cursor-pointer`}>
