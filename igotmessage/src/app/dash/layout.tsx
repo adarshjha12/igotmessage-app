@@ -6,7 +6,7 @@ import Loader from "@/components/Loader";
 function layout({children} : {children: React.ReactNode}) {
   return (
     <div className='w-full min-h-screen'>
-      <Suspense fallback={<Loader animate={true} scaleMd={true} />} >
+      <Suspense fallback={<Loader animate={true} scaleMd={true} color='black'/>} >
       <AuthGuard>
         <Dashboard>
           <div className='w-full min-h-screen flex justify-center'>
