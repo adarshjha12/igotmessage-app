@@ -18,7 +18,7 @@
   --borderColor: #000000;
   --textColor: #000000;
   --inputBg: #cecbcb;
-  --wrapperColor: #cecbcb;
+  --wrapperColor: #e4dfdf;
   --shadowBorder: #c6c2c2;
 }
 
@@ -27,7 +27,7 @@
   --borderColor: #ffffff;
   --textColor: #ffffff;
   --inputBg: #393939;
-  --wrapperColor: #282626;
+  --wrapperColor: #3e3c3c;
   --shadowBorder: #494949;
 }
 
