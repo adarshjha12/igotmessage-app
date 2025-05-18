@@ -15,6 +15,7 @@ function Dashboard({children} : {children: ReactNode}) {
   const isDark = useSelector( (state : RootState) => state.auth.isDark)
   const [heartClicked, setHeartClicked] = useState(false)
   const [searchInput, setSearchInput] = useState('')
+  const [searchInputClick, setSearchInputClick] = useState(false)
   const [menuClick, setMenuClick] = useState(false)
   const [isPending, startTransition] = useTransition()
 
@@ -37,11 +38,18 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* header starts here */}
             <header className=" down-slide border-b-2 border-[var(--shadowBorder)] sm:hidden w-full flex justify-evenly gap-4 py-2 px-3 items-center ">
            
-              <p onClick={() => router.push('/dash/home')} className="font-montez text-2xl font-[600] cursor-pointer">IGotMessage</p>
+              <p onClick={() => router.push('/dash/home')} className={` font-montez text-3xl font-[600] cursor-pointer transition-all ease-in duration-200 ${searchInputClick? 'text-xl text-left' : 'inline'}`}>IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
-              <div className="flex px-2 bg-[var(--inputBg)] rounded-md justify-center items-center">
+              <div className="flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center">
                 <Search size={33} className=""/>
-                <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} type="search" placeholder="Search" className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
+                <input 
+                value={searchInput} 
+                onClick={() => setSearchInputClick(prev => !prev)}
+                onBlur={() => setSearchInputClick(prev => !prev)}
+                onChange={(e) => setSearchInput(e.target.value)} 
+                type="search" 
+                placeholder="Search" 
+                className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
                 <button className={`${searchInput.length >= 1? 'flex cursor-pointer' : 'opacity-0 '}`} type="button" onClick={() => setSearchInput('')}>
                     <LucideDelete className=""/>
                 </button>
@@ -52,7 +60,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   handleNavClick('/dash/likes')
                 }
               }
-              className="cursor-pointer"
+              className={`cursor-pointer ${searchInputClick? 'hidden' : 'inline'} transition-all ease-in duration-200`}
                type="button">
                 <div>
                     <Heart size={33} className=""
