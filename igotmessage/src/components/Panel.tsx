@@ -29,7 +29,7 @@ function Panel({menuClick} : PanelProps) {
   }
 
   return (
-    <div className={`${menuClick ? 'flex panel-slide': 'hidden'} text-white transform transition-transform flex-col items-start pt-4 pl-8 duration-300 border-l-8 font-exo2 border-[var(--borderColor)] ease-in-out right-0 absolute w-[80%] h-full bg-blue-800 shadow-[0_25px_50px_12px_rgba(0,0,0,1)]
+    <div className={`${menuClick ? 'flex panel-slide': 'hidden'} text-white transform transition-transform flex-col items-start pt-4 pl-8 duration-300 border-l-8 font-exo2 border-[var(--borderColor)] ease-in-out right-0 absolute w-[80%] h-full bg-[var(--bgColor)] shadow-[0_25px_50px_12px_rgba(0,0,0,1)]
 `}> 
         <div className='flex flex-col gap-2'>
             <div className='flex font-bold gap-2 text-[var(--textColor)] border-1 py-1 rounded-md bg-[var(--wrapperColor)] border-white px-3'>
