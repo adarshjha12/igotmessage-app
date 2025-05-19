@@ -20,7 +20,7 @@ function Page() {
     }
 
   return (
-    <div className='w-full relative p-5 min-h-screen flex flex-col items-center justify-between gap-2.5 bg-[var(--bgColor)] text-[var(--textColor)] '>
+    <div className='w-full relative p-5 min-h-screen flex flex-col items-center justify-between gap-2.5 bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)] '>
       <form action="" className='flex gap-3'>
         <button type='button' className='bg-[var(--wrapperColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-3 py-2 rounded-xl flex justify-center shadow-[0_1px_1px_1px_rgba(0,0,0,0.3)] border-[var(--borderColor)] items-center'>
           <div className='flex justify-center items-center gap-2'>
@@ -41,10 +41,10 @@ function Page() {
         </button>
 
       </form>
-      <div className='bg-[var(--bgColor)] text-xl font-semibold  absolute inset-0 top-3'>bkj
+      {/* <div className='bg-[var(--bgColor)] text-xl font-semibold  absolute inset-0 top-3'>bkj
         <img src={imagePreview} className='max-w-full' alt="" />
         <audio src="/"><source /></audio>
-      </div>
+      </div> */}
     </div>
   )
 }

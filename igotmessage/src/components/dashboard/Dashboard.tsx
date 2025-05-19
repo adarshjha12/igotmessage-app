@@ -32,7 +32,7 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full min-h-screen bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
@@ -40,22 +40,19 @@ function Dashboard({children} : {children: ReactNode}) {
            
               <p onClick={() => router.push('/dash/home')} className={` font-montez text-3xl font-[600] cursor-pointer transition-all ease-in duration-200 ${searchInputClick? 'text-xl text-left' : 'inline'}`}>IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
-              <div className="relative">
-                <div className={`flex transition-all ease-in duration-200 pl-2  bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? 'opacity-100 px-2' : 'opacity-0 px-0'}`}>
+              <div className="flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center">
                 <Search size={33} className=""/>
-                  <input 
-                  value={searchInput} 
-                  onClick={() => setSearchInputClick(prev => !prev)}
-                  onBlur={() => setSearchInputClick(prev => !prev)}
-                  onChange={(e) => setSearchInput(e.target.value)} 
-                  type="search" 
-                  placeholder="Search" 
-                  className="outline-none rounded-2xl border-none w-full pl-1 h-full text-xl placeholder:text-md placeholder:pl-2 py-1.5" name="" id="" />
-                  <button className={`${searchInput.length >= 1? 'flex cursor-pointer' : 'hidden '}`} type="button" onClick={() => setSearchInput('')}>
-                      <LucideDelete className=""/>
-                  </button>
-                </div>
-                  <Search size={33} strokeWidth={1.5} className={` absolute top-1 pointer-events-none left-[80%]  ${searchInputClick? 'hidden' : ''}`}/>
+                <input 
+                value={searchInput} 
+                onClick={() => setSearchInputClick(prev => !prev)}
+                onBlur={() => setSearchInputClick(prev => !prev)}
+                onChange={(e) => setSearchInput(e.target.value)} 
+                type="search" 
+                placeholder="Search" 
+                className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
+                <button className={`${searchInput.length >= 1? 'flex cursor-pointer' : 'opacity-0 '}`} type="button" onClick={() => setSearchInput('')}>
+                    <LucideDelete className=""/>
+                </button>
               </div>
               <button
                onClick={
