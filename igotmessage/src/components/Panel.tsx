@@ -1,4 +1,4 @@
-import { XIcon, LightbulbIcon, MoonIcon, MoonStar, SunriseIcon, SunDim, SunIcon, LightbulbOffIcon } from 'lucide-react'
+import {  MoonIcon, SunIcon, GroupIcon, ShieldIcon, InfoIcon  } from 'lucide-react'
 import React from 'react'
 import Toggle from './Toggle'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,13 +6,12 @@ import { RootState } from '@/store/store'
 import { setDarkMode } from '@/features/authSlice'
 import { useRouter } from 'next/navigation'
 
-interface PanelProps {
-  menuClick: boolean,
-}
 
-function Panel({menuClick} : PanelProps) {
+
+function Panel() {
 
   const isDark = useSelector( (state : RootState) => state.auth.isDark)
+  const panelOpen = useSelector( (state : RootState) => state.auth.panelOpen)
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -29,10 +28,10 @@ function Panel({menuClick} : PanelProps) {
   }
 
   return (
-    <div className={`${menuClick ? 'flex panel-slide': 'hidden'} text-white transform transition-transform flex-col items-start pt-4 pl-8 duration-300 border-l-8 font-exo2 border-[var(--borderColor)] ease-in-out right-0 absolute w-[80%] h-full bg-[var(--bgColor)] shadow-[0_25px_50px_12px_rgba(0,0,0,1)]
+    <div className={`${panelOpen? 'flex panel-slide': 'hidden'} text-[var(--textColor)] transform transition-transform flex-col items-start pt-4 px-8 duration-300 border-l-8 font-exo2 border-[var(--borderColor)] ease-in-out right-0 absolute w-[80%] h-full bg-[var(--bgColor)] shadow-[0_25px_50px_12px_rgba(0,0,0,1)]
 `}> 
-        <div className='flex flex-col gap-2'>
-            <div className='flex font-bold gap-2 text-[var(--textColor)] border-1 py-1 rounded-md bg-[var(--wrapperColor)] border-white px-3'>
+        <div className='flex flex-col w-full gap-8'>
+            <div className='flex w-fit justify-start font-bold gap-2 text-[var(--textColor)] border-1 py-1 rounded-md bg-[var(--wrapperColor)] border-[var(--borderColor)] px-3'>
               <p className=''>Dark mode </p>
               {isDark?
                <MoonIcon
@@ -41,17 +40,36 @@ function Panel({menuClick} : PanelProps) {
                 className='text-amber-300'/>
                 : <SunIcon
                 strokeWidth={3}
-                className='text-amber-600 rounded-full text-md'
+                className='text-amber-600 active:rounded-full text-md'
                 />}
-              <button type="button" onClick={enableDarkMode} className={`cursor-pointer`}>
+              <button type="button" onClick={enableDarkMode} className={`cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75`}>
                 <Toggle dark={isDark}/>
               </button> 
             </div>
-            <div>
+            <div className='font-semibold w-full py-3 flex flex-col justify-center items-start gap-2'>
               <button
                type='button' 
                onClick={() => router.push('/about-dev')}
-               className='ease-in duration-200 cursor-pointer transform transition-all hover:scale-110'>About dev</button>
+               className='ease-in w-full flex bg-[var(--wrapperColor)] rounded-xl px-4 py-2 justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75'>
+                <InfoIcon className='text-[var(--iconColor)] '/>
+                About dev
+              </button>
+
+              <button
+               type='button' 
+               onClick={() => router.push('/privacy-policy')}
+               className='ease-in w-full bg-[var(--wrapperColor)] rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75'>
+                <ShieldIcon className='text-[var(--iconColor)] '/>
+                Privacy Policy
+              </button>
+
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
             </div>
         </div>
     </div>

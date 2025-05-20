@@ -20,6 +20,7 @@
   --inputBg: #cecbcb;
   --wrapperColor: #e4dfdf;
   --shadowBorder: #c6c2c2;
+  --iconColor: #f20e0e;
   --test: #ac05f9;
 }
 
@@ -29,6 +30,7 @@
   --textColor: #ffffff;
   --inputBg: #393939;
   --wrapperColor: #3e3c3c;
+  --iconColor: #feca0e;
   --shadowBorder: #494949;
 }
 
@@ -137,14 +139,7 @@ input[type=number]::-webkit-inner-spin-button {
   animation: rotate 0.3s linear infinite ;
 }
 
-@keyframes popup {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  }
-}
+
 
 @keyframes panel {
   0% {
@@ -161,6 +156,14 @@ input[type=number]::-webkit-inner-spin-button {
   animation: panel 0.2s ease-out backwards;
 }
 
+@keyframes popup {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
 
 .popup-animation {
   animation: popup 5s linear;

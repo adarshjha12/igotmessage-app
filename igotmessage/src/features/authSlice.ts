@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 
 interface UserAuthInterface {
     authenticated: boolean,
+    panelOpen: boolean,
     isDark: boolean,
     user: {
         id : number,
@@ -17,6 +18,7 @@ interface UserAuthInterface {
 const initialState : UserAuthInterface = {
     authenticated: false,
     isDark: false,
+    panelOpen: false,
     user: {
         id : 1,
         googleId : '',
@@ -42,9 +44,13 @@ const authSlice = createSlice({
 
         setDarkMode: function (state, action) {
             state.isDark = action.payload
-        }
+        },
+
+        setPanelOpen: function (state, action) {
+            state.panelOpen = action.payload
+        },
     }
 })
 
-export const {addCurrentUserToStore, setAuthStatus, setDarkMode} = authSlice.actions
+export const {addCurrentUserToStore, setAuthStatus, setDarkMode, setPanelOpen} = authSlice.actions
 export default authSlice.reducer

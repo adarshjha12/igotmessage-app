@@ -1,16 +1,23 @@
+'use client'
 import Story from '@/components/stories/Story'
-import React from 'react'
+import React, {useEffect} from 'react'
 import musicTracks from '@/utils/music'
+import CameraCapture from '@/components/Camera';
+// import { useRouter, useSearchParams } from 'next/navigation'
 
 function Page() {
   console.log(musicTracks);
+  // const searchParams = useSearchParams()
+
+  // useEffect(() => {
+  //   const panel = searchParams.get('panel-open')
+    
+  // }, [searchParams]);
+
   
   return (
     <div className=' w-full pl-1 h-full'>
      <Story/>
-     {/* <div className=' flex justify-center fixed w-[200px] h-[300px] backdrop-blur-xs items-center bg-black/5 min-w-screen min-h-screen '>
-       lskjfldjfldj
-    </div> */}
     </div>
   )
 }

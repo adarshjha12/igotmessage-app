@@ -11,10 +11,10 @@ function Page() {
     const router = useRouter()
 
   return (
-    <div className='w-full min-h-screen text-wrap text-[var(--textColor)] py-3 px-2 flex flex-col items-center font-exo2 justify-center bg-[var(--bgColor)] '>
+    <div className='w-full min-h-screen text-wrap text-[var(--textColor)] py-3 px-2 flex flex-col items-center font-exo2 justify-center bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)] '>
         <button type='button'  
         onClick={() => router.back()}
-        className={`fixed cursor-pointer text-2xl border-2 p-2 rounded-full ${isDark? 'border-blue-400' : 'border-blue-600'} text[var(--textColor)] top-6 flex items-center left-4 ${isDark? 'text-blue-400' : 'text-blue-600'}`}
+        className={`fixed active:bg-[var(--wrapperColor)] transition duration-100 active:scale-75 cursor-pointer text-2xl border-2 p-2 rounded-full ${isDark? 'border-blue-400' : 'border-blue-600'} text[var(--textColor)] top-6 flex items-center left-4 ${isDark? 'text-blue-400' : 'text-blue-600'}`}
         >
             <ArrowLeft size={33} className=''/>
             {/* <button className=' font-semibold'>back </button> */}

@@ -3,7 +3,6 @@ import { ImagePlusIcon, Music } from 'lucide-react'
 import React, { ChangeEvent, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import { string } from 'zod'
 
 function Page() {
     const isDark = useSelector( (state : RootState) => state.auth.isDark)
@@ -41,10 +40,10 @@ function Page() {
         </button>
 
       </form>
-      {/* <div className='bg-[var(--bgColor)] text-xl font-semibold  absolute inset-0 top-3'>bkj
+      <div className='bg-[var(--bgColor)] text-xl font-semibold'>
         <img src={imagePreview} className='max-w-full' alt="" />
-        <audio src="/"><source /></audio>
-      </div> */}
+        <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3"> </audio>
+      </div>
     </div>
   )
 }
