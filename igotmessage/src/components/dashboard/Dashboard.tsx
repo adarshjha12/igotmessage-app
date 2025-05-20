@@ -1,5 +1,5 @@
 'use client'
-import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon } from "lucide-react";
+import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
@@ -286,12 +286,12 @@ function Dashboard({children} : {children: ReactNode}) {
            </button>
 
            {cameraClick? 
-           <div className={`absolute backdrop-blur-sm bg-blue-500/15 z-10 inset-0 flex justify-center items-start ${cameraClick ? "" : "hidden"}`}>
+           <div className={`absolute backdrop-blur-sm bg-[var(--bgColor)]/5 z-10 inset-0 flex justify-center items-start ${cameraClick ? "" : "hidden"}`}>
             <button
              type="button"
              onClick={() => setCameraClick(false)}
-              className="fixed top-4 z-50 left-4 cursor-pointer">
-                <XIcon strokeWidth={2} size={35}/>
+              className="fixed top-2 z-50 left-2 active:scale-75 rounded-full  border-[var(--borderColor)] border-2 text-[var(--textColor)] cursor-pointer">
+                <ArrowLeft strokeWidth={2} size={35}/>
             </button>
             <CameraCapture />
           </div> 

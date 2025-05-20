@@ -2,13 +2,13 @@
 
 import { RefreshCcwIcon } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
-import { Stream } from 'stream';
-import { string } from 'zod';
+import { useRouter } from 'next/navigation';
 
 export default function CameraCapture() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [photo, setPhoto] = useState<null | string>(null);
+  const router = useRouter()
 
   useEffect(() => {
     if (navigator.mediaDevices?.getUserMedia && videoRef.current) {
@@ -68,24 +68,27 @@ navigator.mediaDevices
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {photo && (
-        <div className='absolute inset-0 font-exo2 mt-4 flex flex-col justify-start gap-2 items-center'>
+        <div className='absolute inset-0 font-exo2 mt-4 flex flex-col justify-start gap-4 items-center'>
           <div className='flex w-full justify-center gap-8'>
 
             <button type='button'
-            className='bg-blue-500 text-xl font-semibold active:bg-blue-800 active:scale-90 cursor-pointer rounded-sm py-2 px-3'
-            onClick={() => setPhoto(null)}>
+            className='bg-blue-500 text-xl text-white font-semibold active:bg-blue-800 active:scale-90 cursor-pointer rounded-xl py-2 px-3'
+            onClick={() => {
+              localStorage.setItem('storyImage', photo)
+              router.push('/create-story')
+              }}>
               Add to Story
             </button>
 
             <button
-            className='bg-gradient-to-br from-green-500 to to-green-800 text-xl font-semibold active:bg-green-800   active:scale-90 cursor-pointer rounded-sm py-2 px-3'
+            className='bg-gradient-to-br text-white from-green-500 to to-green-800 text-xl font-semibold active:bg-green-800   active:scale-90 cursor-pointer rounded-xl py-2 px-3'
              type='button' onClick={() => setPhoto(null)}>
               Add Post
             </button>
           </div>
           <img src={photo} alt="Captured" style={{ width: '100%', maxWidth: '400px',  transform: 'scaleX(-1)' }} />
           <button
-            className='bg-[var(--wrapperColor)] cursor-pointer rounded-2xl p-3'
+            className='bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3'
              type='button' onClick={() => setPhoto(null)}>
               <RefreshCcwIcon/>
           </button>
