@@ -285,17 +285,18 @@ function Dashboard({children} : {children: ReactNode}) {
               <XIcon size={33} className="text-[var(--textColor)] ease-in duration-200 cursor-pointer transform transition-all hover:scale-150"/>
            </button>
 
-           {cameraClick && 
-           <div className={`absolute backdrop-blur-sm bg-blue-500/15 z-50 inset-0 flex justify-center items-center ${cameraClick ? "" : "hidden"}`}>
+           {cameraClick? 
+           <div className={`absolute backdrop-blur-sm bg-blue-500/15 z-10 inset-0 flex justify-center items-start ${cameraClick ? "" : "hidden"}`}>
             <button
              type="button"
              onClick={() => setCameraClick(false)}
-              className="fixed top-4 left-4 cursor-pointer">
+              className="fixed top-4 z-50 left-4 cursor-pointer">
                 <XIcon strokeWidth={2} size={35}/>
             </button>
             <CameraCapture />
-          </div>
-           }
+          </div> 
+          : ''
+          }
       </div>
     </div>
    
