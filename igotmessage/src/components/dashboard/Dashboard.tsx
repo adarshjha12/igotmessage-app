@@ -38,11 +38,11 @@ function Dashboard({children} : {children: ReactNode}) {
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className=" down-slide border-b-2 border-[var(--shadowBorder)] sm:absolute sm:top-0 sm:left-0 w-full  sm:border-none flex sm:justify-center justify-between py-2 px-3 items-center ">
+            <header className=" down-slide border-b-2 border-[var(--shadowBorder)] sm:absolute sm:top-0 sm:left-0 w-full  sm:border-none flex sm:justify-center justify-between py-2 px-2 items-center ">
            
               <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
-             <div className="flex gap-1.5 justify-center">
+             <div className="flex gap-4.5 justify-center">
                <div className="relative">
                 <div className={`flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? '' : 'opacity-0  w-18 px-0 sm:opacity-100 sm:w-full sm:px-2'}`}>
                 <Search size={33} className=""/>

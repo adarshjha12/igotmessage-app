@@ -69,20 +69,23 @@ navigator.mediaDevices
 
       {photo && (
         <div className='absolute inset-0 font-exo2 mt-4 flex flex-col justify-start gap-2 items-center'>
-          <div className='flex w-full justify-evenly gap-3'>
+          <div className='flex w-full justify-center gap-8'>
 
-
-            <button type='button' onClick={() => setPhoto(null)}>
+            <button type='button'
+            className='bg-blue-500 text-xl font-semibold active:bg-blue-800 active:scale-90 cursor-pointer rounded-sm py-2 px-3'
+            onClick={() => setPhoto(null)}>
               Add to Story
             </button>
 
-            <button type='button' onClick={() => setPhoto(null)}>
+            <button
+            className='bg-gradient-to-br from-green-500 to to-green-800 text-xl font-semibold active:bg-green-800   active:scale-90 cursor-pointer rounded-sm py-2 px-3'
+             type='button' onClick={() => setPhoto(null)}>
               Add Post
             </button>
           </div>
           <img src={photo} alt="Captured" style={{ width: '100%', maxWidth: '400px',  transform: 'scaleX(-1)' }} />
           <button
-            className='bg-[var(--wrapperColor)] rounded-2xl p-3'
+            className='bg-[var(--wrapperColor)] cursor-pointer rounded-2xl p-3'
              type='button' onClick={() => setPhoto(null)}>
               <RefreshCcwIcon/>
           </button>
