@@ -1,5 +1,5 @@
 'use client'
-import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft } from "lucide-react";
+import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
@@ -140,6 +140,18 @@ function Dashboard({children} : {children: ReactNode}) {
                   </button>
 
                   <button 
+                  onClick={() => handleNavClick('/reels')}
+                  type="button"
+                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  <PlaySquareIcon
+                  size={33}
+                  strokeWidth={1.5}
+                  fill={pathname === '/reels'? (isDark? 'white' : '') : (isDark? '' : 'white')}
+                  />
+                  
+                  </button>
+
+                  <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
                   className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
@@ -230,6 +242,18 @@ function Dashboard({children} : {children: ReactNode}) {
                   fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
                    <div className=" border-y-2 border-dashed border-[var(--bgColor)] absolute w-[15px] h-[8px] left-[25%] bottom-3"></div>
+                  </button>
+
+                  <button 
+                  onClick={() => handleNavClick('/reels')}
+                  type="button"
+                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  <PlaySquareIcon
+                  size={33}
+                  strokeWidth={1.5}
+                  fill={pathname === '/reels'? (isDark? 'white' : '') : (isDark? '' : 'white')}
+                  />
+                  
                   </button>
 
                   <button 

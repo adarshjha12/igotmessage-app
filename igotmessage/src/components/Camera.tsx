@@ -1,6 +1,6 @@
 'use client'; // Needed in Next.js 13/14 for client-side components
 
-import { RefreshCcwIcon } from 'lucide-react';
+import { RefreshCcwIcon, SwitchCamera } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -8,14 +8,16 @@ export default function CameraCapture() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [photo, setPhoto] = useState<null | string>(null);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user")
   const router = useRouter()
 
   useEffect(() => {
     if (navigator.mediaDevices?.getUserMedia && videoRef.current) {
       let stream: MediaStream
-      async function enableVideo() {
+
+      async function enableVideo(mode : 'user' | 'environment') {
           try {
-            stream = await navigator.mediaDevices.getUserMedia({video: true})
+            stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: mode}})
             if (videoRef.current) {
               videoRef.current.srcObject = stream
             }
@@ -23,8 +25,7 @@ export default function CameraCapture() {
             console.log(error);
         }
        }
-
-       enableVideo()
+       enableVideo(facingMode)
 
        return (() => {
          if (stream) {
@@ -32,7 +33,12 @@ export default function CameraCapture() {
          }
        })
     }
-  }, []);
+  }, [facingMode]);
+
+  function handleCameraMode() {
+    setFacingMode(facingMode === "user"? "environment": "user")
+  }
+
 
 navigator.mediaDevices
   const capture = () => {
@@ -57,12 +63,17 @@ navigator.mediaDevices
   return (
     <div className='flex w-full relative right-slide min-h-screen sm:justify-center justify-start items-center mt-2 flex-col'>
       <div className='flex flex-col justify-center items-center  relative'>
-        <video className={`${photo? 'hidden' : 'rounded-xl'}`} ref={videoRef} autoPlay playsInline style={{ width: '100%', maxWidth: '400px', height: '100%', minHeight: '100%', transform: 'scaleX(-1)' }} />
+        <video className={`${photo? 'hidden' : 'rounded-xl'}`} ref={videoRef} autoPlay playsInline muted style={{ width: '100%', maxWidth: '400px', height: '100%', minHeight: '100%', transform: 'scaleX(-1)' }} />
 
         <div className='flex w-full py-2 sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30'>
+        
           <button className={`w-[60px] cursor-pointer  rounded-full h-[60px] grid place-content-center border-2 ${photo? 'hidden' : ''}`} onClick={capture}>
           <div className='w-[50px] h-[50px] rounded-full bg-white'></div>
-        </button>
+          </button>
+          
+          <button onClick={handleCameraMode} className='ml-3 cursor-pointer active:scale-75 active:bg-white/30 ' type="button">
+            <SwitchCamera/>
+          </button>
         </div>
       </div>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -81,12 +92,12 @@ navigator.mediaDevices
             </button>
 
             <button
-            className='bg-gradient-to-br text-white from-green-500 to to-green-800 text-xl font-semibold active:bg-green-800   active:scale-90 cursor-pointer rounded-xl py-2 px-3'
+            className='bg-gradient-to-br text-white from-green-500 to to-green-800 text-xl font-semibold active:bg-green-800 active:scale-90 cursor-pointer rounded-xl py-2 px-3'
              type='button' onClick={() => setPhoto(null)}>
               Add Post
             </button>
           </div>
-          <img src={photo} alt="Captured" style={{ width: '100%', maxWidth: '400px',  transform: 'scaleX(-1)' }} />
+          <img src={photo} className='rounded-xl' alt="Captured" style={{ width: '100%', maxWidth: '400px',  transform: 'scaleX(-1)' }} />
           <button
             className='bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3'
              type='button' onClick={() => setPhoto(null)}>

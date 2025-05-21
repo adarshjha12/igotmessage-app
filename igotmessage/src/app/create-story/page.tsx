@@ -31,13 +31,13 @@ function Page() {
 
   return (
     <div className='w-full relative p-5 min-h-screen flex flex-col items-center justify-between gap-2.5 bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)] '>
-      <form action="" className='flex gap-3'>
+      <form action="" className='flex w-full justify-evenly gap-1'>
         <button
          type='button'
          onClick={() => (setImageStoredLocally(imagePreview))}
-          className='bg-[var(--wrapperColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-3 py-2 rounded-xl flex justify-center shadow-[0_1px_1px_1px_rgba(0,0,0,0.3)] border-[var(--borderColor)] active:scale-75 items-center'>
+          className=' cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] active:scale-75 items-center'>
           <div className='flex justify-center items-center gap-2'>
-            <div className='font-semibold text-xl font-exo2'>Choose Image</div>
+            <div className=' text-sm font-exo2'>Choose Image</div>
             <ImagePlusIcon size={33} fill={isDark? 'green' : 'orange'} strokeWidth={1} className={`text-[var(--textColor)]`}/>            
           </div>
           <input
@@ -48,8 +48,8 @@ function Page() {
            className='absolute w-full opacity-0 cursor-pointer inset-0 '/>
         </button>
 
-        <button type='button' className='bg-[var(--wrapperColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-3 py-2 rounded-xl flex justify-center shadow-[0_1px_1px_1px_rgba(0,0,0,0.3)] border-[var(--borderColor)] items-center active:scale-75 gap-2'> 
-          <div className='font-semibold text-xl font-exo2'>Select Music</div>
+        <button type='button' className=' cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] items-center active:scale-75 gap-2'> 
+          <div className=' text-sm font-exo2'>Select Music</div>
           <Music size={33} fill={isDark? '#ac05f9' : '#ac05f9'} strokeWidth={1} className={`text-[var(--textColor)]`}/>
         </button>
 
