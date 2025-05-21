@@ -63,14 +63,14 @@ navigator.mediaDevices
   return (
     <div className='flex w-full relative right-slide min-h-screen sm:justify-center justify-start items-center mt-2 flex-col'>
       <div className='flex flex-col justify-center items-center  relative'>
-        <video className={`${photo? 'hidden' : 'rounded-xl'}`} ref={videoRef} autoPlay playsInline muted style={{ width: '100%', maxWidth: '400px', height: '100%', minHeight: '100%', transform: 'scaleX(-1)' }} />
+        <video className={`transform ${photo? 'hidden' : 'rounded-xl'} -scale-x-100`} ref={videoRef} autoPlay playsInline muted style={{ width: '100%', maxWidth: '400px', height: '100%', minHeight: '100%' }} />
 
-        <div className='flex w-full py-2 sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30'>
+        <div className='flex w-full py-2 right-slide sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30'>
         
           <button className={`w-[60px] cursor-pointer  rounded-full h-[60px] grid place-content-center border-2 ${photo? 'hidden' : ''}`} onClick={capture}>
           <div className='w-[50px] h-[50px] rounded-full bg-white'></div>
           </button>
-          
+
           <button onClick={handleCameraMode} className='ml-3 cursor-pointer active:scale-75 active:bg-white/30 ' type="button">
             <SwitchCamera/>
           </button>
@@ -97,7 +97,7 @@ navigator.mediaDevices
               Add Post
             </button>
           </div>
-          <img src={photo} className='rounded-xl' alt="Captured" style={{ width: '100%', maxWidth: '400px',  transform: 'scaleX(-1)' }} />
+          <img src={photo} className={`rounded-xl -scale-x-100`} alt="Captured" style={{ width: '100%', maxWidth: '400px' }} />
           <button
             className='bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3'
              type='button' onClick={() => setPhoto(null)}>

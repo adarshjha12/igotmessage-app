@@ -34,7 +34,7 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-full min-h-screen bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full min-h-screen bg-gradient-to-b bg-[length:400%_100%] from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr] items-center sm:items-start">
             {/* header starts here */}
@@ -142,12 +142,12 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  className="font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
                   <PlaySquareIcon
-                  size={33}
+                  className="mr-2"
                   strokeWidth={1.5}
                   fill={pathname === '/reels'? (isDark? 'white' : '') : (isDark? '' : 'white')}
-                  />
+                  /> Reels
                   
                   </button>
 
@@ -313,9 +313,10 @@ function Dashboard({children} : {children: ReactNode}) {
            <div className={`absolute backdrop-blur-sm bg-[var(--bgColor)]/5 z-10 inset-0 flex justify-center items-start ${cameraClick ? "" : "hidden"}`}>
             <button
              type="button"
+             
              onClick={() => setCameraClick(false)}
-              className="fixed top-2 z-50 left-2 active:scale-75 rounded-full  border-[var(--borderColor)] border-2 text-[var(--textColor)] cursor-pointer">
-                <ArrowLeft strokeWidth={2} size={35}/>
+              className="fixed bg-[var(--wrapperColor)] top-2 z-50 left-2 active:scale-75 rounded-full border-[var(--borderColor)] border-2 text-red-500 cursor-pointer">
+                <ArrowLeft  strokeWidth={2} size={55}/>
             </button>
             <CameraCapture />
           </div> 
