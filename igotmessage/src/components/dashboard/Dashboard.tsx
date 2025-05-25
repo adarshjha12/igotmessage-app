@@ -1,21 +1,20 @@
 'use client'
-import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle } from "lucide-react";
+import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
 import Brand from "@/components/Brand";
 import { useRouter, usePathname } from "next/navigation";
 import Panel from "../Panel";
-import {  setPanelOpen } from '@/features/authSlice'
+import {  setPanelOpen } from '@/features/activitySlice'
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import CameraCapture from "../Camera";
 
 function Dashboard({children} : {children: ReactNode}) {
 
-  const isDark = useSelector( (state : RootState) => state.auth.isDark)
-  const panelOpen = useSelector( (state : RootState) => state.auth.panelOpen)
-  const [heartClicked, setHeartClicked] = useState(false)
+  const isDark = useSelector( (state : RootState) => state.activity.isDark)
+  const panelOpen = useSelector( (state : RootState) => state.activity.panelOpen)
   const [searchInput, setSearchInput] = useState('')
   const [searchInputClick, setSearchInputClick] = useState(false)
   const [cameraClick, setCameraClick] = useState(false)
@@ -34,11 +33,11 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b bg-[length:400%_100%] from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full min-h-screen bg-gradient-to-r from-[var(--bgColor)] to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
-          <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr] items-center sm:items-start">
+          <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className=" down-slide border-b-2 border-[var(--shadowBorder)] sm:absolute sm:top-0 sm:left-0 w-full  sm:border-none flex sm:justify-center justify-between py-2 px-2 items-center ">
+            <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky top-0 border-b-2 border-[var(--shadowBorder)] w-full  sm:border-none flex justify-between py-2 px-2 items-center ">
            
               <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
@@ -96,8 +95,8 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* header ends here */}
 
             {/* nav starts here */}
-            <nav className="px-4 h-screen  border-[var(--borderColor)] right-slide hidden sm:flex border-r-4 flex-col gap-3 sm:w-fit justify-start ">
-                <p className="font-montez text-3xl pb-4 font-[600] ">IGotMessage</p>
+            <nav className="px-4 h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit justify-start ">
+                <p className="font-montez z-10 text-3xl pb-4 font-[600] ">IGotMessage</p>
 
                 <button
                   onClick={() => handleNavClick('/dash/home')}
@@ -114,9 +113,24 @@ function Dashboard({children} : {children: ReactNode}) {
                   </button>
 
                   <button
+                  onClick={
+                    () => {
+                      setCameraClick(prev => !prev)
+                    }
+                  }
+                  className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
+                  type="button">
+                    <div>
+                      <CameraIcon strokeWidth={1.5}
+                      className="mr-1 inline"
+                      /> Camera
+                    </div>
+                  </button>
+
+                  <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
+                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <PlusSquare
                   strokeWidth={1.5}
                   fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
@@ -128,7 +142,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className=" font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
+                  className=" font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <div className="relative">
                     <MessageCircleIcon
                     strokeWidth={1.5}
@@ -142,7 +156,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
+                  className="font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <PlaySquareIcon
                   className="mr-2"
                   strokeWidth={1.5}
@@ -154,7 +168,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
+                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <VideoIcon
                   className="mr-2"
                   strokeWidth={1.5}
@@ -165,7 +179,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-75">
+                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <User2
                   className="mr-2"
                   strokeWidth={1.5}
@@ -176,7 +190,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => (dispatch(setPanelOpen(!panelOpen)))}
                   type="button" 
-                  className="flex active:bg-[var(--wrapperColor)] px-3 py-1 rounded-full transition duration-100 active:rounded-full active:scale-75 font-semibold cursor-pointer z-10">
+                  className="flex active:bg-[var(--wrapperColor)] px-3 py-1 rounded-full transition duration-100 active:rounded-full active:scale-90 font-semibold cursor-pointer z-10">
                     <div className={`${panelOpen? 'flex gap-2 opacity-100 scale-100' : 'opacity-0 scale-0 hidden'}`}>
                       <XIcon
                         className={` ${
@@ -196,7 +210,7 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* nav ends here */}
 
             {/* main starts here */}
-            <main className="pb-10 sm:p-2 my-2.5 sm:mt-14">
+            <main className="pb-10 sm:px-2  ">
               {children}
             </main>
             {/* main ends here */}
@@ -206,7 +220,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/home')}
                   type="button"
-                  className="flex relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  className="flex relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                     <Home 
                     size={33}
                     strokeWidth={1.5}
@@ -225,7 +239,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <PlusSquare
                   size={33}
                   strokeWidth={1.5}
-                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')} active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75 `}
+                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')} active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90 `}
 
                   fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   
@@ -235,7 +249,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                   <MessageCircleIcon
                   size={33}
                   strokeWidth={1.5}
@@ -247,7 +261,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                   <PlaySquareIcon
                   size={33}
                   strokeWidth={1.5}
@@ -259,7 +273,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                   <VideoIcon
                   size={33}
                   strokeWidth={1.5}
@@ -270,7 +284,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75`}>
+                  className={`flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90`}>
                   <User2
                   size={33}
                   strokeWidth={1.5}
@@ -280,7 +294,7 @@ function Dashboard({children} : {children: ReactNode}) {
 
                   <button
                   type="button" 
-                  className="flex gap-1 cursor-pointer z-10 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75">
+                  className="flex gap-1 cursor-pointer z-10 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                     {panelOpen ? 
                     <XIcon
                     onClick={() => {
@@ -300,10 +314,40 @@ function Dashboard({children} : {children: ReactNode}) {
                 </div>
                 
               </nav>
-          </div>
-          <Panel/>
+
+              {/* third column starts here */}
+
+              <div className="">
+                <div>
+                    <div className={`flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? '' : 'opacity-0  w-18 px-0 sm:opacity-100 sm:w-full sm:px-2'}`}>
+                    <Search size={33} className=""/>
+                    <input 
+                    value={searchInput} 
+                    onClick={() => setSearchInputClick(prev => !prev)}
+                    onBlur={() => {
+                      setSearchInputClick(prev => !prev)
+                      setSearchInput('')
+                    }}
+                    onChange={(e) => setSearchInput(e.target.value)} 
+                    type="search" 
+                    placeholder="Search" 
+                    className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
+                    
+                    </div>
+                    <Search size={33} className={`absolute top-0.5 right-0 pointer-events-none active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-125 ${searchInputClick? 'opacity-0' : 'sm:opacity-0'}`}/>
+                  </div>
+                </div>
+              </div>
+
+            {panelOpen && (
+              <div
+                onClick={() => dispatch(setPanelOpen(false))}
+                className="fixed inset-0 bg-black/50 z-30"
+              ></div>
+            )}
+           <Panel/>
            <button
-            className={` ease-in duration-500 cursor-pointer transform transition-all z-40 ${panelOpen? 'flex  rotate-180 scale-100 opacity-100' : 'opacity-0 scale-0'} fixed bottom-3 right-3`}
+            className={` ease-in duration-500 cursor-pointer transform transition-all z-50 ${panelOpen? 'flex  rotate-180 scale-100 opacity-100' : 'opacity-0 scale-0'} fixed bottom-3 right-3`}
             type='button'
             onClick={() => dispatch(setPanelOpen(false))}>
               <XIcon size={33} className="text-[var(--textColor)] ease-in duration-200 cursor-pointer transform transition-all hover:scale-150"/>
@@ -315,7 +359,7 @@ function Dashboard({children} : {children: ReactNode}) {
              type="button"
              
              onClick={() => setCameraClick(false)}
-              className="fixed bg-[var(--wrapperColor)] top-2 z-50 left-2 active:scale-75 rounded-full border-[var(--borderColor)] border-2 text-red-500 cursor-pointer">
+              className="fixed bg-[var(--wrapperColor)] top-2 z-50 left-2 active:scale-90 rounded-full border-[var(--borderColor)] border-2 text-red-500 cursor-pointer">
                 <ArrowLeft  strokeWidth={2} size={55}/>
             </button>
             <CameraCapture />

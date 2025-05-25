@@ -2,7 +2,7 @@
 import React, { ReactNode, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import { setDarkMode } from '@/features/authSlice'
+import { setDarkMode } from '@/features/activitySlice'
 import { useEffect } from 'react'
 
 function ThemeProvider({children} : {children: ReactNode}) {

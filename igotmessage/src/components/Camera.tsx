@@ -85,7 +85,7 @@ navigator.mediaDevices
             <button type='button'
             className='bg-blue-500 text-xl text-white font-semibold active:bg-blue-800 active:scale-90 cursor-pointer rounded-xl py-2 px-3'
             onClick={() => {
-              localStorage.setItem('storyImage', photo)
+              
               router.push('/create-story')
               }}>
               Add to Story
