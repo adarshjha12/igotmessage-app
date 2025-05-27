@@ -26,7 +26,7 @@ export default function HomePage() {
             <button
              type='button' 
              onClick={() => router.push('/login')}
-             className='py-1 text-2xl tracking-widest text-white cursor-pointer font-semibold px-4 rounded-full active:scale-75 hover:from-green-400 hover:to-green-700 bg-gradient-to-r from-blue-500 to-blue-700'>
+             className='py-1 text-2xl flex items-center border-1 border-[var(--borderColor)] tracking-widest text-white cursor-pointer font-semibold px-4 rounded-full active:scale-75 hover:from-green-400 hover:to-green-700 bg-gradient-to-r from-blue-500 to-blue-700'>
               Continue to 
               <span className='font-montez font-semibold ml-3'>IGotMessage</span>
             </button>

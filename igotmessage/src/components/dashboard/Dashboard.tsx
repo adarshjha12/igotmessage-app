@@ -35,11 +35,11 @@ function Dashboard({children} : {children: ReactNode}) {
   return (
     <div className="w-full min-h-screen bg-gradient-to-r from-[var(--bgColor)] to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
-          <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_2fr] items-center sm:items-start">
+          <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky top-0 border-b-2 border-[var(--shadowBorder)] w-full  sm:border-none flex justify-between py-2 px-2 items-center ">
+            <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
            
-              <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
+              <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
              <div className="flex gap-4.5 justify-center">
                <div className="relative">
@@ -63,7 +63,7 @@ function Dashboard({children} : {children: ReactNode}) {
                 <button
                 onClick={
                   () => {
-                    handleNavClick('/dash/likes')
+                    handleNavClick('/dash/notifications')
                   }
                 }
                 className={`cursor-pointer ${searchInputClick? 'hidden sm:inline' : 'inline'} active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-125`}
@@ -71,7 +71,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <div>
                     <Heart size={33} className=""
                     strokeWidth={1.5}
-                     fill={pathname === '/dash/likes'? (isDark? 'red' : 'red') : (isDark? '' : 'white')}
+                     fill={pathname === '/dash/notifications'? (isDark? 'red' : 'red') : (isDark? 'transparent' : 'transparent')}
                     />
                 </div>
               </button>
@@ -94,8 +94,8 @@ function Dashboard({children} : {children: ReactNode}) {
             </header>
             {/* header ends here */}
 
-            {/* nav starts here */}
-            <nav className="px-4 h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit justify-start ">
+            {/* nav for desktop starts here (1st column for desktop) */}
+            <nav className="px-4 h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit justify-start sticky top-0">
                 <p className="font-montez z-10 text-3xl pb-4 font-[600] ">IGotMessage</p>
 
                 <button
@@ -142,11 +142,11 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className=" font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
-                  <div className="relative">
+                  className=" flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  <div className="relative flex">
                     <MessageCircleIcon
                     strokeWidth={1.5}
-                    className="mr-1 inline"
+                    className="mr-2 "
                     fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                     /> Messages
                     <div className=" border-y-2 border-dashed border-[var(--bgColor)] absolute w-[11px] h-[6px] left-[5%] bottom-2"></div>
@@ -174,6 +174,21 @@ function Dashboard({children} : {children: ReactNode}) {
                   strokeWidth={1.5}
                   fill={pathname === '/dash/calls'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   /> Calls
+                  </button>
+                  <button
+                    onClick={
+                      () => {
+                        handleNavClick('/dash/notifications')
+                      }
+                    }
+                    className={`flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
+                    type="button">
+                      <div className="flex">
+                        <Heart className=" mr-2"
+                        strokeWidth={1.5}
+                        fill={pathname === '/dash/notifications'? (isDark? 'red' : 'red') : (isDark? '' : 'white')}
+                        /> Notifications
+                    </div>
                   </button>
 
                   <button
@@ -207,14 +222,15 @@ function Dashboard({children} : {children: ReactNode}) {
                   </button>
 
             </nav>
-            {/* nav ends here */}
+            {/* nav for desktop ends here */}
 
-            {/* main starts here */}
-            <main className="pb-10 sm:px-2  ">
+            {/* main starts here (2nd column for desktop) */}
+            <main className="pb-10 sm:px-10 px-3 flex flex-col justify-center items-center ">
               {children}
             </main>
             {/* main ends here */}
             
+            {/* nav for mobile starts here */}
             <nav className="w-full up-slide bg-[var(--bgColor)] border-y-1 py-3 border-[var(--shadowBorder)] px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
@@ -314,10 +330,10 @@ function Dashboard({children} : {children: ReactNode}) {
                 </div>
                 
               </nav>
+              {/* nav for mobile ends here */}
 
-              {/* third column starts here */}
-
-              <div className="">
+              {/* third column for desktop starts here */} 
+              <div className="sticky top-2">
                 <div>
                     <div className={`flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? '' : 'opacity-0  w-18 px-0 sm:opacity-100 sm:w-full sm:px-2'}`}>
                     <Search size={33} className=""/>
