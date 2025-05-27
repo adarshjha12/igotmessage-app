@@ -1,5 +1,5 @@
 'use client'
-import { Home, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle } from "lucide-react";
+import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
@@ -37,7 +37,7 @@ function Dashboard({children} : {children: ReactNode}) {
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
             {/* header starts here */}
-            <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
+            <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
            
               <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
               {/* <Brand scaleSm={true} /> */}
@@ -103,7 +103,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   type="button"
                   className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}>
                     <div className="relative">
-                      <Home 
+                      <LucideHome 
                       strokeWidth={1.5}
                       className="mr-1 inline"
                       fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
@@ -231,18 +231,19 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* main ends here */}
             
             {/* nav for mobile starts here */}
-            <nav className="w-full up-slide bg-[var(--bgColor)] border-y-1 py-3 border-[var(--shadowBorder)] px-4 pb-2 sm:hidden flex fixed left-0 bottom-0 ">
+
+            <nav className="w-full up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/home')}
                   type="button"
-                  className="flex relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
-                    <Home 
+                  className="flex relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] p-2 transition duration-100 rounded-full active:scale-90">
+                    <LucideHome 
                     size={33}
                     strokeWidth={1.5}
                     fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                     />
-                    <div className="bg-[var(--bgColor)] rounded-xs absolute w-[15px] h-[16px] left-[28%] bottom-1.5">
+                    <div className={`bg-[var(--bgColor)] border-2 border-[var(--borderColor)] absolute w-[6px] h-[16px] left-[44%] bottom-3 ${pathname === '/dash/home'? 'border-none' : ''}`}>
 
                     </div>
 
@@ -251,11 +252,11 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className="flex gap-1 cursor-pointer">
+                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90 p-2">
                   <PlusSquare
                   size={33}
                   strokeWidth={1.5}
-                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')} active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90 `}
+                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')} `}
 
                   fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   
@@ -265,19 +266,20 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
-                  <MessageCircleIcon
+                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 p-2 rounded-full active:scale-90">
+                  <MessageSquareCodeIcon
                   size={33}
                   strokeWidth={1.5}
+                  className="-scale-x-100"
                   fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
-                   <div className=" border-y-2 border-dashed border-[var(--bgColor)] absolute w-[15px] h-[8px] left-[25%] bottom-3"></div>
+                   <div className={` border-y-2 border-dashed border-[var(--textColor)] absolute w-[15px] h-[8px] left-[35%] bottom-6 ${pathname === '/dash/chats'? (isDark? 'border-black' : 'border-white') : ''}`}></div>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
+                  className="flex gap-1 relative cursor-pointer p-2 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                   <PlaySquareIcon
                   size={33}
                   strokeWidth={1.5}
@@ -289,7 +291,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
+                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90">
                   <VideoIcon
                   size={33}
                   strokeWidth={1.5}
@@ -300,7 +302,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90`}>
+                  className={`flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90`}>
                   <User2
                   size={33}
                   strokeWidth={1.5}
@@ -310,7 +312,7 @@ function Dashboard({children} : {children: ReactNode}) {
 
                   <button
                   type="button" 
-                  className="flex gap-1 cursor-pointer z-10 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
+                  className="flex gap-1 cursor-pointer z-10 active:bg-[var(--wrapperColor)] transition p-2 duration-100 rounded-full active:scale-90">
                     {panelOpen ? 
                     <XIcon
                     onClick={() => {
