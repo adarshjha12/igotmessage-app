@@ -32,7 +32,7 @@ function Panel() {
 `}> 
         <div className='flex flex-col w-full gap-8'>
             <div className='flex w-fit justify-start font-bold gap-2 text-[var(--textColor)] border-1 py-1 rounded-md bg-[var(--wrapperColor)] border-[var(--borderColor)] px-3'>
-              <p className=''>Dark mode </p>
+              <p className=''>Dark modeee </p>
               {isDark?
                <MoonIcon
                fill='#393939'
