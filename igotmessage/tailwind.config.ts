@@ -8,7 +8,15 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['var(--font-geist-sans)'],
+        mono: ['var(--font-geist-mono)'],
+        montez: ['var(--font-montez)'],
+        exo2: ['var(--font-exo2)'],
+        audiowide: ['var(--font-audioWide)'],
+      },
+    },
   },
   plugins: [],
 } satisfies Config;

@@ -12,9 +12,9 @@ export default function HomePage() {
         <div className='flex left-slide justify-center items-center flex-wrap gap-12 border-1 border-[var(--borderColor)] rounded-xl my-8 '>
           <div className='flex flex-col gap-8 justify-center items-center'>
             <div className=' rounded-full p-4 flex justify-center'>
-              <p className='text-4xl sm:text-9xl  inline text-center bg-gradient-to-r from-red-700 via-blue-600 font-audioWide to-pink-700 bg-clip-text text-transparent font-[1000]'>Grand Welcome!<Heart className='inline ml-2 text-red-500' size={55} strokeWidth={2}/></p>
+              <p className='text-4xl sm:text-9xl  inline text-center bg-gradient-to-r from-red-700 via-blue-600  to-pink-700 bg-clip-text text-transparent font-extrabold'>Grand Welcome!<Heart className='inline ml-2 text-red-500' size={55} strokeWidth={2}/></p>
             </div>
-            <p className='text-4xl font-montez text-red-400 font-semibold'>From</p>
+                <p className='text-4xl font-[var(--font-montez)] font-montez text-red-400'>From </p>
             <div className='flex gap-6 items-center'>
               <Brand animate={true} />
               <p className='text-3xl sm:text-5xl font-montez font-bold'>IGotMessage</p>

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 function Page() {
 
-    const isDark = useSelector( (state : RootState) => state.auth.isDark)
+    const isDark = useSelector( (state : RootState) => state.activity.isDark)
     const router = useRouter()
 
   return (
