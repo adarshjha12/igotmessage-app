@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
 function Page() {
-    const isDark = useSelector( (state : RootState) => state.auth.isDark)
+    const isDark = useSelector( (state : RootState) => state.activity.isDark)
     const [imagePreview, setImagePreview] = useState<undefined | string>()
     const [imageStoredLocally, setImageStoredLocally] = useState<string | undefined>()
 
