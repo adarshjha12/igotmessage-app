@@ -3,6 +3,7 @@
 @import 'swiper/css/effect-coverflow';
 @import 'swiper/css/navigation';
 @import 'swiper/css/pagination';
+@import "tw-animate-css";
 
 
 @theme {
@@ -22,7 +23,7 @@
   --wrapperColor: #e4dfdf;
   --shadowBorder: #c6c2c2;
   --iconColor: #f20e0e;
-  --test: #ac05f9;
+  --highlightColor: #91e970;
 }
 
 .dark {
@@ -33,6 +34,8 @@
   --wrapperColor: #3e3c3c;
   --iconColor: #feca0e;
   --shadowBorder: #494949;
+  --highlightColor: #1bba29;
+
 }
 
 html {
@@ -46,8 +49,6 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: var(--foreground);
-  background: var(--background);
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -61,6 +62,7 @@ input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+    appearance: textfield;
     -moz-appearance: textfield;
 }
 
@@ -71,7 +73,6 @@ input[type=number]::-webkit-inner-spin-button {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
-
 
 @keyframes leftSlide {
   0% {
@@ -139,8 +140,6 @@ input[type=number]::-webkit-inner-spin-button {
 .rotate-slide {
   animation: rotate 0.3s linear infinite ;
 }
-
-
 
 @keyframes panel {
   0% {

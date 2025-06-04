@@ -1,5 +1,8 @@
 'use client'
-import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, HomeIcon, VideoOffIcon, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle } from "lucide-react";
+import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building, AppWindow, PanelLeft } from "lucide-react";
+
+import {  HomeIcon } from "@heroicons/react/24/outline"
+
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
 import Toggle from "@/components/Toggle";
@@ -33,7 +36,7 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-full min-h-screen bg-gradient-to-r from-[var(--bgColor)] to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full  min-h-screen bg-gradient-to-r from-[var(--bgColor)] to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
             {/* header starts here */}
@@ -101,14 +104,17 @@ function Dashboard({children} : {children: ReactNode}) {
                 <button
                   onClick={() => handleNavClick('/dash/home')}
                   type="button"
-                  className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}>
+                  onh
+                  className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--highlightColor)] transition duration-100 active:rounded-full active:scale-90`}>
                     <div className="relative">
-                      <LucideHome 
+                      <PanelLeft 
                       strokeWidth={1.5}
-                      className="mr-1 inline"
-                      fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
+                      className="mr-1 h-7 w-7 inline"
+                      scale={1}
+                      fill="none"
+                      // fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                       /> Home
-                      <div className="bg-[var(--bgColor)] rounded-xs absolute w-[11px] h-[10px] left-[8%] bottom-1"></div>
+                      {/* <div className="bg-[var(--bgColor)] rounded-xs absolute w-[11px] h-[10px] left-[8%] bottom-1"></div> */}
                     </div>
                   </button>
 
@@ -118,7 +124,7 @@ function Dashboard({children} : {children: ReactNode}) {
                       setCameraClick(prev => !prev)
                     }
                   }
-                  className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
+                  className={`flex font-semibold hover:bg-[var(--wrapperColor)] ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
                   type="button">
                     <div>
                       <CameraIcon strokeWidth={1.5}
@@ -130,7 +136,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className="flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <PlusSquare
                   strokeWidth={1.5}
                   fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
@@ -142,7 +148,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className=" flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className=" flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <div className="relative flex">
                     <MessageCircleIcon
                     strokeWidth={1.5}
@@ -156,7 +162,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="font-semibold px-3 py-1 rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className="font-semibold px-3 py-1 hover:bg-[var(--wrapperColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <PlaySquareIcon
                   className="mr-2"
                   strokeWidth={1.5}
@@ -168,7 +174,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className="flex font-semibold px-3 hover:bg-[var(--wrapperColor)] py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <VideoIcon
                   className="mr-2"
                   strokeWidth={1.5}
@@ -181,7 +187,7 @@ function Dashboard({children} : {children: ReactNode}) {
                         handleNavClick('/dash/notifications')
                       }
                     }
-                    className={`flex font-semibold px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
+                    className={`flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
                     type="button">
                       <div className="flex">
                         <Heart className=" mr-2"
@@ -194,7 +200,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className="flex font-semibold px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className="flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <User2
                   className="mr-2"
                   strokeWidth={1.5}
@@ -205,7 +211,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => (dispatch(setPanelOpen(!panelOpen)))}
                   type="button" 
-                  className="flex active:bg-[var(--wrapperColor)] px-3 py-1 rounded-full transition duration-100 active:rounded-full active:scale-90 font-semibold cursor-pointer z-10">
+                  className="flex active:bg-[var(--wrapperColor)] hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full transition duration-100 active:rounded-full active:scale-90 font-semibold cursor-pointer z-10">
                     <div className={`${panelOpen? 'flex gap-2 opacity-100 scale-100' : 'opacity-0 scale-0 hidden'}`}>
                       <XIcon
                         className={` ${
