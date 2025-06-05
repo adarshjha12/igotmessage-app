@@ -6,12 +6,13 @@ interface BrandProps {
   scaleSm?: boolean,
   scaleMd?: boolean,
   scaleLg?: boolean,
-  color?: string
+  color?: string,
+  className?: string
 }
 
-function Brand({animate, scaleXs, scaleSm, scaleMd, scaleLg, color} : BrandProps) {
+function Brand({animate, scaleXs, scaleSm, scaleMd, scaleLg, color, className} : BrandProps) {
   return (
-    <div>
+    <div className={className}>
         <div className={`border-2 w-[60px] ${scaleSm ? `scale-75` : ''} ${scaleXs ? `scale-50` : ''} ${scaleMd ? `scale-150` : ''} ${scaleLg ? `scale-200` : ''} flex justify-center items-center h-[60px] border-${color} rounded-[16px] p-2`}>
             <div className={`w-[30px] ${animate ? 'animate-bounce' : ''} border-b-3 border-x-[1px] relative flex flex-col items-center justify-center h-[50px] rounded-sm border-2 border-${color}`}>
                 <div className={`w-[12px] h-[4px] absolute left-[9px] -top-[1px] rounded-[5px] border-1  bg-${color} border-${color} `}>

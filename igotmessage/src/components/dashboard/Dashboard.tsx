@@ -1,7 +1,7 @@
 'use client'
-import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building, AppWindow, PanelLeft } from "lucide-react";
+import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building,  AppWindow, PanelLeft } from "lucide-react";
 
-import {  HomeIcon } from "@heroicons/react/24/outline"
+import {  ChatBubbleLeftIcon, HomeIcon } from "@heroicons/react/24/outline"
 
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
@@ -21,6 +21,8 @@ function Dashboard({children} : {children: ReactNode}) {
   const [searchInput, setSearchInput] = useState('')
   const [searchInputClick, setSearchInputClick] = useState(false)
   const [cameraClick, setCameraClick] = useState(false)
+  const [navHover, setNavHover] = useState(false)
+console.log(navHover);
 
   const router = useRouter()
   const pathname = usePathname()
@@ -36,7 +38,7 @@ function Dashboard({children} : {children: ReactNode}) {
   }
   
   return (
-    <div className="w-full  min-h-screen bg-gradient-to-r from-[var(--bgColor)] to-[var(--inputBg)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full  min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
             {/* header starts here */}
@@ -98,23 +100,22 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* header ends here */}
 
             {/* nav for desktop starts here (1st column for desktop) */}
-            <nav className="px-4 h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit justify-start sticky top-0">
+          <nav onMouseEnter={() => setNavHover(true)} onMouseLeave={() => setNavHover(false)} className={`px-4  h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit text-[var(--textColor)] justify-start sticky top-0 ${navHover? 'bg-blue-600 text-white' : 'bg-[var(--wrapperColor)'}`}>
                 <p className="font-montez z-10 text-3xl pb-4 font-[600] ">IGotMessage</p>
 
                 <button
                   onClick={() => handleNavClick('/dash/home')}
                   type="button"
-                  onh
+                  
                   className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--highlightColor)] transition duration-100 active:rounded-full active:scale-90`}>
                     <div className="relative">
-                      <PanelLeft 
+                      <LayoutDashboard 
                       strokeWidth={1.5}
                       className="mr-1 h-7 w-7 inline"
                       scale={1}
                       fill="none"
-                      // fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
-                      /> Home
-                      {/* <div className="bg-[var(--bgColor)] rounded-xs absolute w-[11px] h-[10px] left-[8%] bottom-1"></div> */}
+                      /> Feed
+                      
                     </div>
                   </button>
 
@@ -139,8 +140,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   className="flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <PlusSquare
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
-                  className={`mr-2 ${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')}`}
+                  
                   /> Create
 
                   </button>
@@ -150,12 +150,9 @@ function Dashboard({children} : {children: ReactNode}) {
                   type="button"
                   className=" flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <div className="relative flex">
-                    <MessageCircleIcon
+                    <ChatBubbleLeftIcon className="h-6 w-6"
                     strokeWidth={1.5}
-                    className="mr-2 "
-                    fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                     /> Messages
-                    <div className=" border-y-2 border-dashed border-[var(--bgColor)] absolute w-[11px] h-[6px] left-[5%] bottom-2"></div>
                   </div>
                   </button>
 
@@ -166,7 +163,6 @@ function Dashboard({children} : {children: ReactNode}) {
                   <PlaySquareIcon
                   className="mr-2"
                   strokeWidth={1.5}
-                  fill={pathname === '/reels'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   /> Reels
                   
                   </button>
@@ -178,7 +174,6 @@ function Dashboard({children} : {children: ReactNode}) {
                   <VideoIcon
                   className="mr-2"
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/calls'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   /> Calls
                   </button>
                   <button
@@ -192,7 +187,6 @@ function Dashboard({children} : {children: ReactNode}) {
                       <div className="flex">
                         <Heart className=" mr-2"
                         strokeWidth={1.5}
-                        fill={pathname === '/dash/notifications'? (isDark? 'red' : 'red') : (isDark? '' : 'white')}
                         /> Notifications
                     </div>
                   </button>
@@ -204,7 +198,6 @@ function Dashboard({children} : {children: ReactNode}) {
                   <User2
                   className="mr-2"
                   strokeWidth={1.5}
-                  fill={pathname === '/dash/profile'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   /> Profile
                   </button>
 
@@ -226,7 +219,6 @@ function Dashboard({children} : {children: ReactNode}) {
                     /> Menu
                     </div>
                   </button>
-
             </nav>
             {/* nav for desktop ends here */}
 
