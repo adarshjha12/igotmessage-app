@@ -125,7 +125,8 @@ function Login() {
 
     <div className='flex flex-col items-center'>
       {/* <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" /> */}
-      <Brand color='var(--textColor)'/>
+      {/* <Brand color='var(--textColor)'/> */}
+      <img src="/logos/mainIcon.png" className='w-[60px] h-auto rounded-2xl' alt="" />
       <p className={` text-6xl font-medium font-montez h-fit hover:scale-125 transition-all hover:ease-in my-2`}>IGotMessage</p>
       <p className='capitalize text-2xl font-semibold font-montez text-yellow-600'>the social app</p>
     </div>

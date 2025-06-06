@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addCurrentUserToStore, setAuthStatus } from "@/features/authSlice";
 import { checkAuth } from "@/utils/api";
 import Loader from "./Loader";
+import SplashScreen from "./SplashScreen";
 
 function AuthGuard({children} : {children: React.ReactNode}) {
     const router = useRouter()
@@ -46,7 +47,7 @@ function AuthGuard({children} : {children: React.ReactNode}) {
     }
 
     if (loading) {
-      return <Loader animate={true} scaleMd={true} color="white" />
+      return <SplashScreen />
     }
 
   return (

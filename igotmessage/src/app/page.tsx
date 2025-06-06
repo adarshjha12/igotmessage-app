@@ -1,6 +1,6 @@
 'use client'
 import Brand from '@/components/Brand';
-import SplashImage from '@/components/SplashImage';
+import SplashImage from '@/components/SplashScreen';
 import { Heart, Inbox } from 'lucide-react';
 import { useRouter } from 'next/navigation'
 

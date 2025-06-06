@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Loader from '@/components/Loader';
 import Login from '@/components/Login';
+import SplashScreen from '@/components/SplashScreen';
 
 function Page() {
   
@@ -43,7 +44,7 @@ function Page() {
   }, []);
 
   if (loading) {
-    return <Loader color='black' scaleMd={true} animate={true} />
+    return <SplashScreen />
   } 
 
   if (authStatusChecked && !authenticated) {
