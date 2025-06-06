@@ -19,6 +19,7 @@
   --bgColor: #ffffff;
   --borderColor: #000000;
   --textColor: #000000;
+  --textGrayColor: #888585;
   --inputBg: #cecbcb;
   --wrapperColor: #edebeb;
   --shadowBorder: #c6c2c2;
@@ -30,6 +31,7 @@
   --bgColor: #000000;
   --borderColor: #ffffff;
   --textColor: #ffffff;
+  --textGrayColor: #c9c8c8;
   --inputBg: #393939;
   --wrapperColor: #3e3c3c;
   --iconColor: #feca0e;

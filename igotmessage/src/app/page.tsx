@@ -1,5 +1,6 @@
 'use client'
 import Brand from '@/components/Brand';
+import SplashImage from '@/components/SplashImage';
 import { Heart, Inbox } from 'lucide-react';
 import { useRouter } from 'next/navigation'
 
@@ -8,8 +9,8 @@ export default function HomePage() {
   const router = useRouter()
 
   return (
-    <main className="w-full h-full p z-40 bg-black to-[var(--inputBg)] min-h-screen flex items-center justify-center flex-col text-[var(--textColor)]">
-        <div className='z-50 rounded-2xl h-full '>
+    <main className="w-full h-full p z-40 bg-black min-h-screen flex items-center justify-center flex-col text-[var(--textColor)]">
+        <div className='z-30 rounded-2xl h-full '>
           <div className='flex w-full left-slide justify-center items-center flex-wrap gap-12 rounded-xl my-8 '>
             <div className='flex w-full flex-col gap-8 justify-center items-center'>
               <div className=' rounded-full p-4 flex justify-center'>
@@ -60,7 +61,7 @@ export default function HomePage() {
           <div className='flex flex-col  rounded-b-md rounded-e-full blur-md rounded-full rounded-r-lg  bg-red-400 rotate-90 gap-4'></div>
           <div className='flex flex-col  blur-xs rounded-full bg-green-600 gap-4'></div> */}
         </div>
-        
+        <SplashImage/>
     </main>
   );
 }
