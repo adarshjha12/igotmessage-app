@@ -41,7 +41,7 @@ export default function HomePage() {
                   </div>
 
                   <div className='flex w-full flex-col items-center justify-center'>
-                    <p className='text-center text-xl sm:text-3xl font-extrabold text-gray-300 font-exo2 '>You are just one step away from something extraordinary!</p>
+                    <p className='text-center text-xl sm:text-3xl font-extrabold text-gray-300 font-exo2 '>You are just one step away from something Extraordinary!</p>
                   </div>
               
                 </div>
