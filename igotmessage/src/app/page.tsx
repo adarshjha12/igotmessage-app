@@ -1,5 +1,6 @@
 'use client'
 import Brand from '@/components/Brand';
+import SplashScreen from '@/components/SplashScreen';
 import SplashImage from '@/components/SplashScreen';
 import { Heart, Inbox } from 'lucide-react';
 import { useRouter } from 'next/navigation'
@@ -45,7 +46,6 @@ export default function HomePage() {
               
                 </div>
             </div>
-
             
 
           </div>

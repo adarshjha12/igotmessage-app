@@ -28,7 +28,7 @@ function Panel() {
   }
 
   return (
-    <div className={`${panelOpen? 'flex panel-slide': 'hidden'} z-40 text-[var(--textColor)] transform transition-transform flex-col items-start pt-4 px-8 duration-300 border-l-8 font-exo2 border-[var(--borderColor)] ease-in-out right-0 absolute w-[80%] sm:w-[60%] h-full bg-[var(--bgColor)] shadow-[0_25px_50px_12px_rgba(0,0,0,1)]
+    <div className={`${panelOpen? 'flex panel-slide': 'hidden'} z-40 text-[var(--textColor)] transform transition-transform flex-col items-start pt-4 px-8 duration-300 border-l-8 font-exo2 border-[var(--borderColor)] ease-in-out right-0 fixed inset-0 overflow-y-auto w-[80%] sm:w-[60%] h-full bg-[var(--bgColor)] shadow-[0_25px_50px_12px_rgba(0,0,0,1)]
 `}> 
         <div className='flex flex-col w-full gap-8'>
             <div className='flex w-fit justify-start font-bold gap-2 text-[var(--textColor)] border-1 py-1 rounded-md bg-[var(--wrapperColor)] border-[var(--borderColor)] px-3'>
@@ -63,6 +63,76 @@ function Panel() {
                 Privacy Policy
               </button>
 
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
+              <button
+               type='button' 
+               onClick={() => router.push('/community-guidelines')}
+               className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                <GroupIcon className='text-[var(--iconColor)] '/>
+                Comunity Guidelines
+              </button>
               <button
                type='button' 
                onClick={() => router.push('/community-guidelines')}

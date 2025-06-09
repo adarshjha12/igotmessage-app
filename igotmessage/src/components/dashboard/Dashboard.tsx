@@ -1,7 +1,5 @@
 'use client'
-import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building,  AppWindow, PanelLeft } from "lucide-react";
-
-import {  ChatBubbleLeftIcon, HomeIcon } from "@heroicons/react/24/outline"
+import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building,  AppWindow, PanelLeft, HomeIcon, MessageCircleDashedIcon, MessageCircle, LayersIcon, LayoutList, LayoutTemplate } from "lucide-react";
 
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
@@ -100,7 +98,7 @@ console.log(navHover);
             {/* header ends here */}
 
             {/* nav for desktop starts here (1st column for desktop) */}
-          <nav onMouseEnter={() => setNavHover(true)} onMouseLeave={() => setNavHover(false)} className={`px-4  h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit text-[var(--textColor)] justify-start sticky top-0 ${navHover? 'bg-blue-600 text-white' : 'bg-[var(--wrapperColor)'}`}>
+          <nav onMouseEnter={() => setNavHover(true)} onMouseLeave={() => setNavHover(false)} className={`px-4  h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit text-[var(--textColor)] bg-[var(--wrapperColor)] justify-start sticky top-0 ${navHover? 'bg-blue-600 text-white' : ''}`}>
                 <p className="font-montez z-10 text-3xl pb-4 font-[600] ">IGotMessage</p>
 
                 <button
@@ -109,10 +107,9 @@ console.log(navHover);
                   
                   className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--highlightColor)] transition duration-100 active:rounded-full active:scale-90`}>
                     <div className="relative">
-                      <LayoutDashboard 
+                      <LayoutTemplate 
                       strokeWidth={1.5}
-                      className="mr-1 h-7 w-7 inline"
-                      scale={1}
+                      className="mr-1 inline"
                       fill="none"
                       /> Feed
                       
@@ -150,7 +147,7 @@ console.log(navHover);
                   type="button"
                   className=" flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
                   <div className="relative flex">
-                    <ChatBubbleLeftIcon className="h-6 w-6"
+                    <MessageCircle className="h-6 w-6"
                     strokeWidth={1.5}
                     /> Messages
                   </div>
@@ -370,13 +367,13 @@ console.log(navHover);
            </button>
 
            {cameraClick? 
-           <div className={`absolute backdrop-blur-sm bg-[var(--bgColor)]/5 z-10 inset-0 flex justify-center items-start ${cameraClick ? "" : "hidden"}`}>
+           <div className={` justify-center items-start ${cameraClick ? "flex" : "hidden"}`}>
             <button
              type="button"
              
              onClick={() => setCameraClick(false)}
-              className="fixed bg-[var(--wrapperColor)] top-2 z-50 left-2 active:scale-90 rounded-full border-[var(--borderColor)] border-2 text-red-500 cursor-pointer">
-                <ArrowLeft  strokeWidth={2} size={55}/>
+              className="fixed top-2 z-50 left-2 active:scale-90 rounded-full  text-red-500 cursor-pointer">
+                <ArrowLeft className="text-[var(--textColor)] hover:text-green-700" strokeWidth={2} size={35}/>
             </button>
             <CameraCapture />
           </div> 

@@ -21,7 +21,7 @@
   --textColor: #000000;
   --textGrayColor: #888585;
   --inputBg: #cecbcb;
-  --wrapperColor: #edebeb;
+  --wrapperColor: #ececec;
   --shadowBorder: #c6c2c2;
   --iconColor: #f20e0e;
   --highlightColor: #91e970;
@@ -33,10 +33,11 @@
   --textColor: #ffffff;
   --textGrayColor: #c9c8c8;
   --inputBg: #393939;
-  --wrapperColor: #2b2b2b;
+  --wrapperColor: #2e302e;
   --iconColor: #feca0e;
   --shadowBorder: #494949;
   --highlightColor: #1bba29;
+
 }
 
 html {

@@ -61,7 +61,7 @@ navigator.mediaDevices
   };
 
   return (
-    <div className='flex w-full relative right-slide min-h-screen sm:justify-center justify-start items-center mt-2 flex-col'>
+    <div className='flex bg-[var(--bgColor)]/50 backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
       <div className='flex flex-col justify-center items-center  relative'>
         <video className={`transform ${photo? 'hidden' : 'rounded-xl'} -scale-x-100`} ref={videoRef} autoPlay playsInline muted style={{ width: '100%', maxWidth: '400px', height: '100%', minHeight: '100%' }} />
 
