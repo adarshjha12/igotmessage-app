@@ -16,32 +16,36 @@ passport.use(new googleStrategy({
 }, async (accessToken, refreshToken, profile, done) =>{
     try {
     let user = await prisma.user.findFirst({where: {googleId: profile.id}})
-
-    if (!user) {
-        if (profile.emails?.[0]?.value) {
-            user = await prisma.user.findFirst({where: {email: profile.emails?.[0]?.value}})
-
-            if (user) {
-                user = await prisma.user.update({
-                    where: {email: profile.emails?.[0]?.value},
-                    data: {googleId: profile.id}
-                })
-            }
-        }
-
-        if(!user){
-            user = await prisma.user.create(
-                {
-                    data: {
-                        googleId: profile.id!,
-                        email: profile.emails?.[0]?.value || '',
-                        title: profile.displayName,
-                        avatar: profile.photos?.[0]?.value || ''
-                    }
-                }
-             )
-        }
+    
+    if(user){
+        return done(null, user)
     }
+
+    const email = profile.emails?.[0].value
+    const existingUser = await prisma.user.findFirst({where: {email}})
+    if(existingUser){
+        user = await prisma.user.update({
+            where: {email},
+            data: {
+                googleId: profile.id,
+                avatar: profile.photos?.[0]?.value || '',
+                title: profile.displayName
+            }
+        })
+        return done(null, user)
+    }
+
+        user = await prisma.user.create(
+            {
+                data: {
+                    googleId: profile.id!,
+                    email: profile.emails?.[0]?.value || '',
+                    title: profile.displayName,
+                    avatar: profile.photos?.[0]?.value || ''
+                }
+            }
+            )
+    
        return done(null, user)
     } catch (error) {
         return done(error, undefined)

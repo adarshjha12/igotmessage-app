@@ -11,6 +11,7 @@ import {  setPanelOpen } from '@/features/activitySlice'
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import CameraCapture from "../Camera";
+import { log } from "console";
 
 function Dashboard({children} : {children: ReactNode}) {
 
@@ -24,7 +25,8 @@ function Dashboard({children} : {children: ReactNode}) {
   const router = useRouter()
   const pathname = usePathname()
   const dispatch = useDispatch()
-
+  const avatar = useSelector( (state : RootState) => state.auth.user.avatar)
+console.log(avatar)
 
   function handleNavClick(path:string) {
     if (pathname !== path ) {
@@ -236,86 +238,77 @@ function Dashboard({children} : {children: ReactNode}) {
             
             {/* nav for mobile starts here */}
 
-            <nav className="w-full up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full py-1 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/feed')}
                   type="button"
-                  className="flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] p-2 transition duration-100 rounded-full active:scale-90">
-                    <LayoutTemplate
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/feed'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
+                    <HomeIcon
                     size={33}
                     strokeWidth={1.5}
-                    // fill={pathname === '/dash/feed'? (isDark? 'white' : '') : (isDark? '' : 'white')}
-                     />
-                     <p>Feed</p>
+
+                    />
                     
                   </button>
 
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className="flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90 p-2">
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/create'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <PlusSquare
                   size={33}
                   strokeWidth={1.5}
-                  className={`${pathname === '/dash/create'? (isDark? 'text-black' : 'text-white') : (isDark? '' : 'text-black')} `}
+                
 
                   fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   
                   />
-                  <p>Create</p>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className="flex flex-col items-center justify-center gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 p-2 rounded-full active:scale-90">
+                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100  rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/chats'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <MessageSquareCodeIcon
                   size={33}
                   strokeWidth={1.5}
                   className="-scale-x-100"
                   fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
-                  <p>Messages</p>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="flex flex-col items-center justify-center gap-1 relative cursor-pointer p-2 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
+                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer  active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/reels'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <PlaySquareIcon
                   size={33}
                   strokeWidth={1.5}
                   fill={pathname === '/reels'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
-                  <p>Reels</p>
                   
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90">
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl  active:scale-90 px-2 py-1 ${pathname === '/dash/calls'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <VideoIcon
                   size={33}
                   strokeWidth={1.5}
                   fill={pathname === '/dash/calls'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
-                  <p>Calls</p>
                   </button>
 
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90`}>
-                  <User2
-                  size={33}
-                  strokeWidth={1.5}
-                  fill={pathname === '/dash/profile'? (isDark? 'white' : '') : (isDark? '' : 'white')}
-                  />
-                  <p>Profile</p>
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition-all  duration-100 ease-in rounded-xl  active:scale-90 px-1.5 py-0.5 ${pathname === '/dash/profile'? 'border-2 border-[var(--borderColor)] text-[var(--bgColor)]' : ''}`}>
+                  {avatar ? 
+                  <img src={avatar} alt="avatar" className="w-8 h-8 rounded-xl" /> : <User2 size={33} strokeWidth={1.5} />
+                  }
                   </button>
-
                   
                 </div>
                 
