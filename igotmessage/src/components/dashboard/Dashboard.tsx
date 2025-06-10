@@ -39,11 +39,11 @@ function Dashboard({children} : {children: ReactNode}) {
             {/* header starts here */}
             <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
            
-              <div className="flex items-center gap-4">
-                <button type="button" title="menu" className="flex flex-col gap-2 pl-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
-                  <span className="w-6 h-1 rounded-full bg-[var(--textColor)]"></span>
-                  <span className="w-4 h-1 rounded-full bg-[var(--textColor)]"></span>
-                  <span className="w-2 h-1 rounded-full bg-[var(--textColor)]"></span>
+              <div className="flex items-center gap-3">
+                <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
+                  <span className="w-8 h-[3px] rounded-full bg-[var(--textColor)]"></span>
+                  <span className="w-4 h-[3px] rounded-full bg-[var(--textColor)]"></span>
+                  <span className="w-3 h-[3px] rounded-full bg-[var(--textColor)]"></span>
                 </button>
                 <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
               </div>
@@ -254,7 +254,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90 p-2">
+                  className="flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90 p-2">
                   <PlusSquare
                   size={33}
                   strokeWidth={1.5}
@@ -263,69 +263,60 @@ function Dashboard({children} : {children: ReactNode}) {
                   fill={pathname === '/dash/create'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   
                   />
+                  <p>Create</p>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 p-2 rounded-full active:scale-90">
+                  className="flex flex-col items-center justify-center gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 p-2 rounded-full active:scale-90">
                   <MessageSquareCodeIcon
                   size={33}
                   strokeWidth={1.5}
                   className="-scale-x-100"
                   fill={pathname === '/dash/chats'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
-                   <div className={` border-y-2 border-dashed border-[var(--textColor)] absolute w-[15px] h-[8px] left-[35%] bottom-6 ${pathname === '/dash/chats'? (isDark? 'border-black' : 'border-white') : ''}`}></div>
+                  <p>Messages</p>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="flex gap-1 relative cursor-pointer p-2 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
+                  className="flex flex-col items-center justify-center gap-1 relative cursor-pointer p-2 active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90">
                   <PlaySquareIcon
                   size={33}
                   strokeWidth={1.5}
                   fill={pathname === '/reels'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
+                  <p>Reels</p>
                   
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90">
+                  className="flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90">
                   <VideoIcon
                   size={33}
                   strokeWidth={1.5}
                   fill={pathname === '/dash/calls'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
+                  <p>Calls</p>
                   </button>
 
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90`}>
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full p-2 active:scale-90`}>
                   <User2
                   size={33}
                   strokeWidth={1.5}
                   fill={pathname === '/dash/profile'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
+                  <p>Notifications</p>
                   </button>
 
-                  <button
-                  type="button" 
-                  className="flex gap-1 cursor-pointer z-10 active:bg-[var(--wrapperColor)] transition p-2 duration-100 rounded-full active:scale-90">
-                    {panelOpen ? 
-                    '' 
-                    :
-                    <MenuIcon
-                    onClick={() => {
-                    dispatch(setPanelOpen(true))
-                    }}
-                    size={33}
-                    className="ease-in duration-200 cursor-pointer transform transition-all hover:scale-125"
-                    />}
-                  </button>
+                  
                 </div>
                 
               </nav>
