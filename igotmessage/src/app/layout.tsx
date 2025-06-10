@@ -3,6 +3,7 @@ import { Montez, Geist, Geist_Mono, Exo_2, Audiowide } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
 import ThemeProvider from "@/components/ThemeProvider";
+import AuthGuard from "@/components/AuthGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -71,7 +72,7 @@ export default function RootLayout({
       <body className="flex items-center justify-center min-h-screen w-full">
         <ReduxProvider>
           <ThemeProvider>
-          {children}
+              {children}
           </ThemeProvider>
         </ReduxProvider>
       </body>

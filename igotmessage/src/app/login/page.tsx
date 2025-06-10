@@ -27,16 +27,17 @@ function Page() {
           setAuthenticated(true)
           dispatch(setAuthStatus(true));
           setLoading(false)
+          setauthStatusChecked(true)
           router.push('/dash/home');
         } 
 
       } catch (error) {
-        setLoading(false)
-        dispatch(setAuthStatus(false));
-      } finally{
-        setLoading(false)
         setauthStatusChecked(true)
-      }
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
+        dispatch(setAuthStatus(false));
+      } 
     };
 
     check();

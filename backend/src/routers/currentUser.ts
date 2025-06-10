@@ -20,16 +20,16 @@ getCurrentUser.get('/get-current-user', async (req, res) =>{
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as userPayload
-        const verifyUser = await prisma.user.findUnique({where: {id: decoded.id}})
+        const verifiedUser = await prisma.user.findUnique({where: {id: decoded.id}})
 
-        if (!verifyUser) {
+        if (!verifiedUser) {
             res.status(401).json({success: false, message: 'invalid token provided'})
             return
         }
 
         console.log('user is authorized');
         
-        res.status(200).json({success: true, message: 'user verified successfully', userData: verifyUser})
+        res.status(200).json({success: true, message: 'user verified successfully', userData: verifiedUser})
         return
     } catch (error) {
         console.log(error);

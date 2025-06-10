@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addCurrentUserToStore, setAuthStatus } from "@/features/authSlice";
@@ -11,8 +11,9 @@ import SplashScreen from "./SplashScreen";
 function AuthGuard({children} : {children: React.ReactNode}) {
     const router = useRouter()
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [verified, setVerified] = useState(false)
+    const pathname = usePathname()
 
     useEffect( () => {
       async function getAuthDetails() {
@@ -23,30 +24,33 @@ function AuthGuard({children} : {children: React.ReactNode}) {
             dispatch(addCurrentUserToStore(response.data.userData))
             dispatch(setAuthStatus(true))
             console.log('user verified successfully');
-            setVerified(true)
-            
+            if (pathname.startsWith('/dash')) {
+              setVerified(true)
+              setLoading(false)
+            } else {
+              setTimeout(() => {
+                setVerified(true)
+                setLoading(false)
+              }, 2000);
+            }
           }
     
         } catch (error) {
-          router.replace('/login?error=unauthorized')
+          setTimeout(() => {
+            router.replace('/login?error=unauthorized')
+            setLoading(false)
+          }, 2000);
           console.log(error);
           throw error
           
-        } finally{
-          setLoading(false)
-          
-        }
+        } 
       }
         
       getAuthDetails()
       
     }, [router]);
 
-    if (!verified) {
-      return null
-    }
-
-    if (loading) {
+    if (loading && !pathname.startsWith('/dash')) {
       return <SplashScreen />
     }
 
