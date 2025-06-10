@@ -1,12 +1,14 @@
 'use client'
 import Story from '@/components/stories/Story'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import musicTracks from '@/utils/music'
 import CameraCapture from '@/components/Camera';
 // import { useRouter, useSearchParams } from 'next/navigation'
 
 function Page() {
 
+  const [isDev, setIsDev] = useState(false)
+  console.log('dev++++++++++', !isDev);
   
   return (
     <div className=' w-full pl-1 h-full'>

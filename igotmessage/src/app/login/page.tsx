@@ -39,7 +39,6 @@ function Page() {
         dispatch(setAuthStatus(false));
       } 
     };
-
     check();
 
   }, []);

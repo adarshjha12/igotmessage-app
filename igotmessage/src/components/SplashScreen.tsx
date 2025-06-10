@@ -3,7 +3,7 @@ import React from 'react'
 
 function SplashScreen() {
   return (
-    <div className='flex bg-[var(--wrapperColor)] flex-col text-[var(--textColor)] z-50 fixed top-0 justify-center items-center h-screen w-screen'>
+    <div className='flex bg-[var(--wrapperColor)] flex-col text-[var(--textColor)] z-50 fixed inset-0 justify-center items-center'>
        <div className='flex flex-col items-center gap-4 justify-center'>
         <img src="/logos/filledLogo.png" alt="logo" width={150} height={100} />
         <p className='text-4xl font-extrabold font-montez'>IgotMessage</p>

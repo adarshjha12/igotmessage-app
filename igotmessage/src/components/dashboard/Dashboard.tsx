@@ -355,7 +355,7 @@ console.log(navHover);
             {panelOpen && (
               <div
                 onClick={() => dispatch(setPanelOpen(false))}
-                className="fixed inset-0 bg-black/50 z-30"
+                className="fixed inset-0 bg-black/70 z-30"
               ></div>
             )}
            <Panel/>
