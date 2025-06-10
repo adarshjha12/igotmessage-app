@@ -28,7 +28,7 @@ function Page() {
           dispatch(setAuthStatus(true));
           setLoading(false)
           setauthStatusChecked(true)
-          router.push('/dash/home');
+          router.push('/dash/feed');
         } 
 
       } catch (error) {

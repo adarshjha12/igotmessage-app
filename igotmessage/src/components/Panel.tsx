@@ -28,7 +28,7 @@ function Panel() {
   }
 
   return (
-    <div className={`${panelOpen? 'flex panel-slide': 'hidden'} z-40 text-[var(--textColor)] transform transition-transform flex-col items-start pt-4 px-8 duration-300 font-exo2 border-[var(--borderColor)] ease-in-out right-0 fixed inset-0 overflow-y-auto w-[80%] sm:w-[60%]  bg-[var(--bgColor)] 
+    <div className={`${panelOpen? 'flex panel-slide': 'hidden'} z-40 text-[var(--textColor)] flex-col items-start pt-4 px-8 duration-300 font-exo2 border-[var(--borderColor)] right-0 fixed inset-0 overflow-y-auto w-[80%] sm:w-[60%] bg-[var(--bgColor)] 
 `}> 
         <div className='flex flex-col w-full gap-8'>
             <div className='flex w-fit justify-start font-bold gap-2 text-[var(--textColor)] border-1 py-1 rounded-md bg-[var(--wrapperColor)] border-[var(--borderColor)] px-3'>

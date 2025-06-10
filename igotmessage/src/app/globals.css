@@ -130,7 +130,7 @@ input[type=number]::-webkit-inner-spin-button {
   animation: slideRight 0.5s ease-out backwards;
 }
 
-@keyframes rotate {
+@keyframes rotateloader {
   0% {
     transform: rotate(0);
   }
@@ -139,23 +139,38 @@ input[type=number]::-webkit-inner-spin-button {
   }
 }
 
-.rotate-slide {
-  animation: rotate 0.3s linear infinite ;
+.rotate-loader {
+  animation: rotateloader 0.3s linear infinite ;
 }
 
 @keyframes panel {
   0% {
     transform: scaleX(0);
-    transform-origin: right;
+    transform-origin: left;
   }
   100% {
     transform: scaleX(1);
-    transform-origin: right;
+    transform-origin: left;
   }
 }
 
 .panel-slide {
-  animation: panel 0.2s ease-out backwards;
+  animation: panel 0.1s linear ;
+}
+
+@keyframes panelClose {
+  0% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+
+.panel-slide-close {
+  animation: panelClose 0.1s linear backwards;
 }
 
 @keyframes popup {

@@ -3,7 +3,7 @@ import Dashboard from '@/components/dashboard/Dashboard'
 import React, { Suspense } from "react";
 import Loader from "@/components/Loader";
 import SplashScreen from '@/components/SplashScreen';
-import Fallback from '@/components/Fallback';
+import Fallback from '@/components/NewLoader';
 
 function layout({children} : {children: React.ReactNode}) {
   return (

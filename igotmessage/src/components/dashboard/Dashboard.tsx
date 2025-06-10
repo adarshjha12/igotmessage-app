@@ -1,5 +1,5 @@
 'use client'
-import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building,  AppWindow, PanelLeft, HomeIcon, MessageCircleDashedIcon, MessageCircle, LayersIcon, LayoutList, LayoutTemplate } from "lucide-react";
+import { LucideHome, CrossIcon, Search, PlusSquare, PhoneCall, MenuIcon, VideoOff, LucideDelete, MessageCircleIcon, MessageSquareCodeIcon, MessageSquare, XIcon, Settings, VideoIcon, Heart, User2, VideoOffIcon, Inbox, House, CameraIcon, ArrowLeft, LucideVideo, PlaySquareIcon, PlayCircle, Sidebar, LayoutDashboard, Building,  AppWindow, PanelLeft, HomeIcon, MessageCircleDashedIcon, MessageCircle, LayersIcon, LayoutList, LayoutTemplate, SidebarIcon, SidebarCloseIcon } from "lucide-react";
 
 import Skeleton from "react-loading-skeleton";
 import { ReactNode, useEffect, useState } from "react";
@@ -20,29 +20,33 @@ function Dashboard({children} : {children: ReactNode}) {
   const [searchInputClick, setSearchInputClick] = useState(false)
   const [cameraClick, setCameraClick] = useState(false)
   const [navHover, setNavHover] = useState(false)
-console.log(navHover);
-
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const router = useRouter()
   const pathname = usePathname()
   const dispatch = useDispatch()
 
 
   function handleNavClick(path:string) {
-    if (pathname === path && pathname !== '/dash/home') {
-      router.back()
-    } else {
+    if (pathname !== path ) {
       router.push(path)
-    }
+    } 
   }
   
   return (
     <div className="w-full  min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
-          <div className=" w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
+          <div className={` w-full grid grid-cols-1 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'sm:[grid-template-columns:1fr_3fr_1.5fr]' : 'sm:[grid-template-columns:0fr_3fr_1.5fr]'}`}>
             {/* header starts here */}
             <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
            
-              <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
+              <div className="flex items-center gap-4">
+                <button type="button" title="menu" className="flex flex-col gap-2 pl-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
+                  <span className="w-6 h-1 rounded-full bg-[var(--textColor)]"></span>
+                  <span className="w-4 h-1 rounded-full bg-[var(--textColor)]"></span>
+                  <span className="w-2 h-1 rounded-full bg-[var(--textColor)]"></span>
+                </button>
+                <p onClick={() => router.push('/dash/home')} className={`sm:hidden font-montez text-3xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>IGotMessage</p>
+              </div>
               {/* <Brand scaleSm={true} /> */}
              <div className="flex gap-4.5 justify-center">
                <div className="relative">
@@ -98,22 +102,30 @@ console.log(navHover);
             {/* header ends here */}
 
             {/* nav for desktop starts here (1st column for desktop) */}
-          <nav onMouseEnter={() => setNavHover(true)} onMouseLeave={() => setNavHover(false)} className={`px-4  h-screen border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-3 sm:w-fit text-[var(--textColor)] bg-[var(--wrapperColor)] justify-start sticky top-0 ${navHover? 'bg-blue-600 text-white' : ''}`}>
-                <p className="font-montez z-10 text-3xl pb-4 font-[600] ">IGotMessage</p>
-
+          <nav onMouseEnter={() => setNavHover(true)} onMouseLeave={() => setNavHover(false)} className={`px-4 mt-1 h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-4 sm:w-fit text-[var(--textColor)] bg-[var(--wrapperColor)] justify-start sticky top-0 ${navHover? 'bg-blue-600 text-white' : ''} `}>
+                <div className={`flex items-center gap-4  bg-[var(--bgColor)] py-2 rounded-full justify-center  ${sidebarOpen? 'px-4' : 'px-0'}`}>
+                  <p
+                  onClick={() => router.push('/dash/feed')}
+                   className={`font-montez z-10 text-3xl cursor-pointer  font-[600] ${sidebarOpen? '' : 'hidden'}`}>IGotMessage</p>
+                  <button
+                  onClick={() => setSidebarOpen(prev => !prev)}
+                  type="button"
+                  title="open sidebar"
+                  className="cursor-pointer">
+                    {sidebarOpen? <SidebarCloseIcon  className="hover:scale-125 transition-all duration-100 ease-in" strokeWidth={1.5} size={33}/> : <SidebarIcon className="hover:scale-125 transition-all duration-100 ease-in"  strokeWidth={1.5} size={33}/>}
+                  </button>
+                </div>
                 <button
-                  onClick={() => handleNavClick('/dash/home')}
+                  onClick={() => handleNavClick('/dash/feed')}
                   type="button"
                   
-                  className={`flex font-semibold ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--highlightColor)] transition duration-100 active:rounded-full active:scale-90`}>
-                    <div className="relative">
+                  className={`flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 font-semibold text-xl ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/dash/feed' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}>
                       <LayoutTemplate 
                       strokeWidth={1.5}
-                      className="mr-1 inline"
                       fill="none"
-                      /> Feed
+                      /> 
+                      <p className={`${sidebarOpen? '' : 'hidden'}`}>Feed</p>
                       
-                    </div>
                   </button>
 
                   <button
@@ -122,56 +134,55 @@ console.log(navHover);
                       setCameraClick(prev => !prev)
                     }
                   }
-                  className={`flex font-semibold hover:bg-[var(--wrapperColor)] ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
+                  className={`flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 font-semibold text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
                   type="button">
-                    <div>
                       <CameraIcon strokeWidth={1.5}
-                      className="mr-1 inline"
-                      /> Camera
-                    </div>
+                      /> 
+                      <p className={`${sidebarOpen? '' : 'hidden'}`}>Camera</p>
+
                   </button>
 
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className="flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className={`flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 font-semibold text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/dash/create' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}>
                   <PlusSquare
                   strokeWidth={1.5}
                   
-                  /> Create
+                  /> <p className={`${sidebarOpen? '' : 'hidden'}`}>Create</p>
 
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className=" flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
-                  <div className="relative flex">
-                    <MessageCircle className="h-6 w-6"
+                  className={` flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 font-semibold text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/dash/chats' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}>
+                    <MessageCircle
                     strokeWidth={1.5}
-                    /> Messages
-                  </div>
+                    /> <p className={`${sidebarOpen? '' : 'hidden'}`}>Messages</p>
+
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className="font-semibold px-3 py-1 hover:bg-[var(--wrapperColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className={`font-semibold ${sidebarOpen? 'w-full' : 'w-fit'} gap-2 justify-start px-3 text-xl py-1 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/reels' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}>
                   <PlaySquareIcon
-                  className="mr-2"
                   strokeWidth={1.5}
-                  /> Reels
+                  /> 
+                  <p className={`${sidebarOpen? '' : 'hidden'}`}>Reels</p>
                   
+
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className="flex font-semibold px-3 hover:bg-[var(--wrapperColor)] py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className={`flex ${sidebarOpen? 'w-full' : 'w-fit'} font-semibold justify-start items-center gap-2 text-xl px-3 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/dash/calls' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}>
                   <VideoIcon
-                  className="mr-2"
                   strokeWidth={1.5}
-                  /> Calls
+                  /> <p className={`${sidebarOpen? '' : 'hidden'}`}>Calls</p>
+
                   </button>
                   <button
                     onClick={
@@ -179,41 +190,39 @@ console.log(navHover);
                         handleNavClick('/dash/notifications')
                       }
                     }
-                    className={`flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90`}
+                    className={`flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 font-semibold text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/dash/notifications' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
                     type="button">
-                      <div className="flex">
-                        <Heart className=" mr-2"
+                        <Heart
                         strokeWidth={1.5}
-                        /> Notifications
-                    </div>
+                        /> <p className={`${sidebarOpen? '' : 'hidden'}`}>Notifications</p>
+
                   </button>
 
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className="flex font-semibold hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90">
+                  className={`flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 font-semibold text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90 ${pathname === '/dash/profile' ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}>
                   <User2
-                  className="mr-2"
                   strokeWidth={1.5}
-                  /> Profile
+                  /> <p className={`${sidebarOpen? '' : 'hidden'}`}>Profile</p>
                   </button>
 
                   <button
                   onClick={() => (dispatch(setPanelOpen(!panelOpen)))}
                   type="button" 
-                  className="flex active:bg-[var(--wrapperColor)] hover:bg-[var(--wrapperColor)] px-3 py-1 rounded-full transition duration-100 active:rounded-full active:scale-90 font-semibold cursor-pointer z-10">
-                    <div className={`${panelOpen? 'flex gap-2 opacity-100 scale-100' : 'opacity-0 scale-0 hidden'}`}>
+                  className="flex ${sidebarOpen? 'w-full' : 'w-fit'} justify-start items-center gap-2 active:bg-[var(--wrapperColor)] text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full transition duration-100 active:rounded-full active:scale-90 font-semibold cursor-pointer z-10">
+                    <div className={`${panelOpen? 'flex items-center gap-2 opacity-100 scale-100' : 'opacity-0 scale-0 hidden'}`}>
                       <XIcon
                         className={` ${
                         panelOpen ? 'rotate-180' : 'rotate-0'
                       }`}
                     strokeWidth={2}
-                    />  <span className="text-red-600">Close</span>
+                    />  <p className={`${sidebarOpen? '' : 'hidden'}`}>Close</p>
                     </div>
-                    <div className={`${!panelOpen? 'flex gap-2 opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
+                    <div className={`${!panelOpen? 'flex items-center gap-2 opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
                       <MenuIcon
                       className=""
-                    /> Menu
+                    /> <p className={`${sidebarOpen? '' : 'hidden'}`}>Menu</p>
                     </div>
                   </button>
             </nav>
@@ -230,18 +239,16 @@ console.log(navHover);
             <nav className="w-full up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
-                  onClick={() => handleNavClick('/dash/home')}
+                  onClick={() => handleNavClick('/dash/feed')}
                   type="button"
-                  className="flex relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] p-2 transition duration-100 rounded-full active:scale-90">
-                    <LucideHome 
+                  className="flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] p-2 transition duration-100 rounded-full active:scale-90">
+                    <LayoutTemplate
                     size={33}
                     strokeWidth={1.5}
-                    fill={pathname === '/dash/home'? (isDark? 'white' : '') : (isDark? '' : 'white')}
-                    />
-                    <div className={`bg-[var(--bgColor)] border-2 border-[var(--borderColor)] absolute w-[6px] h-[16px] left-[44%] bottom-3 ${pathname === '/dash/home'? 'border-none' : ''}`}>
-
-                    </div>
-
+                    // fill={pathname === '/dash/feed'? (isDark? 'white' : '') : (isDark? '' : 'white')}
+                     />
+                     <p>Feed</p>
+                    
                   </button>
 
                   <button
@@ -309,14 +316,9 @@ console.log(navHover);
                   type="button" 
                   className="flex gap-1 cursor-pointer z-10 active:bg-[var(--wrapperColor)] transition p-2 duration-100 rounded-full active:scale-90">
                     {panelOpen ? 
-                    <XIcon
-                    onClick={() => {
-                    dispatch(setPanelOpen(false))
-                  }}
-                    size={33}
-                    className="" 
-                    strokeWidth={2}
-                    /> : <MenuIcon
+                    '' 
+                    :
+                    <MenuIcon
                     onClick={() => {
                     dispatch(setPanelOpen(true))
                     }}

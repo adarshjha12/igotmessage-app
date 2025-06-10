@@ -26,8 +26,8 @@ export default function HomePage() {
             setChecked(true)
             setIsVerified(true)
             dispatch(addCurrentUserToStore(response.data.userData))
-            router.push('/dash/home');
-          }, 1500);
+            router.push('/dash/feed');
+          }, 3000);
         } else {
           setIsVerified(false);
           setTimeout(() => {
@@ -40,7 +40,7 @@ export default function HomePage() {
         setTimeout(() => {
           setLoading(false)
           setChecked(true)
-        }, 1000);
+        }, 3000);
         console.error(error);
       } 
     }

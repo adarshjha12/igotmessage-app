@@ -7,7 +7,7 @@ import prisma from '../prisma/client';
 const gAuthRouter = express.Router()
 const JWT_SECRET = process.env.JWT_SECRET!
 
-const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.PROD_FRONTEND_URL}/dash/home` : `${process.env.DEV_FRONTEND_URL}/dash/home`
+const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.PROD_FRONTEND_URL}/dash/feed` : `${process.env.DEV_FRONTEND_URL}/dash/feed`
 
 gAuthRouter.get('/auth/google',
     passport.authenticate('google', { 
