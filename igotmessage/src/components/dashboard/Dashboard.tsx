@@ -39,7 +39,7 @@ console.log(avatar)
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className={` w-full grid grid-cols-1 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'sm:[grid-template-columns:1fr_3fr_1.5fr]' : 'sm:[grid-template-columns:0fr_3fr_1.5fr]'}`}>
             {/* header starts here */}
-            <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
+            <header className=" sm:hidden bg-[var(--wrapperColor)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
            
               <div className="flex items-center gap-3">
                 <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
@@ -238,7 +238,7 @@ console.log(avatar)
             
             {/* nav for mobile starts here */}
 
-            <nav className="w-full py-1 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full py-1 up-slide bg-[var(--wrapperColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/feed')}
