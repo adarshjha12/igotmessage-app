@@ -103,7 +103,7 @@ function Dashboard({children} : {children: ReactNode}) {
 
             {/* nav for desktop starts here (1st column for desktop) */}
           <nav onMouseEnter={() => setNavHover(true)} onMouseLeave={() => setNavHover(false)} className={`px-4 mt-1 h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-2 right-slide hidden sm:flex rounded-xl flex-col gap-4 sm:w-fit text-[var(--textColor)] bg-[var(--wrapperColor)] justify-start sticky top-0 ${navHover? 'bg-blue-600 text-white' : ''} `}>
-                <div className={`flex items-center gap-4  bg-[var(--bgColor)] py-2 rounded-full justify-center  ${sidebarOpen? 'px-4' : 'px-0'}`}>
+                <div className={`flex items-center gap-4  bg-[var(--bgColor)] py-2 rounded-full justify-center text-[var(--textColor)] ${sidebarOpen? 'px-4' : 'px-0'}`}>
                   <p
                   onClick={() => router.push('/dash/feed')}
                    className={`font-montez z-10 text-3xl cursor-pointer  font-[600] ${sidebarOpen? '' : 'hidden'}`}>IGotMessage</p>
@@ -313,7 +313,7 @@ function Dashboard({children} : {children: ReactNode}) {
                   strokeWidth={1.5}
                   fill={pathname === '/dash/profile'? (isDark? 'white' : '') : (isDark? '' : 'white')}
                   />
-                  <p>Notifications</p>
+                  <p>Profile</p>
                   </button>
 
                   

@@ -29,10 +29,8 @@ function AuthGuard({children} : {children: React.ReactNode}) {
             dispatch(addCurrentUserToStore(response.data.userData))
             dispatch(setAuthStatus(true))
             console.log('user verified successfully');
-                  setTimeout(() => {
                     setVerified(true)
                     setLoading(false)
-                  }, 3000);
           }
     
         } catch (error) {
@@ -48,11 +46,18 @@ function AuthGuard({children} : {children: React.ReactNode}) {
     }, [router]);
 
     if (loading) {
-      return <div className="p-4 fixed inset-0 bg-[var(--bgColor)] gap-5 w-full z-50">
+      return <div>
+        <div className="p-4 hidden sm:flex justify-between fixed inset-0 bg-[var(--bgColor)] gap-5 w-full z-50">
+                <Skeleton height={1000} width={300} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " highlightColor='gray' count={1} style={{ marginBottom: '3rem' }} />
+                <Skeleton height={1000} width={700} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " count={1} highlightColor='gray' style={{ marginBottom: '3rem' }}/>
+                <Skeleton height={1000} width={300} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " highlightColor='gray' count={1} style={{ marginBottom: '3rem' }} />
+              </div>
+              <div className="p-4 flex flex-col sm:hidden fixed inset-0 bg-[var(--bgColor)] gap-5 w-full z-50">
                 <Skeleton height={60} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " highlightColor='gray' count={1} style={{ marginBottom: '3rem' }} />
-                <Skeleton height={200} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " count={2} highlightColor='gray' style={{ marginBottom: '3rem' }}/>
+                <Skeleton height={500} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " count={1} highlightColor='gray' style={{ marginBottom: '3rem' }}/>
                 <Skeleton height={60} borderRadius={20} baseColor={isDark? '#2e302e' : '#ececec'} className=" rounded-full " highlightColor='gray' count={1} style={{ marginBottom: '3rem' }} />
               </div>
+      </div>
     }
 
   return (
