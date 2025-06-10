@@ -38,7 +38,7 @@ console.log(navHover);
   return (
     <div className="w-full  min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
-          <div className="mt-2 w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
+          <div className=" w-full grid grid-cols-1 sm:[grid-template-columns:1fr_3fr_1.5fr] items-center sm:items-start">
             {/* header starts here */}
             <header className="bg-gradient-to-r sm:hidden from-[var(--bgColor)] to-[var(--inputBg)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-2 items-center ">
            
