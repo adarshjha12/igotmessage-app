@@ -20,7 +20,7 @@
       "purpose": "maskable"
     },
     {
-      "src": "/logos/mainIcon.png",
+      "src": "/logos/filledLogo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
