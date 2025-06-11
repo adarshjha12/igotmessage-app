@@ -3,7 +3,7 @@ import Brand from '@/components/Brand';
 import SplashScreen from '@/components/SplashScreen';
 import { addCurrentUserToStore } from '@/features/authSlice';
 import { checkAuth } from '@/utils/api';
-import { Heart } from 'lucide-react';
+import { ArrowRight, Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation'
 import { useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
@@ -72,15 +72,21 @@ export default function HomePage() {
                   </div>
                 </div>
                   <div className='flex flex-col h-full w-full justify-center items-center p-4 gap-10'>
+                    <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>For best experience, download the app</p>
+                    <div className='flex sm:hidden justify-center items-center p-0.5 border-1 border-white rounded-md'>
+                      <a
+                      className='py-2 text-md text-3xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'
+                      href="/download/app-release-signed.apk"> Download apk</a>
+                    </div>
+                    <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>Or</p>
                     <div className='flex justify-center items-center p-0.5 border-1 border-white rounded-md'>
                       <button
                       type='button' 
                       onClick={() => router.push('/login')}
                       className='py-2 text-md sm:text-xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'>
-                        <div>Continue to </div>
-                        <div className='flex items-center justify-center'>
-                          <span className='font-montez font-semibold'>IGotMessage</span>
-                        </div>
+                        <div className='hidden sm:block '>Continue to IGotMessage </div>
+                        <div className='sm:hidden'>Continue on web</div>
+                        <ArrowRight  size={20}/>
                       </button>
                     </div>
   
