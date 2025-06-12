@@ -3,7 +3,7 @@
   "name": "iGotMessage",
   "short_name": "iGotMessage",
   "description": "Chat securely. Share freely. A superb social messaging app.",
-  "start_url": "/",
+  "start_url": "/?v=2",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
