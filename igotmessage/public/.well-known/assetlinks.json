@@ -1,0 +1,13 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.igotmessage_app_frontend.twa",
+        "sha256_cert_fingerprints": [
+          "2C:7D:EC:4D:89:C8:54:8A:29:5C:D2:BF:41:79:6D:E1:26:36:5D:87:72:D2:8C:17:3F:E7:A7:7E:8A:30:03:A9"
+        ]
+      }
+    }
+  ]
+  
