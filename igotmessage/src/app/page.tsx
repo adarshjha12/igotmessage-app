@@ -3,7 +3,7 @@ import Brand from '@/components/Brand';
 import SplashScreen from '@/components/SplashScreen';
 import { addCurrentUserToStore } from '@/features/authSlice';
 import { checkAuth } from '@/utils/api';
-import { ArrowRight, Heart } from 'lucide-react';
+import { ArrowRight, Download, Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation'
 import { useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
@@ -76,7 +76,7 @@ export default function HomePage() {
                     <div className='flex sm:hidden justify-center items-center p-0.5 border-1 border-white rounded-md'>
                       <a
                       className='py-2 text-md text-3xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'
-                      href="/download/app-release-signed.apk"> Download apk</a>
+                      href="/download/app-release-signed.apk"> Download apk <Download size={30}/> </a>
                     </div>
                     <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>Or</p>
                     <div className='flex justify-center items-center p-0.5 border-1 border-white rounded-md'>

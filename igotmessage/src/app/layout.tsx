@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logos/filledLogo.png",
+        url: "/logos/favIcon.png",
         type: "image/png",
         media: "(prefers-color-scheme: dark)"
       },
@@ -74,7 +74,7 @@ export default function RootLayout({
         <meta name="description" content="Igotmessage App" />
         <meta name="theme-color" content="#000000" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/logos/filledLogo.png" />
+        <link rel="apple-touch-icon" href="/logos/favIcon.png" />
       </head>
       <body className="flex items-center justify-center min-h-screen w-full">
         <ReduxProvider>

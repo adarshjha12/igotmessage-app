@@ -2,7 +2,7 @@
   "id": "/",
   "name": "iGotMessage",
   "short_name": "iGotMessage",
-  "description": "Chat securely. Share freely. A minimal social messaging app.",
+  "description": "Chat securely. Share freely. A superb social messaging app.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -14,16 +14,16 @@
   "categories": ["social", "communication", "chat"],
   "icons": [
     {
-      "src": "/logos/filledLogo.png",
+      "src": "/logos/blackIcon.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "/logos/filledLogo.png",
+      "src": "/logos/blackIcon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable"
     }
   ],
   "screenshots": [

@@ -6,10 +6,12 @@ import { sendOtp } from '@/utils/api'
 import Loader from '@/components/Loader'
 import { useSearchParams } from 'next/navigation'
 import Brand from './Brand'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store/store'
 
 
 function Login() {
-
+    const isDark = useSelector((state: RootState) => state.activity.isDark)
     const searchParams = useSearchParams()
     const [loading, setLoading] = useState(false)
     const [googleButtonClick, setGoogleButtonClick] = useState(false)
@@ -126,7 +128,7 @@ function Login() {
     <div className='flex flex-col items-center'>
       {/* <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" /> */}
       {/* <Brand color='var(--textColor)'/> */}
-      <img src="/logos/filledLogo.png" className='w-[60px] h-auto rounded-2xl' alt="" />
+      {isDark ? <img src="/logos/whiteIcon.png" className='w-[60px] h-auto rounded-2xl' alt="" /> : <img src="/logos/blackIcon.png" className='w-[60px] h-auto rounded-2xl' alt="" />}
       <p className={` text-6xl font-medium font-montez h-fit hover:scale-125 transition-all hover:ease-in my-2`}>IGotMessage</p>
       <p className='capitalize text-2xl font-semibold font-montez text-yellow-600'>the social app</p>
     </div>

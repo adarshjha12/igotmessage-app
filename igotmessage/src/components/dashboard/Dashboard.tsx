@@ -39,7 +39,7 @@ console.log(avatar)
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className={` w-full grid grid-cols-1 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'sm:[grid-template-columns:1fr_3fr_1.5fr]' : 'sm:[grid-template-columns:0fr_3fr_1.5fr]'}`}>
             {/* header starts here */}
-            <header className=" sm:hidden bg-[var(--wrapperColor)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-4 items-center ">
+            <header className=" sm:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-4 items-center ">
            
               <div className="flex items-center gap-3">
                 <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
@@ -220,12 +220,12 @@ console.log(avatar)
             
             {/* nav for mobile starts here */}
 
-            <nav className="w-full py-2 up-slide bg-[var(--wrapperColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full py-2 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                   <button
                   onClick={() => handleNavClick('/dash/feed')}
                   type="button"
-                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/feed'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] rounded-xl px-2 py-1 ${pathname === '/dash/feed'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                     <HomeIcon
                     size={33}
                     strokeWidth={1.5}
@@ -237,7 +237,7 @@ console.log(avatar)
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/create'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)]  rounded-xl px-2 py-1 ${pathname === '/dash/create'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <PlusSquare
                   size={33}
                   strokeWidth={1.5}
@@ -248,7 +248,7 @@ console.log(avatar)
                   <button 
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100  rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/chats'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)]   rounded-xl px-2 py-1 ${pathname === '/dash/chats'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <MessageSquareMore
                   size={33}
                   strokeWidth={1.5}
@@ -259,7 +259,7 @@ console.log(avatar)
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer  active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl active:scale-90 px-2 py-1 ${pathname === '/dash/reels'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer  active:bg-[var(--wrapperColor)]  rounded-xl px-2 py-1 ${pathname === '/dash/reels'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <PlaySquareIcon
                   size={33}
                   strokeWidth={1.5}
@@ -270,7 +270,7 @@ console.log(avatar)
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-xl  active:scale-90 px-2 py-1 ${pathname === '/dash/calls'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)]  rounded-xl  px-2 py-1 ${pathname === '/dash/calls'? 'bg-[var(--textColor)]/75 text-[var(--bgColor)]' : ''}`}>
                   <VideoIcon
                   size={33}
                   strokeWidth={1.5}
@@ -280,7 +280,7 @@ console.log(avatar)
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] transition-all  duration-100 ease-in rounded-xl  active:scale-90 px-1.5 py-0.5 ${pathname === '/dash/profile'? 'border-2 border-[var(--borderColor)] text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] ease-in rounded-xl  px-1.5 py-0.5 ${pathname === '/dash/profile'? 'border-2 border-[var(--borderColor)] text-[var(--bgColor)]' : ''}`}>
                   {avatar ? 
                   <img src={avatar} alt="avatar" className="w-8 h-8 rounded-xl" /> : <User2 size={33} strokeWidth={1.5} />
                   }
@@ -309,7 +309,7 @@ console.log(avatar)
                     className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
                     
                     </div>
-                    <Search size={33} className={`absolute top-0.5 right-0 pointer-events-none active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-125 ${searchInputClick? 'opacity-0' : 'sm:opacity-0'}`}/>
+                    <Search size={33} className={`absolute top-0.5 right-0 pointer-events-none active:bg-[var(--wrapperColor)]  rounded-full active:scale-125 ${searchInputClick? 'opacity-0' : 'sm:opacity-0'}`}/>
                   </div>
                 </div>
               </div>
