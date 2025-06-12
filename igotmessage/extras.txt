@@ -1,3 +1,0 @@
-for gradient text-
-text-transparent bg-gradient-to-r from-white to-black bg-clip-text
-
