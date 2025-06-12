@@ -12,9 +12,7 @@ function SplashScreen() {
         {isDark ? <img src="/logos/whiteIcon.png" alt="logo" width={150} height={100} /> : <img src="/logos/blackIcon.png" alt="logo" width={150} height={100} />}
         <p className='text-4xl font-extrabold font-montez'>IgotMessage</p>
        </div>
-       <div className='flex absolute bottom-32 items-center pt-10 gap-2 justify-center'>
-        <div className='w-[25px] h-[25px]  animate-spin border-6 border-dotted border-[var(--textGrayColor)] rounded-full'></div>
-       </div>
+       
        <div className='flex absolute bottom-6 flex-col items-center justify-center'>
         <p className='text-sm font-semibold text-[var(--textGrayColor)] font-sans'>from</p>
         <div className='flex gap-1 items-center justify-center'>

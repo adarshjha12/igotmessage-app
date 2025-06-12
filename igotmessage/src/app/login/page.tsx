@@ -33,9 +33,7 @@ function Page() {
 
       } catch (error) {
         setauthStatusChecked(true)
-        setTimeout(() => {
           setLoading(false)
-        }, 1000);
         dispatch(setAuthStatus(false));
       } 
     };

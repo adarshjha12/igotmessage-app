@@ -21,13 +21,11 @@ export default function HomePage() {
         const response = await checkAuth();
   
         if (response.data.success === true) {
-          setTimeout(() => {
             setLoading(false)
             setChecked(true)
             setIsVerified(true)
             dispatch(addCurrentUserToStore(response.data.userData))
             router.push('/dash/feed');
-          }, 3000);
         } else {
           setIsVerified(false);
           setTimeout(() => {
@@ -37,10 +35,8 @@ export default function HomePage() {
         }
       } catch (error) {
         setIsVerified(false);
-        setTimeout(() => {
           setLoading(false)
           setChecked(true)
-        }, 3000);
         console.error(error);
       } 
     }
