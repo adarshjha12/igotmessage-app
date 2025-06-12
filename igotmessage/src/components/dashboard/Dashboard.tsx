@@ -16,6 +16,8 @@ import { log } from "console";
 function Dashboard({children} : {children: ReactNode}) {
 
   const isDark = useSelector( (state : RootState) => state.activity.isDark)
+  const userTitle = useSelector( (state : RootState) => state.auth.user.title)
+
   const panelOpen = useSelector( (state : RootState) => state.activity.panelOpen)
   const [searchInput, setSearchInput] = useState('')
   const [searchInputClick, setSearchInputClick] = useState(false)
@@ -25,7 +27,7 @@ function Dashboard({children} : {children: ReactNode}) {
   const router = useRouter()
   const pathname = usePathname()
   const dispatch = useDispatch()
-  const avatar = useSelector( (state : RootState) => state.auth.user.avatar)
+  const avatar = null
 console.log(avatar)
 
   function handleNavClick(path:string) {
@@ -42,12 +44,19 @@ console.log(avatar)
             <header className=" sm:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-4 items-center ">
            
               <div className="flex items-center gap-3">
-                <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
+                {pathname === '/dash/feed' ? <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
                   <span className="w-8 h-[3px] rounded-full bg-[var(--textColor)]"></span>
                   <span className="w-4 h-[3px] rounded-full bg-[var(--textColor)]"></span>
                   <span className="w-3 h-[3px] rounded-full bg-[var(--textColor)]"></span>
                 </button>
-                <p className={`sm:hidden ${pathname === '/dash/feed' ? 'font-montez' : ''} font-exo2 text-3xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[600] cursor-pointer ease-in  ${searchInputClick? 'text-xl sm:text-3xl text-left' : 'inline'}`}>{pathname === '/dash/feed' ? 'IGotMessage' : pathname === '/dash/create' ? 'Create' : pathname === '/dash/chats' ? 'Messages' : pathname === '/reels' ? 'Reels' : pathname === '/dash/calls' ? 'Calls' : pathname === '/dash/notifications' ? 'Notifications' : pathname === '/dash/profile' ? 'Profile' : ''}</p>
+                : 
+                <button type="button" title="menu" className="flex flex-col rounded-full active:bg-[var(--wrapperColor)] p-1 cursor-pointer" onClick={() => router.back()}>
+                 <ArrowLeft size={33} className="text-[var(--textColor)]" strokeWidth={1.5}/>
+                </button>}
+
+                <p className={`sm:hidden ${pathname === '/dash/feed' ? 'font-montez font-bold text-3xl' : ''} text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}>
+                {pathname === '/dash/feed' ? 'IGotMessage' : pathname === '/dash/create' ? 'Create' : pathname === '/dash/chats' ? 'Messages' : pathname === '/reels' ? 'Reels' : pathname === '/dash/calls' ? 'Calls' : pathname === '/dash/notifications' ? 'Notifications' : pathname === '/dash/profile' ? `${userTitle}'s Profile` : ''}
+                </p>
               </div>
               {/* <Brand scaleSm={true} /> */}
              <div className="flex gap-4.5 justify-center">                
@@ -280,7 +289,7 @@ console.log(avatar)
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] ease-in rounded-xl  px-1.5 py-0.5 ${pathname === '/dash/profile'? 'border-2 border-[var(--borderColor)] text-[var(--bgColor)]' : ''}`}>
+                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] ease-in rounded-xl  px-1.5 py-0.5 ${pathname === '/dash/profile'? 'border-2 border-[var(--borderColor)] text-[var(--textColor)]' : ''}`}>
                   {avatar ? 
                   <img src={avatar} alt="avatar" className="w-8 h-8 rounded-xl" /> : <User2 size={33} strokeWidth={1.5} />
                   }
