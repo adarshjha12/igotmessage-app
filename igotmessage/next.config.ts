@@ -31,7 +31,7 @@ const nextConfig = withPWA({
     },
     {
       // API
-      urlPattern: /^https:\/\/igotmessage-app-frontend\.vercel\.app\/.*/i,
+      urlPattern: /^https:\/\/igotmessage-app-backend\.onrender\.com\/api\/.*$/i,
       handler: 'NetworkFirst',
       options: {
         cacheName: 'api-cache',
