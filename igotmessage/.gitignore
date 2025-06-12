@@ -10,8 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 /public/download/my-release-key.keystore
-/commands.txt
-/.well-known/assetlinks.json
+/cmdPrompts.txt
 # testing
 /coverage
 
