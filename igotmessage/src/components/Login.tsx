@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation'
 import Brand from './Brand'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
+import NewLoader from './NewLoader'
 
 
 function Login() {
@@ -123,14 +124,14 @@ function Login() {
       
   return (
   <div key={`${emailButtonClick} ${otpSent} `} className='w-full min-h-screen text-[var(--textColor)] flex items-center justify-center flex-col bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)]'>
-    <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : 'left-slide'} ${emailButtonClick ? 'test-slide' : ''} m-3 w-[90%] min-h-[90%] sm:h-full sm:min-w-[70%] border-1 py-12 px-2 border-[var(--borderColor)] rounded-xl flex flex-col justify-center items-center gap-10`}>
+    <div  key={`${emailButtonClick} ${otpSent} `} className={`${otpSent ? 'right-slide' : 'left-slide'} ${emailButtonClick ? 'test-slide' : ''} m-3 w-[90%] min-h-[90%] sm:h-full sm:min-w-[70%] border-1 py-12 px-2 border-[var(--borderColor)] bg-[var(--bgColor)]/50 backdrop-blur-sm z-20 rounded-xl flex flex-col justify-center items-center gap-10`}>
 
     <div className='flex flex-col items-center'>
       {/* <img src="/images/logo.png" className='w-[60px] h-auto rounded-2xl' alt="" /> */}
       {/* <Brand color='var(--textColor)'/> */}
       <img src="/logos/igm.png" className='w-[60px] h-auto rounded-2xl border-1 border-[var(--borderColor)]' alt="" />
       <p className={` text-6xl font-medium font-montez h-fit hover:scale-125 transition-all hover:ease-in my-2`}>IGotMessage</p>
-      <p className='capitalize text-2xl font-semibold font-montez text-yellow-600'>the social app</p>
+      <p className={`capitalize text-2xl font-semibold font-montez ${isDark ? 'text-amber-300' : 'text-violet-900'}`}>the social app</p>
     </div>
     <hr className='w-[100px] text-[var(--textColor)]'/>
     { emailButtonClick ? '' : <p className={`${otpSent ? 'hidden' : ''} text-center mb-2`}> Choose one of the options below to experience something very cool</p>
@@ -138,10 +139,12 @@ function Login() {
     <div className={` ${otpSent ? 'hidden' : null} flex flex-col items-center justify-center gap-4`}>
     
 
-      <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'bg-green-700' : null} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-yellow-400 cursor-pointer justify-center items-center border-2 border-[var(--borderColor)]-400 rounded-3xl py-0.5 px-2`}>
+      <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'w-[250px]' : ''} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-yellow-400 cursor-pointer justify-center items-center border-2 border-[var(--borderColor)]-400 rounded-3xl py-0.5 px-2`}>
         
-        <img src="/images/google.png" className='w-[20px] h-auto' alt="google" />
-        <p className='text-xl rounded-2xl active:scale-75 font-semibold px-1'>Continue with google</p>
+        <img src="/images/google.png" className={`${googleButtonClick ? 'hidden' : 'w-[20px] h-auto'}`} alt="google" />
+        <p className='text-xl rounded-2xl active:scale-75 font-semibold px-1'>
+          {googleButtonClick ? <NewLoader/> : 'Continue with google'}
+        </p>
       </button>
 
       <p className={`text-2xl ${emailButtonClick ? 'hidden' : ''}`}>or</p>
@@ -192,6 +195,13 @@ function Login() {
   
   <div id="recaptcha-container"></div>
   {loading && <Loader animate={true} color='white' scaleMd={true} />}
+
+  {/* this is the start of violet background */}
+  <div className='inset-0 px-12 fixed h-full w-[80%] gap-10  grid grid-cols-1 sm:grid-cols-2 rotate-12 sm:rotate-45 z-10'>
+    <div className='flex flex-col rounded-b-md rounded-e-full rotate-45 blur-2xl rounded-full rounded-r-lg bg-violet-700'></div>
+    <div className='flex flex-col rounded-b-full rotate-90 blur-2xl rounded-full rounded-r-lg  bg-violet-800 gap-4'></div>
+    <div className=' flex-col hidden sm:flex rounded-b-md rounded-e-full -rotate-12 blur-2xl rounded-full rounded-r-lg  bg-violet-700 gap-4'></div>
+  </div>
   
 </div>
   )

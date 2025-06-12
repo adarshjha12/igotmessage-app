@@ -73,6 +73,13 @@ function Panel() {
               
             </div>
         </div>
+
+        {/* violet background starts here */}
+      {/* <div className='inset-0 px-12 fixed h-full w-[60%] gap-10  grid grid-cols-1 sm:grid-cols-2 rotate-12 sm:rotate-45 -z-10'>
+        <div className='flex flex-col rounded-b-md rounded-e-full rotate-45 blur-2xl rounded-full rounded-r-lg bg-violet-700'></div>
+        <div className='flex flex-col rounded-b-full rotate-90 blur-2xl rounded-full rounded-r-lg  bg-violet-800 gap-4'></div>
+        <div className=' flex-col sm:flex rounded-b-md rounded-e-full -rotate-12 blur-2xl rounded-full rounded-r-lg  bg-violet-700 gap-4'></div>
+      </div> */}
     </div>
   )
 }

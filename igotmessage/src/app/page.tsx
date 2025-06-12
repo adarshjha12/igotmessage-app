@@ -9,7 +9,7 @@ import { useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 
 
-export default function HomePage() {
+export default function EntryPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = useState(false)
