@@ -14,13 +14,13 @@
   "categories": ["social", "communication", "chat"],
   "icons": [
     {
-      "src": "/logos/igm.png",
+      "src": "/logos/maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/logos/igm.png",
+      "src": "/logos/maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
