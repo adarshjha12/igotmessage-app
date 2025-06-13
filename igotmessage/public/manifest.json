@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "iGotMessage",
-  "short_name": "iGotMessage",
+  "name": "IGotMessage",
+  "short_name": "IGotMessage",
   "description": "Chat securely. Share freely. A superb social messaging app.",
   "start_url": "/",
   "scope": "/",

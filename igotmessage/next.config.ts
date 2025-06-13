@@ -6,9 +6,9 @@ const baseConfig = {
 
 const nextConfig = withPWA({
   dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
   buildExcludes: [/app-build-manifest\.json$/],
   runtimeCaching: [
     {
@@ -17,7 +17,19 @@ const nextConfig = withPWA({
       handler: 'StaleWhileRevalidate',
       options: {
         cacheName: 'static-assets',
+        cacheableResponse: {
+          statuses: [0, 200],
+        },
         expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 30 },
+      },
+    },
+    {
+      urlPattern: /^\/dash\/.*$/i,
+      handler: 'StaleWhileRevalidate', // or 'NetworkFirst' if dynamic
+      options: {
+        cacheName: 'dashboard-pages',
+        expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 12},
+        cacheableResponse: { statuses: [0, 200] },
       },
     },
     {
@@ -26,6 +38,9 @@ const nextConfig = withPWA({
       handler: 'StaleWhileRevalidate',
       options: {
         cacheName: 'page-cache',
+        cacheableResponse: {
+          statuses: [0, 200],
+        },
         expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
       },
     },
@@ -35,6 +50,9 @@ const nextConfig = withPWA({
       handler: 'NetworkFirst',
       options: {
         cacheName: 'api-cache',
+        cacheableResponse: {
+          statuses: [0, 200],
+        },
         networkTimeoutSeconds: 10,
         expiration: { maxEntries: 30, maxAgeSeconds: 60 * 5 },
       },
