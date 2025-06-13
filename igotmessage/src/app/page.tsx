@@ -1,5 +1,5 @@
 'use client'
-import Brand from '@/components/Brand';
+
 import SplashScreen from '@/components/SplashScreen';
 import { addCurrentUserToStore } from '@/features/authSlice';
 import { checkAuth } from '@/utils/api';

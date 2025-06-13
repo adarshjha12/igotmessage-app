@@ -43,12 +43,12 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logos/favIcon.png",
+        url: "/logos/icon.png",
         type: "image/png",
         media: "(prefers-color-scheme: dark)"
       },
     ],
-    shortcut: "/logos/favIcon.png"
+    shortcut: "/logos/icon.png"
   }
 };
 

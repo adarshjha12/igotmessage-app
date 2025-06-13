@@ -1,4 +1,5 @@
 'use client'
+
 import Story from '@/components/stories/Story'
 import React, {useEffect, useState} from 'react'
 import musicTracks from '@/utils/music'
@@ -13,7 +14,7 @@ function Page() {
   return (
     <div className=' w-full pl-1 h-full'>
      <Story/>
-
+{/* <SplashScreen/> */}
      <a download='igotmessage-signed.apk' className='bg-red-500 w-fit text-2xl font-semibold flex gap-2 p-3 my-6 rounded-4xl border-2 border-[var(--borderColor)]' href='/download/igotmessage-signed.apk'>update apk <DownloadIcon weight='fill' size={30}/> </a>
 
 

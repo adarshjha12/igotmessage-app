@@ -134,13 +134,18 @@ input[type=number]::-webkit-inner-spin-button {
   0% {
     transform: rotate(0);
   }
+
+  60% {
+    transform: rotate(100deg);
+  }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
 .rotate-loader {
-  animation: rotateloader 0.3s linear infinite ;
+  animation: rotateloader 0.5s linear infinite ;
 }
 
 @keyframes panel {
