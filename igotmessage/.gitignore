@@ -9,7 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-/public/download/my-release-key.keystore
+/.keystore
 /cmdPrompts.txt
 # testing
 /coverage
