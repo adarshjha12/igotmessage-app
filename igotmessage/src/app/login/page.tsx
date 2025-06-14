@@ -6,7 +6,7 @@ import { setAuthStatus } from '@/features/authSlice';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Loader from '@/components/Loader';
-import Login from '@/components/Login';
+import LoginPageComponent from '@/components/login/LoginPageComponent';
 import SplashScreen from '@/components/SplashScreen';
 
 function Page() {
@@ -47,7 +47,7 @@ function Page() {
   } 
 
   if (authStatusChecked && !authenticated) {
-    return <Login/>
+    return <LoginPageComponent/>
   }
 }
 

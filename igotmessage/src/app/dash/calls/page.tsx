@@ -1,11 +1,8 @@
+import CallsPageComponent from '@/components/dashboard/calls/CallsPageComponent'
 import React from 'react'
 
 function page() {
-  return (
-    <div className='w-full flex justify-center'>
-       calls page
-    </div>
-  )
+  return <CallsPageComponent/>
 }
 
 export default page

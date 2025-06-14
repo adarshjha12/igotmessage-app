@@ -1,0 +1,28 @@
+'use client'
+
+import Story from '@/components/stories/Story'
+import React, {useEffect, useState} from 'react'
+import musicTracks from '@/utils/music'
+import CameraCapture from '@/components/Camera';
+import NewLoader from '@/components/NewLoader';
+import SplashScreen from '@/components/SplashScreen';
+import { DownloadIcon } from '@phosphor-icons/react';
+// import { useRouter, useSearchParams } from 'next/navigation'
+
+function FeedPageComponent() {
+  
+  return (
+    <div className=' w-full pl-1 h-full'>
+     <Story/>
+{/* <SplashScreen/> */}
+    
+     <p className='bg-[var(--wrapperColor)] p-6 rounded-4xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur ipsa, minima non reiciendis voluptatum possimus amet quaerat unde consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus asperiores consequatur, est ex exercitationem officiis, architecto, eum fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore, sunt suscipit. Sint porro atque molestias eum expedita repellat cum nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit repellat ipsa quasi officia qui excepturi rem sapiente modi molestias provident?</p>
+     <p className='bg-[var(--wrapperColor)] p-6 rounded-4xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur ipsa, minima non reiciendis voluptatum possimus amet quaerat unde consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus asperiores consequatur, est ex exercitationem officiis, architecto, eum fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore, sunt suscipit. Sint porro atque molestias eum expedita repellat cum nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit repellat ipsa quasi officia qui excepturi rem sapiente modi molestias provident?</p>
+     <p className='bg-[var(--wrapperColor)] p-6 rounded-4xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur ipsa, minima non reiciendis voluptatum possimus amet quaerat unde consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus asperiores consequatur, est ex exercitationem officiis, architecto, eum fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore, sunt suscipit. Sint porro atque molestias eum expedita repellat cum nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit repellat ipsa quasi officia qui excepturi rem sapiente modi molestias provident?</p>
+     <p className='bg-[var(--wrapperColor)] p-6 rounded-4xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur ipsa, minima non reiciendis voluptatum possimus amet quaerat unde consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus asperiores consequatur, est ex exercitationem officiis, architecto, eum fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore, sunt suscipit. Sint porro atque molestias eum expedita repellat cum nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit repellat ipsa quasi officia qui excepturi rem sapiente modi molestias provident?</p>
+     <div ></div>
+    </div>
+  )
+}
+
+export default FeedPageComponent

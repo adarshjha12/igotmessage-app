@@ -1,10 +1,9 @@
 
+import MessagePageComponent from '@/components/dashboard/messages chats/MessagePageComponent'
 import React from 'react'
 
 function page() {
-  return (
-    <div>page</div>
-  )
+  return <MessagePageComponent/>
 }
 
 export default page

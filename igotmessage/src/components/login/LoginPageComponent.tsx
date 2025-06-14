@@ -1,15 +1,14 @@
 'use client'
 import React, {useState, useRef, useEffect} from 'react'
-import OtpInput from './OtpInput'
+import OtpInput from '@/components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
 import { sendOtp } from '@/utils/api'
 import Loader from '@/components/Loader'
 import { useSearchParams } from 'next/navigation'
-import Brand from './Brand'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import NewLoader from './NewLoader'
-import { DeviceMobileIcon, OptionIcon } from '@phosphor-icons/react'
+import NewLoader from '@/components/NewLoader'
+import { ArrowArcRightIcon, ArrowBendDownLeftIcon, ArrowBendDownRightIcon, DeviceMobileIcon, OptionIcon } from '@phosphor-icons/react'
 
 
 function Login() {
@@ -152,23 +151,25 @@ function Login() {
       {emailButtonClick && <form action="" className='flex flex-col gap-1 items-center'>
         <div className=''>
          
-          <div className=' w-full grid grid-cols-1 sm:[grid-template-columns:2fr_1fr]  gap-4 justify-center items-center'>
-            <div className='border-1 relative w-full flex items-center border-[var(--borderColor)] py-1 rounded-md'>
-              <label htmlFor="email" className={` ${inputFocus ? '-translate-y-8  -translate-x-7 scale-90' : ' animate-pulse font-light'}  text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-5 font-exo2 text-[var(--textColor)] pb-2.5 text-xl`} >*Please enter your email</label>
-              <input type="email" 
-              ref={inputRef}
-              value={email} 
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }
-              } 
-              id='email'
-              name='email'
-              autoComplete='email'
-              onFocus={() => setInputFocus(true)}
-              placeholder={inputFocus ? 'eg- abc@gmail.com' : ''}
-              inputMode='email'
-              className=' text-[var(--textColor)] py-1 px-2 w-fit rounded-sm outline-none font-semibold tracking-widest placeholder:text-lg'/>
+          <div className=' w-full grid grid-cols-1 sm:[grid-template-columns:2fr_1fr]  gap-4 my-8 justify-center items-center'>
+            <div className='border-1 relative px-2 w-full flex items-center border-[var(--borderColor)] py-1 rounded-md'>
+              <label htmlFor="email" className={` ${inputFocus ? '-translate-y-10  -translate-x-5 scale-90' : ' animate-pulse font-light'} w-full flex items-center text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-2 font-exo2 text-[var(--textColor)] pb-2.5 text-xl`} ><ArrowBendDownLeftIcon size={24} weight='bold' className='mr-2'/>Please enter your email</label>
+              <div>
+                <input type="email" 
+                ref={inputRef}
+                value={email} 
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                }
+                } 
+                id='email'
+                name='email'
+                autoComplete='email'
+                onFocus={() => setInputFocus(true)}
+                placeholder={inputFocus ? 'eg- abc@gmail.com' : ''}
+                inputMode='email'
+                className=' text-[var(--textColor)] py-1 px-2 rounded-sm border-transparent outline-none font-semibold tracking-widest placeholder:text-lg'/>
+              </div>
             </div>
             <button type='button' onClick={handleSendOtp} className='flex items-center justify-center text-white text-xl font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-green-600 to-black hover:bg-gradient-to-r hover:from-red-500 hover:to-black border-1 rounded-full px-2 py-2'>Get otp
             <DeviceMobileIcon size={24} weight='bold' className='ml-2'/>

@@ -1,10 +1,9 @@
 
+import ProfilePageComponent from '@/components/dashboard/profile/ProfilePageComponent'
 import React from 'react'
 
 function Page() {
-  return (
-    <div>Profile page</div>
-  )
+  return <ProfilePageComponent/>
 }
 
 export default Page

@@ -1,10 +1,9 @@
 
+import CreatePageComponent from '@/components/dashboard/create/CreatePageComponent'
 import React from 'react'
 
 function Page() {
-  return (
-    <div>create</div>
-  )
+  return <CreatePageComponent/>
 }
 
 export default Page
