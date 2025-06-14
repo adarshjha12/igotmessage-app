@@ -54,7 +54,7 @@ console.log(avatar)
                 </button>
                 : 
                 <button type="button" title="menu" className="flex flex-col rounded-full active:bg-[var(--wrapperColor)] p-1 cursor-pointer" onClick={() => router.back()}>
-                 <ArrowLeftIcon size={33} className="text-[var(--textColor)]" strokeWidth={1.5}/>
+                 <ArrowLeftIcon size={28} className="text-[var(--textColor)]" strokeWidth={1.5}/>
                 </button>}
 
                 <p className={`sm:hidden ${pathname === '/dash/feed' ? 'font-montez font-bold text-3xl' : ''} text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}>
@@ -241,7 +241,7 @@ console.log(avatar)
             
             {/* nav for mobile starts here */}
 
-            <nav className="w-full py-2 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full py-3 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                 <button
                   onClick={() => handleNavClick('/dash/feed')}
@@ -367,13 +367,7 @@ console.log(avatar)
               ></div>
             )}
            <Panel/>
-           <button
-            className={` ease-in duration-500 cursor-pointer transform transition-all z-50 ${panelOpen? 'flex  rotate-180 scale-100 opacity-100' : 'opacity-0 scale-0'} fixed bottom-3 right-3`}
-            type='button'
-            onClick={() => dispatch(setPanelOpen(false))}>
-              <XIcon size={33} className="text-[var(--textColor)] ease-in duration-200 cursor-pointer transform transition-all hover:scale-150"/>
-           </button>
-
+          
            {cameraClick? 
            <div className={` justify-center items-start ${cameraClick ? "flex" : "hidden"}`}>
             <button
