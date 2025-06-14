@@ -57,8 +57,8 @@ console.log(avatar)
                  <ArrowLeftIcon size={28} className="text-[var(--textColor)]" strokeWidth={1.5}/>
                 </button>}
 
-                <p className={`sm:hidden ${pathname === '/dash/feed' ? 'font-montez font-bold text-3xl' : ''} text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}>
-                {pathname === '/dash/feed' ? 'IGotMessage' : pathname === '/dash/create' ? 'Create' : pathname === '/dash/chats' ? 'Messages' : pathname === '/reels' ? 'Reels' : pathname === '/dash/calls' ? 'Calls' : pathname === '/dash/notifications' ? 'Notifications' : pathname === '/dash/profile' ? `${userTitle}'s Profile` : ''}
+                <p className={`sm:hidden ${pathname === '/dash/feed' ? 'font-montez  text-3xl' : ''} text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}>
+                {pathname === '/dash/feed' ? 'IGotMessage' : pathname === '/dash/create' ? 'Create' : pathname === '/dash/chats' ? 'Messages' : pathname === '/reels' ? 'Reels' : pathname === '/dash/calls' ? 'Calls' : pathname === '/dash/notifications' ? 'Notifications' : pathname === '/dash/profile' ? `${userTitle?.split(' ')[0]}'s Profile` : ''}
                 </p>
               </div>
               {/* <Brand scaleSm={true} /> */}
@@ -241,7 +241,7 @@ console.log(avatar)
             
             {/* nav for mobile starts here */}
 
-            <nav className="w-full py-3 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
+            <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
                 <button
                   onClick={() => handleNavClick('/dash/feed')}
@@ -254,7 +254,7 @@ console.log(avatar)
                       strokeWidth={1.5}
                       />
                     </div>
-                    <p className="text-sm">Home</p>
+                    <p className="text-sm font-medium">Home</p>
 
                                       
                   </button>
@@ -269,7 +269,7 @@ console.log(avatar)
                         strokeWidth={1.5}
                       />
                     </div>
-                    <p className="text-sm">Create</p>
+                    <p className="text-sm font-medium">Create</p>
                   </button>
 
                   <button
@@ -283,7 +283,7 @@ console.log(avatar)
                         weight={pathname === '/dash/chats' ? 'fill' : 'regular'}
                       />
                     </div>
-                    <p className="text-sm">Messages</p>
+                    <p className="text-sm font-medium">Messages</p>
                   </button>
 
                   <button 
@@ -297,7 +297,7 @@ console.log(avatar)
                         weight={pathname === '/reels' ? 'fill' : 'regular'}
                       />
                     </div>
-                    <p className="text-sm">Reels</p>
+                    <p className="text-sm font-medium">Reels</p>
                   </button>
 
                   <button 
@@ -311,7 +311,7 @@ console.log(avatar)
                         weight={pathname === '/dash/calls' ? 'fill' : 'regular'}
                       />
                     </div>
-                    <p className="text-sm">Calls</p>
+                    <p className="text-sm font-medium">Calls</p>
                   </button>
 
                   <button
@@ -329,7 +329,7 @@ console.log(avatar)
                         />
                       }
                     </div>
-                    <p className="text-sm">Profile</p>
+                    <p className="text-sm font-medium">Profile</p>
                   </button>
                   
                 </div>
