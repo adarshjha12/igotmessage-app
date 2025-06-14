@@ -1,5 +1,3 @@
-// app/dash/feed/loading.tsx
-"use client"
 
 export default function FeedLoading() {
   return (
