@@ -176,7 +176,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .panel-slide-close {
-  animation: panelClose 0.1s linear backwards;
+  animation: panelClose 3s linear;
 }
 
 @keyframes popup {

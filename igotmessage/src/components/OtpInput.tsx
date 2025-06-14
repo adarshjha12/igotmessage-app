@@ -6,6 +6,7 @@ import PopupMessages from './popups/PopupMessages'
 import Loader from './Loader'
 import { useDispatch } from 'react-redux'
 import { addCurrentUserToStore, setAuthStatus } from '@/features/authSlice'
+import { ArrowClockwiseIcon, OptionIcon, SignInIcon } from '@phosphor-icons/react'
 
 interface otpInputProps {
   showOtpField: boolean,
@@ -117,7 +118,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
             return (
               <div key={i}>
                 <input 
-                  type="number"
+                  type="text"
                   maxLength={1}
                   required={true}
                   key={i} 
@@ -129,7 +130,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
                     newInputValues[i] = e.target.value
                     setInputValues(newInputValues)
                   }}
-                  className='w-[30px] pl-2 rounded-md font-bold text-white bg-blue-800 outline-none border-2 border-white  opacity-75'
+                  className='w-[50px] h-[50px] pl-3 rounded-xl font-bold text-[var(--textColor)] bg-blue-800 outline-none border-1 border-[var(--borderColor)] text-2xl opacity-75'
                   onInput={(e) => {
                     moveNext(e.target as HTMLInputElement, i)
                   }}
@@ -147,18 +148,21 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
             )
           })}
         </div>
-      <div className='flex gap-5'>
-       <button onClick={handleSignin} disabled={canSignIn ? false : true} type='button' className={`h-[40px] text-white font-exo2 font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r ${canSignIn ? 'hover:from-green-600 hover:to-green-900' : 'hover:from-red-500 hover:to-red-900'} border-1 rounded-md px-2`}> Sign in</button>
+      <div className='flex gap-5 justify-center items-start'>
+       <button onClick={handleSignin} disabled={canSignIn ? false : true} type='button' className={` text-[var(--textColor)] flex items-center font-exo2 text-xl font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r ${canSignIn ? 'hover:from-green-600 hover:to-green-900' : 'hover:from-red-500 hover:to-red-900'} border-1 rounded-md px-3 py-2`}> Sign in
+        <SignInIcon size={24} weight='bold' className='ml-2'/>
+       </button>
 
-        <div className='flex flex-col  justify-center items-center'>
+        <div className='flex flex-col justify-center items-center'>
           <button 
           onClick={() => {setResendOtp(true)
             inputRefs.current.forEach((input) => {
             if (input) input.value = '';
           });
-          }} disabled={canResend ? false : true} type='button' className={`px-2 text-xs font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 ${canResend ? 'bg-gradient-to-r from-green-600 to-green-900' : 'border-red-500'} rounded-sm`}>Resend</button>
-
-          <span className='text-xs'>00 : {resendCounter}</span>
+          }} disabled={canResend ? false : true} type='button' className={`px-2 flex items-center text-lg font-medium border-1 py-1 mt-1 mb-0.5 cursor-pointer hover:bg-gradient-to-r hover:from-red-500 hover:to-red-900 ${canResend ? 'bg-gradient-to-r from-green-600 to-green-900' : 'border-red-500'} rounded-sm`}>Resend
+          <ArrowClockwiseIcon size={24} weight='bold' className='ml-2'/>
+          </button>
+          <span className='text-md'>00 : {resendCounter}</span>
         </div>
       </div>
      </form>
