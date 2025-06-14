@@ -44,7 +44,7 @@ console.log(avatar)
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className={` w-full grid grid-cols-1 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'sm:[grid-template-columns:1fr_3fr_1.5fr]' : 'sm:[grid-template-columns:0fr_3fr_1.5fr]'}`}>
             {/* header starts here */}
-            <header className=" sm:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 border-b-2 border-[var(--shadowBorder)] w-full sm:border-none flex justify-between py-2 px-4 items-center ">
+            <header className=" sm:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full sm:border-none flex justify-between py-2 px-4 items-center ">
            
               <div className="flex items-center gap-3">
                 {pathname === '/dash/feed' ? <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
@@ -243,73 +243,93 @@ console.log(avatar)
 
             <nav className="w-full py-2 up-slide bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0 ">
                 <div className="w-full items-center flex justify-between">
-                  <button
+                <button
                   onClick={() => handleNavClick('/dash/feed')}
                   type="button"
-                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] rounded-xl px-2 py-1 ${pathname === '/dash/feed'? 'bg-violet-500/50' : ''}`}>
-                    <HouseIcon
-                    size={33}
-                    weight={pathname === '/dash/feed' ? 'fill' : 'regular'}
-                    strokeWidth={1.5}
-                    />
-                    
-                  </button>
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] `}>
+                    <div className={`flex flex-col rounded-xl ${pathname === '/dash/feed'? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
+                      <HouseIcon
+                      size={25}
+                      weight={pathname === '/dash/feed' ? 'fill' : 'regular'}
+                      strokeWidth={1.5}
+                      />
+                    </div>
+                    <p className="text-sm">Home</p>
 
+                                      
+                  </button>
                   <button
                   onClick={() => handleNavClick('/dash/create')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)]  rounded-xl px-2 py-1 ${pathname === '/dash/create'? 'bg-violet-500/50' : ''}`}>
-                  <PlusSquareIcon
-                    weight={pathname === '/dash/create' ? 'fill' : 'regular'}
-                    size={33}
-                  strokeWidth={1.5}
-                                  
-                  />
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] `}>
+                    <div className={`flex flex-col rounded-xl ${pathname === '/dash/create'? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
+                      <PlusSquareIcon
+                        weight={pathname === '/dash/create' ? 'fill' : 'regular'}
+                        size={25}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                    <p className="text-sm">Create</p>
                   </button>
 
-                  <button 
+                  <button
                   onClick={() => handleNavClick('/dash/chats')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer active:bg-[var(--wrapperColor)]   rounded-xl px-2 py-1 ${pathname === '/dash/chats'? 'bg-violet-500/50' : ''}`}>
-                  <ChatCircleDotsIcon
-                  size={33}
-                  strokeWidth={1.5}
-                  weight={pathname === '/dash/chats' ? 'fill' : 'regular'}
-                  />
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] `}>
+                    <div className={`flex flex-col rounded-xl ${pathname === '/dash/chats'? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
+                      <ChatCircleDotsIcon
+                        size={25}
+                        strokeWidth={1.5}
+                        weight={pathname === '/dash/chats' ? 'fill' : 'regular'}
+                      />
+                    </div>
+                    <p className="text-sm">Messages</p>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/reels')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 relative cursor-pointer  active:bg-[var(--wrapperColor)]  rounded-xl px-2 py-1 ${pathname === '/dash/reels'? 'bg-violet-500/50' : ''}`}>
-                  <PlayIcon
-                  size={33}
-                  strokeWidth={1.5}
-                  weight={pathname === '/reels' ? 'fill' : 'regular'}
-                  />
-                  
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] `}>
+                    <div className={`flex flex-col rounded-xl ${pathname === '/reels'? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
+                      <PlayIcon
+                        size={25}
+                        strokeWidth={1.5}
+                        weight={pathname === '/reels' ? 'fill' : 'regular'}
+                      />
+                    </div>
+                    <p className="text-sm">Reels</p>
                   </button>
 
                   <button 
                   onClick={() => handleNavClick('/dash/calls')}
                   type="button"
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)]  rounded-xl  px-2 py-1 ${pathname === '/dash/calls'? 'bg-violet-500/50' : ''}`}>
-                  <VideoCameraIcon
-                  size={33}
-                  strokeWidth={1.5}
-                  weight={pathname === '/dash/calls' ? 'fill' : 'regular'}
-                  />
-
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] `}>
+                    <div className={`flex flex-col rounded-xl ${pathname === '/dash/calls'? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
+                      <VideoCameraIcon
+                        size={25}
+                        strokeWidth={1.5}
+                        weight={pathname === '/dash/calls' ? 'fill' : 'regular'}
+                      />
+                    </div>
+                    <p className="text-sm">Calls</p>
                   </button>
 
                   <button
                   onClick={() => handleNavClick('/dash/profile')}
                   type="button" 
-                  className={`flex flex-col items-center justify-center gap-1 cursor-pointer active:bg-[var(--wrapperColor)] ease-in rounded-xl  px-1.5 py-0.5 ${pathname === '/dash/profile'? 'bg-violet-500/50 text-[var(--textColor)]' : ''}`}>
-                  {avatar ? 
-                  <img src={avatar} alt="avatar" className="w-8 h-8 rounded-xl" /> : <UserCircleIcon
-                   size={33} strokeWidth={1.5} weight={pathname === '/dash/profile' ? 'fill' : 'regular'} />
-                  }
+                  className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)] `}>
+                    <div className={`flex flex-col rounded-xl ${pathname === '/dash/profile'? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
+                      {avatar ? 
+                        <img src={avatar} alt="avatar" className="w-8 h-8 rounded-xl" /> 
+                        : 
+                        <UserCircleIcon
+                          size={25} 
+                          strokeWidth={1.5} 
+                          weight={pathname === '/dash/profile' ? 'fill' : 'regular'} 
+                        />
+                      }
+                    </div>
+                    <p className="text-sm">Profile</p>
                   </button>
                   
                 </div>

@@ -25,6 +25,7 @@
   --shadowBorder: #c6c2c2;
   --iconColor: #f20e0e;
   --highlightColor: #91e970;
+  --navButtonColor: #68a6e7;
 }
 
 .dark {
@@ -37,7 +38,7 @@
   --iconColor: #feca0e;
   --shadowBorder: #494949;
   --highlightColor: #1bba29;
-
+  --navButtonColor: #002384;
 }
 
 html {
