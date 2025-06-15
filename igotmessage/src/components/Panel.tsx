@@ -6,18 +6,22 @@ import { RootState } from '@/store/store'
 import { setDarkMode, setPanelOpen } from '@/features/activitySlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { DownloadSimpleIcon } from '@phosphor-icons/react'
-import { ArrowDownIcon } from '@phosphor-icons/react/dist/ssr'
+import { DownloadSimpleIcon, UserCircleIcon } from '@phosphor-icons/react'
+import { ArrowDownIcon, UserCircleCheckIcon } from '@phosphor-icons/react/dist/ssr'
+import Image from 'next/image'
 
 
 
 function Panel() {
 
   const isDark = useSelector( (state : RootState) => state.activity.isDark)
+  const userName = useSelector( (state : RootState) => state.auth.user.title)
+
   const [dataSaver, setDataSaver] = useState(false)
   const panelOpen = useSelector( (state : RootState) => state.activity.panelOpen)
   const dispatch = useDispatch()
   const router = useRouter()
+  const avatar = null
 
   const enableDarkMode = function () {
     if (isDark) {
@@ -35,7 +39,7 @@ function Panel() {
     <>
     {panelOpen && (
       
-    <div className={`flex panel-slide z-40 text-[var(--textColor)] flex-col items-start pt-4 px-2 duration-300 border-[var(--wrapperColor)] gap-4 border-r-8 right-0 fixed inset-0 overflow-y-auto w-[80%] sm:w-[60%] bg-[var(--bgColor)]
+    <div className={`flex panel-slide z-40 text-[var(--textColor)] flex-col items-start pt-4 px-2 duration-300 border-[var(--wrapperColor)] gap-4 border-r-8 right-0 fixed inset-0 overflow-y-auto w-[85%] sm:w-[60%] bg-[var(--bgColor)]
         `}> 
             <button type='button' 
             onClick={() => dispatch(setPanelOpen(false))}
@@ -79,27 +83,37 @@ function Panel() {
                   <p className='text-4xl font-bold'>Visit</p>
                   <Link
                    href='/about-dev'
-                   className='ease-in w-full flex bg-[var(--wrapperColor)] rounded-xl px-4 py-2 justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                   className='ease-in w-full flex bg-[var(--wrapperColor)] rounded-xl px-4 py-2 justify-start items-center gap-2 cursor-pointer transform   active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
                     <InfoIcon className='text-[var(--iconColor)] '/>
                     About dev
                   </Link>
     
                   <Link
                   href='/privacy-policy'
-                   className='ease-in w-full bg-[var(--wrapperColor)] rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                   className='ease-in w-full bg-[var(--wrapperColor)] rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform   active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
                     <ShieldIcon className='text-[var(--iconColor)] '/>
                     Privacy Policy
                   </Link>
     
                   <Link
                     href='/community-guidelines'
-                    className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform  hover:scale-110 sm:hover:scale-105 active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
+                    className='ease-in w-full bg-[var(--wrapperColor)] text-left rounded-xl px-4 py-2 flex justify-start items-center gap-2 cursor-pointer transform   active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
 
                     <GroupIcon className='text-[var(--iconColor)] '/>
                     Comunity Guidelines
                   </Link>
                   
                 </div>
+            </div>
+            <div className='fixed bottom-0 left-2 w-[80%] bg-[var(--bgColor)] py-3'>
+                <Link  onClick={() => dispatch(setPanelOpen(false))} href='/dash/profile' className='flex w-fit justify-center items-center gap-2.5 border-[var(--borderColor)] rounded-2xl border-2 active:bg-[var(--wrapperColor)] px-3 py-2'>
+                  <p className='text-2xl font-semibold'>{userName ? userName : 'User123'}</p>
+                  <div>
+                    <Image
+                    className='rounded-2xl'
+                    src={avatar? avatar : '/logos/igm.png' } alt='userName ' height={40} width={40}/>
+                  </div>
+                </Link>
             </div>
     
         </div>
