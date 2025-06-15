@@ -2,6 +2,7 @@ import { RootState } from '@/store/store'
 import {  Cpu } from 'lucide-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import Image from 'next/image'
 
 function SplashScreen() {
   const isDark = useSelector((state: RootState) => state.activity.isDark)
@@ -9,7 +10,7 @@ function SplashScreen() {
   return (
     <div className='flex bg-gradient-to-r from-[var(--wrapperColor)] to-[var(--bgColor)] flex-col text-[var(--textColor)] z-50 fixed inset-0 justify-center items-center'>
        <div className='flex flex-col items-center gap-4 justify-center'>
-        <img src="/logos/igm.png" alt="logo" className='w-20 h-20 rounded-3xl border-1 border-[var(--borderColor)]' />
+        <Image src="/logos/igm.png" alt="logo" className='w-20 h-20 rounded-3xl border-1 border-[var(--borderColor)]' width={80} height={80} />
         <p className='text-4xl font-extrabold font-montez'>IgotMessage</p>
        </div>
        

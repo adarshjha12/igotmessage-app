@@ -23,7 +23,7 @@
   --inputBg: #cecbcb;
   --wrapperColor: #ececec;
   --shadowBorder: #c6c2c2;
-  --iconColor: #f20e0e;
+  --iconColor: #000;
   --highlightColor: #91e970;
   --navButtonColor: #68a6e7;
 }
@@ -35,7 +35,7 @@
   --textGrayColor: #c9c8c8;
   --inputBg: #393939;
   --wrapperColor: #232323;
-  --iconColor: #feca0e;
+  --iconColor: #fff;
   --shadowBorder: #494949;
   --highlightColor: #1bba29;
   --navButtonColor: #002384;
