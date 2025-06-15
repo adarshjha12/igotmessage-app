@@ -1,9 +1,10 @@
 'use client'
 
-import { ImagePlusIcon, Music } from 'lucide-react'
+import { ImagePlusIcon, Music, Music4 } from 'lucide-react'
 import React, { ChangeEvent, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
+import { ImageIcon } from '@phosphor-icons/react'
 
 function CreateStoryPageComponent() {
     const isDark = useSelector( (state : RootState) => state.activity.isDark)
@@ -31,15 +32,15 @@ function CreateStoryPageComponent() {
     }, [imagePreview]);
 
   return (
-    <div className='w-full relative p-5 min-h-screen flex flex-col items-center justify-between gap-2.5 bg-gradient-to-r from-[var(--bgColor)]  to-[var(--inputBg)] text-[var(--textColor)] '>
+    <div className='w-full relative p-5 min-h-screen flex flex-col items-center justify-between gap-2.5 bg-[var(--bgColor)] text-[var(--textColor)] '>
       <form action="" className='flex w-full justify-evenly gap-1'>
         <button
          type='button'
          onClick={() => (setImageStoredLocally(imagePreview))}
-          className=' cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] active:scale-75 items-center'>
+          className=' bg-[var(--textColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] active:scale-75 items-center'>
           <div className='flex justify-center items-center gap-2'>
-            <div className=' text-sm font-exo2'>Choose Image</div>
-            <ImagePlusIcon size={33} fill={isDark? 'green' : 'orange'} strokeWidth={1} className={`text-[var(--textColor)]`}/>            
+            <div className=' text-xl text-[var(--bgColor)] font-exo2'>Choose Image</div>
+            <ImageIcon size={33} fill={isDark? 'black' : 'white'} strokeWidth={1} className={`text-[var(--textColor)]`}/>            
           </div>
           <input
            type="file" 
@@ -49,9 +50,9 @@ function CreateStoryPageComponent() {
            className='absolute w-full opacity-0 cursor-pointer inset-0 '/>
         </button>
 
-        <button type='button' className=' cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] items-center active:scale-75 gap-2'> 
-          <div className=' text-sm font-exo2'>Select Music</div>
-          <Music size={33} fill={isDark? '#ac05f9' : '#ac05f9'} strokeWidth={1} className={`text-[var(--textColor)]`}/>
+        <button type='button' className=' bg-[var(--textColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] active:scale-75 items-center'> 
+          <div className=' text-xl text-[var(--bgColor)] font-exo2'>Select Music</div>
+          <Music4 size={33} fill={isDark? 'black' : 'white'} strokeWidth={1} className={`text-[var(--textColor)]`}/>
         </button>
 
       </form>
