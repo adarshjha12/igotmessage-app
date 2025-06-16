@@ -71,16 +71,7 @@ passport.use(new googleStrategy({
             }
             )
             try {
-
-            const mongoUser = {
-            uid: user.id,
-            googleId: user.googleId,
-            email: user.email,
-            title: user.title,
-            avatar: user.avatar
-            };
-
-            await UserInMongodb.updateOne({ uid: mongoUser.uid }, { $set: mongoUser }, { upsert: true });
+            await UserInMongodb.updateOne({ uid: user.id }, { $set: user }, { upsert: true });
 
             } catch (err) {
             console.error('MongoDB sync failed', err);
