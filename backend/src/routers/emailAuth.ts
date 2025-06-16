@@ -80,8 +80,8 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
           email: email
         }
       })
-
-      try {
+    }
+    try {
         await User.updateOne(
         { uid: user.id},
         {$set: user},
@@ -89,8 +89,8 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
         )
       } catch (error) {
         syncFailuresQueue.push({user, attempts: 0});
-      }
-     }
+        console.error('MongoDB sync failed', error);
+    }
    
   } catch (error) {
     res.status(500).json({success: false, message: 'user not created', userData: user})

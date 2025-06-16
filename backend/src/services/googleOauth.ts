@@ -20,6 +20,17 @@ passport.use(new googleStrategy({
     let user = await prisma.user.findFirst({where: {googleId: profile.id}})
     
     if(user){
+        try {
+        await UserInMongodb.updateOne(
+            { uid: user.id},
+            {$set: {googleId: user.googleId, email: user.email, title: user.title, avatar: user.avatar}},
+        );
+        const syncedUser = await UserInMongodb.find();
+        console.log('User synced with MongoDB:', syncedUser);
+        } catch (err) {
+        console.error('MongoDB sync failed', err);
+        syncFailureQueue.push({user, attempts: 0}); 
+        }
         return done(null, user)
     }
 
