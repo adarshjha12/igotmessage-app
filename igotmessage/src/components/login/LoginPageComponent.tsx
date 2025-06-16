@@ -3,7 +3,6 @@ import React, {useState, useRef, useEffect} from 'react'
 import OtpInput from '@/components/OtpInput'
 import PopupMessage from '@/components/popups/PopupMessages'
 import { sendOtp } from '@/utils/api'
-import Loader from '@/components/Loader'
 import { useSearchParams } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
@@ -199,7 +198,7 @@ function Login() {
   <PopupMessage showPopup={unauthorized} message={`you are unauthorized. please select option below to continue`} success={false} />
   
   <div id="recaptcha-container"></div>
-  {loading && <Loader animate={true} color='white' scaleMd={true} />}
+  {loading && <NewLoader/>}
 
   {/* this is the start of violet background */}
   <div className='inset-0 px-12 fixed h-full w-[80%] gap-10  grid grid-cols-1 sm:grid-cols-2 rotate-12 sm:rotate-45 z-10'>

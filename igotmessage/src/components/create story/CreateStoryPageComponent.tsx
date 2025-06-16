@@ -1,15 +1,21 @@
 'use client'
 
-import { ImagePlusIcon, Music, Music4 } from 'lucide-react'
+import { ChevronDown, ImagePlusIcon, Music, Music2Icon, Music3, Music4, MusicIcon, PenBoxIcon } from 'lucide-react'
 import React, { ChangeEvent, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 import { ImageIcon } from '@phosphor-icons/react'
+import ImageCropper from '../ImageCropper'
+import MusicComponent from '../MusicComponent'
 
 function CreateStoryPageComponent() {
     const isDark = useSelector( (state : RootState) => state.activity.isDark)
     const [imagePreview, setImagePreview] = useState<undefined | string>()
     const [imageStoredLocally, setImageStoredLocally] = useState<string | undefined>()
+    const [chevronActive, setChevronActive] = useState<boolean>(false)
+    const [selectImageClick, setSelectImageClick] = useState<boolean>(false)
+    const [musicClick, setMusicClick] = useState<boolean>(false)
+    const [writeClick, setWriteClick] = useState<boolean>(false)
 
     function handleImageChange (e: ChangeEvent<HTMLInputElement>) {
       const file = e.target.files?.[0]
@@ -32,34 +38,67 @@ function CreateStoryPageComponent() {
     }, [imagePreview]);
 
   return (
-    <div className='w-full relative p-5 min-h-screen flex flex-col items-center justify-between gap-2.5 bg-[var(--bgColor)] text-[var(--textColor)] '>
-      <form action="" className='flex w-full justify-evenly gap-1'>
+    <div className='w-full p-5 h-full flex flex-col items-center justify-start gap-2.5 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] '>
+      <form action="" className='flex w-full justify-between gap-3'>
         <button
-         type='button'
-         onClick={() => (setImageStoredLocally(imagePreview))}
-          className=' bg-[var(--textColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] active:scale-75 items-center'>
-          <div className='flex justify-center items-center gap-2'>
-            <div className=' text-xl text-[var(--bgColor)] font-exo2'>Choose Image</div>
-            <ImageIcon size={33} fill={isDark? 'black' : 'white'} strokeWidth={1} className={`text-[var(--textColor)]`}/>            
+        onClick={() => setSelectImageClick(prev => !prev)}
+        type="button"
+        className={`relative group w-full sm:w-fit hover:bg-opacity-90  rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${selectImageClick ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
+      >
+        <div className='flex flex-col items-center justify-center gap-1'>
+          <ImagePlusIcon size='50' strokeWidth={1} className={`${selectImageClick ? ' text-[var(--bgColor)]' : 'text-[var(--textColor)]'}`} />
+          <p className='text-md font-semibold font-exo2'>Select Image</p>
+        </div>
+        <input
+          type="file"
+          onChange={handleImageChange}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        />
+      </button>
+
+      <button
+       onClick={() => {
+        setMusicClick(prev => !prev)
+        setChevronActive(prev => !prev)
+       }}
+        
+        type="button"
+        className={` cursor-pointer justify-center w-full sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${musicClick ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
+      >
+        <div className='flex relative justify-center items-center'>
+          <div className='flex flex-col items-center justify-center gap-1'>
+            <Music2Icon size= '50' strokeWidth={1} className={`${musicClick ? ' text-[var(--bgColor)]' : ''}`}/>
+            <p className='text-md font-semibold font-exo2'>Select Music</p>
           </div>
-          <input
-           type="file" 
-           onChange={handleImageChange}
-           name="" 
-           id="" 
-           className='absolute w-full opacity-0 cursor-pointer inset-0 '/>
-        </button>
+          <div className='absolute right-2'> <ChevronDown size={30} strokeWidth={1.5} className={`transition-all duration-150 ease-in ${chevronActive ? 'rotate-180' : ''} ${musicClick ? 'text-[var(--bgColor)]' : 'text-[var(--textColor)]'}`} /></div>
+        </div>
+      </button>
 
-        <button type='button' className=' bg-[var(--textColor)] cursor-pointer hover:scale-105 transition-all ease-in duration-200 relative px-1 py-2 rounded-xl flex justify-center  border-[var(--borderColor)] active:scale-75 items-center'> 
-          <div className=' text-xl text-[var(--bgColor)] font-exo2'>Select Music</div>
-          <Music4 size={33} fill={isDark? 'black' : 'white'} strokeWidth={1} className={`text-[var(--textColor)]`}/>
-        </button>
-
+      {musicClick && <div className='z-50 bg-[var(--bgColor)] backdrop-blur-md flex items-center justify-center'>
+        <MusicComponent/>
+        </div>}
+      <button
+       onClick={() => setWriteClick(prev => !prev)}
+        type="button"
+        className={` cursor-pointer justify-center w-full sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${writeClick ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
+      >
+        <div className='flex relative justify-center items-center'>
+          <div className='flex flex-col items-center justify-center gap-1'>
+            <PenBoxIcon size= '50' strokeWidth={1} className={`${writeClick ? ' text-[var(--bgColor)]' : 'text-[var(--textColor)]'}`} />
+            <p className='text-md font-semibold font-exo2'>Write</p>
+          </div>
+        </div>
+      </button>
+      
       </form>
-      <div className='bg-[var(--bgColor)] text-xl font-semibold'>
-        <img src={image? imageStoredLocally : imagePreview} className='max-w-full' alt="" />
+      {/* {!imagePreview && !imageStoredLocally ? <div className='w-full text-[85px] font-extrabold text-center text-gray-500/70 flex items-center justify-center'> 
+      </div> : null} */}
+
+      <div className='text-xl font-semibold'>
+        <img src={image? imageStoredLocally : imagePreview} className={`${image || imagePreview ? 'max-w-full rounded-md border-1 border-[var(--borderColor)]' : ''}`} alt="" />
         {/* <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3"> </audio> */}
       </div>
+      
     </div>
   )
 }

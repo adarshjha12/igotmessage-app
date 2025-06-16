@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState} from 'react'
 import { verifyOtp } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import PopupMessages from './popups/PopupMessages'
-import Loader from './Loader'
 import { useDispatch } from 'react-redux'
 import { addCurrentUserToStore, setAuthStatus } from '@/features/authSlice'
 import { ArrowClockwiseIcon, OptionIcon, SignInIcon } from '@phosphor-icons/react'
+import NewLoader from './NewLoader'
 
 interface otpInputProps {
   showOtpField: boolean,
@@ -167,7 +167,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
       </div>
      </form>
      {showSuccessPopup && <PopupMessages showPopup={true} success={true} message='congrats! verification successfull'/>}
-     {loading && <Loader/>}
+     {loading && <NewLoader/>}
      {showErrorPopup && <PopupMessages showPopup={true}  message='invalid credentials. please login again' success={false} /> }
      {otpExpired && <PopupMessages showPopup={true}  message='otp expired. click on resend' success={false} />}
     </div>

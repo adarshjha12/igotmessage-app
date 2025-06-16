@@ -1,4 +1,4 @@
-import {  MoonIcon, SunIcon, GroupIcon, ShieldIcon, InfoIcon, ArrowLeftIcon, SaveIcon, DatabaseBackup  } from 'lucide-react'
+import {  MoonIcon, SunIcon, GroupIcon, ShieldIcon, InfoIcon, ArrowLeftIcon, SaveIcon, DatabaseBackup, SettingsIcon, Settings2Icon, ArrowDownZa, ArrowDownUp, ArrowBigUp, ArrowRightIcon  } from 'lucide-react'
 import React, { useState } from 'react'
 import Toggle from './Toggle'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,9 +6,10 @@ import { RootState } from '@/store/store'
 import { setDarkMode, setPanelOpen } from '@/features/activitySlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { DownloadSimpleIcon, UserCircleIcon } from '@phosphor-icons/react'
-import { ArrowDownIcon, UserCircleCheckIcon } from '@phosphor-icons/react/dist/ssr'
+import { ArrowArcRightIcon, ArrowBendUpRightIcon, ArrowCircleRightIcon, ArrowSquareRightIcon, ArrowURightUpIcon, DownloadSimpleIcon, UserCircleIcon } from '@phosphor-icons/react'
+
 import Image from 'next/image'
+import { ArrowLineRightIcon } from '@phosphor-icons/react/dist/ssr'
 
 
 
@@ -47,8 +48,12 @@ function Panel() {
               <ArrowLeftIcon className='text-[var(--iconColor)]'/>
             </button>
             <div className='flex flex-col w-full gap-8'>
-                <div className='flex flex-col gap-3'>
-                  <p className='text-4xl font-bold'>Settings</p>
+                <div className='flex flex-col gap-5'>
+                  <div className='text-4xl flex gap-2 items-center font-bold'>
+                    <Settings2Icon className='text-[var(--iconColor)]' size={40}
+                    strokeWidth={1.5}/>
+                    <p>Settings</p>
+                  </div>
                   <div className={`flex w-full justify-between gap-2 text-[var(--textColor)] border-1 ${isDark ? '' : 'py-1.5'} rounded-xl bg-[var(--textColor)] border-[var(--borderColor)] px-3`}>
                     <div className='flex gap-2 items-center'>
                       <p className='text-xl text-[var(--bgColor)] font-semibold'>Dark mode</p>
@@ -72,7 +77,7 @@ function Panel() {
                   <div className={`flex w-full justify-between gap-2 text-[var(--textColor)] border-1 rounded-xl bg-[var(--textColor)] border-[var(--borderColor)] py-1.5 px-3`}>
                     <div className='flex gap-2 items-center'>
                       <p className='text-xl text-[var(--bgColor)] font-semibold'> Data Saver</p>
-                      <ArrowDownIcon size={28} className='text-[var(--bgColor)]'/>
+                      <ArrowDownUp size={28} className='text-[var(--bgColor)]'/>
                     </div>
                     <button type="button" onClick={() => setDataSaver(prev => !prev)} className={`cursor-pointer active:bg-[var(--wrapperColor)] transition duration-100 rounded-full active:scale-90`}>
                       <Toggle toggleNow={dataSaver}/>
@@ -80,7 +85,10 @@ function Panel() {
                   </div>
                 </div>
                 <div className='font-semibold w-full py-1 flex flex-col justify-center items-start gap-3'>
-                  <p className='text-4xl font-bold'>Visit</p>
+                  <div className='text-4xl flex gap-2 items-center font-bold'>
+                    <ArrowRightIcon className='text-[var(--iconColor)] -rotate-45' size={40} strokeWidth={1.5}/>
+                    <p>Visit</p>
+                  </div>
                   <Link
                    href='/about-dev'
                    className='ease-in w-full flex bg-[var(--wrapperColor)] rounded-xl px-4 py-2 justify-start items-center gap-2 cursor-pointer transform   active:bg-[var(--wrapperColor)] transition duration-100 active:rounded-full active:scale-90'>
