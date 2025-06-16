@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import Image from 'next/image'
 
 function SplashScreen() {
-  const isDark = useSelector((state: RootState) => state.activity.isDark)
+  // const isDark = useSelector((state: RootState) => state.activity.isDark)
 
   return (
     <div className='flex bg-gradient-to-r from-[var(--wrapperColor)] to-[var(--bgColor)] flex-col text-[var(--textColor)] z-50 fixed inset-0 justify-center items-center'>
