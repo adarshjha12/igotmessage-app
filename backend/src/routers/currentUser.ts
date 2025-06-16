@@ -8,7 +8,6 @@ interface userPayload {
     id?: number
     email?: string
 }
-
 getCurrentUser.get('/get-current-user', async (req, res) =>{
     const token = req.cookies.authToken
     if (!token) {

@@ -4,6 +4,8 @@ import Redis from 'ioredis'
 import jwt from 'jsonwebtoken'
 import prisma from '../prisma/client'
 import { getOtpEmailHtml } from '../utils/loadTemplate'
+import {User} from '../models/userModel'
+import syncFailuresQueue from '../utils/dbSyncQueue'
 
 const client = new Redis(process.env.REDIS_URL!)
 
@@ -78,6 +80,16 @@ emailAuthRouter.post('/verify-otp', async (req, res)  => {
           email: email
         }
       })
+
+      try {
+        await User.updateOne(
+        { uid: user.id},
+        {$set: user},
+        { upsert: true}
+        )
+      } catch (error) {
+        syncFailuresQueue.push({user, attempts: 0});
+      }
      }
    
   } catch (error) {

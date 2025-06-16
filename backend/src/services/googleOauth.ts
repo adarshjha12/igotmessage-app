@@ -1,6 +1,8 @@
 import passport from "passport";
 import {Strategy as googleStrategy} from 'passport-google-oauth20'
 import prisma from "../prisma/client";
+import {User as UserInMongodb} from "../models/userModel";
+import syncFailureQueue from "../utils/dbSyncQueue";
 
 const clientID = process.env.CLIENT_ID!
 const clientSecret = process.env.CLIENT_SECRET!
@@ -32,6 +34,16 @@ passport.use(new googleStrategy({
                 title: profile.displayName
             }
         })
+        try {
+        await UserInMongodb.updateOne(
+            { uid: user.id},
+            {$set: {googleId: user.googleId, email: user.email, title: user.title, avatar: user.avatar}},
+        );
+        } catch (err) {
+        console.error('MongoDB sync failed', err);
+        syncFailureQueue.push({user, attempts: 0}); 
+        }
+
         return done(null, user)
     }
 
@@ -45,7 +57,23 @@ passport.use(new googleStrategy({
                 }
             }
             )
-    
+            try {
+
+            const mongoUser = {
+            uid: user.id,
+            googleId: user.googleId,
+            email: user.email,
+            title: user.title,
+            avatar: user.avatar
+            };
+
+            await UserInMongodb.updateOne({ uid: mongoUser.uid }, { $set: mongoUser }, { upsert: true });
+
+            } catch (err) {
+            console.error('MongoDB sync failed', err);
+            syncFailureQueue.push({user, attempts: 0}); 
+            }
+        
        return done(null, user)
     } catch (error) {
         return done(error, undefined)
