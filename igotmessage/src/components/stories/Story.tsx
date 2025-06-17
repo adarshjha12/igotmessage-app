@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 function Story() {
-    const router = useRouter()
+  
   return (
     <div className='w-full h-fit z-0 flex overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar'>
         <Link href='/create-story' className='w-[80px] h-[80px] mr-2 rounded-full bg-gradient-to-r from-blue-700 to-red-600 border-1 border-black cursor-pointer grid place-items-center snap-start flex-shrink-0 '>

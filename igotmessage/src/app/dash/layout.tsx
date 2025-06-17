@@ -10,7 +10,7 @@ function layout({children} : {children: React.ReactNode}) {
     <div className='w-full min-h-screen'>
       <AuthGuard>
         <Dashboard>
-          <div className='w-full min-h-screen flex justify-center'>
+          <div className='w-full h-full flex justify-center'>
             {children}
           </div>
         </Dashboard>

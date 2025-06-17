@@ -1,28 +1,34 @@
 import React from 'react'
 import musicData from '../json/music.json'
-import { PauseIcon, PlayCircle, PlayIcon } from 'lucide-react'
+import { LucidePause, Music2, PauseCircle, PauseIcon, PauseOctagon, PlayCircle, PlayIcon } from 'lucide-react'
+import Image from 'next/image'
+import { PauseCircleIcon } from '@phosphor-icons/react'
 
 function MusicComponent() {
 
     const [musicPlaying, setMusicPlaying] = React.useState(false)
   return (
-    <div className='flex rounded-2xl flex-col items-center justify-center p-4 bg-[var(--bg-color)] text-[var(--text-color)]'>
-        <h2>Music</h2>
+    <div className='flex rounded-2xl w-full flex-col items-center justify-center p-4 bg-[var(--bg-color)] text-[var(--text-color)] gap-2'>
+        <p className='flex text-4xl font-semibold items-center py-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Music</p>
             {musicData.map((item, index) => (
-            <span key={index} className='flex items-center justify-between p-2 border-1 rounded-md mb-3'>
-               <img src={item.image} alt="music artist" />
+            <span key={index} className='flex w-[80%] sm:w-[30%] items-center justify-start gap-2 px-2 py-1 border-1 border-[var(--borderColor)] rounded-md mb-3'>
+               <Image src={item.image} className='rounded-sm w-8 h-8' width={40} height={40} alt="music artist" />
                <button 
-               className="inline mr-2 cursor-pointer"
+               className="cursor-pointer"
                 onClick={() => {
                         setMusicPlaying(prev => !prev)
                         const audio = new Audio(item.url)
                         audio.play()
                     }}>
-                
                     
-                {musicPlaying ? <PlayIcon className="inline mr-2" /> : <PauseIcon className="inline mr-2" />}
+                {musicPlaying ?
+                <PauseCircleIcon size={30} className="inline mr-2" />
+                 
+                 : 
+                 <PlayIcon className="inline mr-2" strokeWidth={1.5}/> 
+                }
                </button>
-               <p>{item.title}</p>
+                <p>{item.title.split('-').slice(0, 3).join('-').split('_')[0]}</p>
             </span>
             ))}
     </div>

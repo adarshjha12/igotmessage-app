@@ -37,7 +37,7 @@ console.log(avatar)
   }
   
   return (
-    <div className="w-full z-20 min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className="w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
           <div className={` w-full grid grid-cols-1 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'sm:[grid-template-columns:1fr_3fr_1.5fr]' : 'sm:[grid-template-columns:0fr_3fr_1.5fr]'}`}>
             {/* header starts here */}
@@ -274,31 +274,31 @@ console.log(avatar)
                     <p className="text-sm font-medium">Profile</p>
                   </Link>
                 </div>
-              </nav>`
+            </nav>
               {/* nav for mobile ends here */}
 
               {/* third column for desktop starts here */} 
-              <div className="sticky hidden sm:flex top-2">
-                <div>
-                    <div className={`flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? '' : 'opacity-0  w-18 px-0 sm:opacity-100 sm:w-full sm:px-2'}`}>
-                    <MagnifyingGlassIcon className="w-6 h-6 text-white"/>
-                    <input 
-                    value={searchInput} 
-                    onClick={() => setSearchInputClick(prev => !prev)}
-                    onBlur={() => {
-                      setSearchInputClick(prev => !prev)
-                      setSearchInput('')
-                    }}
-                    onChange={(e) => setSearchInput(e.target.value)} 
-                    type="search" 
-                    placeholder="Search" 
-                    className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
-                    
-                    </div>
-                    <MagnifyingGlassIcon size={33} className={`absolute top-0.5 right-0 pointer-events-none active:bg-[var(--wrapperColor)]  rounded-full active:scale-125 ${searchInputClick? 'opacity-0' : 'sm:opacity-0'}`}/>
+            <div className="hidden sm:flex top-2">
+              <div>
+                  <div className={`flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? '' : 'opacity-0  w-18 px-0 sm:opacity-100 sm:w-full sm:px-2'}`}>
+                  <MagnifyingGlassIcon className="w-6 h-6 text-white"/>
+                  <input 
+                  value={searchInput} 
+                  onClick={() => setSearchInputClick(prev => !prev)}
+                  onBlur={() => {
+                    setSearchInputClick(prev => !prev)
+                    setSearchInput('')
+                  }}
+                  onChange={(e) => setSearchInput(e.target.value)} 
+                  type="search" 
+                  placeholder="Search" 
+                  className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
+                  
                   </div>
+                  <MagnifyingGlassIcon size={33} className={`absolute top-0.5 right-0 pointer-events-none active:bg-[var(--wrapperColor)]  rounded-full active:scale-125 ${searchInputClick? 'opacity-0' : 'sm:opacity-0'}`}/>
                 </div>
               </div>
+            </div>
 
             {panelOpen && (
               <div

@@ -38,8 +38,9 @@ function CreateStoryPageComponent() {
     }, [imagePreview]);
 
   return (
-    <div className='w-full p-5 h-full flex flex-col items-center justify-start gap-2.5 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] '>
-      <form action="" className='flex w-full justify-between gap-3'>
+    <div className='w-full p-5 min-h-screen flex flex-col items-center justify-start gap-2.5 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] '>
+      <div className='w-full sm:w-[50%] p-5 h-full flex flex-col items-center justify-start gap-2.5 '>
+        <form action="" className='flex w-full justify-between gap-3'>
         <button
         onClick={() => setSelectImageClick(prev => !prev)}
         type="button"
@@ -74,9 +75,7 @@ function CreateStoryPageComponent() {
         </div>
       </button>
 
-      {musicClick && <div className='z-50 bg-[var(--bgColor)] backdrop-blur-md flex items-center justify-center'>
-        <MusicComponent/>
-        </div>}
+      
       <button
        onClick={() => setWriteClick(prev => !prev)}
         type="button"
@@ -90,14 +89,18 @@ function CreateStoryPageComponent() {
         </div>
       </button>
       
-      </form>
-      {/* {!imagePreview && !imageStoredLocally ? <div className='w-full text-[85px] font-extrabold text-center text-gray-500/70 flex items-center justify-center'> 
-      </div> : null} */}
+        </form>
+        {/* {!imagePreview && !imageStoredLocally ? <div className='w-full text-[85px] font-extrabold text-center text-gray-500/70 flex items-center justify-center'> 
+        </div> : null} */}
 
-      <div className='text-xl font-semibold'>
-        <img src={image? imageStoredLocally : imagePreview} className={`${image || imagePreview ? 'max-w-full rounded-md border-1 border-[var(--borderColor)]' : ''}`} alt="" />
-        {/* <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3"> </audio> */}
+        <div className='text-xl font-semibold'>
+          <img src={image? imageStoredLocally : imagePreview} className={`${image || imagePreview ? 'max-w-full rounded-md border-1 border-[var(--borderColor)]' : ''}`} alt="" />
+          {/* <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3"> </audio> */}
+        </div>
       </div>
+      {musicClick && <div className=' h-full py-2 fixed inset-0 z-50 overflow-y-auto bg-[var(--bgColor)] backdrop-blur-md flex items-start justify-center'>
+        <MusicComponent/>
+      </div>}
       
     </div>
   )
