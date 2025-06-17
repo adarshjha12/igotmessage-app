@@ -39,9 +39,9 @@ console.log(avatar)
   return (
     <div className="w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
-          <div className={` w-full grid grid-cols-1 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'sm:[grid-template-columns:1fr_3fr_1.5fr]' : 'sm:[grid-template-columns:0fr_3fr_1.5fr]'}`}>
+          <div className={` w-full grid grid-cols-1 md:gap-5 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'md:[grid-template-columns:1fr_2fr_1fr]' : 'md:[grid-template-columns:1fr_3fr_1.5fr]'}`}>
             {/* header starts here */}
-            <header className=" sm:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full sm:border-none flex justify-between py-2 px-4 items-center ">
+            <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-4 items-center ">
            
               <div className="flex items-center gap-3">
                 {pathname === '/dash/feed' ? <button type="button" title="menu" className="flex flex-col gap-2 rounded-full active:bg-[var(--wrapperColor)] p-2 cursor-pointer" onClick={() => dispatch(setPanelOpen(true))}>
@@ -54,11 +54,11 @@ console.log(avatar)
                  <ArrowLeftIcon size={28} className="text-[var(--textColor)]" strokeWidth={1.5}/>
                 </button>}
 
-                <p className={`sm:hidden ${pathname === '/dash/feed' ? 'font-montez  text-3xl' : ''} text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}>
+                <p className={`md:hidden ${pathname === '/dash/feed' ? 'font-montez  text-3xl' : ''} text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}>
                 {pathname === '/dash/feed' ? 'IGotMessage' : pathname === '/dash/create' ? 'Create' : pathname === '/dash/chats' ? 'Messages' : pathname === '/reels' ? 'Reels' : pathname === '/dash/calls' ? 'Calls' : pathname === '/dash/notifications' ? 'Notifications' : pathname === '/dash/profile' ? `${userTitle?.split(' ')[0]}'s Profile` : ''}
                 </p>
               </div>
-              {/* <Brand scaleSm={true} /> */}
+              {/* <Brand scalemd={true} /> */}
              <div className="flex gap-4.5 justify-center">                
                 <button
                 onClick={
@@ -99,9 +99,9 @@ console.log(avatar)
             <nav
               onMouseEnter={() => setNavHover(true)}
               onMouseLeave={() => setNavHover(false)}
-              className={`px-4 mt-1 h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-2 right-slide hidden my-2 sm:flex rounded-xl flex-col gap-4 sm:w-fit text-[var(--textColor)] justify-start sm:sticky top-2 ${navHover ? 'bg-blue-600 text-white' : ''}`}
+              className={`px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-4 right-slide hidden my-2 md:flex rounded-xl flex-col gap-4  text-[var(--textColor)] justify-start md:sticky md:top-2 ${navHover ? 'bg-blue-600 text-white' : ''}`}
             >
-              <div className={`flex items-center gap-4 bg-[var(--bgColor)] py-2 mb-8 rounded-full justify-center text-[var(--textColor)] ${sidebarOpen ? 'px-4' : 'px-0'}`}>
+              <div className={`flex items-center gap-4 bg-[var(--bgColor)] py-2 mb-8 rounded-full justify-center text-[var(--textColor)] ${sidebarOpen ? 'px-4' : 'px-0 bg-transparent'}`}>
                 <Link href="/dash/feed">
                   <p className={`font-montez z-10 text-3xl cursor-pointer font-[600] ${sidebarOpen ? '' : 'hidden'}`}>
                     IGotMessage
@@ -110,8 +110,8 @@ console.log(avatar)
                 <button
                   onClick={() => setSidebarOpen(prev => !prev)}
                   type="button"
-                  title="open sidebar"
-                  className="cursor-pointer"
+                  title={sidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
+                  className="cursor-pointer flex items-center justify-center"
                 >
                   {sidebarOpen ? (
                     <SidebarCloseIcon className="hover:scale-125 transition-all" strokeWidth={1.5} size={33} />
@@ -214,14 +214,14 @@ console.log(avatar)
             {/* nav for desktop ends here */}
 
             {/* main starts here (2nd column for desktop) */}
-            <main className="pb-10 sm:px-10 px-3 flex flex-col justify-center items-center ">
+            <main className="pb-10 sm:px-5 px-3 flex flex-col justify-center items-center">
               {children}
             </main>
             {/* main ends here */}
             
             {/* nav for mobile starts here */}
 
-            <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 sm:hidden flex fixed left-0 bottom-0">
+            <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 md:hidden flex fixed left-0 bottom-0">
                 <div className="w-full items-center flex justify-between">
                   
                   <Link href="/dash/feed" className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}>
@@ -278,24 +278,33 @@ console.log(avatar)
               {/* nav for mobile ends here */}
 
               {/* third column for desktop starts here */} 
-            <div className="hidden sm:flex top-2">
-              <div>
-                  <div className={`flex transition-all ease-in duration-200 px-2 bg-[var(--inputBg)] rounded-md justify-center items-center ${searchInputClick? '' : 'opacity-0  w-18 px-0 sm:opacity-100 sm:w-full sm:px-2'}`}>
-                  <MagnifyingGlassIcon className="w-6 h-6 text-white"/>
-                  <input 
-                  value={searchInput} 
-                  onClick={() => setSearchInputClick(prev => !prev)}
-                  onBlur={() => {
-                    setSearchInputClick(prev => !prev)
-                    setSearchInput('')
-                  }}
-                  onChange={(e) => setSearchInput(e.target.value)} 
-                  type="search" 
-                  placeholder="Search" 
-                  className="outline-none rounded-2xl border-none w-full h-full text-xl placeholder:text-md placeholder:pl-2 px-2 py-1.5" name="" id="" />
-                  
+            <div className="hidden md:flex my-2 mx-2 sticky top-2">
+              <div className="relative w-full ">
+                  <div className={`flex items-center bg-[var(--inputBg)] transition-all ease-in-out duration-300 px-3 rounded-full shadow-md
+                    ${searchInputClick ? 'opacity-100 w-full' : 'opacity-0 w-20 sm:opacity-100 sm:w-full'} 
+                  `}>
+                    <MagnifyingGlassIcon className="w-5 h-5 text-white" />
+                    
+                    <input 
+                      value={searchInput} 
+                      onClick={() => setSearchInputClick(prev => !prev)}
+                      onBlur={() => {
+                        setSearchInputClick(prev => !prev)
+                        setSearchInput('')
+                      }}
+                      onChange={(e) => setSearchInput(e.target.value)} 
+                      type="search" 
+                      placeholder="Search" 
+                      className="ml-2 w-full h-10 px-4 py-2 bg-transparent text-white placeholder:text-gray-300 text-base rounded-full outline-none border-none"
+                    />
                   </div>
-                  <MagnifyingGlassIcon size={33} className={`absolute top-0.5 right-0 pointer-events-none active:bg-[var(--wrapperColor)]  rounded-full active:scale-125 ${searchInputClick? 'opacity-0' : 'sm:opacity-0'}`}/>
+
+                  <MagnifyingGlassIcon 
+                    size={30} 
+                    className={`absolute top-1 right-2 p-1 text-white rounded-full transition-all duration-300 pointer-events-none 
+                      ${searchInputClick ? 'opacity-0' : 'sm:opacity-0'}
+                    `}
+                  />
                 </div>
               </div>
             </div>
