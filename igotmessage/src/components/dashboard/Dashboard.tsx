@@ -39,7 +39,7 @@ console.log(avatar)
   return (
     <div className="w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
       <div className={` w-full flex items-start justify-center transition-colors duration-200 relative `}>
-          <div className={` w-full grid grid-cols-1 md:gap-5 items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen? 'md:[grid-template-columns:1fr_2fr_1fr]' : 'md:[grid-template-columns:1fr_3fr_1.5fr]'}`}>
+          <div className={` w-full grid grid-cols-1  items-center sm:items-start transition-all duration-200 ease-in ${sidebarOpen ? 'md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2.5fr_1.5fr]' : 'md:gap-5 md:[grid-template-columns:1fr_5fr] lg:[grid-template-columns:1fr_5fr_3fr]'}`}>
             {/* header starts here */}
             <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-4 items-center ">
            
@@ -99,7 +99,7 @@ console.log(avatar)
             <nav
               onMouseEnter={() => setNavHover(true)}
               onMouseLeave={() => setNavHover(false)}
-              className={`px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-4 right-slide hidden my-2 md:flex rounded-xl flex-col gap-4  text-[var(--textColor)] justify-start md:sticky md:top-2 ${navHover ? 'bg-blue-600 text-white' : ''}`}
+              className={`px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-4 right-slide hidden my-2 md:flex rounded-xl flex-col gap-4  text-[var(--textColor)] justify-start ${!sidebarOpen? 'items-center': ''} md:sticky md:top-2 ${navHover ? 'bg-blue-600 text-white' : ''}`}
             >
               <div className={`flex items-center gap-4 bg-[var(--bgColor)] py-2 mb-8 rounded-full justify-center text-[var(--textColor)] ${sidebarOpen ? 'px-4' : 'px-0 bg-transparent'}`}>
                 <Link href="/dash/feed">
@@ -280,10 +280,10 @@ console.log(avatar)
               {/* third column for desktop starts here */} 
             <div className="hidden md:flex my-2 mx-2 sticky top-2">
               <div className="relative w-full ">
-                  <div className={`flex items-center bg-[var(--inputBg)] transition-all ease-in-out duration-300 px-3 rounded-full shadow-md
+                  <div className={`flex items-center bg-[var(--wrapperColor)] transition-all ease-in-out duration-300 px-3 border-1 border-[var(--borderColor)] rounded-full 
                     ${searchInputClick ? 'opacity-100 w-full' : 'opacity-0 w-20 sm:opacity-100 sm:w-full'} 
                   `}>
-                    <MagnifyingGlassIcon className="w-5 h-5 text-white" />
+                    <MagnifyingGlassIcon className="w-5 h-5 text-[var(--textColor)]" />
                     
                     <input 
                       value={searchInput} 
@@ -295,13 +295,13 @@ console.log(avatar)
                       onChange={(e) => setSearchInput(e.target.value)} 
                       type="search" 
                       placeholder="Search" 
-                      className="ml-2 w-full h-10 px-4 py-2 bg-transparent text-white placeholder:text-gray-300 text-base rounded-full outline-none border-none"
+                      className="ml-2 w-full h-10 px-4 py-2 bg-transparent text-[var(--textColor)] placeholder:text-gray-500 text-base rounded-full outline-none border-none"
                     />
                   </div>
 
                   <MagnifyingGlassIcon 
                     size={30} 
-                    className={`absolute top-1 right-2 p-1 text-white rounded-full transition-all duration-300 pointer-events-none 
+                    className={`absolute top-1 right-2 p-1 text-[var(--textColor)] rounded-full transition-all duration-300 pointer-events-none 
                       ${searchInputClick ? 'opacity-0' : 'sm:opacity-0'}
                     `}
                   />

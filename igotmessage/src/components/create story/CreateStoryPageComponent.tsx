@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 import { ImageIcon } from '@phosphor-icons/react'
 import ImageCropper from '../ImageCropper'
-import MusicComponent from '../MusicComponent'
+import MusicComponent from './MusicComponent'
+import Image from 'next/image'
+import StoryTemplates from './StoryTemplates'
 
 function CreateStoryPageComponent() {
     const isDark = useSelector( (state : RootState) => state.activity.isDark)
@@ -39,7 +41,7 @@ function CreateStoryPageComponent() {
 
   return (
     <div className='w-full p-5 min-h-screen flex flex-col items-center justify-start gap-2.5 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] '>
-      <div className='w-full sm:w-[50%] p-5 h-full flex flex-col items-center justify-start gap-2.5 '>
+      <div className='w-full sm:w-[50%] p-2 h-full flex flex-col items-center justify-start gap-2.5 '>
         <form action="" className='flex w-full justify-between gap-3'>
         <button
         onClick={() => setSelectImageClick(prev => !prev)}
@@ -98,10 +100,11 @@ function CreateStoryPageComponent() {
           {/* <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3"> </audio> */}
         </div>
       </div>
-      {musicClick && <div className=' h-full py-2 fixed inset-0 z-50 overflow-y-auto bg-[var(--bgColor)] backdrop-blur-md flex items-start justify-center'>
+      {musicClick && <div className=' down-slide h-full py-2 inset-0 sm:left-8 sm:top-35 top-38  fixed w-full  overflow-y-auto flex items-start justify-center '>
         <MusicComponent/>
       </div>}
       
+      <StoryTemplates/>
     </div>
   )
 }

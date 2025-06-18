@@ -40,7 +40,7 @@ function Panel() {
     <>
     {panelOpen && (
       
-    <div className={`flex panel-slide z-40 text-[var(--textColor)] flex-col items-start pt-4 px-2 duration-300 border-[var(--wrapperColor)] gap-4 border-r-8 right-0 fixed inset-0 overflow-y-auto w-[85%] sm:w-[60%] bg-[var(--bgColor)]
+    <div className={`flex panel-slide z-40 text-[var(--textColor)] flex-col items-start pt-4 px-2 duration-300 border-[var(--wrapperColor)] gap-4 border-r-8 right-0 fixed inset-0 overflow-y-auto w-[85%] sm:w-[40%] bg-[var(--bgColor)]
         `}> 
             <button type='button' 
             onClick={() => dispatch(setPanelOpen(false))}
@@ -113,7 +113,7 @@ function Panel() {
                   
                 </div>
             </div>
-            <div className='fixed bottom-0 left-2 w-[80%] bg-[var(--bgColor)] py-3'>
+            <div className='sticky bottom-0 left-2 w-full bg-[var(--bgColor)]/50 backdrop-blur-sm py-3'>
                 <Link  onClick={() => dispatch(setPanelOpen(false))} href='/dash/profile' className='flex w-fit justify-center items-center gap-2.5 border-[var(--borderColor)] rounded-2xl border-2 active:bg-[var(--wrapperColor)] px-3 py-2'>
                   <p className='text-2xl font-semibold'>{userName ? userName : 'User123'}</p>
                   <div>
