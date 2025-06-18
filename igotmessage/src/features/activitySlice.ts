@@ -3,13 +3,23 @@ import { createSlice } from "@reduxjs/toolkit";
 interface Activity {
     panelOpen: boolean,
     isDark: boolean,
-    storyImage: string
+    story: {
+      storyImage: string,
+      selectImageClicked: boolean,
+      selectMusicClicked: boolean,
+      selectWriteClicked: boolean,
+    }
 }
 
 const initialState : Activity = {
     isDark: false,
     panelOpen: false,
-    storyImage: ''
+    story: {
+      storyImage: '',
+      selectImageClicked: false,
+      selectMusicClicked: false,
+      selectWriteClicked: false,
+    }
 }
 
 const activitySlice = createSlice({
@@ -25,10 +35,22 @@ const activitySlice = createSlice({
         },
 
         setStoryImage: function (state, action) {
-            state.storyImage = action.payload
-        }
+            state.story.storyImage = action.payload
+        },
+
+        setImageClicked: function (state, action) {
+          state.story.selectImageClicked = action.payload
+        },
+
+        setMusicClicked: function (state, action) {
+          state.story.selectMusicClicked = action.payload
+        },
+
+        setWriteClicked: function (state, action) {
+          state.story.selectWriteClicked = action.payload
+        },
     }
 })
 
-export const {setDarkMode, setPanelOpen, setStoryImage} = activitySlice.actions
+export const {setDarkMode, setPanelOpen, setStoryImage, setImageClicked, setMusicClicked, setWriteClicked} = activitySlice.actions
 export default activitySlice.reducer

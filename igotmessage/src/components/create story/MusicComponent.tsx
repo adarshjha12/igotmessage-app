@@ -37,10 +37,10 @@ console.log(audioRef);
 
 
   return (
-    <div className='flex rounded-2xl  sm:w-[60%] md:w-[40%] w-[90%] border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bg-color)]/15 backdrop-blur-sm text-[var(--text-color)] gap-2'>
-        <p className='flex text-2xl text-center bg-[var(--bgColor)] rounded-2xl px-2 font-semibold items-center py-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
+    <div className='flex rounded-2xl  sm:w-[60%] md:w-[40%] w-[90%] border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bg-color)]/50 backdrop-blur-lg text-[var(--text-color)] gap-2'>
+        <p className='flex text-2xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
             {musicData.map((item, index) => (
-            <span key={index} className='flex w-full h-fit items-center justify-between gap-2 px-2 border-1 border-[var(--borderColor)] rounded-xl mb-3'>
+            <span key={index} className='flex w-full h-fit items-center justify-between gap-2 px-2 border-1 border-[var(--borderColor)] bg-[var(--bgColor)]/15 rounded-xl mb-3'>
                <div className='flex items-center gap-2 px-2'>
                 <Image src={item.image} className='rounded-sm w-8 h-8' width={40} height={40} alt="music artist" />
               
@@ -61,7 +61,7 @@ console.log(audioRef);
                </div>
               
                 <div className='overflow-hidden'>
-                   <p className={`text-end text-nowrap text-xs ${music.index === index && music.playing ? 'translate-animation' : ''}`}>{item.title.split('-').slice(0, 3).join('-').split('_')[0].slice(0, 20) + "..."}</p>
+                   <p className={`text-end text-nowrap text-[15px] ${music.index === index && music.playing ? 'translate-animation' : ''}`}>{item.title.split('-').slice(0, 3).join('-').split('_')[0].slice(0, 20) + "..."}</p>
                 </div>
                 <button
                  className='flex rounded-full active:bg-[var(--wrapperColor)] active:scale-50 p-1 items-center justify-center cursor-pointer'>
