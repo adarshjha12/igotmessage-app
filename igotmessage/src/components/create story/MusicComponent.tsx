@@ -6,8 +6,12 @@ import { PauseCircleIcon, PlusIcon } from '@phosphor-icons/react'
 import { number } from 'zod'
 import { useRef } from 'react';
 import AudioBars from '../AudioBar'
+import { RootState } from '@/store/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { setMusicData } from '@/features/activitySlice'
 
 function MusicComponent() {
+  const dispatch = useDispatch()
     const [music, setMusic] = React.useState({
       playing: false,
       index: -1
@@ -15,7 +19,7 @@ function MusicComponent() {
 
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
-console.log(audioRef);
+    console.log(audioRef);
 
     const handlePlayPause = (url: string, index: number) => {
       if (audioRef.current && !audioRef.current.paused && index === music.index) {
@@ -37,7 +41,7 @@ console.log(audioRef);
 
 
   return (
-    <div className='flex rounded-2xl  sm:w-[60%] md:w-[40%] w-[90%] border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bg-color)]/50 backdrop-blur-lg text-[var(--text-color)] gap-2'>
+    <div className='flex rounded-2xl w-[90%] border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2'>
         <p className='flex text-2xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
             {musicData.map((item, index) => (
             <span key={index} className='flex w-full h-fit items-center justify-between gap-2 px-2 border-1 border-[var(--borderColor)] bg-[var(--bgColor)]/15 rounded-xl mb-3'>
@@ -64,6 +68,7 @@ console.log(audioRef);
                    <p className={`text-end text-nowrap text-[15px] ${music.index === index && music.playing ? 'translate-animation' : ''}`}>{item.title.split('-').slice(0, 3).join('-').split('_')[0].slice(0, 20) + "..."}</p>
                 </div>
                 <button
+                onClick={() => dispatch(setMusicData(item))}
                  className='flex rounded-full active:bg-[var(--wrapperColor)] active:scale-50 p-1 items-center justify-center cursor-pointer'>
                   <Plus size={35} strokeWidth={1} className="inline ml-auto" />
                 </button>

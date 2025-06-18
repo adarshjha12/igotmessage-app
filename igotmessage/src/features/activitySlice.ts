@@ -5,6 +5,7 @@ interface Activity {
     isDark: boolean,
     story: {
       storyImage: string,
+      musicData: string,
       selectImageClicked: boolean,
       selectMusicClicked: boolean,
       selectWriteClicked: boolean,
@@ -16,6 +17,7 @@ const initialState : Activity = {
     panelOpen: false,
     story: {
       storyImage: '',
+      musicData: '',
       selectImageClicked: false,
       selectMusicClicked: false,
       selectWriteClicked: false,
@@ -38,6 +40,10 @@ const activitySlice = createSlice({
             state.story.storyImage = action.payload
         },
 
+        setMusicData: function (state, action) {
+            state.story.musicData = action.payload
+        },
+
         setImageClicked: function (state, action) {
           state.story.selectImageClicked = action.payload
         },
@@ -52,5 +58,5 @@ const activitySlice = createSlice({
     }
 })
 
-export const {setDarkMode, setPanelOpen, setStoryImage, setImageClicked, setMusicClicked, setWriteClicked} = activitySlice.actions
+export const {setDarkMode, setPanelOpen, setStoryImage, setMusicData, setImageClicked, setMusicClicked, setWriteClicked} = activitySlice.actions
 export default activitySlice.reducer
