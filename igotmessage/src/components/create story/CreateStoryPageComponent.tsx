@@ -1,7 +1,7 @@
 'use client'
 
-import { ChevronDown, ImagePlusIcon, Music, Music2Icon, Music3, Music4, MusicIcon, PenBoxIcon } from 'lucide-react'
-import React, { ChangeEvent, useState, useEffect } from 'react'
+import { ChevronDown, ImagePlusIcon, Music, Music2Icon, Music3, Music4, MusicIcon, PenBoxIcon, SpeakerIcon } from 'lucide-react'
+import React, { ChangeEvent, useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store/store'
 import { ImageIcon } from '@phosphor-icons/react'
@@ -11,12 +11,15 @@ import Image from 'next/image'
 import StoryTemplates from './StoryTemplates'
 import {setImageClicked, setMusicClicked, setWriteClicked} from '../../features/activitySlice'
 import { useRouter } from 'next/navigation'
+import AudioBars from '../AudioBar'
+import { SpeakerXIcon } from '@phosphor-icons/react/dist/ssr'
 
 function CreateStoryPageComponent() {
   const router = useRouter()
     const dispatch = useDispatch()
     const isDark = useSelector( (state : RootState) => state.activity.isDark)
     const storyImageChosen = useSelector( (state : RootState) => state.activity.story.storyImage)
+    const storyMusicData = useSelector( (state: RootState) => state.activity.story.musicData)
 
     const isSelectImageClicked = useSelector( (state : RootState) => state.activity.story.selectImageClicked)
     const isSelectMusicClicked = useSelector( (state : RootState) => state.activity.story.selectMusicClicked)
@@ -25,8 +28,13 @@ function CreateStoryPageComponent() {
     const [imagePreview, setImagePreview] = useState<undefined | string>()
     const [imageStoredLocally, setImageStoredLocally] = useState<string | undefined>()
     const [chevronActive, setChevronActive] = useState<boolean>(false)
-    
+    const [volume, setVolume] = useState(false)
+    const audioRef = useRef<HTMLAudioElement | null>(null)
 
+    const newAudio = new Audio(storyMusicData.url)
+    audioRef.current = newAudio
+  console.log(newAudio);
+  
     function handleImageChange (e: ChangeEvent<HTMLInputElement>) {
       const file = e.target.files?.[0]
 
@@ -36,26 +44,38 @@ function CreateStoryPageComponent() {
         setImagePreview(undefined)
       }
     }
-console.log('storyImageChosen', storyImageChosen);
-
-    const image = localStorage.getItem('')
     
     useEffect(() => {
-      // if (image) {
-      //   setImageStoredLocally(image)
-      // }
+
       if (storyImageChosen) {
         setImagePreview(storyImageChosen)
       }
-      console.log(imagePreview);
+
+      if (storyImageChosen && storyMusicData.url && audioRef.current) {
+        
+        audioRef.current.play()
+        setVolume(true)
+      }
       
-    }, [imagePreview, storyImageChosen]);
+    }, [imagePreview, storyImageChosen, audioRef]);
 
     useEffect(() => {
       dispatch(setImageClicked(false))
       dispatch(setMusicClicked(false))
       dispatch(setWriteClicked(false))
     }, [router]);
+
+    function handleVolume() {
+      if (audioRef.current?.played) {
+        if(audioRef.current.volume > 0){
+        audioRef.current.volume = 0
+        setVolume(false)
+      } else {
+        audioRef.current.volume = 1
+        setVolume(true)
+      }
+      }
+    }
 
   return (
     <div className='w-full p-5 overflow-y-auto min-h-screen flex flex-col items-center justify-start gap-2.5 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] '>
@@ -109,11 +129,34 @@ console.log('storyImageChosen', storyImageChosen);
             </div>
           </button>
         </form>
-
-        <div className='text-xl font-semibold'>
-          <img src={image? imageStoredLocally : imagePreview} className={`${image || imagePreview ? 'max-w-full rounded-md ' : ''}`} alt="" />
-          {/* <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3"> </audio> */}
+        {/* we play story and music here */}
+        <div className='text-xl w-full font-semibold '>
+          {imagePreview && 
+          <img src={imagePreview} className={`rounded-md`}  alt="story" />
+          }
+          {
+            imagePreview && storyMusicData.url ?
+            <div className='flex gap-3'>
+              <div className='border border-[var(--borderColor)] rounded-md bg-[var(--bgColor)]'>
+                <div className='w-[50px] h-[50px] relative'>
+                  <Image className='object-cover' fill alt='img' src={storyMusicData.image}/>
+                </div>
+                <div>
+                <AudioBars isPlaying={true}/>
+                </div>
+                <div>
+                  <p className='text-sm translate-animation'>{storyMusicData.title}</p>
+                </div>
+              </div>
+              <button
+              onClick={handleVolume}
+               type='button'>
+                {volume ? <SpeakerXIcon size={30}/> : <SpeakerIcon size={30}/>}
+              </button>
+            </div> : null
+          }
         </div>
+
       </div>
       {isSelectMusicClicked && <div className=' down-slide h-full py-2 top-35 z-40 fixed overflow-y-auto flex pb-16 items-start justify-center '>
         <MusicComponent/>

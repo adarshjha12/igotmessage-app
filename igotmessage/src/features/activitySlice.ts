@@ -1,11 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { string } from "zod";
 
 interface Activity {
     panelOpen: boolean,
     isDark: boolean,
     story: {
       storyImage: string,
-      musicData: string,
+      musicData: {
+        title: string,
+        artist: string,
+        genre: string,
+        url: string,
+        image: string
+      },
       selectImageClicked: boolean,
       selectMusicClicked: boolean,
       selectWriteClicked: boolean,
@@ -17,7 +24,12 @@ const initialState : Activity = {
     panelOpen: false,
     story: {
       storyImage: '',
-      musicData: '',
+      musicData: {
+        title: '',
+        artist: '',
+        genre: '',
+        url: '',
+        image: ''      },
       selectImageClicked: false,
       selectMusicClicked: false,
       selectWriteClicked: false,
