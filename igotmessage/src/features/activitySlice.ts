@@ -13,9 +13,7 @@ interface Activity {
         url: string,
         image: string
       },
-      selectImageClicked: boolean,
-      selectMusicClicked: boolean,
-      selectWriteClicked: boolean,
+      
     }
 }
 
@@ -29,10 +27,9 @@ const initialState : Activity = {
         artist: '',
         genre: '',
         url: '',
-        image: ''      },
-      selectImageClicked: false,
-      selectMusicClicked: false,
-      selectWriteClicked: false,
+        image: ''      
+      },
+      
     }
 }
 
@@ -56,19 +53,8 @@ const activitySlice = createSlice({
             state.story.musicData = action.payload
         },
 
-        setImageClicked: function (state, action) {
-          state.story.selectImageClicked = action.payload
-        },
-
-        setMusicClicked: function (state, action) {
-          state.story.selectMusicClicked = action.payload
-        },
-
-        setWriteClicked: function (state, action) {
-          state.story.selectWriteClicked = action.payload
-        },
     }
 })
 
-export const {setDarkMode, setPanelOpen, setStoryImage, setMusicData, setImageClicked, setMusicClicked, setWriteClicked} = activitySlice.actions
+export const {setDarkMode, setPanelOpen, setStoryImage, setMusicData} = activitySlice.actions
 export default activitySlice.reducer

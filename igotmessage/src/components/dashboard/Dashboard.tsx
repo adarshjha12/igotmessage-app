@@ -315,8 +315,11 @@ console.log(avatar)
                 className="fixed inset-0 bg-black/70 z-30"
               ></div>
             )}
-           <Panel/>
-          
+
+           {/* pannel component */}
+           {panelOpen ? <Panel/> : null}
+
+           {/* camera component */}
            {cameraClick? 
            <div className={` justify-center items-start ${cameraClick ? "flex" : "hidden"}`}>
             <button

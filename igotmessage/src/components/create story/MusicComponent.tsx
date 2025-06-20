@@ -41,8 +41,8 @@ function MusicComponent() {
 
 
   return (
-    <div className='flex rounded-2xl w-[90%] border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2'>
-        <p className='flex text-2xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
+    <div className='flex rounded-2xl w-[90%] sm:w-full border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2'>
+        <p className='flex text-xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
             {musicData.map((item, index) => (
             <span key={index} className='flex w-full h-fit items-center justify-between gap-2 px-2 border-1 border-[var(--borderColor)] bg-[var(--bgColor)]/15 rounded-xl mb-3'>
                <div className='flex items-center gap-2 px-2'>

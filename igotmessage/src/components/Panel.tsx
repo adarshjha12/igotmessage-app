@@ -38,9 +38,8 @@ function Panel() {
 
   return (
     <>
-    {panelOpen && (
       
-    <div className={`flex panel-slide z-40 text-[var(--textColor)] flex-col items-start pt-4 px-2 duration-300 border-[var(--wrapperColor)] gap-4 border-r-8 right-0 fixed inset-0 overflow-y-auto w-[85%] sm:w-[40%] bg-[var(--bgColor)]
+    <div className={`flex ${panelOpen ? 'panel-slide' : 'panel-slide-close'} z-40 text-[var(--textColor)] flex-col items-start pt-4 px-2 duration-300 border-[var(--wrapperColor)] gap-4 border-r-8 right-0 fixed inset-0 overflow-y-auto w-[85%] sm:w-[40%] bg-[var(--bgColor)]
         `}> 
             <button type='button' 
             onClick={() => dispatch(setPanelOpen(false))}
@@ -124,8 +123,7 @@ function Panel() {
                 </Link>
             </div>
     
-        </div>
-    )}
+    </div>
     </>
   )
 }
