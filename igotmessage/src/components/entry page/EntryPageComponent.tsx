@@ -51,9 +51,9 @@ export default function EntryPage() {
   if (checked && isVerified === false) {
     return (
       <main className="w-full min-h-screen bg-black flex items-center justify-center flex-col text-[var(--textColor)]">
-          <div className='z-30 rounded-2xl w-full h-full '>
-            <div className='flex w-full h-full left-slide justify-center items-center flex-wrap gap-1 rounded-xl '>
-              <div className='flex w-full h-full flex-col gap-8 justify-evenly items-center'>
+          <div className='z-30 flex justify-center items-center rounded-2xl w-full h-full '>
+            <div className='flex w-full h-full left-slide justify-center items-center  gap-1 rounded-xl '>
+              <div className='flex w-full h-full flex-col gap-18 sm:gap-10 justify-between items-center'>
                 <div className=' rounded-full p-4 flex justify-center'>
                   <h1 className='text-6xl sm:text-9xl font-audioWide inline text-center text-white font-extrabold'>Grand Welcome!<Heart className='inline ml-2 text-violet-500' size={55} strokeWidth={2}/></h1>
                 </div>
@@ -67,29 +67,29 @@ export default function EntryPage() {
                     <p className='flex font-light font-exo2 text-gray-300 items-center gap-1 skew-x-[30deg]'> <Cpu size={15}/> <span className='text-sm sm:text-lg font-light'>JhaFusion LLC</span></p>
                   </div>
                 </div>
-                  <div className='flex flex-col h-full w-full justify-center items-center p-4 gap-10'>
-                    {/* <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>For best experience, download the app</p>
-                    <div className='flex sm:hidden justify-center items-center p-0.5 border-1 border-white rounded-md'>
-                      <a
-                      className='py-2 text-md text-3xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'
-                      href="/download/igotmessage-signed.apk"> Download apk <Download size={30}/> </a>
-                    </div> */}
-                    {/* <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>Or</p> */}
-                    <div className='flex justify-center items-center p-0.5 border-1 border-white rounded-md'>
-                      <button
-                      type='button' 
-                      onClick={() => router.push('/login')}
-                      className='py-2 text-md sm:text-xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'>
-                        <div className=''>Continue to IGotMessage </div>
-                        <ArrowRight  size={20}/>
-                      </button>
-                    </div>
-  
-                    <div className='flex w-full flex-col items-center justify-center'>
-                      <p className='text-center text-xl sm:text-3xl font-extrabold text-gray-300 font-exo2 '>You are just one step away from something Extraordinary!</p>
-                    </div>
-                
+                <div className='flex flex-col h-full w-full justify-center items-center p-4 gap-10'>
+                  {/* <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>For best experience, download the app</p>
+                  <div className='flex sm:hidden justify-center items-center p-0.5 border-1 border-white rounded-md'>
+                    <a
+                    className='py-2 text-md text-3xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'
+                    href="/download/igotmessage-signed.apk"> Download apk <Download size={30}/> </a>
+                  </div> */}
+                  {/* <p className='text-center sm:hidden font-exo2 text-xl sm:text-3xl font-extrabold text-gray-300'>Or</p> */}
+                  <div className='flex justify-center items-center p-0.5 border-1 border-white rounded-md'>
+                    <button
+                    type='button' 
+                    onClick={() => router.push('/login')}
+                    className='py-2 text-md sm:text-xl font-exo2 animate-pulse flex items-center border-1 border-[var(--borderColor)] text-black cursor-pointer font-semibold px-2 gap-3 justify-between rounded-md active:scale-75 hover:bg-black hover:text-white bg-white'>
+                      <div className=''>Continue to IGotMessage </div>
+                      <ArrowRight  size={20}/>
+                    </button>
                   </div>
+
+                  <div className='flex w-full flex-col items-center justify-center'>
+                    <p className='text-center text-xl sm:text-3xl font-extrabold text-gray-300 font-exo2 '>You are just one step away from something Extraordinary!</p>
+                  </div>
+              
+                </div>
               </div>
             
             </div>
