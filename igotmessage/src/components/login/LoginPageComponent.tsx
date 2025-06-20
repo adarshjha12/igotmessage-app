@@ -140,8 +140,8 @@ function Login() {
 
       <button onClick={() => handleGoogleButtonClick()} className={`${googleButtonClick ? 'w-[250px]' : ''} ${emailButtonClick ? 'hidden' : ''} hover:scale-105 transition-all hover:ease-in flex hover:border-yellow-400 cursor-pointer justify-center items-center border-2 border-[var(--borderColor)]-400 rounded-3xl py-0.5 px-2`}>
         
-        <img src="/images/google.png" className={`${googleButtonClick ? 'hidden' : 'w-[20px] h-auto'}`} alt="google" />
-        <p className='text-xl rounded-2xl active:scale-75 font-semibold px-1'>
+        <img src="/images/google.png" className={`${googleButtonClick ? 'hidden' : 'w-[30px] h-auto'}`} alt="google" />
+        <p className='text-2xl rounded-3xl active:scale-75 font-semibold px-1'>
           {googleButtonClick ? <NewLoader/> : 'Continue with google'}
         </p>
       </button>
@@ -182,8 +182,8 @@ function Login() {
       
       <button onClick={() => handleEmailButtonClick()} className={`${emailButtonClick ? 'hidden' : null} hover:scale-105 transition-all hover:ease-in flex hover:border-yellow-400  gap-4 cursor-pointer justify-center items-center border-2 border-[var(--borderColor)] rounded-3xl py-0.5 px-3`}>
         
-        <img src="/images/gmail.png" className='w-[20px] h-auto' alt="google" />
-        <p className=' text-xl active:scale-75 rounded-2xl font-semibold px-1'>Verify with email</p>
+        <img src="/images/gmail.png" className='w-[30px] h-auto' alt="google" />
+        <p className=' text-2xl active:scale-75 rounded-2xl font-semibold px-1'>Verify with email</p>
       </button>
       
     </div>

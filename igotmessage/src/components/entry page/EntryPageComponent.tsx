@@ -50,12 +50,12 @@ export default function EntryPage() {
   
   if (checked && isVerified === false) {
     return (
-      <main className="w-full h-full bg-black flex items-center justify-center flex-col text-[var(--textColor)]">
+      <main className="w-full min-h-screen bg-black flex items-center justify-center flex-col text-[var(--textColor)]">
           <div className='z-30 rounded-2xl w-full h-full '>
             <div className='flex w-full h-full left-slide justify-center items-center flex-wrap gap-1 rounded-xl '>
               <div className='flex w-full h-full flex-col gap-8 justify-evenly items-center'>
                 <div className=' rounded-full p-4 flex justify-center'>
-                  <p className='text-6xl sm:text-9xl font-audioWide inline text-center text-white font-extrabold'>Grand Welcome!<Heart className='inline ml-2 text-violet-500' size={55} strokeWidth={2}/></p>
+                  <h1 className='text-6xl sm:text-9xl font-audioWide inline text-center text-white font-extrabold'>Grand Welcome!<Heart className='inline ml-2 text-violet-500' size={55} strokeWidth={2}/></h1>
                 </div>
   
                 <div className='flex w-full flex-col  items-center backdrop-blur-sm gap-2 bg-gray-700/30'>
