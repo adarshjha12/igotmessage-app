@@ -103,7 +103,7 @@ function CreateStoryPageComponent() {
             <button
           onClick={() => setSelectImageClicked(prev => !prev)}
           type="button"
-          className={`relative} group w-full sm:w-fit hover:bg-opacity-90 cursor-pointer rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${selectImageClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
+          className={`relative} group sm:w-fit hover:bg-opacity-90 cursor-pointer rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${selectImageClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
         >
           <div className='flex flex-col items-center justify-center gap-1'>
             <ImagePlusIcon size='40' strokeWidth={1} className={`${selectImageClicked ? ' text-[var(--bgColor)]' : 'text-[var(--textColor)]'}`} />
@@ -154,7 +154,7 @@ function CreateStoryPageComponent() {
           disabled={selectMusicDisabled}
             
             type="button"
-            className={`${selectMusicDisabled ? 'opacity-50 cursor-not-allowed' : ''} cursor-pointer justify-center w-full sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${selectMusicClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
+            className={`${selectMusicDisabled ? 'opacity-50 cursor-not-allowed' : ''} cursor-pointer justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${selectMusicClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
           >
             <div className='flex relative justify-center items-center'>
               <div className='flex flex-col items-center justify-center gap-1'>
@@ -166,9 +166,13 @@ function CreateStoryPageComponent() {
           </button>
         
           <button
-          onClick={() => setSelectWriteClicked(prev => !prev)}
+          onClick={() => {
+            setSelectWriteClicked(prev => !prev)
+            setSelectImageClicked(false)
+            setSelectMusicClicked(false)
+          }}
             type="button"
-            className={` cursor-pointer justify-center w-full sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${selectWriteClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
+            className={` cursor-pointer justify-center sm:w-fit rounded-2xl px-7 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${selectWriteClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
           >
             <div className='flex relative justify-center items-center'>
               <div className='flex flex-col items-center justify-center gap-1'>
