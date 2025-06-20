@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import musicData from '../../json/music.json'
-import { LucidePause, Music2, PauseCircle, PauseIcon, PauseOctagon, Play, PlayCircle, PlayIcon, Plus } from 'lucide-react'
+import { DrumIcon, FilterIcon, Guitar, LucidePause, Music2, PauseCircle, PauseIcon, PauseOctagon, Play, PlayCircle, PlayIcon, Plus, SortAsc, SortAscIcon, SortDesc, SortDescIcon } from 'lucide-react'
 import Image from 'next/image'
 import { PauseCircleIcon, PlusIcon } from '@phosphor-icons/react'
 import { number } from 'zod'
@@ -11,7 +11,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setMusicData } from '@/features/activitySlice'
 
 function MusicComponent() {
-  const dispatch = useDispatch()
+    const dispatch = useDispatch()
+
+    const [showSortPopup, setShowSortPopup] = React.useState(false);
+    const [showFilterPopup, setShowFilterPopup] = React.useState(false);
     const [music, setMusic] = React.useState({
       playing: false,
       index: -1
@@ -41,8 +44,52 @@ function MusicComponent() {
 
 
   return (
-    <div className='flex rounded-2xl w-[90%] sm:w-full border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2'>
-        <p className='flex text-xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
+    <div className='flex scroll-smooth whitespace-nowrap overflow-y-auto rounded-2xl w-[90%] sm:w-full border-1 py-2 flex-col items-center px-4 justify-center  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2'>
+        <div className='flex flex-col justify-center items-center'>
+          <p className='flex text-xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center'><Music2 size={40} strokeWidth={1.5}/> Select your favourite music</p>
+          <div className='flex gap-2 w-full justify-evenly items-center'>
+            <div className='relative'>
+              <button
+              onClick={() => {
+                setShowSortPopup(prev => !prev)
+                setShowFilterPopup(false)
+              }}
+              className='flex cursor-pointer p-2 active:scale-75 gap-2 justify-center items-center'
+              > <SortDesc size={25} strokeWidth={1}/> Sort</button>
+              {showSortPopup && 
+              <div className='absolute z-40 p-6 rounded-2xl -left-[60%] top-[120%] bg-[var(--textColor)] text-[var(--bgColor)] backdrop-blur-sm flex flex-col justify-center items-center'>
+                  <button
+                  className='mb-2 border-1 border-[var(--bgColor)] cursor-pointer active:scale-75  flex justify-center items-center gap-2 py-2 px-25 rounded-md'
+
+                  ><SortAsc size={30} strokeWidth={1}/> A-Z</button>
+                  <button
+                   className='mb-2  flex justify-center items-center gap-2 border-1 active:scale-75 cursor-pointer border-[var(--bgColor)] py-2 px-25 rounded-md'
+                  > <SortDescIcon size={30} strokeWidth={1}/> Z-A</button>
+              </div>
+            }
+            </div>
+            
+            <div className='relative'>
+              <button
+              onClick={() => {
+                setShowFilterPopup(prev => !prev)
+                setShowSortPopup(false)
+              }}
+              className='flex cursor-pointer p-2 active:scale-75 gap-2 justify-center items-center'
+              > <FilterIcon size={25} strokeWidth={1}/> Filter</button>
+              {showFilterPopup && 
+              <div className='absolute z-40 p-6 rounded-2xl -left-[220%] top-[120%] bg-[var(--textColor)] text-[var(--bgColor)] backdrop-blur-sm flex flex-col justify-center items-center'>
+                  <button
+                  className='mb-2 border-1 flex justify-center items-center gap-2 border-[var(--bgColor)] cursor-pointer active:scale-75 py-2 px-21 rounded-md'
+                  ><DrumIcon size={30} strokeWidth={1}/> BollyWood</button>
+                  <button
+                  className='mb-2 flex justify-center items-center gap-2 border-1 border-[var(--bgColor)] cursor-pointer active:scale-75 py-2 px-24 rounded-md'
+                  ><Guitar size={30} strokeWidth={1}/>  English</button>
+              </div>
+            }
+            </div>
+          </div>
+        </div>
             {musicData.map((item, index) => (
             <span key={index} className='flex w-full h-fit items-center justify-between gap-2 px-2 border-1 border-[var(--borderColor)] bg-[var(--bgColor)]/15 rounded-xl mb-3'>
                <div className='flex items-center gap-2 px-2'>
@@ -74,6 +121,9 @@ function MusicComponent() {
                 </button>
             </span>
             ))}
+            
+            
+            
     </div>
   )
 }

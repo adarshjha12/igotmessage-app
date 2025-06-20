@@ -212,7 +212,7 @@ function CreateStoryPageComponent() {
         </div>
 
       </div>
-      {selectMusicClicked && <div className='scroll-smooth whitespace-nowrap down-slide h-screen py-2 top-35 z-50 fixed overflow-y-auto flex pb-16 items-start justify-center '>
+      {selectMusicClicked && <div className=' overflow-y-auto down-slide h-[80%]  py-2 top-35 z-50 fixed  flex pb-16 items-start justify-center '>
         <MusicComponent/>
       </div>}
       
