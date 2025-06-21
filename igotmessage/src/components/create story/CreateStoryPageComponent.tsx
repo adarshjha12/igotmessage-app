@@ -1,11 +1,11 @@
 'use client'
 
-import { ChevronDown, Grid2X2, ImagePlusIcon, LayoutDashboardIcon, LayoutIcon, Music, Music2Icon, Music3, Music4, MusicIcon, PenBoxIcon, SpeakerIcon } from 'lucide-react'
+import { ChevronDown, Grid2X2, ImagePlusIcon, LayoutDashboardIcon, LayoutIcon, Music, Music2Icon, Music3, Music4, MusicIcon, PenBoxIcon, Sparkle, Sparkles, SpeakerIcon } from 'lucide-react'
 import React, { ChangeEvent, useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store/store'
 import { setStoryImage } from '@/features/activitySlice'
-import { CameraIcon, DeviceMobileIcon, ImageIcon } from '@phosphor-icons/react'
+import { CameraIcon, DeviceMobileIcon, ImageIcon, SparkleIcon } from '@phosphor-icons/react'
 import MusicComponent from './MusicComponent'
 import Image from 'next/image'
 import StoryTemplates from './StoryTemplates'
@@ -157,6 +157,14 @@ function CreateStoryPageComponent() {
           onClick={() => setCameraOpen(prev => !prev)}
            type='button' className='cursor-pointer active:scale-75'>
             <CameraIcon size={45} strokeWidth={1} weight='light' className='text-[var(--textColor)]' />
+          </button>
+
+          <button
+          // onClick={() => setCameraOpen(prev => !prev)}
+           type='button' className='cursor-pointer active:scale-75 relative'>
+            <Sparkle size={40} strokeWidth={1} className='text-[var(--textColor)] rotate-6' />
+            <Sparkle size={20} strokeWidth={2} className='text-[var(--textColor)] absolute top-0 -right-3' />
+            <p className='text-xs tracking-wider border-1 border-[var(--textColor)] rounded-sm px-1 font-medium font-exo2 absolute top-7 -right-3'>AI</p>
           </button>
           <button
           onClick={() => {
