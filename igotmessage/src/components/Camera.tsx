@@ -63,8 +63,8 @@ navigator.mediaDevices
 
   return (
     <div className='flex bg-[var(--bgColor)]/50 w-screen h-screen backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
-      <div className='flex flex-col py-2 justify-center items-center  relative'>
-        <video className={`transform ${photo? 'hidden' : 'rounded-xl'} -scale-x-100`} ref={videoRef} autoPlay playsInline muted />
+      <div className='flex w-full flex-col py-2 justify-center items-center  relative'>
+        <video className={`transform ${photo? 'hidden' : 'rounded-xl'} h-full w-[90%] sm:w-[50%] -scale-x-100`} ref={videoRef} autoPlay playsInline muted />
 
         <div className='flex w-full py-2 right-slide sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30'>
         
@@ -72,7 +72,7 @@ navigator.mediaDevices
           <div className='w-[50px] h-[50px] rounded-full bg-white'></div>
           </button>
 
-          <button onClick={handleCameraMode} className='ml-3 cursor-pointer active:scale-75 active:bg-white/30 ' type="button">
+          <button onClick={handleCameraMode} className={`ml-3 cursor-pointer active:scale-75 active:bg-white/30 ${photo? 'hidden' : ''}`} type="button">
             <SwitchCamera/>
           </button>
         </div>
@@ -80,7 +80,7 @@ navigator.mediaDevices
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {photo && (
-        <div className='absolute inset-0 font-exo2 mt-4 flex flex-col justify-start gap-4 items-center'>
+        <div className='absolute w-full h-full inset-0 font-exo2 mt-4 flex flex-col justify-start gap-4 items-center'>
           <div className='flex w-full justify-center gap-8'>
 
             <button type='button'
@@ -95,7 +95,8 @@ navigator.mediaDevices
 
             <button
             className=' text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
-             type='button' onClick={() => setPhoto(null)}>
+             type='button'
+             >
             <PlusIcon strokeWidth={1} size={40}/>
               Add Post
             </button>
