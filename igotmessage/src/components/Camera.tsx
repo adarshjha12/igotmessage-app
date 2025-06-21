@@ -1,8 +1,9 @@
 'use client'; // Needed in Next.js 13/14 for client-side components
 
-import { RefreshCcwIcon, SwitchCamera } from 'lucide-react';
+import { PlusIcon, RefreshCcwIcon, SwitchCamera } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { PlusSquareIcon } from '@phosphor-icons/react';
 
 export default function CameraCapture() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -83,17 +84,19 @@ navigator.mediaDevices
           <div className='flex w-full justify-center gap-8'>
 
             <button type='button'
-            className='bg-blue-500 text-xl text-white font-semibold active:bg-blue-800 active:scale-90 cursor-pointer rounded-xl py-2 px-3'
+            className=' text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
             onClick={() => {
               
               router.push('/create-story')
               }}>
+                <PlusSquareIcon weight='light' size={40}/>
               Add to Story
             </button>
 
             <button
-            className='bg-gradient-to-br text-white from-green-500 to to-green-800 text-xl font-semibold active:bg-green-800 active:scale-90 cursor-pointer rounded-xl py-2 px-3'
+            className=' text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
              type='button' onClick={() => setPhoto(null)}>
+            <PlusIcon strokeWidth={1} size={40}/>
               Add Post
             </button>
           </div>
