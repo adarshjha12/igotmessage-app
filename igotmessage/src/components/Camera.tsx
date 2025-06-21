@@ -97,7 +97,7 @@ navigator.mediaDevices
               Add Post
             </button>
           </div>
-          <img src={photo} className={`rounded-xl -scale-x-100`} alt="Captured" style={{ width: '100%', maxWidth: '400px' }} />
+          <img src={photo} className={`rounded-xl -scale-x-100`} alt="Captured" />
           <button
             className='bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3'
              type='button' onClick={() => setPhoto(null)}>
