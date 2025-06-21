@@ -61,9 +61,9 @@ navigator.mediaDevices
   };
 
   return (
-    <div className='flex bg-[var(--bgColor)]/50 backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
-      <div className='flex flex-col justify-center items-center  relative'>
-        <video className={`transform ${photo? 'hidden' : 'rounded-xl'} -scale-x-100`} ref={videoRef} autoPlay playsInline muted style={{ width: '100%', maxWidth: '400px', height: '100%', minHeight: '100%' }} />
+    <div className='flex bg-[var(--bgColor)]/50 w-screen h-screen backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
+      <div className='flex flex-col py-2 justify-center items-center  relative'>
+        <video className={`transform ${photo? 'hidden' : 'rounded-xl'} -scale-x-100`} ref={videoRef} autoPlay playsInline muted />
 
         <div className='flex w-full py-2 right-slide sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30'>
         
