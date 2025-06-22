@@ -1,6 +1,6 @@
 'use client'
 
-import {HouseIcon,MagnifyingGlassIcon,PlusSquareIcon,ChatTextIcon,PlayIcon,VideoCameraIcon,UserCircleIcon,XIcon,HamburgerIcon,HeartIcon, VideoCameraSlashIcon,ChatTeardropIcon, ArrowLeftIcon, CameraIcon, ChatsCircleIcon, ChatTeardropTextIcon, ChatCircleDotsIcon, ListIcon} from "@phosphor-icons/react";
+import {HouseIcon,MagnifyingGlassIcon,PlusSquareIcon,ChatTextIcon,PlayIcon,VideoCameraIcon,UserCircleIcon,XIcon,HamburgerIcon,HeartIcon, VideoCameraSlashIcon,ChatTeardropIcon, ArrowLeftIcon, CameraIcon, ChatsCircleIcon, ChatTeardropTextIcon, ChatCircleDotsIcon, ListIcon, ChatTeardropDotsIcon} from "@phosphor-icons/react";
 
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -228,22 +228,22 @@ console.log(avatar)
                     <div className={`flex flex-col rounded-xl ${pathname === '/dash/feed' ? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
                       <HouseIcon size={25} weight={pathname === '/dash/feed' ? 'fill' : 'regular'} strokeWidth={1.5} />
                     </div>
-                    <p className="text-sm font-medium">Home</p>
+                    <p className="text-sm opacity-70 font-medium">Home</p>
                   </Link>
 
                   <Link href="/dash/create" className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}>
                     <div className={`flex flex-col rounded-xl ${pathname === '/dash/create' ? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
                       <PlusSquareIcon size={25} weight={pathname === '/dash/create' ? 'fill' : 'regular'} strokeWidth={1.5} />
                     </div>
-                    <p className="text-sm font-medium">Create</p>
+                    <p className="text-sm opacity-70 font-medium">Create</p>
                   </Link>
 
                   {/* Messages */}
                   <Link href="/dash/chats" className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}>
                     <div className={`flex flex-col rounded-xl ${pathname === '/dash/chats' ? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
-                      <ChatCircleDotsIcon size={25} weight={pathname === '/dash/chats' ? 'fill' : 'regular'} strokeWidth={1.5} />
+                      <ChatsCircleIcon size={25} weight={pathname === '/dash/chats' ? 'fill' : 'regular'} strokeWidth={1.5} />
                     </div>
-                    <p className="text-sm font-medium">Messages</p>
+                    <p className="text-sm opacity-70 font-medium">Messages</p>
                   </Link>
 
                   {/* Reels */}
@@ -251,7 +251,7 @@ console.log(avatar)
                     <div className={`flex flex-col rounded-xl ${pathname === '/reels' ? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
                       <PlayIcon size={25} weight={pathname === '/reels' ? 'fill' : 'regular'} strokeWidth={1.5} />
                     </div>
-                    <p className="text-sm font-medium">Reels</p>
+                    <p className="text-sm opacity-70 font-medium">Reels</p>
                   </Link>
 
                   {/* Calls */}
@@ -259,7 +259,7 @@ console.log(avatar)
                     <div className={`flex flex-col rounded-xl ${pathname === '/dash/calls' ? 'bg-[var(--navButtonColor)]' : ''} px-4 items-center justify-center gap-1`}>
                       <VideoCameraIcon size={25} weight={pathname === '/dash/calls' ? 'fill' : 'regular'} strokeWidth={1.5} />
                     </div>
-                    <p className="text-sm font-medium">Calls</p>
+                    <p className="text-sm opacity-70 font-medium">Calls</p>
                   </Link>
 
                   {/* Profile */}
@@ -271,7 +271,7 @@ console.log(avatar)
                         <UserCircleIcon size={25} weight={pathname === '/dash/profile' ? 'fill' : 'regular'} strokeWidth={1.5} />
                       )}
                     </div>
-                    <p className="text-sm font-medium">Profile</p>
+                    <p className="text-sm opacity-70 font-medium">Profile</p>
                   </Link>
                 </div>
             </nav>

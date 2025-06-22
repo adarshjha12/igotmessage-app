@@ -63,7 +63,7 @@ navigator.mediaDevices
 
   return (
     <div className='flex bg-black/50 w-screen h-screen backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
-      <div className='flex w-full flex-col py-2 justify-center items-center  relative'>
+      <div className='flex w-full pt-12 flex-col py-2 justify-center items-center  relative'>
         <video className={`transform ${photo? 'hidden' : 'rounded-xl'} h-full w-[90%] sm:w-[50%] -scale-x-100`} ref={videoRef} autoPlay playsInline muted />
 
         <div className='flex w-full py-2 right-slide sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30'>
@@ -80,8 +80,15 @@ navigator.mediaDevices
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {photo && (
-        <div className='absolute w-full h-full inset-0 font-exo2 mt-4 flex flex-col justify-start gap-4 items-center'>
-          <div className='flex w-full justify-center gap-8'>
+        <div className='absolute w-full h-full inset-0 font-exo2 pt-10 mt-4 flex flex-col justify-start gap-8 items-center'>
+         
+          <img src={photo} className={`rounded-xl w-[90%] -scale-x-100`} alt="Captured" />
+          <button
+            className='bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3'
+             type='button' onClick={() => setPhoto(null)}>
+              <RefreshCcwIcon/>
+          </button>
+           <div className='flex w-full justify-center gap-8'>
 
             <button type='button'
             className=' text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
@@ -101,12 +108,6 @@ navigator.mediaDevices
               Add Post
             </button>
           </div>
-          <img src={photo} className={`rounded-xl -scale-x-100`} alt="Captured" />
-          <button
-            className='bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3'
-             type='button' onClick={() => setPhoto(null)}>
-              <RefreshCcwIcon/>
-          </button>
         </div>
       )}
     </div>
