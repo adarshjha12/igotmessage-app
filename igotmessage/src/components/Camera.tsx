@@ -62,7 +62,7 @@ navigator.mediaDevices
   };
 
   return (
-    <div className='flex bg-[var(--bgColor)]/50 w-screen h-screen backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
+    <div className='flex bg-black/50 w-screen h-screen backdrop-blur-md fixed inset-0 z-40 overflow-y-auto sm:justify-center justify-start items-center flex-col'>
       <div className='flex w-full flex-col py-2 justify-center items-center  relative'>
         <video className={`transform ${photo? 'hidden' : 'rounded-xl'} h-full w-[90%] sm:w-[50%] -scale-x-100`} ref={videoRef} autoPlay playsInline muted />
 

@@ -163,8 +163,8 @@ function CreateStoryPageComponent() {
           // onClick={() => setCameraOpen(prev => !prev)}
            type='button' className='cursor-pointer active:scale-75 relative'>
             <Sparkle size={40} strokeWidth={1} className='text-[var(--textColor)] rotate-6' />
-            <Sparkle size={20} strokeWidth={2} className='text-[var(--textColor)] absolute top-0 -right-3' />
-            <p className='text-xs tracking-wider border-1 border-[var(--textColor)] rounded-sm px-1 font-medium font-exo2 absolute top-7 -right-3'>AI</p>
+            <Sparkle size={20} strokeWidth={2} className='text-[var(--textColor)] absolute top-0 -right-2' />
+            <p className='text-[8px] tracking-wider border-1 border-[var(--textColor)] rounded-sm px-1 py-0 font-medium font-exo2 absolute top-6 -right-2'>AI</p>
           </button>
           <button
           onClick={() => {
