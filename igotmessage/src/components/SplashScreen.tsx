@@ -9,7 +9,10 @@ function SplashScreen() {
   return (
     <div className='flex bg-gradient-to-r from-[var(--wrapperColor)] to-[var(--bgColor)] flex-col text-[var(--textColor)] z-50 fixed inset-0 justify-center items-center'>
        <div className='flex flex-col items-center gap-4 justify-center'>
-        <Image src="/logos/igm.png" alt="logo" className='w-20 h-20 rounded-3xl border-1 border-[var(--borderColor)]' width={80} height={80} />
+        <div className='px-1 py-6 bg-white flex rounded-[30px] border-1 border-[var(--borderColor)]'>
+          <Image src="/images/ig.png" alt="logo" className='w-[70px] h-[60px]'  width={80} height={80} />
+          <Image src="/images/m.png" alt="logo" className='w-[50px] animate-bounce h-[60px] mt-3'  width={80} height={80} />
+        </div>
         <p className='text-4xl font-extrabold font-montez'>IgotMessage</p>
        </div>
        
