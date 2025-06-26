@@ -30,6 +30,7 @@ function CreateStoryPageComponent() {
     const [cameraOpen, setCameraOpen] = useState(false)
 
     const [selectMusicDisabled, setSelectMusicDisabled] = useState(false)
+    const [musicChosen, setMusicChosen] = useState(false)
 
     const [chevronActive, setChevronActive] = useState<boolean>(false)
     const [volume, setVolume] = useState(false)
@@ -103,7 +104,7 @@ function CreateStoryPageComponent() {
       <div className='w-full sm:w-[50%] px-2 py-2 h-full flex flex-col items-center justify-start gap-2.5 '>
         <form action="" className='flex w-full items-center pb-4 justify-between gap-3'>
           {storyImageChosen === '' ? (
-            <button
+          <button
           onClick={() => setSelectImageClicked(prev => !prev)}
           type="button"
           className={`relative group sm:w-fit hover:bg-opacity-90 cursor-pointer rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${selectImageClicked ? 'bg-[var(--textColor)] text-[var(--bgColor)]' : ''}`}
@@ -158,6 +159,8 @@ function CreateStoryPageComponent() {
            type='button' className='cursor-pointer active:scale-75'>
             <CameraIcon size={45} strokeWidth={1} weight='light' className='text-[var(--textColor)]' />
           </button>
+          {cameraOpen && <div>
+            </div>}
 
           <button
           // onClick={() => setCameraOpen(prev => !prev)}
@@ -186,7 +189,9 @@ function CreateStoryPageComponent() {
               <div className='absolute -right-2'> <ChevronDown size={30} strokeWidth={1.5} className={`transition-all duration-150 ease-in ${chevronActive ? 'rotate-180' : ''} ${selectMusicClicked ? 'text-[var(--bgColor)]' : 'text-[var(--textColor)]'}`} /></div>
             </div>
           </button>
-          
+
+
+
           <button
           onClick={() => {
             setSelectWriteClicked(prev => !prev)
