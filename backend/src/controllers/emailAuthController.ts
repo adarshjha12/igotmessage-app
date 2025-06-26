@@ -53,7 +53,12 @@ export const verifyOtp = async (req: Request, res: Response) : Promise<any> => {
     }
 
     try {
-      await User.updateOne({ uid: user.id }, { $set: user }, { upsert: true });
+      const sanitizedUser: Record<string, any> = {...user} 
+      if (sanitizedUser.phoneNo === null ||  sanitizedUser.phoneNo === undefined) {
+          delete sanitizedUser.phoneNo
+      }
+
+      await User.updateOne({ uid: sanitizedUser.id }, { $set: sanitizedUser }, { upsert: true });
     } catch (error) {
       syncFailuresQueue.push({ user, attempts: 0 });
       console.error('MongoDB sync failed', error);

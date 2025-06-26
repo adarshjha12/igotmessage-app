@@ -22,7 +22,6 @@ function Dashboard({children} : {children: ReactNode}) {
   const [searchInput, setSearchInput] = useState('')
   const [searchInputClick, setSearchInputClick] = useState(false)
   const [cameraClick, setCameraClick] = useState(false)
-  const [navHover, setNavHover] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const router = useRouter()
   const pathname = usePathname()
@@ -97,9 +96,7 @@ console.log(avatar)
             {/* nav for desktop starts here (1st column for desktop) */}
 
             <nav
-              onMouseEnter={() => setNavHover(true)}
-              onMouseLeave={() => setNavHover(false)}
-              className={`px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-4 right-slide hidden my-2 md:flex rounded-xl flex-col gap-4  text-[var(--textColor)] justify-start ${!sidebarOpen? 'items-center': ''} md:sticky md:top-2 ${navHover ? 'bg-blue-600 text-white' : ''}`}
+              className={`px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] py-4 pb-20 right-slide hidden my-2 md:flex rounded-xl flex-col gap-4  text-[var(--textColor)] justify-start ${!sidebarOpen? 'items-center': ''} md:sticky md:top-2 `}
             >
               <div className={`flex items-center gap-4 bg-[var(--bgColor)] py-2 mb-8 rounded-full justify-center text-[var(--textColor)] ${sidebarOpen ? 'px-4' : 'px-0 bg-transparent'}`}>
                 <Link href="/dash/feed">

@@ -21,12 +21,16 @@ passport.use(new googleStrategy({
     
     if(user){
         try {
+        const sanitizedUser: Record<string, any> = {...user} 
+        if (sanitizedUser.phoneNo === null ||  sanitizedUser.phoneNo === undefined) {
+            delete sanitizedUser.phoneNo
+        }
         await UserInMongodb.updateOne(
-            { uid: user.id},
-            {$set: user},
+            { uid: sanitizedUser.id},
+            {$set: sanitizedUser},
             { upsert: true }
         );
-        const syncedUser = await UserInMongodb.find();
+        const syncedUser = await UserInMongodb.find({ uid: user.id });
         console.log('User synced with MongoDB:', syncedUser);
         } catch (err) {
         console.error('MongoDB sync failed', err);
@@ -47,8 +51,13 @@ passport.use(new googleStrategy({
             }
         })
         try {
+        const sanitizedUser: Record<string, any> = {...user} 
+        if (sanitizedUser.phoneNo === null ||  sanitizedUser.phoneNo === undefined) {
+            delete sanitizedUser.phoneNo
+        }
+
         await UserInMongodb.updateOne(
-            { uid: user.id},
+            { uid: sanitizedUser.id},
             {$set: user},
             { upsert: true }
         );
@@ -71,7 +80,12 @@ passport.use(new googleStrategy({
             }
             )
             try {
-            await UserInMongodb.updateOne({ uid: user.id }, { $set: user }, { upsert: true });
+            const sanitizedUser: Record<string, any> = {...user} 
+            if (sanitizedUser.phoneNo === null ||  sanitizedUser.phoneNo === undefined) {
+               delete sanitizedUser.phoneNo
+            }
+
+            await UserInMongodb.updateOne({ uid: sanitizedUser.id }, { $set: sanitizedUser }, { upsert: true });
 
             } catch (err) {
             console.error('MongoDB sync failed', err);
