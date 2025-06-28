@@ -57,7 +57,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative">
+    <div className={`w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}>
       <div
         className={` w-full flex items-start justify-center transition-colors duration-200 relative `}
       >
@@ -71,6 +71,9 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* header starts here */}
           <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-2 items-center ">
             <div className="flex items-center gap-3 pl-4">
+              {pathname !== "/dash/feed" && (
+                <div><ArrowLeftIcon size={25} strokeWidth={1}/></div>
+              )}
               <p
                 className={`md:hidden ${
                   pathname === "/dash/feed" ? "font-montez  text-3xl" : ""
@@ -100,15 +103,8 @@ function Dashboard({ children }: { children: ReactNode }) {
                   setCameraClick((prev) => !prev);
                 }}
                 className={`cursor-pointer ${
-                  pathname === "/dash/calls"
-                    ? "hidden"
-                    : pathname === "/dash/chats"
-                    ? "hidden"
-                    : pathname === "/reels"
-                    ? "hidden"
-                    : pathname === "/dash/profile"
-                    ? "hidden"
-                    : "inline"
+                  pathname !== "/dash/feed"
+                   && "hidden"
                 } active:bg-[var(--wrapperColor)] rounded-full active:scale-125`}
                 type="button"
               >
@@ -120,7 +116,10 @@ function Dashboard({ children }: { children: ReactNode }) {
                 onClick={() => {
                   handleNavClick("/dash/notifications");
                 }}
-                className={`cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-125`}
+                className={`cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
+                  pathname !== "/dash/feed"
+                   && "hidden"
+                }`}
                 type="button"
               >
                 <div>
@@ -139,7 +138,10 @@ function Dashboard({ children }: { children: ReactNode }) {
                 onClick={() => {
                   handleNavClick("/dash/notifications");
                 }}
-                className={`cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-125`}
+                className={`cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
+                  pathname !== "/dash/feed"
+                   && "hidden"
+                }`}
                 type="button"
               >
                 <div>

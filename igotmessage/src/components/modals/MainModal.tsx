@@ -36,7 +36,7 @@ function MainModal({ closeModal }: Props) {
 
   return (
     <div className="fixed top-[20%] w-full left-0 z-50 flex items-center justify-center ">
-      <div className="relative w-[90%] max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--bgColor)] text-[var(--textColor)] py-6 px-2 shadow-2xl transition-all duration-300">
+      <div className="relative w-[90%] max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] py-6 px-2 shadow-2xl transition-all duration-300">
 
         {/* Close Button */}
         <button
@@ -47,15 +47,15 @@ function MainModal({ closeModal }: Props) {
         </button>
 
         {/* Settings Header */}
-        <div className="text-4xl mb-6 flex gap-2 items-center font-semibold">
-          <Settings2Icon className="text-[var(--iconColor)]" size={40} strokeWidth={1.5} />
+        <div className="text-3xl mb-6 flex gap-2 px-2 items-center font-medium">
+          <Settings2Icon className="text-[var(--iconColor)]" size={35} strokeWidth={1.5} />
           <p>Settings</p>
         </div>
 
         {/* Dark Mode Toggle */}
-        <div className="mb-4 flex justify-between items-center rounded-xl px-4 py-1 border border-[var(--borderColor)]">
+        <div className="mb-4 flex justify-between items-center rounded-xl px-4 py-1 bg-[var(--bgColor)]">
           <div className="flex items-center gap-2">
-            <p className="text-xl font-semibold text-[var(--textColor)]">Dark Mode</p>
+            <p className="text-xl font-medium text-[var(--textColor)]">Dark Mode</p>
             {isDark ? (
               <MoonIcon fill="#393939" strokeWidth={1.5} size={40} />
             ) : (
@@ -68,9 +68,9 @@ function MainModal({ closeModal }: Props) {
         </div>
 
         {/* Data Saver Toggle */}
-        <div className="mb-8 flex justify-between items-center rounded-xl px-4 py-2 border border-[var(--borderColor)]">
+        <div className="mb-8 flex justify-between items-center rounded-xl px-4 py-2  bg-[var(--bgColor)]">
           <div className="flex items-center gap-2">
-            <p className="text-xl font-semibold text-[var(--textColor)]">Data Saver</p>
+            <p className="text-xl font-medium text-[var(--textColor)]">Data Saver</p>
             <ArrowDownUp size={28} className="text-[var(--textColor)]" />
           </div>
           <button onClick={() => setDataSaver(prev => !prev)} className="rounded-full active:scale-90">
@@ -80,8 +80,8 @@ function MainModal({ closeModal }: Props) {
 
         {/* Visit Links */}
         <div className="mb-6 pt-6">
-          <div className="text-4xl mb-4 flex gap-2 items-center font-semibold">
-            <ArrowRightIcon className="text-[var(--iconColor)] -rotate-45" size={40} strokeWidth={1.5} />
+          <div className="text-3xl mb-4 px-2 flex gap-2 items-center font-medium">
+            <ArrowRightIcon className="text-[var(--iconColor)] -rotate-45" size={35} strokeWidth={1.5} />
             <p>Visit</p>
           </div>
           <div className="space-y-3">
