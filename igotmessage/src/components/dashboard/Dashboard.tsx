@@ -32,6 +32,7 @@ import CameraCapture from "../Camera";
 import { log } from "console";
 import { MoreVertical, PlusCircleIcon, SidebarCloseIcon, SidebarIcon } from "lucide-react";
 import Link from "next/link";
+import MainModal from "../modals/MainModal";
 
 function Dashboard({ children }: { children: ReactNode }) {
   const isDark = useSelector((state: RootState) => state.activity.isDark);
@@ -42,6 +43,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   const [searchInputClick, setSearchInputClick] = useState(false);
   const [cameraClick, setCameraClick] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showMoreModal, setShowMoreModal] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
@@ -155,11 +157,12 @@ function Dashboard({ children }: { children: ReactNode }) {
               <button
               type="button"
               className="cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-75"
-              // onClick={}
+              onClick={() => setShowMoreModal(prev => !prev)}
               >
                 <MoreVertical size={30} strokeWidth={1} fill={isDark ? 'white' : 'black'} />
               </button>
-
+              {showMoreModal && <MainModal />}
+              
             </div>
           </header>
           {/* header ends here */}
@@ -577,12 +580,7 @@ function Dashboard({ children }: { children: ReactNode }) {
         )}
       </div>
 
-      {/* violet background starts here */}
-      {/* <div className='inset-0 px-12 fixed h-full w-[80%] gap-10  grid grid-cols-1 sm:grid-cols-2 rotate-12 sm:rotate-45 -z-10'>
-        <div className='flex flex-col rounded-b-md rounded-e-full rotate-45 blur-2xl rounded-full rounded-r-lg bg-violet-700'></div>
-        <div className='flex flex-col rounded-b-full rotate-90 blur-2xl rounded-full rounded-r-lg  bg-violet-800 gap-4'></div>
-        <div className=' flex-col hidden sm:flex rounded-b-md rounded-e-full -rotate-12 blur-2xl rounded-full rounded-r-lg  bg-violet-700 gap-4'></div>
-      </div> */}
+      
     </div>
   );
 }
