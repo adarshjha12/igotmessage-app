@@ -9,7 +9,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CrosshairIcon, CrossIcon } from '@phosphor-icons/react'
 
-function MainModal() {
+interface Props {
+    closeModal?: (value: boolean) => void
+}
+
+function MainModal({ closeModal }: Props) {
   const isDark = useSelector((state: RootState) => state.activity.isDark)
   const userName = useSelector((state: RootState) => state.auth.user.title)
 
@@ -31,19 +35,19 @@ function MainModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative w-[90%]  max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--bgColor)] text-[var(--textColor)] p-6 shadow-2xl transition-all duration-300">
+    <div className="fixed top-[20%] w-full left-0 z-50 flex items-center justify-center ">
+      <div className="relative w-[90%] max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--bgColor)] text-[var(--textColor)] py-6 px-2 shadow-2xl transition-all duration-300">
 
         {/* Close Button */}
         <button
-          onClick={() => dispatch(setPanelOpen(false))}
+          onClick={() => closeModal && closeModal(false)}
           className="absolute top-4 right-4 p-2 rounded-full active:bg-[var(--wrapperColor)] active:scale-75 cursor-pointer"
         >
           <X size={30} className="text-[var(--iconColor)]" />
         </button>
 
         {/* Settings Header */}
-        <div className="text-4xl mb-6 flex gap-2 items-center font-bold">
+        <div className="text-4xl mb-6 flex gap-2 items-center font-semibold">
           <Settings2Icon className="text-[var(--iconColor)]" size={40} strokeWidth={1.5} />
           <p>Settings</p>
         </div>
@@ -76,7 +80,7 @@ function MainModal() {
 
         {/* Visit Links */}
         <div className="mb-6 pt-6">
-          <div className="text-4xl mb-4 flex gap-2 items-center font-bold">
+          <div className="text-4xl mb-4 flex gap-2 items-center font-semibold">
             <ArrowRightIcon className="text-[var(--iconColor)] -rotate-45" size={40} strokeWidth={1.5} />
             <p>Visit</p>
           </div>

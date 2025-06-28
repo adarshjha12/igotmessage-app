@@ -161,7 +161,12 @@ function Dashboard({ children }: { children: ReactNode }) {
               >
                 <MoreVertical size={30} strokeWidth={1} fill={isDark ? 'white' : 'black'} />
               </button>
-              {showMoreModal && <MainModal />}
+              {showMoreModal && <MainModal closeModal={setShowMoreModal}/>}
+              {showMoreModal && <button
+              type="button"
+              onClick={() => setShowMoreModal(false)}
+               className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm"></button>
+               }
               
             </div>
           </header>
