@@ -11,7 +11,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setMusicData } from '@/features/activitySlice'
 import NewLoader from '../NewLoader'
 
-function MusicComponent() {
+interface Props {
+  setMusicModal?: (value: boolean) => void
+}
+function MusicComponent({ setMusicModal }: Props) {
     const dispatch = useDispatch()
 
     const [showSortPopup, setShowSortPopup] = React.useState(false);
@@ -231,7 +234,10 @@ function MusicComponent() {
                   </div>
 
                   <button
-                    onClick={() => dispatch(setMusicData(item))}
+                    onClick={() => {
+                      setMusicModal && setMusicModal(false)
+                      dispatch(setMusicData(item))
+                    }}
                     className='flex rounded-full active:bg-[var(--wrapperColor)] active:scale-50 p-1 items-center justify-center cursor-pointer'
                   >
                     <Plus size={35} strokeWidth={1} className='inline ml-auto' />

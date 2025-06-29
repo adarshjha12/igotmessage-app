@@ -72,7 +72,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-2 items-center ">
             <div className="flex items-center gap-3 pl-4">
               {pathname !== "/dash/feed" && (
-                <div><ArrowLeftIcon size={25} strokeWidth={1}/></div>
+                <button type="button" className="cursor-pointer" onClick={() => router.back()}><ArrowLeftIcon size={25} strokeWidth={1}/></button>
               )}
               <p
                 className={`md:hidden ${
