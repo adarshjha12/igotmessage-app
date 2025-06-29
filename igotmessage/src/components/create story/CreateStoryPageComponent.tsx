@@ -295,7 +295,7 @@ function CreateStoryPageComponent() {
           {storyMusicData.url &&
             storyImageChosen &&
             !audioRef.current?.paused && (
-              <button onClick={handleVolume} className="absolute bottom-0 p-2 rounded-full active:bg-[var(--wrapperColor)] active:scale-75 flex items-center justify-center right-4 cursor-pointer" type="button">
+              <button onClick={handleVolume} className="absolute -bottom-12 p-2 rounded-full active:bg-[var(--wrapperColor)] active:scale-75 flex items-center justify-center right-4 cursor-pointer" type="button">
                 {volume ? (
                   <SpeakerXIcon size={30} weight="light"/>
                 ) : (
