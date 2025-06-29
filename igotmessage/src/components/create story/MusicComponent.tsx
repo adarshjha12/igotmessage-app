@@ -14,8 +14,10 @@ import { useRouter } from 'next/navigation'
 
 interface Props {
   setMusicModal?: (value: boolean) => void
+  setChevronActive?: (value: boolean) => void
+  muteMusicOfParent?: (value: "yes" | "no") =>  void
 }
-function MusicComponent({ setMusicModal }: Props) {
+function MusicComponent({ setMusicModal, setChevronActive, muteMusicOfParent }: Props) {
     const dispatch = useDispatch()
     const router = useRouter()
 
@@ -42,10 +44,12 @@ function MusicComponent({ setMusicModal }: Props) {
       if (audioRef.current && !audioRef.current.paused && index === music.index) {
         audioRef.current.pause();
         setMusic({ playing: false, index });
+        muteMusicOfParent && muteMusicOfParent("yes")
       } else {
         if (audioRef.current) {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
+          muteMusicOfParent && muteMusicOfParent("yes")
         }
 
         const newAudio = new Audio(url);
@@ -81,13 +85,13 @@ function MusicComponent({ setMusicModal }: Props) {
               </p>
               </button>
               {showSortPopup && 
-              <div className='absolute z-40 py-6 px-12 rounded-2xl -left-[39%] top-[110%] bg-[var(--wrapperColor)] text-[var(--textColor)] backdrop-blur-sm flex flex-col justify-center items-center'>
+              <div className='fixed w-full z-40 py-6 px-12 rounded-2xl top-[40%] left-0 bg-[var(--wrapperColor)] text-[var(--textColor)] backdrop-blur-sm flex flex-col justify-center items-center'>
                   <button
                     onClick={() => {
                       setAToZActive(true)
                       setZToAActive(false)
                     }}
-                    className={`mb-2 w-[200px] flex justify-center items-center gap-2 border border-[var(--borderColor)] py-2 rounded-xl cursor-pointer active:scale-75 transition-all duration-150 ${
+                    className={`mb-2 w-[200px] flex justify-center items-center gap-2 border border-[var(--borderColor)] py-2 rounded-xl cursor-pointer active:scale-90 transition-all duration-150 ${
                       aToZActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''
                     }`}
                   >
@@ -100,7 +104,7 @@ function MusicComponent({ setMusicModal }: Props) {
                       setZToAActive(true)
                       setAToZActive(false)
                     }} 
-                    className={`mb-2 w-[200px] px-10 flex justify-center items-center gap-2 border border-[var(--borderColor)] py-2 rounded-xl cursor-pointer active:scale-75 transition-all duration-150 ${
+                    className={`mb-2 w-[200px] px-10 flex justify-center items-center gap-2 border border-[var(--borderColor)] py-2 rounded-xl cursor-pointer active:scale-90 transition-all duration-150 ${
                       zToAActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''
                     }`}
                   >
@@ -135,14 +139,14 @@ function MusicComponent({ setMusicModal }: Props) {
               </p>
               </button>
               {showFilterPopup && 
-              <div className='absolute z-40 py-6 px-12 rounded-2xl -right-[50%] top-[110%] bg-[var(--wrapperColor)] text-[var(--textColor)] backdrop-blur-sm flex flex-col justify-center items-center'>
+              <div className='fixed z-40 py-6 px-12 w-full rounded-2xl left-0 top-[40%] bg-[var(--wrapperColor)] text-[var(--textColor)] backdrop-blur-sm flex flex-col justify-center items-center'>
                   <button
                   onClick={() => {
                     setAllButtonActive(true)
                     setBollywoodButtonActive(false)
                     setRockButtonActive(false)
                   }}
-                  className={`mb-2 border-1 w-full flex justify-start items-center gap-2 border-[var(--borderColor)] cursor-pointer active:scale-75 py-2 pr-28 pl-2 rounded-md ${allButtonActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''}`}
+                  className={`mb-2 border-1 w-full flex justify-start items-center gap-2 border-[var(--borderColor)] cursor-pointer active:scale-95 py-2 pr-28 pl-2 rounded-md ${allButtonActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''}`}
                   ><Piano size={30} strokeWidth={1}/> All</button>
                   <button
                    onClick={() => {
@@ -150,7 +154,7 @@ function MusicComponent({ setMusicModal }: Props) {
                     setAllButtonActive(false)
                     setRockButtonActive(false)
                   }}
-                  className={`mb-2 pr-28 pl-2 border-1 flex justify-start items-center gap-2 border-[var(--borderColor)] ${bollywoodButtonActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''} cursor-pointer active:scale-75 py-2 w-full rounded-md`}
+                  className={`mb-2 pr-28 pl-2 border-1 flex justify-start items-center gap-2 border-[var(--borderColor)] ${bollywoodButtonActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''} cursor-pointer active:scale-95 py-2 w-full rounded-md`}
                   ><Speaker size={30} strokeWidth={1}/> BollyWood</button>
                   <button
                   onClick={() => {
@@ -158,7 +162,7 @@ function MusicComponent({ setMusicModal }: Props) {
                     setAllButtonActive(false)
                     setRockButtonActive(true)
                   }}
-                  className={`mb-2 pr-28 pl-2 flex w-full justify-start items-center gap-2 border-1 border-[var(--borderColor)] ${rockButtonActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''} cursor-pointer active:scale-75 py-2  rounded-md`}
+                  className={`mb-2 pr-28 pl-2 flex w-full justify-start items-center gap-2 border-1 border-[var(--borderColor)] ${rockButtonActive ? 'bg-[var(--textColor)] text-[var(--bgColor)] font-semibold text-xl' : ''} cursor-pointer active:scale-95 py-2  rounded-md`}
                   ><Guitar size={30} strokeWidth={1}/>  Rock</button>
                   <button
                   onClick={() => {
@@ -241,6 +245,7 @@ function MusicComponent({ setMusicModal }: Props) {
                   <button
                     onClick={() => {
                       setMusicModal && setMusicModal(false)
+                      setChevronActive && setChevronActive(false)
                       dispatch(setMusicData(item))
                     }}
                     className='flex rounded-full active:bg-[var(--wrapperColor)] active:scale-50 p-1 items-center justify-center cursor-pointer'

@@ -4,7 +4,6 @@ import {
   HouseIcon,
   MagnifyingGlassIcon,
   PlusSquareIcon,
-  ChatTextIcon,
   PlayIcon,
   VideoCameraIcon,
   UserCircleIcon,
@@ -26,7 +25,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Panel from "../Panel";
 import { setPanelOpen } from "@/features/activitySlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { RootState } from "@/store/store";
 import CameraCapture from "../Camera";
 import { log } from "console";
@@ -35,10 +34,10 @@ import Link from "next/link";
 import MainModal from "../modals/MainModal";
 
 function Dashboard({ children }: { children: ReactNode }) {
-  const isDark = useSelector((state: RootState) => state.activity.isDark);
-  const userTitle = useSelector((state: RootState) => state.auth.user.title);
+  const isDark = useAppSelector((state: RootState) => state.activity.isDark);
+  const userTitle = useAppSelector((state: RootState) => state.auth.user.title);
 
-  const panelOpen = useSelector((state: RootState) => state.activity.panelOpen);
+  const panelOpen = useAppSelector((state: RootState) => state.activity.panelOpen);
   const [searchInput, setSearchInput] = useState("");
   const [searchInputClick, setSearchInputClick] = useState(false);
   const [cameraClick, setCameraClick] = useState(false);
@@ -46,7 +45,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   const [showMoreModal, setShowMoreModal] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const avatar = null;
   console.log(avatar);
 

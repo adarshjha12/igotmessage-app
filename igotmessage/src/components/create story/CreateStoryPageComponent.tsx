@@ -50,7 +50,7 @@ function CreateStoryPageComponent() {
   const [musicChosen, setMusicChosen] = useState(false);
 
   const [chevronActive, setChevronActive] = useState<boolean>(false);
-  const [volume, setVolume] = useState(true);
+  const [mute, setMute] = useState < "yes" | "no" > ("no");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // const newAudio = new Audio(storyMusicData.url)
@@ -98,17 +98,13 @@ function CreateStoryPageComponent() {
       setSelectMusicDisabled(false);
     }
   }, [storyImageChosen]);
-
-  function handleVolume() {
-    if (audioRef.current && !audioRef.current.paused) {
-      if (audioRef.current.volume > 0) {
+    
+  if (audioRef.current && !audioRef.current.paused) {
+    if (mute === "yes") {
         audioRef.current.volume = 0;
-        setVolume(false);
-      } else {
+    } else if (mute === "no") {
         audioRef.current.volume = 1;
-        setVolume(true);
-      }
-    }
+  }
   }
 
   return (
@@ -219,7 +215,6 @@ function CreateStoryPageComponent() {
             onClick={() => {
               setSelectMusicClicked((prev) => !prev);
               setSelectImageClicked(false);
-              setChevronActive((prev) => !prev);
             }}
             disabled={selectMusicDisabled}
             type="button"
@@ -288,22 +283,63 @@ function CreateStoryPageComponent() {
             </div>
           </button>
         </form>
+        {storyImageChosen && (
+          <div className=" w-full py-4 px-2 flex sm:w-fit justify-between items-center gap-2 sm:gap-10 ">
+            {storyMusicData.url &&
+              storyImageChosen &&
+              !audioRef.current?.paused && (
+                <button
+                  onClick={() => {
+                    setMute((prev) => (prev === "yes" ? "no" : "yes"));
+                  }}
+                  className=" p-2 justify-self-end rounded-full active:bg-[var(--wrapperColor)] active:scale-75 flex items-center justify-center right-4 cursor-pointer"
+                  type="button"
+                >
+                  {mute === "yes" ? (
+                    <SpeakerXIcon size={30} weight="light" />
+                  ) : (
+                    <SpeakerNoneIcon size={30} weight="light" />
+                  )}
+                </button>
+              )}
+            <div className="flex gap-6 items-center">
+              <button
+                type="button"
+                className=" text-xl flex justify-center items-center border-2 border-red-500 text-red-500 rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3"
+                onClick={() => {
+                  dispatch(setStoryImage(""));
+                  dispatch(setMusicData({}));
+                  setSelectImageClicked(false);
+                  if (audioRef.current) {
+                    audioRef.current.pause();
+                    audioRef.current.currentTime = 0;
+                  }
+                }}
+              >
+                Discard
+              </button>
+
+              <button
+                type="button"
+                className=" text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3"
+                // onClick={() => {
+
+                //   router.push('/create-story')
+                //   }}
+              >
+                {" "}
+                <PlusSquareIcon size={30} />
+                Add Story
+              </button>
+            </div>
+          </div>
+        )}
         {/* we play story and music here */}
         <div className="text-xl relative w-full flex items-center flex-col justify-center font-semibold ">
           {storyImageChosen && (
             <img src={storyImageChosen} className={`rounded-md`} alt="story" />
           )}
-          {storyMusicData.url &&
-            storyImageChosen &&
-            !audioRef.current?.paused && (
-              <button onClick={handleVolume} className="absolute -bottom-12 p-2 rounded-full active:bg-[var(--wrapperColor)] active:scale-75 flex items-center justify-center right-4 cursor-pointer" type="button">
-                {volume ? (
-                  <SpeakerXIcon size={30} weight="light"/>
-                ) : (
-                  <SpeakerNoneIcon size={30} weight="light"/>
-                )}
-              </button>
-            )}
+
           {storyImageChosen &&
           storyMusicData.url &&
           !audioRef.current?.paused ? (
@@ -312,25 +348,31 @@ function CreateStoryPageComponent() {
               dragMomentum={false}
               className="w-full flex items-center justify-center"
             >
-              <div className="flex w-[60%] absolute bottom-10 gap-3 justify-center p-1 rounded-md">
-                <div className="border w-full flex p-1 justify-between items-center gap-2 border-[var(--borderColor)] rounded-md bg-[var(--bgColor)]/30 backdrop-blur-md">
-                  <div className="w-[60px] h-[40px] relative">
+              <div className="flex w-[60%] absolute bottom-40 gap-3 justify-center p-2 rounded-xl shadow-lg">
+                <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
+                  {/* Image */}
+                  <div className="w-10 h-10 relative z-50  ">
                     {storyMusicData.image !== "" ? (
                       <Image
-                        className="object-cover rounded-md"
-                        fill
                         alt="img"
                         src={storyMusicData.image}
+                        width={100}
+                        height={80}
+                        className="object-cover h-10 rounded-md"
                       />
                     ) : (
-                      <div className="w-full h-full flex justify-center items-center rounded-md bg-gradient-to-r from-violet-500 to-blue-700"></div>
+                      <div className="w-full h-full bg-gradient-to-r from-violet-500 to-blue-700" />
                     )}
                   </div>
-                  <div>
+
+                  {/* Audio bars */}
+                  <div className="shrink-0">
                     <AudioBars isPlaying={true} />
                   </div>
-                  <div className="overflow-hidden">
-                    <p className="text-xs text-nowrap translate-animation">
+
+                  {/* Title */}
+                  <div className="overflow-hidden max-w-[60%]">
+                    <p className="text-xs whitespace-nowrap translate-animation text-white">
                       {storyMusicData.title.split(" - ")[0]}
                     </p>
                   </div>
@@ -342,7 +384,11 @@ function CreateStoryPageComponent() {
       </div>
       {selectMusicClicked && (
         <div className=" overflow-y-auto w-full px-2 down-slide h-[80%] sm:w-fit  py-2 top-35 z-50 fixed flex pb-16 items-start justify-center ">
-          <MusicComponent setMusicModal={setSelectMusicClicked} />
+          <MusicComponent
+            setMusicModal={setSelectMusicClicked}
+            setChevronActive={setChevronActive}
+            muteMusicOfParent={setMute}
+          />
         </div>
       )}
 
@@ -356,34 +402,6 @@ function CreateStoryPageComponent() {
         <StoryTemplates />
       </div>
       {cameraOpen && <CameraCapture />}
-      {storyImageChosen && 
-      <div className="absolute bottom-12 sm:right-10 md:right-10 lg:right-30 sm:flex-col-reverse sm:top-50 sm:bottom-auto w-full flex  sm:w-fit justify-evenly items-center gap-2 sm:gap-10 ">
-        <button type='button'
-            className=' text-xl flex justify-center items-center border-2 border-red-500 text-red-500 rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
-            onClick={() => {
-              
-              dispatch(setStoryImage(''))
-              dispatch(setMusicData({}))
-              setSelectImageClicked(false)
-             if (audioRef.current) {
-              audioRef.current.pause();
-              audioRef.current.currentTime = 0;
-             }
-              }}>
-             Discard
-          </button>
-
-        <button type='button'
-            className=' text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
-            // onClick={() => {
-              
-            //   router.push('/create-story')
-            //   }}
-            > <PlusSquareIcon size={30} />
-             Add Story
-          </button>
-      </div>
-      }
     </div>
   );
 }
