@@ -109,7 +109,7 @@ body {
 }
 
 .up-slide {
-  animation: slideup 0.4s linear;
+  animation: slideup 0.2s linear;
 }
 
 @keyframes slidedown {

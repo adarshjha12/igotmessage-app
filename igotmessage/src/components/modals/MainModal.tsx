@@ -35,7 +35,7 @@ function MainModal({ closeModal }: Props) {
   }
 
   return (
-    <div className="fixed top-[20%] w-full left-0 z-50 flex items-center justify-center ">
+    <div className="fixed top-[20%] up-slide w-full left-0 z-50 flex items-center justify-center ">
       <div className="relative w-[90%] max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] py-6 px-2 shadow-2xl transition-all duration-300">
 
         {/* Close Button */}

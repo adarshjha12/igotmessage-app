@@ -247,7 +247,7 @@ function CreateStoryPageComponent() {
                   size={30}
                   strokeWidth={1.5}
                   className={`transition-all duration-150 ease-in ${
-                    chevronActive ? "" : "rotate-180"
+                    chevronActive ? "rotate-180" : ""
                   } ${
                     selectMusicClicked
                       ? "text-[var(--bgColor)]"
@@ -356,7 +356,7 @@ function CreateStoryPageComponent() {
       </div>
       {cameraOpen && <CameraCapture />}
       {storyImageChosen && 
-      <div className="absolute bottom-4 sm:right-10 md:right-10 lg:right-30 sm:flex-col-reverse sm:top-50 sm:bottom-auto w-full flex  sm:w-fit justify-evenly items-center gap-2 sm:gap-10 ">
+      <div className="absolute bottom-12 sm:right-10 md:right-10 lg:right-30 sm:flex-col-reverse sm:top-50 sm:bottom-auto w-full flex  sm:w-fit justify-evenly items-center gap-2 sm:gap-10 ">
         <button type='button'
             className=' text-xl flex justify-center items-center border-2 border-red-500 text-red-500 rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3'
             onClick={() => {

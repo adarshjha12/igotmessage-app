@@ -97,7 +97,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               </p>
             </div>
             {/* <Brand scalemd={true} /> */}
-            <div className="flex gap-3.5 items-center justify-center">
+            <div className="flex items-center justify-center">
               <button
                 onClick={() => {
                   setCameraClick((prev) => !prev);
@@ -105,7 +105,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 className={`cursor-pointer ${
                   pathname !== "/dash/feed"
                    && "hidden"
-                } active:bg-[var(--wrapperColor)] rounded-full active:scale-125`}
+                } active:bg-[var(--wrapperColor)] px-2 rounded-full active:scale-125`}
                 type="button"
               >
                 <div>
@@ -116,7 +116,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 onClick={() => {
                   handleNavClick("/dash/notifications");
                 }}
-                className={`cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
+                className={`cursor-pointer px-2 active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
                   pathname !== "/dash/feed"
                    && "hidden"
                 }`}
@@ -138,7 +138,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 onClick={() => {
                   handleNavClick("/dash/notifications");
                 }}
-                className={`cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
+                className={`cursor-pointer px-2 active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
                   pathname !== "/dash/feed"
                    && "hidden"
                 }`}
@@ -158,7 +158,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
               <button
               type="button"
-              className="cursor-pointer active:bg-[var(--wrapperColor)] rounded-full active:scale-75"
+              className="cursor-pointer pr-1 active:bg-[var(--wrapperColor)] rounded-full active:scale-75"
               onClick={() => setShowMoreModal(prev => !prev)}
               >
                 <MoreVertical size={30} strokeWidth={1} fill={isDark ? 'white' : 'black'} />
