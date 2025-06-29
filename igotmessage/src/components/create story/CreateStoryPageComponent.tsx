@@ -87,6 +87,7 @@ function CreateStoryPageComponent() {
     setSelectImageClicked(false);
     setSelectMusicClicked(false);
     setSelectWriteClicked(false);
+    audioRef.current?.pause();
   }, [router]);
 
   useEffect(() => {

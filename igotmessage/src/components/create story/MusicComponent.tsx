@@ -10,12 +10,14 @@ import { RootState } from '@/store/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { setMusicData } from '@/features/activitySlice'
 import NewLoader from '../NewLoader'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   setMusicModal?: (value: boolean) => void
 }
 function MusicComponent({ setMusicModal }: Props) {
     const dispatch = useDispatch()
+    const router = useRouter()
 
     const [showSortPopup, setShowSortPopup] = React.useState(false);
     const [showFilterPopup, setShowFilterPopup] = React.useState(false);
@@ -54,6 +56,9 @@ function MusicComponent({ setMusicModal }: Props) {
       }
     };
 
+    useEffect(() => {
+        audioRef.current?.pause();
+      }, [router]);
 
   return (
     <div className='flex scroll-smooth h-full overflow-y-auto rounded-2xl w-full sm:w-full border-1 py-2 flex-col items-center px-2 sm:px-4 justify-start  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2'>
