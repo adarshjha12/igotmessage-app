@@ -311,9 +311,9 @@ function CreateStoryPageComponent() {
               dragMomentum={false}
               className="w-full flex items-center justify-center"
             >
-              <div className="flex w-[60%] gap-3 justify-center p-1 rounded-md">
+              <div className="flex w-[60%] absolute bottom-10 gap-3 justify-center p-1 rounded-md">
                 <div className="border w-full flex p-1 justify-between items-center gap-2 border-[var(--borderColor)] rounded-md bg-[var(--bgColor)]/30 backdrop-blur-md">
-                  <div className="w-[100px] h-[35px] relative">
+                  <div className="w-[60px] h-[40px] relative">
                     {storyMusicData.image !== "" ? (
                       <Image
                         className="object-cover rounded-md"
