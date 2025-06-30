@@ -24,7 +24,7 @@ import {
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Panel from "../Panel";
-import { setPanelOpen } from "@/features/activitySlice";
+import { setMusicData, setPanelOpen } from "@/features/activitySlice";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { RootState } from "@/store/store";
 import CameraCapture from "../Camera";

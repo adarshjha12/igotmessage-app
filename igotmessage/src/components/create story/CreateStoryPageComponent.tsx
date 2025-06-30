@@ -24,7 +24,7 @@ import {
 import MusicComponent from "./MusicComponent";
 import Image from "next/image";
 import StoryTemplates from "./StoryTemplates";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import AudioBars from "../AudioBar";
 import { SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
@@ -32,6 +32,7 @@ import CameraCapture from "../Camera";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useDispatch();
   const isDark = useSelector((state: RootState) => state.activity.isDark);
   const storyImageChosen = useSelector(
@@ -50,15 +51,8 @@ function CreateStoryPageComponent() {
   const [musicChosen, setMusicChosen] = useState(false);
 
   const [chevronActive, setChevronActive] = useState<boolean>(false);
-  const [mute, setMute] = useState < "yes" | "no" > ("no");
+  const [mute, setMute] = useState<"yes" | "no">("no");
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // const newAudio = new Audio(storyMusicData.url)
-  // audioRef.current = newAudio
-  // console.log(newAudio);
-  console.log("audioref", audioRef.current?.duration);
-  console.log("storyMusicData.url", storyMusicData.url);
-  console.log("storyMusicData.image", storyMusicData.image);
 
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setStoryImage(""));
@@ -84,13 +78,6 @@ function CreateStoryPageComponent() {
   }, [storyImageChosen, storyMusicData.url]);
 
   useEffect(() => {
-    setSelectImageClicked(false);
-    setSelectMusicClicked(false);
-    setSelectWriteClicked(false);
-    audioRef.current?.pause();
-  }, [router]);
-
-  useEffect(() => {
     if (!storyImageChosen) {
       setSelectMusicDisabled(true);
       setSelectMusicClicked(false);
@@ -98,13 +85,13 @@ function CreateStoryPageComponent() {
       setSelectMusicDisabled(false);
     }
   }, [storyImageChosen]);
-    
+
   if (audioRef.current && !audioRef.current.paused) {
     if (mute === "yes") {
-        audioRef.current.volume = 0;
+      audioRef.current.volume = 0;
     } else if (mute === "no") {
-        audioRef.current.volume = 1;
-  }
+      audioRef.current.volume = 1;
+    }
   }
 
   return (
@@ -295,7 +282,7 @@ function CreateStoryPageComponent() {
                   className=" p-2 justify-self-end rounded-full active:bg-[var(--wrapperColor)] active:scale-75 flex items-center justify-center right-4 cursor-pointer"
                   type="button"
                 >
-                  {mute === "yes" ? (
+                  {mute === "no" ? (
                     <SpeakerXIcon size={30} weight="light" />
                   ) : (
                     <SpeakerNoneIcon size={30} weight="light" />
@@ -310,6 +297,8 @@ function CreateStoryPageComponent() {
                   dispatch(setStoryImage(""));
                   dispatch(setMusicData({}));
                   setSelectImageClicked(false);
+                  setSelectMusicClicked(false);
+                  setSelectWriteClicked(false);
                   if (audioRef.current) {
                     audioRef.current.pause();
                     audioRef.current.currentTime = 0;
@@ -367,7 +356,7 @@ function CreateStoryPageComponent() {
 
                   {/* Audio bars */}
                   <div className="shrink-0">
-                    <AudioBars isPlaying={true} />
+                    <AudioBars />
                   </div>
 
                   {/* Title */}
@@ -402,6 +391,12 @@ function CreateStoryPageComponent() {
         <StoryTemplates />
       </div>
       {cameraOpen && <CameraCapture />}
+
+      {/* hidden music player
+      <div className=" w-9 h-9 bg-amber-500">
+        <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3" ref={audioRef}></audio>
+      </div> */}
+
     </div>
   );
 }
