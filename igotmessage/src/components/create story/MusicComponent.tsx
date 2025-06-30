@@ -70,7 +70,9 @@ function MusicComponent({
       audioRef.current.play().catch((err) => {
         console.warn("Play was interrupted:", err);
       });
-      !audioRef.current.paused && setMusicSource({ ...musicSource, playing: true });
+      !audioRef.current.paused &&
+        setMusicSource({ ...musicSource, playing: true });
+      muteMusicOfParent && muteMusicOfParent("yes");
     }
   }, [musicSource.url]);
 
@@ -87,6 +89,7 @@ function MusicComponent({
         console.warn("Play was interrupted:", err);
       });
       !audioRef.current.paused && setMusicSource({ index, playing: true, url });
+      muteMusicOfParent && muteMusicOfParent("yes");
     } else {
       setMusicSource({ index, playing: false, url });
     }
@@ -350,7 +353,7 @@ function MusicComponent({
         controls
         autoPlay={false}
         loop
-        // src={musicSource.url || undefined}
+        hidden
         className="fixed top-6"
         ref={audioRef}
       ></audio>

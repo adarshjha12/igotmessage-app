@@ -65,15 +65,12 @@ function CreateStoryPageComponent() {
     }
   }
   useEffect(() => {
-    if (storyImageChosen !== "" && storyMusicData.url !== "") {
-      if (audioRef.current && !audioRef.current.paused) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-      const newAudio = new Audio(storyMusicData.url);
-      audioRef.current = newAudio;
-      newAudio.play();
-      newAudio.loop = true;
+    if (storyImageChosen && storyMusicData.url && audioRef.current) {
+      audioRef.current.src = storyMusicData.url
+      audioRef.current?.play().catch(err => 
+        console.log('play interupted', err)
+      )
+      setMute("no")
     }
   }, [storyImageChosen, storyMusicData.url]);
 
@@ -392,11 +389,8 @@ function CreateStoryPageComponent() {
       </div>
       {cameraOpen && <CameraCapture />}
 
-      {/* hidden music player
-      <div className=" w-9 h-9 bg-amber-500">
-        <audio controls src="https://res.cloudinary.com/adarsh-ka-cloudinary/video/upload/v1747678814/tera-pyar-mera-junoon-335418_onq71n.mp3" ref={audioRef}></audio>
-      </div> */}
-
+      {/* hidden music player */}
+        <audio controls hidden className="fixed top-24" ref={audioRef}></audio>
     </div>
   );
 }
