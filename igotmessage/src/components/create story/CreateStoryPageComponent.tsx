@@ -2,12 +2,14 @@
 
 import {
   ChevronDown,
+  DownloadIcon,
   EyeClosed,
   ImagePlusIcon,
   LayoutDashboardIcon,
   Music2Icon,
   PenBoxIcon,
   Sparkle,
+  XIcon,
 } from "lucide-react";
 
 import React, { ChangeEvent, useState, useEffect, useRef } from "react";
@@ -15,6 +17,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { setStoryImage, setMusicData } from "@/features/activitySlice";
 import {
+  AndroidLogoIcon,
+  AppleLogoIcon,
   CameraIcon,
   DeviceMobileIcon,
   EyeIcon,
@@ -30,7 +34,7 @@ import Image from "next/image";
 import StoryTemplates from "./StoryTemplates";
 import { usePathname, useRouter } from "next/navigation";
 import AudioBars from "../AudioBar";
-import { SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
+import {  SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import CameraCapture from "../Camera";
 
@@ -51,6 +55,7 @@ function CreateStoryPageComponent() {
   const [selectMusicClicked, setSelectMusicClicked] = useState(false);
   const [selectWriteClicked, setSelectWriteClicked] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
+  const [aiButtonClicked, setAIButtonClicked] = useState(false);
 
   const [selectMusicDisabled, setSelectMusicDisabled] = useState(false);
 
@@ -181,9 +186,9 @@ function CreateStoryPageComponent() {
           {cameraOpen && <div></div>}
 
           <button
-            // onClick={() => setCameraOpen(prev => !prev)}
+            onClick={() => setAIButtonClicked((prev) => !prev)}
             type="button"
-            className="cursor-pointer active:scale-75 relative"
+            className={`cursor-pointer relative tex-[var(--textColor)] justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 `}
           >
             <Sparkle
               size={40}
@@ -193,9 +198,9 @@ function CreateStoryPageComponent() {
             <Sparkle
               size={20}
               strokeWidth={2}
-              className="text-[var(--textColor)] absolute top-0 -right-2"
+              className="text-[var(--textColor)] z-40 absolute top-0 -right-2"
             />
-            <p className="text-[8px] tracking-wider border-1 border-[var(--textColor)] rounded-sm px-1 py-0 font-medium font-exo2 absolute top-6 -right-2">
+            <p className="text-[8px] tracking-wider z-40 border-1 border-[var(--textColor)] rounded-sm px-1 py-0 font-medium font-exo2 absolute top-6 -right-2">
               AI
             </p>
           </button>
@@ -295,7 +300,11 @@ function CreateStoryPageComponent() {
                     onClick={() => setShowStoryMusic((prev) => !prev)}
                     className="p-2 justify-self-end rounded-full active:bg-[var(--wrapperColor)] active:scale-75 flex items-center justify-center right-4 cursor-pointer"
                   >
-                    {showStoryMusic ? <EyeSlashIcon size={30} weight="light"/> : <EyeIcon size={30} weight="light"/>}
+                    {showStoryMusic ? (
+                      <EyeSlashIcon size={30} weight="light" />
+                    ) : (
+                      <EyeIcon size={30} weight="light" />
+                    )}
                   </button>
                 </div>
               )}
@@ -341,12 +350,13 @@ function CreateStoryPageComponent() {
 
           {storyImageChosen &&
           storyMusicData.url &&
-          
           !audioRef.current?.paused ? (
             <motion.div
               drag
               dragMomentum={false}
-              className={`w-full sm:w-[70%] ${showStoryMusic ? "" : "opacity-0 pointer-events-none"} flex items-center justify-center`}
+              className={`w-full sm:w-[70%] ${
+                showStoryMusic ? "" : "opacity-0 pointer-events-none"
+              } flex items-center justify-center`}
             >
               <div className="flex w-[90%] absolute bottom-40 gap-3 justify-center p-2 rounded-xl ">
                 <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
@@ -402,6 +412,34 @@ function CreateStoryPageComponent() {
         <StoryTemplates />
       </div>
       {cameraOpen && <CameraCapture />}
+      {aiButtonClicked && (
+        <div className="w-full up-slide fixed z-50 top-[10%] flex items-center justify-center flex-col left-0">
+          <button
+            type="button"
+            onClick={() => setAIButtonClicked(false)}
+            className="absolute top-2 right-4 active:scale-90 active:bg-[var(--bgColor)] p-2 rounded-full cursor-pointer"
+          >
+            <XIcon />
+          </button>
+          <div className="bg-[var(--wrapperColor)] flex flex-col justify-center items-center px-8 py-20 rounded-3xl gap-6">
+            <p className="text-[var(--textColor)] text-2xl text-center  ">
+            This feature is only available in mobile app.
+          </p>
+          <button type="button" className="active:scale-90  py-2 px-6 rounded-md font-semibold cursor-pointer text-3xl flex items-center gap-2">
+            <AndroidLogoIcon size={40}/>
+            <AppleLogoIcon size={40}/>
+          </button>
+          <button type="button" className="active:scale-90 bg-[var(--textColor)] text-[var(--bgColor)]  py-2 px-6 rounded-md font-semibold cursor-pointer text-3xl flex items-center gap-2">
+            Download Now <DownloadIcon size={30}/>
+          </button>
+          </div>
+        </div>
+      )}
+      {aiButtonClicked && (
+        <div onClick={() => setAIButtonClicked(false)} className="w-full bg-black/70 fixed z-40 inset-0 flex items-center justify-center left-0">
+          {" "}
+        </div>
+      )}
 
       {/* hidden music player */}
       <audio
