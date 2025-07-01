@@ -35,9 +35,10 @@ import Image from "next/image";
 import StoryTemplates from "./StoryTemplates";
 import { usePathname, useRouter } from "next/navigation";
 import AudioBars from "../AudioBar";
-import {  SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
+import { SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import CameraCapture from "../Camera";
+import StoryText from "../text/StoryText";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
@@ -106,7 +107,7 @@ function CreateStoryPageComponent() {
       <div className="w-full sm:w-[70%] px-2 py-2 h-full flex flex-col items-center justify-start gap-2.5 ">
         <form
           action=""
-          className="flex w-full items-center pb-4 justify-between gap-3"
+          className="flex w-full items-center pr-4 pb-4 justify-between gap-3"
         >
           {storyImageChosen === "" ? (
             <button
@@ -187,25 +188,6 @@ function CreateStoryPageComponent() {
           {cameraOpen && <div></div>}
 
           <button
-            onClick={() => setAIButtonClicked((prev) => !prev)}
-            type="button"
-            className={`cursor-pointer relative tex-[var(--textColor)] justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 `}
-          >
-            <Sparkle
-              size={40}
-              strokeWidth={1}
-              className="text-[var(--textColor)] rotate-6"
-            />
-            <Sparkle
-              size={20}
-              strokeWidth={2}
-              className="text-[var(--textColor)] z-40 absolute top-0 -right-2"
-            />
-            <p className="text-[8px] tracking-wider z-40 border-1 border-[var(--textColor)] rounded-sm px-1 py-0 font-medium font-exo2 absolute top-6 -right-2">
-              AI
-            </p>
-          </button>
-          <button
             onClick={() => {
               setSelectMusicClicked((prev) => !prev);
               setSelectImageClicked(false);
@@ -275,6 +257,25 @@ function CreateStoryPageComponent() {
                 {/* <p className='text-sm opacity-70 font-semibold font-exo2'>Write</p> */}
               </div>
             </div>
+          </button>
+          <button
+            onClick={() => setAIButtonClicked((prev) => !prev)}
+            type="button"
+            className={`cursor-pointer relative tex-[var(--textColor)] justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 `}
+          >
+            <Sparkle
+              size={40}
+              strokeWidth={1}
+              className="text-[var(--textColor)] rotate-6"
+            />
+            <Sparkle
+              size={20}
+              strokeWidth={2}
+              className="text-[var(--textColor)] z-40 absolute top-0 -right-2"
+            />
+            <p className="text-[8px] tracking-wider z-40 border-1 border-[var(--textColor)] rounded-sm px-1 py-0 font-medium font-exo2 absolute top-6 -right-2">
+              AI
+            </p>
           </button>
         </form>
         {storyImageChosen && (
@@ -423,17 +424,25 @@ function CreateStoryPageComponent() {
             <XIcon />
           </button>
           <div className="bg-[var(--wrapperColor)] flex flex-col justify-center items-center px-8 py-20 rounded-3xl gap-6">
-            <p className="text-[var(--textColor)] flex items-center gap-2 text-2xl text-center  ">
-            <Info size={50}/>Currently unavailable due to server cost limits
-          </p>
+            <p className="text-4xl text-red-600 font-semibold">Oops...</p>
+            <p className="text-[var(--textColor)] flex items-center gap-2 text-xl text-center  ">
+              <Info size={50} className="text-red-600"/>
+              Currently unavailable due to server cost limits
+            </p>
           </div>
         </div>
       )}
       {aiButtonClicked && (
-        <div onClick={() => setAIButtonClicked(false)} className="w-full bg-black/70 fixed z-40 inset-0 flex items-center justify-center left-0">
+        <div
+          onClick={() => setAIButtonClicked(false)}
+          className="w-full bg-black/70 fixed z-40 inset-0 flex items-center justify-center left-0"
+        >
           {" "}
         </div>
       )}
+
+      {selectWriteClicked &&
+      <StoryText/>}
 
       {/* hidden music player */}
       <audio
