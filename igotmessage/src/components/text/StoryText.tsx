@@ -12,7 +12,9 @@ function StoryText() {
   const [underline, setUnderline] = useState(false);
   const [color, setColor] = useState("white");
   const [bgColor, setBgColor] = useState("#481bba");
-  const [bgOpacity, setBgOpacity] = useState(1);
+  const [gradientColor1, setGradientColor1] = useState("#58f1f1");
+  const [gradientColor2, setGradientColor2] = useState("#481bba");
+  const [bgOpacity, setBgOpacity] = useState("100");
 
   const [paintBrushClicked, setPaintBrushClicked] = useState(false);
   const [fontWeightClicked, setFontWeightClicked] = useState(false);
@@ -21,7 +23,26 @@ function StoryText() {
   const [fontColorClicked, setFontColorClicked] = useState(false);
   const [fontItalicClicked, setFontItalicClicked] = useState(false);
   const [fontSizeClicked, setFontSizeClicked] = useState(false);
+  const [solidClicked, setSolidClicked] = useState(false);
+  const [gradientClicked, setGradientClicked] = useState(false);
+  const [solidColorChosen, setSolidColorChosen] = useState(true);
+  const [gradientColorChosen, setGradientColorChosen] = useState(false);
+  const [fontStyle, setFontStyle] = useState("normal");
 
+  const fontStyles = [
+    {
+      style: "normal",
+    },
+    {
+      style: "montez",
+    },
+    {
+      style: "audiowide",
+    },
+    {
+      style: "exo2",
+    },
+  ];
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="flex w-full sm:w-[60%] md:w-[50%] p-2 items-center text-3xl text-[var(--textColor)] justify-between">
@@ -31,7 +52,13 @@ function StoryText() {
           type="button"
         >
           <div
-            style={{ backgroundColor: bgColor }}
+            style={{
+              background: `${
+                solidColorChosen
+                  ? bgColor
+                  : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+              }`,
+            }}
             className={`h-8 w-8 rounded-full border-[var(--borderColor)] border-1`}
           ></div>
         </button>
@@ -64,7 +91,7 @@ function StoryText() {
             <div className="">T</div>
             <div
               style={{ backgroundColor: color }}
-              className={`h-4 w-4 rounded-full`}
+              className={`h-4 border-[var(--borderColor)] border-1 w-4 rounded-full`}
             ></div>
           </div>
         </button>
@@ -100,10 +127,19 @@ function StoryText() {
         </button>
       </div>
       <div
-        style={{ backgroundColor: bgColor, opacity: 1 }}
-        className={`w-full flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
+        style={{
+          background: `${
+            solidColorChosen
+              ? bgColor
+              : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+          }`,
+        }}
+        className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
       >
-        <div className="w-full flex justify-center items-center">
+        <div
+          style={{ opacity: 1 }}
+          className="w-full opacity-100 flex justify-center items-center"
+        >
           <TextareaAutosize
             spellCheck="false"
             minRows={3}
@@ -117,7 +153,7 @@ function StoryText() {
               color: color,
               backgroundColor: "transparent",
             }}
-            className={`border-none placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
+            className={`border-none font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
             placeholder="🖋️ Write something..."
           />
         </div>
@@ -125,15 +161,113 @@ function StoryText() {
 
       {/* conditional contents render here */}
       {paintBrushClicked && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
-          <HexColorPicker color={bgColor} onChange={setBgColor} />
-          <button
-            type="button"
-            onClick={() => setPaintBrushClicked(false)}
-            className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+        <div className="fixed inset-0 w-full z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
+          <div
+            className={`flex w-full text-2xl p-12  border-[var(-borderColor)] sm:w-[40%] rounded-2xl gap-4 items-start bg-[var(--wrapperColor)] justify-center flex-col ${
+              solidClicked || gradientClicked ? "hidden" : ""
+            }`}
           >
-            Done
-          </button>
+            <button
+              onClick={() => setSolidClicked((prev) => !prev)}
+              type="button"
+              className="flex gap-4 w-full px-4 py-2 rounded-md border-1 border-[var(--borderColor)] cursor-pointer items-center"
+            >
+              <div
+                style={{ backgroundColor: bgColor }}
+                className="h-8 w-8 rounded-full border-[var(--borderColor)] border-1"
+              ></div>
+              <p>Solid</p>
+            </button>
+            <button
+              onClick={() => setGradientClicked((prev) => !prev)}
+              className="flex gap-4 w-full px-4 py-2 rounded-md border-1 border-[var(--borderColor)]  cursor-pointer items-center"
+              type="button"
+            >
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
+                }}
+                className="h-8 w-8 rounded-full border-[var(--borderColor)] border-1"
+              ></div>
+              <p>Gradient</p>
+            </button>
+          </div>
+          {solidClicked && (
+            <div className="flex flex-col gap-6 justify-center items-center">
+              <HexColorPicker color={bgColor} onChange={setBgColor} />
+              <button
+                type="button"
+                onClick={() => {
+                  setPaintBrushClicked(false);
+                  setSolidClicked(false);
+                  setGradientClicked(false);
+                  setGradientColorChosen(false);
+                  setSolidColorChosen(true);
+                }}
+                className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
+          )}
+          {gradientClicked && (
+            <div className="flex flex-col bg-[var(--wrapperColor)] p-4 rounded-2xl w-full sm:w-[60%]  border-[var(--borderColor)] gap-4 items-center justify-center">
+              <div className="flex  gap-4 text-2xl items-center justify-center">
+                <div className="scale-75">
+                  <p>Start Color</p>
+                  <HexColorPicker
+                    className=""
+                    color={gradientColor1}
+                    onChange={setGradientColor1}
+                  />
+                </div>
+                <div className="scale-75">
+                  <p>End Color</p>
+                  <HexColorPicker
+                    color={gradientColor2}
+                    onChange={setGradientColor2}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-4 items-start justify-center flex-col">
+                <div className="flex gap-4 items-center justify-center">
+                  <p>Preview Gradient-</p>
+
+                  <div
+                    className="w-[200px] h-16 rounded-4xl"
+                    style={{
+                      background: `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
+                    }}
+                  ></div>
+                </div>
+                <div className="flex gap-4 items-center justify-center">
+                  <p>Opacity-</p>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    step={5}
+                    value={bgOpacity}
+                    onChange={(e) => setBgOpacity(e.target.value)}
+                    className="w-[200px] h-3 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-400 dark:bg-gray-700"
+                  />
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setPaintBrushClicked(false);
+                  setSolidClicked(false);
+                  setGradientClicked(false);
+                  setGradientColorChosen(true);
+                  setSolidColorChosen(false);
+                }}
+                className="py-2 my-4 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -158,7 +292,7 @@ function StoryText() {
             max="80"
             value={fontSize}
             onChange={(e) => setFontSize(e.target.value)}
-            className="w-[200px] accent-amber-300"
+            className="w-[280px] accent-amber-300"
           />
           <button
             type="button"
@@ -167,6 +301,34 @@ function StoryText() {
           >
             Done
           </button>
+        </div>
+      )}
+
+      {fontStyleClicked && (
+        <div>
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
+            <div className="w-full bg-[var(--wrapperColor)] rounded-2xl p-6 sm:w-[30%] text-[var(--textColor)] flex text-3xl flex-col font-semibold items-center gap-4 justify-center">
+              <div className="w-full  text-[var(--textColor)] flex text-3xl font-semibold items-center gap-4 justify-center">
+                {fontStyles.map((item, index) => (
+                  <button
+                    type="button"
+                    onClick={() => setFontStyle(item.style)}
+                    key={index}
+                    className={`p-2 active:bg-[var(--wrapperColor)] rounded-full font-${item.style}`}
+                  >
+                    Abc
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setFontStyleClicked(false)}
+                className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
