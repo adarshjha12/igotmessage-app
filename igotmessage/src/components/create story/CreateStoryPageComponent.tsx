@@ -13,6 +13,8 @@ import {
   XIcon,
 } from "lucide-react";
 
+import html2canvas from "html2canvas";
+
 import React, { ChangeEvent, useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
@@ -65,6 +67,7 @@ function CreateStoryPageComponent() {
   const [mute, setMute] = useState<"yes" | "no">("no");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const storyRef = useRef<HTMLDivElement | null>(null);
 
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setStoryImage(""));
