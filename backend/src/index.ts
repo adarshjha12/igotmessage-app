@@ -11,6 +11,7 @@ import gAuthRouter from './routers/googleRoute'
 import emailAuthRouter from './routers/emailAuth'
 import getCurrentUser from './routers/currentUser'
 import prisma from './prisma/client'
+import redisClient from './services/redisClient'
 
 const PORT = process.env.PORT
 const app = express()
@@ -37,6 +38,8 @@ app.get('/healthCheck', (req, res) =>{
     res.status(200);
 })
 
+
+// checking db connection
 app.get('/status', async (req, res) => {
     try {
       const dbTime = await prisma.$queryRaw`SELECT NOW()`;
@@ -47,7 +50,14 @@ app.get('/status', async (req, res) => {
       res.status(500).send({ error: 'DB not connected', details: err });
     }
   });
+
+  // keep redis alive
+  setInterval(async () => {
+  await redisClient.set('keep_alive', Date.now().toString());
+  console.log('Redis pinged to keep alive');
+}, 1000 * 60 * 60 * 24 * 3);
   
+
 app.listen(PORT, () =>{
     console.log(`running on ${PORT}`);
 })

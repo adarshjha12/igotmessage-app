@@ -424,15 +424,8 @@ function CreateStoryPageComponent() {
           </button>
           <div className="bg-[var(--wrapperColor)] flex flex-col justify-center items-center px-8 py-20 rounded-3xl gap-6">
             <p className="text-[var(--textColor)] flex items-center gap-2 text-2xl text-center  ">
-            <Info size={50}/>This feature is only available in mobile app.
+            <Info size={50}/>Currently unavailable due to server cost limits
           </p>
-          <button type="button" className="active:scale-90  py-2 px-6 rounded-md font-semibold cursor-pointer text-3xl flex items-center gap-2">
-            <AndroidLogoIcon size={40}/>
-            <AppleLogoIcon size={40}/>
-          </button>
-          <button type="button" className="active:scale-90 bg-[var(--textColor)] text-[var(--bgColor)]  py-2 px-6 rounded-md font-semibold cursor-pointer text-3xl flex items-center gap-2">
-            Download Now <DownloadIcon size={30}/>
-          </button>
           </div>
         </div>
       )}
