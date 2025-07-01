@@ -221,15 +221,15 @@ body {
 
 @keyframes translate {
   0% {
-    transform: translateX(100px);
+    transform: translateX(150px);
   }
   100% {
-    transform: translateX(-100px);
+    transform: translateX(-190px);
   }
 }
 
 .translate-animation {
-  animation: translate 4s linear infinite;
+  animation: translate 6s linear infinite;
 }
 
 .hjh{

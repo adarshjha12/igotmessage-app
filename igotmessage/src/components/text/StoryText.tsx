@@ -37,14 +37,14 @@ function StoryText() {
       style: "montez",
     },
     {
-      style: "audiowide",
+      style: "audioWide",
     },
     {
       style: "exo2",
     },
   ];
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="w-full flex  flex-col justify-center items-center">
       <div className="flex w-full sm:w-[60%] md:w-[50%] p-2 items-center text-3xl text-[var(--textColor)] justify-between">
         <button
           onClick={() => setPaintBrushClicked((prev) => !prev)}
@@ -153,7 +153,7 @@ function StoryText() {
               color: color,
               backgroundColor: "transparent",
             }}
-            className={`border-none font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
+            className={`border-none text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
             placeholder="🖋️ Write something..."
           />
         </div>
@@ -314,7 +314,7 @@ function StoryText() {
                     type="button"
                     onClick={() => setFontStyle(item.style)}
                     key={index}
-                    className={`p-2 active:bg-[var(--wrapperColor)] rounded-full font-${item.style}`}
+                    className={`p-2 active:bg-[var(--wrapperColor)] rounded-full cursor-pointer font-${item.style}`}
                   >
                     Abc
                   </button>

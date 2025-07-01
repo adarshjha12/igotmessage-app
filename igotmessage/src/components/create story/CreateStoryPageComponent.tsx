@@ -61,10 +61,10 @@ function CreateStoryPageComponent() {
   const [aiButtonClicked, setAIButtonClicked] = useState(false);
 
   const [selectMusicDisabled, setSelectMusicDisabled] = useState(false);
-
   const [chevronActive, setChevronActive] = useState<boolean>(false);
   const [mute, setMute] = useState<"yes" | "no">("no");
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [musicPlaying, setMusicPlaying] = useState(false);
 
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setStoryImage(""));
@@ -77,19 +77,23 @@ function CreateStoryPageComponent() {
     }
   }
 
-  
   useEffect(() => {
-    if (storyImageChosen && storyMusicData.url && audioRef.current) {
+    if (
+      (storyImageChosen !== "" || selectWriteClicked) &&
+      storyMusicData.url &&
+      audioRef.current
+    ) {
       audioRef.current.src = storyMusicData.url;
       audioRef.current
         ?.play()
         .catch((err) => console.log("play interupted", err));
+      setMusicPlaying(true);
       setMute("no");
     }
   }, [storyImageChosen, storyMusicData.url]);
 
   useEffect(() => {
-    if (!storyImageChosen && !selectWriteClicked) {
+    if (storyImageChosen === "" && !selectWriteClicked) {
       setSelectMusicDisabled(true);
       setSelectMusicClicked(false);
     } else {
@@ -106,15 +110,18 @@ function CreateStoryPageComponent() {
   }
 
   return (
-    <div className="w-full py-5 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2.5 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
-      <div className="w-full sm:w-[70%] px-2 py-2 h-full flex flex-col items-center justify-start gap-2.5 ">
+    <div className="w-full py-2 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
+      <div className="w-full sm:w-[70%] px-2 pt-2 h-full flex flex-col items-center justify-start gap-2 ">
         <form
           action=""
-          className="flex w-full items-center pr-4 pb-4 justify-between gap-3"
+          className="flex w-full items-center pr-4 pb-2 justify-between gap-3"
         >
           {storyImageChosen === "" ? (
             <button
-              onClick={() => setSelectImageClicked((prev) => !prev)}
+              onClick={() => {
+                setSelectImageClicked((prev) => !prev);
+                setSelectWriteClicked(false);
+              }}
               type="button"
               className={`relative group sm:w-fit hover:bg-opacity-90 cursor-pointer rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${
                 selectImageClicked
@@ -238,6 +245,7 @@ function CreateStoryPageComponent() {
               setSelectWriteClicked((prev) => !prev);
               setSelectImageClicked(false);
               setSelectMusicClicked(false);
+              dispatch(setStoryImage(""));
             }}
             type="button"
             className={` cursor-pointer justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${
@@ -281,10 +289,10 @@ function CreateStoryPageComponent() {
             </p>
           </button>
         </form>
-        {(storyImageChosen || selectWriteClicked) && (
+        {(storyImageChosen !== "" || selectWriteClicked) && (
           <div className=" w-full py-4 pr-2 flex sm:w-fit justify-between items-center gap-2 sm:gap-10 ">
             {storyMusicData.url &&
-              storyImageChosen &&
+              (storyImageChosen || selectWriteClicked) &&
               !audioRef.current?.paused && (
                 <div className="flex gap-2 items-center">
                   <button
@@ -313,7 +321,7 @@ function CreateStoryPageComponent() {
                   </button>
                 </div>
               )}
-            <div className="flex gap-6 items-center">
+            <div className="flex w-full justify-evenly gap-6 items-center">
               <button
                 type="button"
                 className=" text-xl flex justify-center items-center border-2 border-red-500 text-red-500 rounded-md font-medium active:scale-90 cursor-pointer py-2 px-2"
@@ -349,46 +357,46 @@ function CreateStoryPageComponent() {
         )}
         {/* we play story and music here */}
         <div className="text-xl relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold ">
-          {storyImageChosen && (
+          {storyImageChosen !== "" && (
             <img src={storyImageChosen} className={`rounded-md`} alt="story" />
           )}
 
-          {storyImageChosen &&
-          storyMusicData.url &&
-          !audioRef.current?.paused ? (
+          {musicPlaying ? (
             <motion.div
               drag
               dragMomentum={false}
-              className={`w-full sm:w-[70%] ${
+              className={`w-full z-40 sm:w-[70%] ${
                 showStoryMusic ? "" : "opacity-0 pointer-events-none"
               } flex items-center justify-center`}
             >
-              <div className="flex w-[90%] absolute bottom-40 gap-3 justify-center p-2 rounded-xl ">
+              <div className="flex w-[70%] absolute top-24 gap-3 justify-center z-40 p-2 rounded-xl ">
                 <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
                   {/* Image */}
-                  <div className="w-10 h-10 relative z-50  ">
-                    {storyMusicData.image !== "" ? (
-                      <Image
-                        alt="img"
-                        src={storyMusicData.image}
-                        width={100}
-                        height={80}
-                        className="object-cover h-10 rounded-md"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-r from-violet-500 to-blue-700" />
-                    )}
-                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 relative z-50  ">
+                      {storyMusicData.image !== "" ? (
+                        <Image
+                          alt="img"
+                          src={storyMusicData.image}
+                          width={100}
+                          height={80}
+                          className="object-cover h-10 rounded-md"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-r from-violet-500 to-blue-700" />
+                      )}
+                    </div>
 
-                  {/* Audio bars */}
-                  <div className="shrink-0">
-                    <AudioBars />
+                    {/* Audio bars */}
+                    <div className="shrink-0">
+                      <AudioBars />
+                    </div>
                   </div>
 
                   {/* Title */}
                   <div className="overflow-hidden max-w-[60%]">
                     <p className="text-xs whitespace-nowrap translate-animation text-white">
-                      {storyMusicData.title.split(" - ")[0]}
+                      {storyMusicData.title.split("-").slice(0, 7).join("-")}
                     </p>
                   </div>
                 </div>
@@ -409,7 +417,7 @@ function CreateStoryPageComponent() {
 
       <div
         className={`w-full h-full flex-col justify-center items-center ${
-          selectWriteClicked || selectMusicClicked || storyImageChosen
+          selectWriteClicked || selectMusicClicked || storyImageChosen !== ""
             ? "hidden"
             : "flex"
         }`}
@@ -429,7 +437,7 @@ function CreateStoryPageComponent() {
           <div className="bg-[var(--wrapperColor)] flex flex-col justify-center items-center px-8 py-20 rounded-3xl gap-6">
             <p className="text-4xl text-red-600 font-semibold">Oops...</p>
             <p className="text-[var(--textColor)] flex items-center gap-2 text-xl text-center  ">
-              <Info size={50} className="text-red-600"/>
+              <Info size={50} className="text-red-600" />
               Currently unavailable due to server cost limits
             </p>
           </div>
@@ -444,8 +452,7 @@ function CreateStoryPageComponent() {
         </div>
       )}
 
-      {selectWriteClicked &&
-      <StoryText/>}
+      {selectWriteClicked && <StoryText />}
 
       {/* hidden music player */}
       <audio
