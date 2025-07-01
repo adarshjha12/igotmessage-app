@@ -39,12 +39,13 @@ import { SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import CameraCapture from "../Camera";
 import StoryText from "../text/StoryText";
+import { useAppSelector } from "@/store/hooks";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
-  const isDark = useSelector((state: RootState) => state.activity.isDark);
+  const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const storyImageChosen = useSelector(
     (state: RootState) => state.activity.story.storyImage
   );
@@ -75,6 +76,8 @@ function CreateStoryPageComponent() {
       dispatch(setStoryImage(""));
     }
   }
+
+  
   useEffect(() => {
     if (storyImageChosen && storyMusicData.url && audioRef.current) {
       audioRef.current.src = storyMusicData.url;
@@ -86,13 +89,13 @@ function CreateStoryPageComponent() {
   }, [storyImageChosen, storyMusicData.url]);
 
   useEffect(() => {
-    if (!storyImageChosen) {
+    if (!storyImageChosen && !selectWriteClicked) {
       setSelectMusicDisabled(true);
       setSelectMusicClicked(false);
     } else {
       setSelectMusicDisabled(false);
     }
-  }, [storyImageChosen]);
+  }, [storyImageChosen, selectWriteClicked]);
 
   if (audioRef.current && !audioRef.current.paused) {
     if (mute === "yes") {
@@ -278,7 +281,7 @@ function CreateStoryPageComponent() {
             </p>
           </button>
         </form>
-        {storyImageChosen && (
+        {(storyImageChosen || selectWriteClicked) && (
           <div className=" w-full py-4 pr-2 flex sm:w-fit justify-between items-center gap-2 sm:gap-10 ">
             {storyMusicData.url &&
               storyImageChosen &&
