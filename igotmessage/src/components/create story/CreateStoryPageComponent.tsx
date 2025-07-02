@@ -18,7 +18,7 @@ import html2canvas from "html2canvas";
 import React, { ChangeEvent, useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
-import { setStoryImage, setMusicData } from "@/features/activitySlice";
+import { setStoryImage, setMusicData, setStoryTextBg } from "@/features/activitySlice";
 import {
   AndroidLogoIcon,
   AppleLogoIcon,
@@ -75,6 +75,7 @@ function CreateStoryPageComponent() {
 
     if (file && file.type.startsWith("image/")) {
       dispatch(setStoryImage(URL.createObjectURL(file)));
+      dispatch(setStoryTextBg(URL.createObjectURL(file)));
     } else {
       dispatch(setStoryImage(""));
     }
@@ -187,7 +188,11 @@ function CreateStoryPageComponent() {
             </div>
           )}
           <button
-            onClick={() => setCameraOpen((prev) => !prev)}
+            onClick={() => {
+              setCameraOpen((prev) => !prev)
+              setSelectWriteClicked(false);
+            }
+            }
             type="button"
             className="cursor-pointer active:scale-75"
           >
@@ -428,7 +433,7 @@ function CreateStoryPageComponent() {
       >
         <StoryTemplates />
       </div>
-      {cameraOpen && <CameraCapture />}
+      {cameraOpen && <CameraCapture setCameraOpen={setCameraOpen} clickedFromStory={true}/>}
       {aiButtonClicked && (
         <div className="w-full up-slide fixed z-50 top-[10%] flex items-center justify-center flex-col left-0">
           <button
