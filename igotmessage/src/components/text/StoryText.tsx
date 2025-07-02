@@ -7,13 +7,15 @@ import { ItalicIcon, TextIcon, UnderlineIcon, XIcon } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 
 function StoryText() {
-  const storyTextBg = useAppSelector((state) => state.activity.story.storyTextBg);
+  const storyTextBg = useAppSelector(
+    (state) => state.activity.story.storyTextBg
+  );
   const [fontSize, setFontSize] = useState("50");
   const [weight, setWeight] = useState<"normal" | "extrabold">("normal");
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
   const [color, setColor] = useState("white");
-  const [bgColor, setBgColor] = useState("#481bba");
+  const [bgColor, setBgColor] = useState("#4281f5");
   const [gradientColor1, setGradientColor1] = useState("#58f1f1");
   const [gradientColor2, setGradientColor2] = useState("#481bba");
   const [bgOpacity, setBgOpacity] = useState("100");
@@ -55,10 +57,14 @@ function StoryText() {
         >
           <div
             style={{
-              background: 
-                solidColorChosen
-                  ? bgColor : gradientColorChosen ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                  : ""
+              backgroundColor: solidColorChosen ? bgColor : undefined,
+              backgroundImage: gradientColorChosen
+                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+                : storyTextBg !== "" &&
+                  !solidColorChosen &&
+                  !gradientColorChosen
+                ? `url(${storyTextBg})`
+                : undefined,
             }}
             className={`h-8 w-8 rounded-full border-[var(--borderColor)] border-1`}
           ></div>
@@ -129,12 +135,13 @@ function StoryText() {
       </div>
       <div
         style={{
-              background: 
-                solidColorChosen
-                  ? bgColor : gradientColorChosen ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                  : "",
-                  backgroundImage: `url(${(storyTextBg !== "" && !solidColorChosen && !gradientColorChosen) && storyTextBg})`
-            }}
+          backgroundColor: solidColorChosen ? bgColor : undefined,
+          backgroundImage: gradientColorChosen
+            ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+            : storyTextBg !== "" && !solidColorChosen && !gradientColorChosen
+            ? `url(${storyTextBg})`
+            : undefined,
+        }}
         className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
       >
         <div
@@ -168,7 +175,13 @@ function StoryText() {
               solidClicked || gradientClicked ? "hidden" : ""
             }`}
           >
-            <button className="absolute text-[var(--textColor)] cursor-pointer top-2 p-2 right-6" onClick={() => setPaintBrushClicked((prev) => !prev)} type="button"><XIcon size={35} /></button>
+            <button
+              className="absolute text-[var(--textColor)] cursor-pointer top-2 p-2 right-6 active:scale-90"
+              onClick={() => setPaintBrushClicked((prev) => !prev)}
+              type="button"
+            >
+              <XIcon size={35} />
+            </button>
             <button
               onClick={() => setSolidClicked((prev) => !prev)}
               type="button"
@@ -316,7 +329,13 @@ function StoryText() {
                     type="button"
                     onClick={() => setFontStyle(item.style)}
                     key={index}
-                    className={`p-2 ${fontStyle === item.style ? 'border-1 border-[var(--borderColor)]' : ''} active:bg-[var(--wrapperColor)] rounded-md cursor-pointer font-${item.style}`}
+                    className={`p-2 ${
+                      fontStyle === item.style
+                        ? "border-1 border-[var(--borderColor)]"
+                        : ""
+                    } active:bg-[var(--wrapperColor)] rounded-md cursor-pointer font-${
+                      item.style
+                    }`}
                   >
                     Abc
                   </button>

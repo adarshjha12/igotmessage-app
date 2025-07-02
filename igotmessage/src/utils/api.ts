@@ -46,4 +46,14 @@ const verifyOtp = async function (email: string, otp: string) {
     }
 }
 
-export {checkAuth, sendOtp, verifyOtp}
+const uploadStory = async function(image: Blob, musicData?: {}) {
+    const url = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/story/upload-story` : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/story/upload-story`;
+
+    const formdata = new FormData();
+    formdata.append('file', image);
+
+    return await axios.post(url, {formdata, musicData}, {withCredentials: true})
+    
+}
+
+export {checkAuth, sendOtp, verifyOtp, uploadStory}

@@ -18,7 +18,11 @@ import html2canvas from "html2canvas";
 import React, { ChangeEvent, useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
-import { setStoryImage, setMusicData, setStoryTextBg } from "@/features/activitySlice";
+import {
+  setStoryImage,
+  setMusicData,
+  setStoryTextBg,
+} from "@/features/activitySlice";
 import {
   AndroidLogoIcon,
   AppleLogoIcon,
@@ -42,6 +46,7 @@ import { motion } from "framer-motion";
 import CameraCapture from "../Camera";
 import StoryText from "../text/StoryText";
 import { useAppSelector } from "@/store/hooks";
+import { uploadStory } from "@/utils/api";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
@@ -72,7 +77,6 @@ function CreateStoryPageComponent() {
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setStoryImage(""));
     const file = e.target.files?.[0];
-
     if (file && file.type.startsWith("image/")) {
       dispatch(setStoryImage(URL.createObjectURL(file)));
       dispatch(setStoryTextBg(URL.createObjectURL(file)));
@@ -111,6 +115,18 @@ function CreateStoryPageComponent() {
     } else if (mute === "no") {
       audioRef.current.volume = 1;
     }
+  }
+
+  const handleCreateStory = async () => {
+    if (!storyRef.current) return;
+      const canvas = await html2canvas(storyRef.current, {
+        useCORS: true,
+      })
+
+      const dataUrl = canvas.toDataURL("image/png")
+      const blob = await fetch(dataUrl).then((res) => res.blob())
+      const file = new File([blob], "story.png", { type: "image/png" })
+      uploadStory(file, storyMusicData)
   }
 
   return (
@@ -189,10 +205,9 @@ function CreateStoryPageComponent() {
           )}
           <button
             onClick={() => {
-              setCameraOpen((prev) => !prev)
+              setCameraOpen((prev) => !prev);
               setSelectWriteClicked(false);
-            }
-            }
+            }}
             type="button"
             className="cursor-pointer active:scale-75"
           >
@@ -254,6 +269,15 @@ function CreateStoryPageComponent() {
               setSelectImageClicked(false);
               setSelectMusicClicked(false);
               dispatch(setStoryImage(""));
+              setMusicPlaying((prev) => prev === true && false);
+              if (
+                audioRef.current &&
+                !audioRef.current.paused &&
+                selectWriteClicked === true
+              ) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+              }
             }}
             type="button"
             className={` cursor-pointer justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${
@@ -350,6 +374,7 @@ function CreateStoryPageComponent() {
               </button>
 
               <button
+              onClick={handleCreateStory}
                 type="button"
                 className=" text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-md font-medium active:scale-90 cursor-pointer py-2 px-1"
                 // onClick={() => {
@@ -364,11 +389,17 @@ function CreateStoryPageComponent() {
             </div>
           </div>
         )}
+
+
         {/* we play story and music here */}
-        <div className="text-xl relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold ">
+        {/* this is first story ref */}
+
+
+        <div ref={storyRef} className="text-xl relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold ">
           {storyImageChosen !== "" && (
             <img src={storyImageChosen} className={`rounded-md`} alt="story" />
           )}
+          {selectWriteClicked && <StoryText />}
 
           {musicPlaying ? (
             <motion.div
@@ -376,7 +407,7 @@ function CreateStoryPageComponent() {
               dragMomentum={false}
               className={`w-full z-40 sm:w-[70%] ${
                 showStoryMusic ? "" : "opacity-0 pointer-events-none"
-              } flex items-center justify-center`}
+              } flex absolute top-10 items-center justify-center`}
             >
               <div className="flex w-[70%] absolute top-24 gap-3 justify-center z-40 p-2 rounded-xl ">
                 <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
@@ -405,7 +436,8 @@ function CreateStoryPageComponent() {
                   {/* Title */}
                   <div className="overflow-hidden max-w-[60%]">
                     <p className="text-xs whitespace-nowrap translate-animation text-white">
-                      {storyMusicData.title && storyMusicData.title.split("-").slice(0, 7).join("-")}
+                      {storyMusicData.title &&
+                        storyMusicData.title.split("-").slice(0, 7).join("-")}
                     </p>
                   </div>
                 </div>
@@ -433,7 +465,9 @@ function CreateStoryPageComponent() {
       >
         <StoryTemplates />
       </div>
-      {cameraOpen && <CameraCapture setCameraOpen={setCameraOpen} clickedFromStory={true}/>}
+      {cameraOpen && (
+        <CameraCapture setCameraOpen={setCameraOpen} clickedFromStory={true} />
+      )}
       {aiButtonClicked && (
         <div className="w-full up-slide fixed z-50 top-[10%] flex items-center justify-center flex-col left-0">
           <button
@@ -460,8 +494,6 @@ function CreateStoryPageComponent() {
           {" "}
         </div>
       )}
-
-      {selectWriteClicked && <StoryText />}
 
       {/* hidden music player */}
       <audio
