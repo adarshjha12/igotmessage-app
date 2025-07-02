@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/store/hooks";
 import { setStoryImage, setStoryTextBg } from "@/features/activitySlice";
 
 interface Props {
-  setCameraOpen: (value: boolean) => void;
+  setCameraOpen?: (value: boolean) => void;
   clickedFromStory?: boolean;
   clickedFromHome?: boolean;
 }
@@ -135,7 +135,7 @@ export default function CameraCapture({
                 type="button"
                 className=" text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3"
                 onClick={() => {
-                  setCameraOpen(false);
+                  setCameraOpen &&setCameraOpen(false);
                   dispatch(setStoryImage(photo));
                   dispatch(setStoryTextBg(photo));
                   router.push("/create-story");

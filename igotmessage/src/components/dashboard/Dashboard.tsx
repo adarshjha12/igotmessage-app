@@ -579,7 +579,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 size={35}
               />
             </button>
-            <CameraCapture />
+            <CameraCapture clickedFromHome={true} />
           </div>
         ) : (
           ""
