@@ -52,7 +52,7 @@ const activitySlice = createSlice({
         },
 
         setStoryTextBg: function (state, action) {
-            state.story.storyImage = action.payload
+            state.story.storyTextBg = action.payload
         },
 
         setMusicData: function (state, action) {

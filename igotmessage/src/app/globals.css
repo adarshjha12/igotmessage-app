@@ -77,6 +77,14 @@ body {
    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
  }
 
+ .scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 
 ::-webkit-scrollbar {
   width: 0px;

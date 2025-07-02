@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { HexColorPicker } from "react-colorful";
 import { PaintBrushBroadIcon } from "@phosphor-icons/react";
-import { ItalicIcon, TextIcon, UnderlineIcon } from "lucide-react";
+import { ItalicIcon, TextIcon, UnderlineIcon, XIcon } from "lucide-react";
+import { useAppSelector } from "@/store/hooks";
 
 function StoryText() {
+  const storyTextBg = useAppSelector((state) => state.activity.story.storyTextBg);
   const [fontSize, setFontSize] = useState("50");
-  const [weight, setWeight] = useState<"normal" | "bold">("normal");
+  const [weight, setWeight] = useState<"normal" | "extrabold">("normal");
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
   const [color, setColor] = useState("white");
@@ -25,7 +27,7 @@ function StoryText() {
   const [fontSizeClicked, setFontSizeClicked] = useState(false);
   const [solidClicked, setSolidClicked] = useState(false);
   const [gradientClicked, setGradientClicked] = useState(false);
-  const [solidColorChosen, setSolidColorChosen] = useState(true);
+  const [solidColorChosen, setSolidColorChosen] = useState(false);
   const [gradientColorChosen, setGradientColorChosen] = useState(false);
   const [fontStyle, setFontStyle] = useState("normal");
 
@@ -53,11 +55,10 @@ function StoryText() {
         >
           <div
             style={{
-              background: `${
+              background: 
                 solidColorChosen
-                  ? bgColor
-                  : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-              }`,
+                  ? bgColor : gradientColorChosen ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+                  : ""
             }}
             className={`h-8 w-8 rounded-full border-[var(--borderColor)] border-1`}
           ></div>
@@ -73,10 +74,10 @@ function StoryText() {
         <button
           onClick={() => {
             setFontWeightClicked((prev) => !prev);
-            setWeight((prev) => (prev === "normal" ? "bold" : "normal"));
+            setWeight((prev) => (prev === "normal" ? "extrabold" : "normal"));
           }}
           className={`p-2 ${
-            weight === "bold" ? "font-bold" : "font-light"
+            weight === "extrabold" ? "font-extrabold" : "font-light"
           } active:scale-90 active:bg-[var(--wrapperColor)] rounded-full cursor-pointer`}
           type="button"
         >
@@ -128,12 +129,12 @@ function StoryText() {
       </div>
       <div
         style={{
-          background: `${
-            solidColorChosen
-              ? bgColor
-              : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-          }`,
-        }}
+              background: 
+                solidColorChosen
+                  ? bgColor : gradientColorChosen ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+                  : "",
+                  backgroundImage: `url(${(storyTextBg !== "" && !solidColorChosen && !gradientColorChosen) && storyTextBg})`
+            }}
         className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
       >
         <div
@@ -147,13 +148,13 @@ function StoryText() {
             autoFocus
             style={{
               fontSize: fontSize + "px",
-              fontWeight: weight,
+              fontWeight: `${weight === "normal" ? 600 : 900}`,
               fontStyle: italic ? "italic" : "normal",
               textDecoration: underline ? "underline" : "none",
               color: color,
               backgroundColor: "transparent",
             }}
-            className={`border-none text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
+            className={`border-none  text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
             placeholder="🖋️ Write something..."
           />
         </div>
@@ -163,10 +164,11 @@ function StoryText() {
       {paintBrushClicked && (
         <div className="fixed inset-0 w-full z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
           <div
-            className={`flex w-full text-2xl p-12  border-[var(-borderColor)] sm:w-[40%] rounded-2xl gap-4 items-start bg-[var(--wrapperColor)] justify-center flex-col ${
+            className={`flex w-full text-2xl p-16  border-[var(-borderColor)] sm:w-[40%] rounded-2xl relative gap-4 items-start bg-[var(--wrapperColor)] justify-center flex-col ${
               solidClicked || gradientClicked ? "hidden" : ""
             }`}
           >
+            <button className="absolute text-[var(--textColor)] cursor-pointer top-2 p-2 right-6" onClick={() => setPaintBrushClicked((prev) => !prev)} type="button"><XIcon size={35} /></button>
             <button
               onClick={() => setSolidClicked((prev) => !prev)}
               type="button"
