@@ -307,14 +307,14 @@ function StoryText() {
       {fontStyleClicked && (
         <div>
           <div className="fixed inset-0 z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
-            <div className="w-full bg-[var(--wrapperColor)] rounded-2xl p-6 sm:w-[30%] text-[var(--textColor)] flex text-3xl flex-col font-semibold items-center gap-4 justify-center">
-              <div className="w-full  text-[var(--textColor)] flex text-3xl font-semibold items-center gap-4 justify-center">
+            <div className="w-full bg-[var(--wrapperColor)] rounded-2xl p-6 sm:w-[30%] text-[var(--textColor)] flex text-3xl flex-col  items-center gap-8 justify-center">
+              <div className="w-full  text-[var(--textColor)] flex text-3xl font-medium items-center gap-4 justify-center">
                 {fontStyles.map((item, index) => (
                   <button
                     type="button"
                     onClick={() => setFontStyle(item.style)}
                     key={index}
-                    className={`p-2 active:bg-[var(--wrapperColor)] rounded-full cursor-pointer font-${item.style}`}
+                    className={`p-2 ${fontStyle === item.style ? 'border-1 border-[var(--borderColor)]' : ''} active:bg-[var(--wrapperColor)] rounded-md cursor-pointer font-${item.style}`}
                   >
                     Abc
                   </button>
@@ -323,7 +323,7 @@ function StoryText() {
               <button
                 type="button"
                 onClick={() => setFontStyleClicked(false)}
-                className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+                className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--textColor)] text-[var(--bgColor)] text-2xl active:scale-90 cursor-pointer"
               >
                 Done
               </button>

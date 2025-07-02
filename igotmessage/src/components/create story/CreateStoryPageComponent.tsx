@@ -334,7 +334,8 @@ function CreateStoryPageComponent() {
                   setSelectImageClicked(false);
                   setSelectMusicClicked(false);
                   setSelectWriteClicked(false);
-                  if (audioRef.current) {
+                  setMusicPlaying(false);
+                  if (audioRef.current && !audioRef.current.paused) {
                     audioRef.current.pause();
                     audioRef.current.currentTime = 0;
                   }
@@ -399,7 +400,7 @@ function CreateStoryPageComponent() {
                   {/* Title */}
                   <div className="overflow-hidden max-w-[60%]">
                     <p className="text-xs whitespace-nowrap translate-animation text-white">
-                      {storyMusicData.title.split("-").slice(0, 7).join("-")}
+                      {storyMusicData.title && storyMusicData.title.split("-").slice(0, 7).join("-")}
                     </p>
                   </div>
                 </div>
