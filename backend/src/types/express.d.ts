@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 declare global {
   namespace Express {
     interface User {
-      _id?: Types.ObjectId | string;   // useful to have
+      _id?: Types.ObjectId | string;  
       googleId?: string | null;
       email?: string | null;
       phoneNo?: number | null;
