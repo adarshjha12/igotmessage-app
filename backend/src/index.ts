@@ -10,7 +10,6 @@ import passport from 'passport'
 import gAuthRouter from './routers/googleRoute'
 import emailAuthRouter from './routers/emailAuth'
 import getCurrentUser from './routers/currentUser'
-import prisma from './prisma/client'
 import redisClient from './services/redisClient'
 
 const PORT = process.env.PORT
@@ -40,16 +39,6 @@ app.get('/healthCheck', (req, res) =>{
 
 
 // checking db connection
-app.get('/status', async (req, res) => {
-    try {
-      const dbTime = await prisma.$queryRaw`SELECT NOW()`;
-      console.log('connected to postgres', req);
-      
-       res.send({ success: true, dbTime });
-    } catch (err) {
-      res.status(500).send({ error: 'DB not connected', details: err });
-    }
-  });
 
   // keep redis alive
   setInterval(async () => {
