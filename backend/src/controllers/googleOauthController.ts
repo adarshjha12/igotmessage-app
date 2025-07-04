@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import prisma from '../prisma/client';
+import {User} from '../models/userModel';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const redirectUrl =
@@ -10,9 +10,7 @@ const redirectUrl =
 
 export const handleGoogleRedirect = async (req: Request, res: Response) => {
   try {
-    const userInDb = await prisma.user.findFirst({
-      where: { googleId: (req.user as any)?.googleId },
-    });
+    const userInDb = await User.findOne({ googleId: req.user?.googleId });
 
     const payload = {
       id: userInDb?.id,

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import prisma from '../prisma/client';
+import { User } from '../models/userModel';
 
 interface UserPayload {
   id?: number;
@@ -17,7 +17,7 @@ export const getCurrentUser = async (req: Request, res: Response): Promise<any> 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as UserPayload;
-    const verifiedUser = await prisma.user.findUnique({ where: { id: decoded.id } });
+    const verifiedUser = await User.findOne({ where: { id: decoded.id } });
 
     if (!verifiedUser) {
       return res.status(401).json({ success: false, message: 'invalid token provided' });

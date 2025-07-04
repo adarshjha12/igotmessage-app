@@ -1,18 +1,22 @@
-import { Request } from "express";
+import { Types } from 'mongoose';
 
 declare global {
   namespace Express {
-    interface User{
-      googleId: string | null;
-      email: string | null;
-      title: string | null;
-      avatar: string | null;
-    }
-
-    interface Request {
-      user?: User; 
+    interface User {
+      _id?: Types.ObjectId | string;   // useful to have
+      googleId?: string | null;
+      email?: string | null;
+      phoneNo?: number | null;
+      title?: string | null;
+      avatar?: string | null;
+      verified?: boolean;
+      followers?: Types.ObjectId[];
+      following?: Types.ObjectId[];
+      username?: string | null;
+      profilePicture?: string | null;
+      bio?: string | null;
     }
   }
 }
 
-export {}
+export {};
