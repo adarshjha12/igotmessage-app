@@ -11,6 +11,7 @@ import gAuthRouter from './routers/googleRoute'
 import emailAuthRouter from './routers/emailAuth'
 import getCurrentUser from './routers/currentUser'
 import redisClient from './services/redisClient'
+import followRouter from './routers/followRoute'
 
 const PORT = process.env.PORT
 const app = express()
@@ -28,6 +29,7 @@ app.use(cookieParser())
 app.use('/api/google', gAuthRouter)
 app.use('/api/email/auth', emailAuthRouter)
 app.use('/api/current-user', getCurrentUser)
+app.use('/api/follow', followRouter)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})
@@ -37,8 +39,6 @@ app.get('/healthCheck', (req, res) =>{
     res.status(200);
 })
 
-
-// checking db connection
 
   // keep redis alive
   setInterval(async () => {

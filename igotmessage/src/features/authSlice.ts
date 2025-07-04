@@ -13,9 +13,14 @@ interface UserAuthInterface {
     username?: string | null;
     profilePicture?: string | null;
     bio?: string | null;
-    followers?: string[];   // store ObjectId[] as string[]
-    following?: string[];   // same
-    createdAt?: string;     // ISO string
+    followers?: string[];  
+    following?: string[];  
+    posts?: string[];  
+    stories?: string[];  
+    reels?: string[];  
+    chats?: string[];  
+    calls?: string[];  
+    createdAt?: string;    
     updatedAt?: string;
   };
 }
@@ -35,6 +40,11 @@ const initialState: UserAuthInterface = {
     bio: '',
     followers: [],
     following: [],
+    posts: [],
+    stories: [],
+    reels: [],
+    chats: [],
+    calls: [],
     createdAt: '',
     updatedAt: '',
   },

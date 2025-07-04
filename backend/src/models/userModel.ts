@@ -33,6 +33,11 @@ const Schema = new mongoose.Schema(
 
     followers: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     following: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    stories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Story" }],
+    reels: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reel" }],
+    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+    calls: [{ type: mongoose.Schema.Types.ObjectId, ref: "Call" }],
   },
   { timestamps: true }
 );
