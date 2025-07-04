@@ -1,6 +1,6 @@
 import express from 'express'
 import  storyUploaderControlller  from '../controllers/storyUploadController'
 
-const storyUploadRouter = express.Router()
+const storyRouter = express.Router()
 
-storyUploadRouter.post('/upload-story', storyUploaderControlller)
+storyRouter.post('/upload-story', storyUploaderControlller)

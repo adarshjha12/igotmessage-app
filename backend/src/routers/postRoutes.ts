@@ -1,9 +1,9 @@
 import express from 'express'
 import { createPost, toggleLike } from '../controllers/postController'
 
-const postRoute = express.Router()
+const postRouter = express.Router()
 
-postRoute.post('/create-post', createPost)
-postRoute.post('/toggle-like/:postId', toggleLike)
+postRouter.post('/create-post', createPost)
+postRouter.post('/toggle-like/:postId', toggleLike)
 
-export default postRoute
+export default postRouter
