@@ -124,8 +124,8 @@ export default function CreateProfileModal() {
                   </div>
                 )}
               </label>
-              <div className="p-2 absolute bottom-2 right-2 rounded-full bg-[var(--bgColor)]">
-                <Camera size={18} className=" text-gray-600 " />
+              <div className="p-2 absolute bottom-2 right-2 rounded-full bg-[var(--wrapperColor)]">
+                <Camera size={18} className=" " />
               </div>
             </div>
           </div>
@@ -141,7 +141,7 @@ export default function CreateProfileModal() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="John Doe"
-                className="w-full px-3 py-2 border border-[var(--borderColor)]  rounded-lg bg-[var(--wrapperColor)] focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2  border-[var(--borderColor)]  rounded-lg bg-[var(--wrapperColor)] focus:outline-none "
               />
             </div>
             <div>
@@ -151,9 +151,9 @@ export default function CreateProfileModal() {
                 value={username}
                 onChange={handleUsernameChange}
                 placeholder="Starts with letter; can use numbers & - _ ."
-                className={`w-full px-3 py-2 border ${
+                className={`w-full px-3 py-2  ${
                   usernameError ? "border-red-500" : "border-gray-300 "
-                } rounded-lg bg-[var(--wrapperColor)]  focus:outline-none focus:ring-2 ${
+                } rounded-lg bg-[var(--wrapperColor)]  focus:outline-none ${
                   usernameError ? "focus:ring-red-500" : "focus:ring-primary"
                 }`}
               />
@@ -169,7 +169,7 @@ export default function CreateProfileModal() {
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Tell us something about you..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300  rounded-lg bg-[var(--wrapperColor)] focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2  border-gray-300  rounded-lg bg-[var(--wrapperColor)] focus:outline-none "
               />
             </div>
             <div className="flex items-center gap-2">

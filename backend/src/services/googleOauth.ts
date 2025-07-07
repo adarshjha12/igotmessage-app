@@ -44,6 +44,11 @@ passport.use(
           email: email || "",
           title: profile.displayName,
           avatar: profile.photos?.[0]?.value || "",
+          username: "",
+          fullName: "",
+          profilePicture: "",
+          bio: "",
+          phoneNo: null,
         });
         await newUser.save();
 

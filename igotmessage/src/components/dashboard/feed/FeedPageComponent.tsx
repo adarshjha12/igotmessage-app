@@ -19,7 +19,6 @@ function FeedPageComponent() {
 
   return (
     <div className=" w-full pl-1 ">
-      <CreateProfile/>
       <Story />
       <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur

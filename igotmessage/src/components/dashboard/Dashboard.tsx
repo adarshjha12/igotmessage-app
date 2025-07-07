@@ -32,10 +32,12 @@ import { log } from "console";
 import { MoreVertical, PlusCircleIcon, SidebarCloseIcon, SidebarIcon } from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
+import CreateProfileModal from "../profile/CreateProfile";
 
 function Dashboard({ children }: { children: ReactNode }) {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const userTitle = useAppSelector((state: RootState) => state.auth.user.title);
+  const userName = useAppSelector((state: RootState) => state.auth.user.username);
 
   const panelOpen = useAppSelector((state: RootState) => state.activity.panelOpen);
   const [searchInput, setSearchInput] = useState("");
@@ -576,7 +578,10 @@ function Dashboard({ children }: { children: ReactNode }) {
         )}
       </div>
 
-      
+{/* moodal for create profile if no username exist */}
+      {
+        !userName && <CreateProfileModal />
+      }
     </div>
   );
 }

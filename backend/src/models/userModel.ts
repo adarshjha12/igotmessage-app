@@ -27,6 +27,7 @@ const Schema = new mongoose.Schema(
         "https://res.cloudinary.com/dqj3x4k2h/image/upload/v1735681234/avatars/default-avatar.png",
     },
     username: { type: String, unique: true },
+    fullName: { type: String },
     profilePicture: { type: String  },
     bio: { type: String  },
     verified: { type: Boolean, default: false },
