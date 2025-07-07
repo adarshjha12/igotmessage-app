@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface UserAuthInterface {
   authenticated: boolean;
   user: {
-    _id: string; // store as string; ObjectId converted to string
+    _id: string; 
     googleId?: string | null;
     email?: string | null;
     phoneNo?: number | null;
