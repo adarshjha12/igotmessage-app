@@ -11,6 +11,7 @@ import MainModal from "@/components/modals/MainModal";
 import Skeleton from "react-loading-skeleton";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
+import CreateProfile from "@/components/profile/CreateProfile";
 // import { useRouter, useSearchParams } from 'next/navigation'
 
 function FeedPageComponent() {
@@ -18,8 +19,7 @@ function FeedPageComponent() {
 
   return (
     <div className=" w-full pl-1 ">
-      {/* <MainModal/> */}
-      
+      <CreateProfile/>
       <Story />
       <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur

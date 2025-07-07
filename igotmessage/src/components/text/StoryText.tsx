@@ -15,7 +15,7 @@ function StoryText() {
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
   const [color, setColor] = useState("white");
-  const [bgColor, setBgColor] = useState("#4281f5");
+  const [bgColor, setBgColor] = useState("#428bf5");
   const [gradientColor1, setGradientColor1] = useState("#58f1f1");
   const [gradientColor2, setGradientColor2] = useState("#481bba");
   const [bgOpacity, setBgOpacity] = useState("100");
