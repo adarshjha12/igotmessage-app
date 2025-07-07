@@ -10,6 +10,7 @@ import {
   Music2Icon,
   PenBoxIcon,
   Sparkle,
+  Sparkles,
   XIcon,
 } from "lucide-react";
 
@@ -47,6 +48,7 @@ import CameraCapture from "../Camera";
 import StoryText from "../text/StoryText";
 import { useAppSelector } from "@/store/hooks";
 import { uploadStory } from "@/utils/api";
+import ImageGenrator from "../ai/ImageGenrator";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
@@ -95,7 +97,9 @@ function CreateStoryPageComponent() {
       audioRef.current
         ?.play()
         .catch((err) => console.log("play interupted", err));
-      setMusicPlaying(true);
+      if (!audioRef.current.paused) {
+        setMusicPlaying(true);
+      }
       setMute("no");
     }
   }, [storyImageChosen, storyMusicData.url]);
@@ -119,15 +123,15 @@ function CreateStoryPageComponent() {
 
   const handleCreateStory = async () => {
     if (!storyRef.current) return;
-      const canvas = await html2canvas(storyRef.current, {
-        useCORS: true,
-      })
+    const canvas = await html2canvas(storyRef.current, {
+      useCORS: true,
+    });
 
-      const dataUrl = canvas.toDataURL("image/png")
-      const blob = await fetch(dataUrl).then((res) => res.blob())
-      const file = new File([blob], "story.png", { type: "image/png" })
-      uploadStory(file, storyMusicData)
-  }
+    const dataUrl = canvas.toDataURL("image/png");
+    const blob = await fetch(dataUrl).then((res) => res.blob());
+    const file = new File([blob], "story.png", { type: "image/png" });
+    uploadStory(file, storyMusicData);
+  };
 
   return (
     <div className="w-full py-2 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
@@ -141,6 +145,7 @@ function CreateStoryPageComponent() {
               onClick={() => {
                 setSelectImageClicked((prev) => !prev);
                 setSelectWriteClicked(false);
+                setAIButtonClicked(false);
               }}
               type="button"
               className={`relative group sm:w-fit hover:bg-opacity-90 cursor-pointer rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${
@@ -176,6 +181,8 @@ function CreateStoryPageComponent() {
                 <button
                   onClick={() => {
                     setSelectMusicClicked(false);
+                    setSelectWriteClicked(false);
+                    setAIButtonClicked(false);
                   }}
                   type="button"
                   className="relative active:scale-75 cursor-pointer flex items-center flex-col justify-end px-1 gap-1"
@@ -194,6 +201,7 @@ function CreateStoryPageComponent() {
                     setSelectMusicClicked(false);
                     setSelectImageClicked(false);
                     setSelectWriteClicked(false);
+                    setAIButtonClicked(false);
                   }}
                   type="button"
                   className="active:scale-75 flex flex-col cursor-pointer justify-end items-center gap-1 px-1"
@@ -267,6 +275,7 @@ function CreateStoryPageComponent() {
             onClick={() => {
               setSelectWriteClicked((prev) => !prev);
               setSelectImageClicked(false);
+              setAIButtonClicked(false);
               setSelectMusicClicked(false);
               dispatch(setStoryImage(""));
               setMusicPlaying((prev) => prev === true && false);
@@ -302,23 +311,23 @@ function CreateStoryPageComponent() {
             </div>
           </button>
           <button
-            onClick={() => setAIButtonClicked((prev) => !prev)}
+            onClick={() => {
+              setCameraOpen(false)
+              dispatch(setStoryImage(""));
+              setSelectWriteClicked(false)
+              setSelectMusicClicked(false)
+              setSelectImageClicked(false)
+              setAIButtonClicked((prev) => !prev)
+            }}
             type="button"
-            className={`cursor-pointer relative tex-[var(--textColor)] justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 `}
+            className={`cursor-pointer relative justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${aiButtonClicked ? "bg-[var(--textColor)] text-[var(--bgColor)]" : "text-[var(--textColor)]"}`}
           >
-            <Sparkle
+            <Sparkles
               size={40}
               strokeWidth={1}
-              className="text-[var(--textColor)] rotate-6"
+              className=" rotate-6"
             />
-            <Sparkle
-              size={20}
-              strokeWidth={2}
-              className="text-[var(--textColor)] z-40 absolute top-0 -right-2"
-            />
-            <p className="text-[8px] tracking-wider z-40 border-1 border-[var(--textColor)] rounded-sm px-1 py-0 font-medium font-exo2 absolute top-6 -right-2">
-              AI
-            </p>
+           
           </button>
         </form>
         {(storyImageChosen !== "" || selectWriteClicked) && (
@@ -374,7 +383,7 @@ function CreateStoryPageComponent() {
               </button>
 
               <button
-              onClick={handleCreateStory}
+                onClick={handleCreateStory}
                 type="button"
                 className=" text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-md font-medium active:scale-90 cursor-pointer py-2 px-1"
                 // onClick={() => {
@@ -390,12 +399,13 @@ function CreateStoryPageComponent() {
           </div>
         )}
 
-
         {/* we play story and music here */}
         {/* this is first story ref */}
 
-
-        <div ref={storyRef} className="text-xl relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold ">
+        <div
+          ref={storyRef}
+          className="text-xl relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold "
+        >
           {storyImageChosen !== "" && (
             <img src={storyImageChosen} className={`rounded-md`} alt="story" />
           )}
@@ -458,7 +468,7 @@ function CreateStoryPageComponent() {
 
       <div
         className={`w-full h-full flex-col justify-center items-center ${
-          selectWriteClicked || selectMusicClicked || storyImageChosen !== ""
+          (selectWriteClicked || selectMusicClicked || storyImageChosen !== "" || aiButtonClicked)
             ? "hidden"
             : "flex"
         }`}
@@ -469,31 +479,11 @@ function CreateStoryPageComponent() {
         <CameraCapture setCameraOpen={setCameraOpen} clickedFromStory={true} />
       )}
       {aiButtonClicked && (
-        <div className="w-full up-slide fixed z-50 top-[10%] flex items-center justify-center flex-col left-0">
-          <button
-            type="button"
-            onClick={() => setAIButtonClicked(false)}
-            className="absolute top-2 right-4 active:scale-90 active:bg-[var(--bgColor)] p-2 rounded-full cursor-pointer"
-          >
-            <XIcon />
-          </button>
-          <div className="bg-[var(--wrapperColor)] flex flex-col justify-center items-center px-8 py-20 rounded-3xl gap-6">
-            <p className="text-4xl text-red-600 font-semibold">Oops...</p>
-            <p className="text-[var(--textColor)] flex items-center gap-2 text-xl text-center  ">
-              <Info size={50} className="text-red-600" />
-              Currently unavailable due to server cost limits
-            </p>
-          </div>
+        <div>
+          <ImageGenrator setAiButtonClicked={setAIButtonClicked}/>
         </div>
       )}
-      {aiButtonClicked && (
-        <div
-          onClick={() => setAIButtonClicked(false)}
-          className="w-full bg-black/70 fixed z-40 inset-0 flex items-center justify-center left-0"
-        >
-          {" "}
-        </div>
-      )}
+
 
       {/* hidden music player */}
       <audio

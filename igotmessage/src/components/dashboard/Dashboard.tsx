@@ -568,18 +568,8 @@ function Dashboard({ children }: { children: ReactNode }) {
               cameraClick ? "flex" : "hidden"
             }`}
           >
-            <button
-              type="button"
-              onClick={() => setCameraClick(false)}
-              className="fixed top-2 z-50 left-2 active:scale-90 rounded-full  text-red-500 cursor-pointer"
-            >
-              <ArrowLeftIcon
-                className="text-[var(--textColor)] hover:text-green-700"
-                strokeWidth={2}
-                size={35}
-              />
-            </button>
-            <CameraCapture clickedFromHome={true} />
+            
+            <CameraCapture clickedFromHome={true} setCameraOpen={setCameraClick}/>
           </div>
         ) : (
           ""

@@ -1,8 +1,8 @@
 "use client"; // Needed in Next.js 13/14 for client-side components
 
-import { PlusIcon, RefreshCcwIcon, SwitchCamera } from "lucide-react";
+import { ArrowLeftIcon, PlusIcon, RefreshCcwIcon, SwitchCamera } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { PlusSquareIcon } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/store/hooks";
 import { setStoryImage, setStoryTextBg } from "@/features/activitySlice";
@@ -22,6 +22,7 @@ export default function CameraCapture({
   const [photo, setPhoto] = useState<null | string>(null);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -73,9 +74,18 @@ export default function CameraCapture({
     }
   };
 
+  useEffect(() => {
+    if (clickedFromStory) {
+      pathname !== "/create-story" && setCameraOpen && setCameraOpen(false);
+    } else if (clickedFromHome) {
+      pathname !== "/dash/feed" && setCameraOpen && setCameraOpen(false);
+    }
+    return () => {};
+  }, [pathname]);
+
   return (
     <div className="flex bg-black/50 w-screen h-full backdrop-blur-md fixed inset-0 z-40 overflow-y-auto  justify-start items-center flex-col">
-      <div className="flex w-full pt-12 flex-col py-2 justify-center items-center  relative">
+      <div className="flex w-full pt-6 flex-col py-2 justify-center items-center  relative">
         <video
           className={`transform ${
             photo ? "hidden" : "rounded-xl"
@@ -110,7 +120,7 @@ export default function CameraCapture({
       <canvas ref={canvasRef} style={{ display: "none" }} />
 
       {photo && (
-        <div className=" w-full font-exo2 pt-10 mt-4 flex flex-col justify-start gap-8 items-center">
+        <div className=" w-full font-exo2 pt-4 mt-4 flex flex-col justify-start gap-8 items-center">
           <img
             src={photo}
             className={`rounded-xl w-[90%] sm:w-[50%] -scale-x-100`}
@@ -135,7 +145,7 @@ export default function CameraCapture({
                 type="button"
                 className=" text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3"
                 onClick={() => {
-                  setCameraOpen &&setCameraOpen(false);
+                  setCameraOpen && setCameraOpen(false);
                   dispatch(setStoryImage(photo));
                   dispatch(setStoryTextBg(photo));
                   router.push("/create-story");
@@ -158,6 +168,17 @@ export default function CameraCapture({
           </div>
         </div>
       )}
+      <button
+        type="button"
+        onClick={() => setCameraOpen && setCameraOpen(false)}
+        className="fixed top-2 z-50 left-2 active:scale-90 rounded-full  text-red-500 cursor-pointer"
+      >
+        <ArrowLeftIcon
+          className="text-[var(--textColor)] hover:text-green-700"
+          strokeWidth={2}
+          size={35}
+        />
+      </button>
     </div>
   );
 }

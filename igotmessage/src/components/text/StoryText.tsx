@@ -57,7 +57,7 @@ function StoryText() {
         >
           <div
             style={{
-              backgroundColor: solidColorChosen ? bgColor : undefined,
+              backgroundColor: solidColorChosen ? bgColor : !solidColorChosen && !gradientColorChosen && storyTextBg === "" ? bgColor : undefined,
               backgroundImage: gradientColorChosen
                 ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
                 : storyTextBg !== "" &&
@@ -135,7 +135,7 @@ function StoryText() {
       </div>
       <div
         style={{
-          backgroundColor: solidColorChosen ? bgColor : undefined,
+          backgroundColor: solidColorChosen ? bgColor : !solidColorChosen && !gradientColorChosen && storyTextBg === "" ? bgColor : undefined,
           backgroundImage: gradientColorChosen
             ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
             : storyTextBg !== "" && !solidColorChosen && !gradientColorChosen
