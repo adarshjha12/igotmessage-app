@@ -32,7 +32,7 @@ import { log } from "console";
 import { MoreVertical, PlusCircleIcon, SidebarCloseIcon, SidebarIcon } from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
-import CreateProfileModal from "../profile/CreateProfile";
+import CreateProfileModal from "../create profile/CreateProfile";
 
 function Dashboard({ children }: { children: ReactNode }) {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);

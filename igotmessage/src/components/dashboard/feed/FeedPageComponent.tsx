@@ -11,7 +11,7 @@ import MainModal from "@/components/modals/MainModal";
 import Skeleton from "react-loading-skeleton";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
-import CreateProfile from "@/components/profile/CreateProfile";
+import CreateProfile from "@/components/create profile/CreateProfile";
 // import { useRouter, useSearchParams } from 'next/navigation'
 
 function FeedPageComponent() {

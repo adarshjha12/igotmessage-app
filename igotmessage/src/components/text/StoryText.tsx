@@ -57,13 +57,17 @@ function StoryText() {
         >
           <div
             style={{
-              backgroundColor: solidColorChosen ? bgColor : !solidColorChosen && !gradientColorChosen && storyTextBg === "" ? bgColor : undefined,
+              backgroundColor: solidColorChosen ? bgColor : undefined,
               backgroundImage: gradientColorChosen
                 ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
                 : storyTextBg !== "" &&
                   !solidColorChosen &&
                   !gradientColorChosen
                 ? `url(${storyTextBg})`
+                : !solidColorChosen &&
+                  !gradientColorChosen &&
+                  storyTextBg === ""
+                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
                 : undefined,
             }}
             className={`h-8 w-8 rounded-full border-[var(--borderColor)] border-1`}
@@ -135,11 +139,13 @@ function StoryText() {
       </div>
       <div
         style={{
-          backgroundColor: solidColorChosen ? bgColor : !solidColorChosen && !gradientColorChosen && storyTextBg === "" ? bgColor : undefined,
+          backgroundColor: solidColorChosen ? bgColor : undefined,
           backgroundImage: gradientColorChosen
             ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
             : storyTextBg !== "" && !solidColorChosen && !gradientColorChosen
             ? `url(${storyTextBg})`
+            : !solidColorChosen && !gradientColorChosen && storyTextBg === ""
+            ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
             : undefined,
         }}
         className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
@@ -219,7 +225,7 @@ function StoryText() {
                   setGradientColorChosen(false);
                   setSolidColorChosen(true);
                 }}
-                className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+                className="py-2 w-full my-4 px-10 rounded-lg border-[var(--borderColor)] bg-gradient-to-r from-blue-500 to-blue-900  text-white text-2xl active:scale-90 cursor-pointer"
               >
                 Done
               </button>
@@ -277,7 +283,7 @@ function StoryText() {
                   setGradientColorChosen(true);
                   setSolidColorChosen(false);
                 }}
-                className="py-2 my-4 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
+                className="py-2 w-[80%] my-4 px-4 rounded-lg border-[var(--borderColor)] bg-gradient-to-r from-blue-500 to-blue-900  text-white text-2xl active:scale-90 cursor-pointer"
               >
                 Done
               </button>

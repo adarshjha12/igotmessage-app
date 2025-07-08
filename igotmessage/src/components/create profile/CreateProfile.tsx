@@ -13,6 +13,7 @@ import {
   ImagePlus,
   XIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function CreateProfileModal() {
   const [isOpen, setIsOpen] = useState(true);
@@ -177,11 +178,11 @@ export default function CreateProfileModal() {
                 type="checkbox"
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
-                className="accent-blue-500 h-6 w-6"
+                className="accent-blue-500 h-4 w-4"
                 id="terms"
               />
-              <label htmlFor="terms" className="text-sm">
-                I agree to the terms and conditions
+              <label htmlFor="terms" className="text-xs">
+                I agree to the <strong className="text-sm"><Link href="/terms">terms and conditions</Link></strong>
               </label>
             </div>
           </div>

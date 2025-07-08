@@ -75,7 +75,7 @@ function StoryTemplates() {
                   : "overflow-hidden h-[150px]"
               } flex-wrap justify-start items-center`}
             >
-              {cityImages.map((image, index) => (
+              {cityImages.sort((a, b) => a.url.localeCompare(b.url)).map((image, index) => (
                 <div
                   key={index}
                   className="flex w-[150px] h-[150px] justify-center text-center items-center relative"

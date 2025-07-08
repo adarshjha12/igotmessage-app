@@ -97,6 +97,10 @@ function MainModal({ closeModal }: Props) {
               <GroupIcon className="text-[var(--iconColor)]" />
               Community Guidelines
             </Link>
+            <Link href="/terms" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--wrapperColor)] hover:scale-95 transition">
+              <InfoIcon className="text-[var(--iconColor)]" />
+              terms and condiions
+            </Link>
           </div>
         </div>
 
