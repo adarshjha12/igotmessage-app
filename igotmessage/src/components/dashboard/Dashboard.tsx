@@ -93,7 +93,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/notifications"
                   ? "Notifications"
                   : pathname === "/dash/profile"
-                  ? `${userTitle?.split(" ")[0]}'s Profile`
+                  ?  `${userTitle}` 
                   : ""}
               </p>
             </div>
@@ -579,9 +579,9 @@ function Dashboard({ children }: { children: ReactNode }) {
       </div>
 
 {/* moodal for create profile if no username exist */}
-      {
+      {/* {
         !userName && <CreateProfileModal />
-      }
+      } */}
     </div>
   );
 }
