@@ -80,7 +80,6 @@ function CreateStoryPageComponent() {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const storyRef = useRef<HTMLDivElement | null>(null);
   const [storyCapturing, setStoryCapturing] = useState(false);
-  const [grantStoryCapture, setGrantStoryCapture] = useState(false);
 
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setStoryImage(""));
@@ -127,34 +126,33 @@ function CreateStoryPageComponent() {
     }
   }
 
-
-
   const handleCreateStory = async () => {
     if (!storyRef.current) return;
-    setStoryCapturing(true);
-    setTimeout(() => {
-      setGrantStoryCapture(true);
-    }, 100);
-    if (grantStoryCapture) {
-      const canvas = await html2canvas(storyRef.current, {
-        useCORS: true,
-      });
-      const dataUrl = canvas.toDataURL("image/png");
-      const blob = await fetch(dataUrl).then((res) => res.blob());
-      const file = new File([blob], "story.png", { type: "image/png" });
-      dispatch(handleStoryUpload({ userId, file, musicData: storyMusicData }));
-      dispatch(setStoryImage(""));
-      setMusicPlaying(false);
-      dispatch(setMusicData({ title: "", artist: "", genre: "", url: "", image: "" }));
-       dispatch(setShowStoryUploadModal(true));
-      router.push("/dash/feed");
-    }
-  };
 
-  useEffect(() => {
-    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++",storyImageChosen, storyMusicData);
-    
-  }, [storyImageChosen, storyMusicData]);
+    setStoryCapturing(true);
+
+    setTimeout(async () => {
+      if (storyRef.current) {
+        const canvas = await html2canvas(storyRef.current, {
+          useCORS: true,
+        });
+        const dataUrl = canvas.toDataURL("image/png");
+        const blob = await fetch(dataUrl).then((res) => res.blob());
+        const file = new File([blob], "story.png", { type: "image/png" });
+
+        dispatch(
+          handleStoryUpload({ userId, file, musicData: storyMusicData })
+        );
+        dispatch(setStoryImage(""));
+        setMusicPlaying(false);
+        dispatch(
+          setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
+        );
+        dispatch(setShowStoryUploadModal(true));
+        router.push("/dash/feed");
+      }
+    }, 100);
+  };
 
   return (
     <div className="w-full py-2 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
@@ -408,7 +406,6 @@ function CreateStoryPageComponent() {
                 onClick={handleCreateStory}
                 type="button"
                 className=" text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-md font-medium active:scale-90 cursor-pointer py-2 px-1"
-              
               >
                 {" "}
                 <PlusSquareIcon size={30} />
@@ -431,7 +428,9 @@ function CreateStoryPageComponent() {
               />
             </div>
           )}
-          {selectWriteClicked && <StoryText storyRef={storyRef} isCapturing={storyCapturing} />}
+          {selectWriteClicked && (
+            <StoryText storyRef={storyRef} isCapturing={storyCapturing} />
+          )}
         </div>
       </div>
       {selectMusicClicked && (
