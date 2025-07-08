@@ -10,11 +10,10 @@ import { ChevronDown, Plus } from "lucide-react";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
-import { number } from "zod";
-import Skeleton from "react-loading-skeleton";
+import { useAppDispatch } from "@/store/hooks";
 
 function StoryTemplates() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [cityImagesShow, setCityImagesShow] = React.useState(false);
   const [grayImagesShow, setGrayImagesShow] = React.useState(false);
   const [petImagesShow, setPetImagesShow] = React.useState(false);

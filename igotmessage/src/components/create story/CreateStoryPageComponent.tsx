@@ -79,6 +79,8 @@ function CreateStoryPageComponent() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [musicPlaying, setMusicPlaying] = useState(false);
   const storyRef = useRef<HTMLDivElement | null>(null);
+  const [storyCapturing, setStoryCapturing] = useState(false);
+  const [grantStoryCapture, setGrantStoryCapture] = useState(false);
 
   function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setStoryImage(""));
@@ -125,21 +127,34 @@ function CreateStoryPageComponent() {
     }
   }
 
+
+
   const handleCreateStory = async () => {
     if (!storyRef.current) return;
-    const canvas = await html2canvas(storyRef.current, {
-      useCORS: true,
-    });
-
-    const musicData = storyMusicData;
-
-    const dataUrl = canvas.toDataURL("image/png");
-    const blob = await fetch(dataUrl).then((res) => res.blob());
-    const file = new File([blob], "story.png", { type: "image/png" });
-    dispatch(handleStoryUpload({userId, file, musicData}));
-    router.push("/dash/feed");
-    dispatch(setShowStoryUploadModal(true));
+    setStoryCapturing(true);
+    setTimeout(() => {
+      setGrantStoryCapture(true);
+    }, 100);
+    if (grantStoryCapture) {
+      const canvas = await html2canvas(storyRef.current, {
+        useCORS: true,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const blob = await fetch(dataUrl).then((res) => res.blob());
+      const file = new File([blob], "story.png", { type: "image/png" });
+      dispatch(handleStoryUpload({ userId, file, musicData: storyMusicData }));
+      dispatch(setStoryImage(""));
+      setMusicPlaying(false);
+      dispatch(setMusicData({ title: "", artist: "", genre: "", url: "", image: "" }));
+       dispatch(setShowStoryUploadModal(true));
+      router.push("/dash/feed");
+    }
   };
+
+  useEffect(() => {
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++",storyImageChosen, storyMusicData);
+    
+  }, [storyImageChosen, storyMusicData]);
 
   return (
     <div className="w-full py-2 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
@@ -320,22 +335,21 @@ function CreateStoryPageComponent() {
           </button>
           <button
             onClick={() => {
-              setCameraOpen(false)
+              setCameraOpen(false);
               dispatch(setStoryImage(""));
-              setSelectWriteClicked(false)
-              setSelectMusicClicked(false)
-              setSelectImageClicked(false)
-              setAIButtonClicked((prev) => !prev)
+              setSelectWriteClicked(false);
+              setSelectMusicClicked(false);
+              setSelectImageClicked(false);
+              setAIButtonClicked((prev) => !prev);
             }}
             type="button"
-            className={`cursor-pointer relative justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${aiButtonClicked ? "bg-[var(--textColor)] text-[var(--bgColor)]" : "text-[var(--textColor)]"}`}
+            className={`cursor-pointer relative justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${
+              aiButtonClicked
+                ? "bg-[var(--textColor)] text-[var(--bgColor)]"
+                : "text-[var(--textColor)]"
+            }`}
           >
-            <Sparkles
-              size={40}
-              strokeWidth={1}
-              className=" rotate-6"
-            />
-           
+            <Sparkles size={40} strokeWidth={1} className=" rotate-6" />
           </button>
         </form>
         {(storyImageChosen !== "" || selectWriteClicked) && (
@@ -394,10 +408,7 @@ function CreateStoryPageComponent() {
                 onClick={handleCreateStory}
                 type="button"
                 className=" text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-md font-medium active:scale-90 cursor-pointer py-2 px-1"
-                // onClick={() => {
-
-                //   router.push('/create-story')
-                //   }}
+              
               >
                 {" "}
                 <PlusSquareIcon size={30} />
@@ -410,58 +421,17 @@ function CreateStoryPageComponent() {
         {/* we play story and music here */}
         {/* this is first story ref */}
 
-        <div
-          ref={storyRef}
-          className="text-xl relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold "
-        >
+        <div className="text-xl xxx relative w-full md:w-[70%] lg:w-[70%] flex items-center flex-col justify-center font-semibold ">
           {storyImageChosen !== "" && (
-            <img src={storyImageChosen} className={`rounded-md`} alt="story" />
+            <div ref={storyRef}>
+              <img
+                src={storyImageChosen}
+                className={`rounded-md`}
+                alt="story"
+              />
+            </div>
           )}
-          {selectWriteClicked && <StoryText />}
-
-          {musicPlaying ? (
-            <motion.div
-              drag
-              dragMomentum={false}
-              className={`w-full z-40 sm:w-[70%] ${
-                showStoryMusic ? "" : "opacity-0 pointer-events-none"
-              } flex absolute top-10 items-center justify-center`}
-            >
-              <div className="flex w-[70%] absolute top-24 gap-3 justify-center z-40 p-2 rounded-xl ">
-                <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
-                  {/* Image */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 relative z-50  ">
-                      {storyMusicData.image !== "" ? (
-                        <Image
-                          alt="img"
-                          src={storyMusicData.image}
-                          width={100}
-                          height={80}
-                          className="object-cover h-10 rounded-md"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-r from-violet-500 to-blue-700" />
-                      )}
-                    </div>
-
-                    {/* Audio bars */}
-                    <div className="shrink-0">
-                      <AudioBars />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <div className="overflow-hidden max-w-[60%]">
-                    <p className="text-xs whitespace-nowrap translate-animation text-white">
-                      {storyMusicData.title &&
-                        storyMusicData.title.split("-").slice(0, 7).join("-")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ) : null}
+          {selectWriteClicked && <StoryText storyRef={storyRef} isCapturing={storyCapturing} />}
         </div>
       </div>
       {selectMusicClicked && (
@@ -476,7 +446,10 @@ function CreateStoryPageComponent() {
 
       <div
         className={`w-full h-full flex-col justify-center items-center ${
-          (selectWriteClicked || selectMusicClicked || storyImageChosen !== "" || aiButtonClicked)
+          selectWriteClicked ||
+          selectMusicClicked ||
+          storyImageChosen !== "" ||
+          aiButtonClicked
             ? "hidden"
             : "flex"
         }`}
@@ -488,12 +461,54 @@ function CreateStoryPageComponent() {
       )}
       {aiButtonClicked && (
         <div>
-          <ImageGenrator setAiButtonClicked={setAIButtonClicked}/>
+          <ImageGenrator setAiButtonClicked={setAIButtonClicked} />
         </div>
       )}
 
-
       {/* hidden music player */}
+      {musicPlaying ? (
+        <motion.div
+          drag
+          dragMomentum={false}
+          className={`w-full z-40 sm:w-[70%] ${
+            showStoryMusic ? "" : "opacity-0 pointer-events-none"
+          } flex absolute top-24 items-center justify-center`}
+        >
+          <div className="flex w-[70%] absolute top-24 gap-3 justify-center z-40 p-2 rounded-xl ">
+            <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
+              {/* Image */}
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 relative z-50  ">
+                  {storyMusicData.image !== "" ? (
+                    <Image
+                      alt="img"
+                      src={storyMusicData.image}
+                      width={100}
+                      height={80}
+                      className="object-cover h-10 rounded-md"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-r from-violet-500 to-blue-700" />
+                  )}
+                </div>
+
+                {/* Audio bars */}
+                <div className="shrink-0">
+                  <AudioBars />
+                </div>
+              </div>
+
+              {/* Title */}
+              <div className="overflow-hidden max-w-[60%]">
+                <p className="text-xs whitespace-nowrap translate-animation text-white">
+                  {storyMusicData.title &&
+                    storyMusicData.title.split("-").slice(0, 7).join("-")}
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ) : null}
       <audio
         controls
         loop

@@ -6,10 +6,8 @@ import { PaintBrushBroadIcon } from "@phosphor-icons/react";
 import { ItalicIcon, TextIcon, UnderlineIcon, XIcon } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 
-function StoryText() {
-  const storyTextBg = useAppSelector(
-    (state) => state.story.storyTextBg
-  );
+function StoryText({ storyRef, isCapturing }: any) {
+  const storyTextBg = useAppSelector((state) => state.story.storyTextBg);
   const [fontSize, setFontSize] = useState("50");
   const [weight, setWeight] = useState<"normal" | "extrabold">("normal");
   const [italic, setItalic] = useState(false);
@@ -32,6 +30,8 @@ function StoryText() {
   const [solidColorChosen, setSolidColorChosen] = useState(false);
   const [gradientColorChosen, setGradientColorChosen] = useState(false);
   const [fontStyle, setFontStyle] = useState("normal");
+
+  const [storyText, setStoryText] = useState("");
 
   const fontStyles = [
     {
@@ -138,38 +138,53 @@ function StoryText() {
         </button>
       </div>
       <div
+        ref={storyRef}
         style={{
           backgroundColor: solidColorChosen ? bgColor : undefined,
           backgroundImage: gradientColorChosen
             ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
             : storyTextBg !== "" && !solidColorChosen && !gradientColorChosen
             ? `url(${storyTextBg})`
-            : !solidColorChosen && !gradientColorChosen && storyTextBg === ""
-            ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-            : undefined,
+            : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
         }}
         className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
       >
-        <div
-          style={{ opacity: 1 }}
-          className="w-full opacity-100 flex justify-center items-center"
-        >
-          <TextareaAutosize
-            spellCheck="false"
-            minRows={3}
-            maxRows={20}
-            autoFocus
-            style={{
-              fontSize: fontSize + "px",
-              fontWeight: `${weight === "normal" ? 600 : 900}`,
-              fontStyle: italic ? "italic" : "normal",
-              textDecoration: underline ? "underline" : "none",
-              color: color,
-              backgroundColor: "transparent",
-            }}
-            className={`border-none  text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
-            placeholder="🖋️ Write something..."
-          />
+        <div className="w-full flex justify-center items-center">
+          {isCapturing ? (
+            <div
+              style={{
+                fontSize: fontSize + "px",
+                fontWeight: weight === "normal" ? 600 : 900,
+                fontStyle: italic ? "italic" : "normal",
+                textDecoration: underline ? "underline" : "none",
+                color,
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+              }}
+              className={`text-center w-[90%] font-${fontStyle}`}
+            >
+              {storyText}
+            </div>
+          ) : (
+            <TextareaAutosize
+              spellCheck="false"
+              minRows={3}
+              maxRows={20}
+              autoFocus
+              value={storyText}
+              onChange={(e) => setStoryText(e.target.value)}
+              style={{
+                fontSize: fontSize + "px",
+                fontWeight: weight === "normal" ? 600 : 900,
+                fontStyle: italic ? "italic" : "normal",
+                textDecoration: underline ? "underline" : "none",
+                color,
+                backgroundColor: "transparent",
+              }}
+              className={`border-none text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
+              placeholder="🖋️ Write something..."
+            />
+          )}
         </div>
       </div>
 

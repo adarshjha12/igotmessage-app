@@ -31,6 +31,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMusicData } from "@/features/storySlice";
 import NewLoader from "../NewLoader";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
 
 interface Props {
   setMusicModal?: (value: boolean) => void;
@@ -42,7 +43,7 @@ function MusicComponent({
   setChevronActive,
   muteMusicOfParent,
 }: Props) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [showSortPopup, setShowSortPopup] = useState(false);

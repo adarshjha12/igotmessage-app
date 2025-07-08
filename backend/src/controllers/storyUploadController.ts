@@ -16,7 +16,7 @@ const storUploadController = async (req: Request, res: Response) : Promise<any> 
     user: userId,
     imageUrl: uploadStoryImage.url,
     imageId: uploadStoryImage.fileId,
-    musicData: musicData
+    musicData: JSON.parse(musicData),
   });
   
   res.status(201).json({ message: "Story uploaded", success: true, story });
