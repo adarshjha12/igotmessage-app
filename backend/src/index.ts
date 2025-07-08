@@ -14,6 +14,7 @@ import redisClient from './services/redisClient'
 import followRouter from './routers/followRoute'
 import postRouter from './routers/postRoutes'
 import commentRouter from './routers/commentRoute'
+import storyRouter from './routers/storyRoute'
 
 const PORT = process.env.PORT
 const app = express()
@@ -34,6 +35,7 @@ app.use('/api/current-user', getCurrentUser)
 app.use('/api/follow', followRouter)
 app.use('/api/post', postRouter)
 app.use('/api/commemt', commentRouter)
+app.use('/api/story', storyRouter)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})

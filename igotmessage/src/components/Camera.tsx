@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { PlusSquareIcon } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/store/hooks";
-import { setStoryImage, setStoryTextBg } from "@/features/activitySlice";
+import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
 
 interface Props {
   setCameraOpen?: (value: boolean) => void;

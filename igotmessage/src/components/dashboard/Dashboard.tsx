@@ -24,22 +24,36 @@ import {
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Panel from "../Panel";
-import { setMusicData, setPanelOpen } from "@/features/activitySlice";
+import { setPanelOpen } from "@/features/activitySlice";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { RootState } from "@/store/store";
 import CameraCapture from "../Camera";
 import { log } from "console";
-import { MoreVertical, PlusCircleIcon, SidebarCloseIcon, SidebarIcon } from "lucide-react";
+import {
+  MoreVertical,
+  PlusCircleIcon,
+  SidebarCloseIcon,
+  SidebarIcon,
+} from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
 import CreateProfileModal from "../create profile/CreateProfile";
+import UploadModal from "../modals/UploadModal";
 
 function Dashboard({ children }: { children: ReactNode }) {
+  const uploadStatus = useAppSelector((state) => state.story.uploadStoryStatus);
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const userTitle = useAppSelector((state: RootState) => state.auth.user.title);
-  const userName = useAppSelector((state: RootState) => state.auth.user.username);
-
-  const panelOpen = useAppSelector((state: RootState) => state.activity.panelOpen);
+  const userName = useAppSelector(
+    (state: RootState) => state.auth.user.username
+  );
+  
+  const panelOpen = useAppSelector(
+    (state: RootState) => state.activity.panelOpen
+  );
+  const showStoryUploadModal = useAppSelector(
+    (state: RootState) => state.story.showStoryUploadModal
+  );
   const [searchInput, setSearchInput] = useState("");
   const [searchInputClick, setSearchInputClick] = useState(false);
   const [cameraClick, setCameraClick] = useState(false);
@@ -49,6 +63,8 @@ function Dashboard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const avatar = null;
+  const [storyUplodProgress, setStoryUplodProgress] = useState<number | undefined>(0);
+
   console.log(avatar);
 
   function handleNavClick(path: string) {
@@ -58,7 +74,9 @@ function Dashboard({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className={`w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}>
+    <div
+      className={`w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}
+    >
       <div
         className={` w-full flex items-start justify-center transition-colors duration-200 relative `}
       >
@@ -73,7 +91,13 @@ function Dashboard({ children }: { children: ReactNode }) {
           <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-2 items-center ">
             <div className="flex items-center gap-3 pl-4">
               {pathname !== "/dash/feed" && (
-                <button type="button" className="cursor-pointer" onClick={() => router.back()}><ArrowLeftIcon size={25} strokeWidth={1}/></button>
+                <button
+                  type="button"
+                  className="cursor-pointer"
+                  onClick={() => router.back()}
+                >
+                  <ArrowLeftIcon size={25} strokeWidth={1} />
+                </button>
               )}
               <p
                 className={`md:hidden ${
@@ -93,7 +117,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/notifications"
                   ? "Notifications"
                   : pathname === "/dash/profile"
-                  ?  `${userTitle}` 
+                  ? `${userTitle}`
                   : ""}
               </p>
             </div>
@@ -104,8 +128,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   setCameraClick((prev) => !prev);
                 }}
                 className={`cursor-pointer ${
-                  pathname !== "/dash/feed"
-                   && "hidden"
+                  pathname !== "/dash/feed" && "hidden"
                 } active:bg-[var(--wrapperColor)] px-2 rounded-full active:scale-125`}
                 type="button"
               >
@@ -113,13 +136,12 @@ function Dashboard({ children }: { children: ReactNode }) {
                   <CameraIcon size={33} className="" strokeWidth={1.5} />
                 </div>
               </button>
-               <button
+              <button
                 onClick={() => {
                   handleNavClick("/dash/notifications");
                 }}
                 className={`cursor-pointer px-2 active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
-                  pathname !== "/dash/feed"
-                   && "hidden"
+                  pathname !== "/dash/feed" && "hidden"
                 }`}
                 type="button"
               >
@@ -135,13 +157,12 @@ function Dashboard({ children }: { children: ReactNode }) {
                 </div>
               </button>
 
-               <button
+              <button
                 onClick={() => {
                   handleNavClick("/dash/notifications");
                 }}
                 className={`cursor-pointer px-2 active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
-                  pathname !== "/dash/feed"
-                   && "hidden"
+                  pathname !== "/dash/feed" && "hidden"
                 }`}
                 type="button"
               >
@@ -158,19 +179,24 @@ function Dashboard({ children }: { children: ReactNode }) {
               </button>
 
               <button
-              type="button"
-              className="cursor-pointer pr-1 active:bg-[var(--wrapperColor)] rounded-full active:scale-75"
-              onClick={() => setShowMoreModal(prev => !prev)}
+                type="button"
+                className="cursor-pointer pr-1 active:bg-[var(--wrapperColor)] rounded-full active:scale-75"
+                onClick={() => setShowMoreModal((prev) => !prev)}
               >
-                <MoreVertical size={30} strokeWidth={1} fill={isDark ? 'white' : 'black'} />
+                <MoreVertical
+                  size={30}
+                  strokeWidth={1}
+                  fill={isDark ? "white" : "black"}
+                />
               </button>
-              {showMoreModal && <MainModal closeModal={setShowMoreModal}/>}
-              {showMoreModal && <button
-              type="button"
-              onClick={() => setShowMoreModal(false)}
-               className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm"></button>
-               }
-              
+              {showMoreModal && <MainModal closeModal={setShowMoreModal} />}
+              {showMoreModal && (
+                <button
+                  type="button"
+                  onClick={() => setShowMoreModal(false)}
+                  className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                ></button>
+              )}
             </div>
           </header>
           {/* header ends here */}
@@ -570,18 +596,23 @@ function Dashboard({ children }: { children: ReactNode }) {
               cameraClick ? "flex" : "hidden"
             }`}
           >
-            
-            <CameraCapture clickedFromHome={true} setCameraOpen={setCameraClick}/>
+            <CameraCapture
+              clickedFromHome={true}
+              setCameraOpen={setCameraClick}
+            />
           </div>
         ) : (
           ""
         )}
       </div>
 
-{/* moodal for create profile if no username exist */}
+      {/* moodal for create profile if no username exist */}
       {/* {
         !userName && <CreateProfileModal />
       } */}
+
+      {/* modal for story upload  */}
+      { showStoryUploadModal && <UploadModal /> }
     </div>
   );
 }

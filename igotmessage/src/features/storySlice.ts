@@ -12,6 +12,7 @@ interface StoryState {
   };
   uploadStoryStatus: "loading" | "succeeded" | "failed";
   uploadStoryError: string | null;
+  showStoryUploadModal: boolean
 }
 
 interface Res {
@@ -23,7 +24,7 @@ interface Res {
 interface UploadArgs {
     userId: string;
     file: File;
-    musicData: {
+    musicData?: {
         title: string;
         artist: string;
         genre: string;
@@ -44,6 +45,7 @@ const initialState: StoryState = {
   },
   uploadStoryStatus: "loading",
   uploadStoryError: null,
+  showStoryUploadModal: false
 };
 
 const backendUrl = process.env.NODE_ENV === "production" ? "https://igotmessage-app-backend.onrender.com" : "http://localhost:5000";
@@ -55,11 +57,12 @@ export const handleStoryUpload = createAsyncThunk<Res, UploadArgs>("story/upload
     formData.append("file", file);
     formData.append("musicData", JSON.stringify(musicData));
 
-    const response = await axios.post<Res>(`${backendUrl}/api/story/upload`, formData, {
+    const response = await axios.post<Res>(`${backendUrl}/api/story/upload-story`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+        console.log(response.data);
     return response.data;
 });
 
@@ -75,6 +78,9 @@ const storySlice = createSlice({
     },
     setMusicData: (state, action) => {
       state.musicData = action.payload;
+    },
+    setShowStoryUploadModal: (state, action) => {
+      state.showStoryUploadModal = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -96,4 +102,4 @@ const storySlice = createSlice({
 });
 
 export default storySlice.reducer;
-export const { setStoryImage, setStoryTextBg, setMusicData } = storySlice.actions;
+export const { setStoryImage, setStoryTextBg, setMusicData, setShowStoryUploadModal } = storySlice.actions;

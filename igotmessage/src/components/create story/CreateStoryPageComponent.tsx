@@ -50,6 +50,7 @@ import StoryText from "../text/StoryText";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { uploadStory } from "@/utils/api";
 import ImageGenrator from "../ai/ImageGenrator";
+import { setShowStoryUploadModal } from "@/features/storySlice";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
@@ -137,6 +138,7 @@ function CreateStoryPageComponent() {
     const file = new File([blob], "story.png", { type: "image/png" });
     dispatch(handleStoryUpload({userId, file, musicData}));
     router.push("/dash/feed");
+    dispatch(setShowStoryUploadModal(true));
   };
 
   return (
