@@ -23,6 +23,7 @@ import {
   setStoryImage,
   setMusicData,
   setStoryTextBg,
+  handleStoryUpload,
 } from "@/features/storySlice";
 import {
   AndroidLogoIcon,
@@ -46,21 +47,23 @@ import { SpeakerXIcon } from "@phosphor-icons/react/dist/ssr";
 import { motion } from "framer-motion";
 import CameraCapture from "../Camera";
 import StoryText from "../text/StoryText";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { uploadStory } from "@/utils/api";
 import ImageGenrator from "../ai/ImageGenrator";
 
 function CreateStoryPageComponent() {
   const router = useRouter();
   const pathname = usePathname();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
-  const storyImageChosen = useSelector(
+  const storyImageChosen = useAppSelector(
     (state: RootState) => state.story.storyImage
   );
-  const storyMusicData = useSelector(
+  const storyMusicData = useAppSelector(
     (state: RootState) => state.story.musicData
   );
+
+  const userId = useAppSelector((state: RootState) => state.auth.user._id);
   const [showStoryMusic, setShowStoryMusic] = useState(true);
 
   const [selectImageClicked, setSelectImageClicked] = useState(false);
@@ -127,10 +130,13 @@ function CreateStoryPageComponent() {
       useCORS: true,
     });
 
+    const musicData = storyMusicData;
+
     const dataUrl = canvas.toDataURL("image/png");
     const blob = await fetch(dataUrl).then((res) => res.blob());
     const file = new File([blob], "story.png", { type: "image/png" });
-    uploadStory(file, storyMusicData);
+    dispatch(handleStoryUpload({userId, file, musicData}));
+    router.push("/dash/feed");
   };
 
   return (

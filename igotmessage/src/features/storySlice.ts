@@ -22,13 +22,13 @@ interface Res {
 
 interface UploadArgs {
     userId: string;
-    image: File;
+    file: File;
     musicData: {
         title: string;
         artist: string;
         genre: string;
         url: string;
-        image: File;
+        image: string;
     };
 }
 
@@ -48,11 +48,11 @@ const initialState: StoryState = {
 
 const backendUrl = process.env.NODE_ENV === "production" ? "https://igotmessage-app-backend.onrender.com" : "http://localhost:5000";
 
-export const handleStoryUpload = createAsyncThunk<Res, UploadArgs>("story/uploadStory", async ({ userId, image, musicData }) => {
+export const handleStoryUpload = createAsyncThunk<Res, UploadArgs>("story/uploadStory", async ({ userId, file, musicData }) => {
     
     const formData = new FormData();
     formData.append("userId", userId.toString());
-    formData.append("image", image);
+    formData.append("file", file);
     formData.append("musicData", JSON.stringify(musicData));
 
     const response = await axios.post<Res>(`${backendUrl}/api/story/upload`, formData, {
