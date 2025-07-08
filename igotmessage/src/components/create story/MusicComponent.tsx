@@ -28,7 +28,7 @@ import { useRef } from "react";
 import AudioBars from "../AudioBar";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { setMusicData } from "@/features/activitySlice";
+import { setMusicData } from "@/features/storySlice";
 import NewLoader from "../NewLoader";
 import { useRouter } from "next/navigation";
 

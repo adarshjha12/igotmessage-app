@@ -23,7 +23,7 @@ import {
   setStoryImage,
   setMusicData,
   setStoryTextBg,
-} from "@/features/activitySlice";
+} from "@/features/storySlice";
 import {
   AndroidLogoIcon,
   AppleLogoIcon,
@@ -56,10 +56,10 @@ function CreateStoryPageComponent() {
   const dispatch = useDispatch();
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const storyImageChosen = useSelector(
-    (state: RootState) => state.activity.story.storyImage
+    (state: RootState) => state.story.storyImage
   );
   const storyMusicData = useSelector(
-    (state: RootState) => state.activity.story.musicData
+    (state: RootState) => state.story.musicData
   );
   const [showStoryMusic, setShowStoryMusic] = useState(true);
 

@@ -12,11 +12,6 @@ declare global {
       verified?: boolean;
       followers?: Types.ObjectId[];
       following?: Types.ObjectId[];
-      posts?: Types.ObjectId[];
-      stories?: Types.ObjectId[];
-      reels?: Types.ObjectId[];
-      chats?: Types.ObjectId[];
-      calls?: Types.ObjectId[];
       fullName?: string | null;
       username?: string | null;
       profilePicture?: string | null;

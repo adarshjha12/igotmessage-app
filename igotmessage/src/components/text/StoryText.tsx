@@ -8,7 +8,7 @@ import { useAppSelector } from "@/store/hooks";
 
 function StoryText() {
   const storyTextBg = useAppSelector(
-    (state) => state.activity.story.storyTextBg
+    (state) => state.story.storyTextBg
   );
   const [fontSize, setFontSize] = useState("50");
   const [weight, setWeight] = useState<"normal" | "extrabold">("normal");

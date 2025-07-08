@@ -9,7 +9,7 @@ import { ImageIcon, SelectionIcon, ThumbsUpIcon } from "@phosphor-icons/react";
 import { ChevronDown, Plus } from "lucide-react";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { setStoryImage, setStoryTextBg } from "@/features/activitySlice";
+import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
 import { number } from "zod";
 import Skeleton from "react-loading-skeleton";
 

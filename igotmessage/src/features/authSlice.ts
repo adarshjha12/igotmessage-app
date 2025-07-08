@@ -15,11 +15,6 @@ interface UserAuthInterface {
     bio?: string | null;
     followers?: string[];  
     following?: string[];  
-    posts?: string[];  
-    stories?: string[];  
-    reels?: string[];  
-    chats?: string[];  
-    calls?: string[];  
     createdAt?: string;    
     updatedAt?: string;
   };
@@ -40,11 +35,6 @@ const initialState: UserAuthInterface = {
     bio: '',
     followers: [],
     following: [],
-    posts: [],
-    stories: [],
-    reels: [],
-    chats: [],
-    calls: [],
     createdAt: '',
     updatedAt: '',
   },
