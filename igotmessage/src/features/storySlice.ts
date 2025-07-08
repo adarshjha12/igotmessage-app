@@ -10,12 +10,15 @@ interface StoryState {
     url: string;
     image: string;
   };
+  uploadStoryStatus: "loading" | "succeeded" | "failed";
+  uploadStoryError: string | null;
 }
 
-interface Response {
+interface Res {
   success: boolean;
   message: string;
 }
+
 
 interface UploadArgs {
     userId: string;
@@ -39,18 +42,20 @@ const initialState: StoryState = {
     url: "",
     image: "",
   },
+  uploadStoryStatus: "loading",
+  uploadStoryError: null,
 };
 
 const backendUrl = process.env.NODE_ENV === "production" ? "https://igotmessage-app-backend.onrender.com" : "http://localhost:5000";
 
-const handleStoryUpload = createAsyncThunk<Response, UploadArgs>("story/uploadStory", async ({ userId, image, musicData }) => {
+export const handleStoryUpload = createAsyncThunk<Res, UploadArgs>("story/uploadStory", async ({ userId, image, musicData }) => {
     
     const formData = new FormData();
     formData.append("userId", userId.toString());
     formData.append("image", image);
     formData.append("musicData", JSON.stringify(musicData));
 
-    const response = await axios.post<Response>(`${backendUrl}/api/story/upload`, formData, {
+    const response = await axios.post<Res>(`${backendUrl}/api/story/upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -71,6 +76,22 @@ const storySlice = createSlice({
     setMusicData: (state, action) => {
       state.musicData = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(handleStoryUpload.fulfilled, (state, action) => {
+        state.uploadStoryStatus = "succeeded";
+      
+    });
+
+    builder.addCase(handleStoryUpload.rejected, (state, action) => {
+        state.uploadStoryStatus = "failed";
+        state.uploadStoryError = action.error.message ?? null;
+    });
+
+    builder.addCase(handleStoryUpload.pending, (state) => {
+        state.uploadStoryStatus = "loading";
+        state.uploadStoryError = null;
+    });
   },
 });
 
