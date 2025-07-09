@@ -44,12 +44,10 @@ passport.use(
           email: email || "",
           title: profile.displayName,
           avatar: profile.photos?.[0]?.value || "",
-          username: "",
           fullName: "",
           profilePicture: "",
           bio: "",
           coverPhoto: "",
-          phoneNo: null,
         });
         await newUser.save();
 

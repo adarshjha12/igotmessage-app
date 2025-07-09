@@ -12,7 +12,9 @@ import {
 
 function Story() {
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.auth.user._id);
+  const myId = useAppSelector((state) => state.auth.user._id);
+  const userId = myId
+  const storyUploadStatus = useAppSelector((state) => state.story.uploadStoryStatus);
 
   const myStories = useAppSelector((state) => state.story.myFetchedStories);
   const otherStories = useAppSelector(
@@ -35,7 +37,7 @@ function Story() {
 
   useEffect(() => {
     getStories();
-  }, []);
+  }, [storyUploadStatus]);
 
   useEffect(() => {
     console.log(otherStories);
@@ -86,11 +88,27 @@ function Story() {
         </div>
       )}
 
-      {/* {otherStories && otherStories.length > 0 && (
-        otherStories.map((story, index) => (
-          
+      {uniqueUsers && uniqueUsers.length > 0 && (
+        uniqueUsers.filter((user) => user._id !== myId).map((user, index) => (
+          <div key={index} className="flex flex-col items-center justify-center gap-2">
+          <Link
+            href={`/dash/stories/${user._id}`}
+            className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
+          >
+            <div className="grid place-items-center w-full h-full">
+              <UserIcon
+                size={40}
+                strokeWidth={1.2}
+                className="text-white group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+          </Link>
+          <p className="text-[13px] font-medium text-[var(--textColor)]">
+            {user.username ?? `other Story ${index}` }
+          </p>
+        </div>
         ))
-        )} */}
+        )}
     </div>
   );
 }

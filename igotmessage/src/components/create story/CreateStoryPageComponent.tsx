@@ -471,7 +471,7 @@ function CreateStoryPageComponent() {
             showStoryMusic ? "" : "opacity-0 pointer-events-none"
           } flex absolute top-24 items-center justify-center`}
         >
-          <div className="flex w-[70%] absolute top-24 gap-3 justify-center z-40 p-2 rounded-xl ">
+          <div className="flex sm:w-[40%] w-[70%] absolute top-24 gap-3 justify-center z-40 p-2 rounded-xl ">
             <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/30 backdrop-blur-md px-3 py-1">
               {/* Image */}
               <div className="flex items-center gap-2">

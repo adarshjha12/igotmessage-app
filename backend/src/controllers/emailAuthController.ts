@@ -60,11 +60,9 @@ export const verifyOtp = async (req: Request, res: Response): Promise<any> => {
       followers: [],
       following: [],
       fullName: '',
-      username: '',
       profilePicture: '',
       coverPhoto: '',
       bio: '',
-      phoneNo: null,
     });
     await user.save();
   }
