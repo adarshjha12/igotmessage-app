@@ -385,7 +385,7 @@ function CreateStoryPageComponent() {
             <div className="flex w-full justify-evenly gap-6 items-center">
               <button
                 type="button"
-                className=" text-xl flex justify-center items-center border-2 border-red-500 text-red-500 rounded-md font-medium active:scale-90 cursor-pointer py-2 px-2"
+                className=" text-sm flex justify-center items-center border-2 border-red-500 text-red-500 rounded-full font-medium active:scale-90 cursor-pointer py-2 px-6"
                 onClick={() => {
                   dispatch(setStoryImage(""));
                   dispatch(setMusicData({}));
@@ -405,10 +405,10 @@ function CreateStoryPageComponent() {
               <button
                 onClick={handleCreateStory}
                 type="button"
-                className=" text-xl flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-md font-medium active:scale-90 cursor-pointer py-2 px-1"
+                className=" text-sm flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6"
               >
                 {" "}
-                <PlusSquareIcon size={30} />
+                <PlusSquareIcon size={25} />
                 Add Story
               </button>
             </div>

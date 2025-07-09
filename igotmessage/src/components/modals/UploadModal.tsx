@@ -103,9 +103,8 @@ export default function UploadModal() {
                 <div className="mt-6">
                   <button
                     onClick={() => dispatch(setShowStoryUploadModal(false))}
-                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-white shadow-md transition hover:bg-blue-700 active:scale-95"
+                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-2 text-white shadow-md transition hover:bg-blue-700 active:scale-95"
                   >
-                    <UploadCloud className="w-5 h-5" />
                     Close
                   </button>
                 </div>
