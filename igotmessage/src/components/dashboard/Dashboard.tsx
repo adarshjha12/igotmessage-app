@@ -32,6 +32,7 @@ import { log } from "console";
 import {
   MoreVertical,
   PlusCircleIcon,
+  SearchIcon,
   SidebarCloseIcon,
   SidebarIcon,
 } from "lucide-react";
@@ -269,6 +270,17 @@ function Dashboard({ children }: { children: ReactNode }) {
             >
               <CameraIcon strokeWidth={1.5} size={28} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Camera</p>
+            </button>
+
+            {/* search */}
+            <button
+              className={` ${
+                sidebarOpen ? "w-full" : "w-fit"
+              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] hidden md:flex lg:hidden ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
+              type="button"
+            >
+              <SearchIcon strokeWidth={1.5} size={28} />
+              <p className={`${sidebarOpen ? "" : "hidden"}`}>Search</p>
             </button>
 
             {/* CREATE */}
@@ -542,7 +554,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for mobile ends here */}
 
           {/* third column for desktop starts here */}
-          <div className="hidden md:flex my-2 mx-2 sticky top-2">
+          <div className="hidden lg:flex my-2 mx-2 sticky top-2">
             <div className="relative w-full ">
               <div
                 className={`flex items-center bg-[var(--wrapperColor)] transition-all ease-in-out duration-300 px-3 border-1 border-[var(--borderColor)] rounded-full 
