@@ -84,101 +84,102 @@ export default function CameraCapture({
   }, [pathname]);
 
   return (
-    <div className="flex bg-black/50 w-screen h-full backdrop-blur-md fixed inset-0 z-40 overflow-y-auto  justify-start items-center flex-col">
-      <div className="flex w-full pt-6 flex-col py-2 justify-center items-center  relative">
-        <video
-          className={`transform ${
-            photo ? "hidden" : "rounded-xl"
-          } h-full w-[90%] sm:w-[50%] -scale-x-100`}
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
+  <div className="fixed inset-0 z-40 w-full h-full flex flex-col items-center justify-start overflow-y-auto bg-black/50 backdrop-blur-md">
+    
+    {/* Video / Camera Feed */}
+    <div className="relative w-full flex flex-col items-center pt-6">
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        className={`w-[90%] sm:w-[50%] h-full rounded-xl transform -scale-x-100 ${
+          photo ? "hidden" : ""
+        }`}
+      />
+
+      {/* Camera Bottom Controls */}
+      <div className={`absolute bottom-0 w-full py-3 flex items-center justify-center bg-black/30 sm:bg-transparent rounded-xl ${photo ? "hidden" : ""}`}>
+        <button
+          onClick={capture}
+          className="w-[60px] h-[60px] rounded-full border-2 grid place-content-center cursor-pointer active:scale-90 transition-all"
+        >
+          <div className="w-[50px] h-[50px] rounded-full bg-white"></div>
+        </button>
+
+        <button
+          onClick={handleCameraMode}
+          className="ml-4 p-2 rounded-full active:scale-90 hover:bg-white/10 transition"
+          type="button"
+        >
+          <SwitchCamera className="text-[var(--textColor)]" />
+        </button>
+      </div>
+    </div>
+
+    {/* Canvas (Hidden) */}
+    <canvas ref={canvasRef} style={{ display: "none" }} />
+
+    {/* Captured Photo Preview */}
+    {photo && (
+      <div className="w-full mt-6 flex flex-col items-center gap-6">
+        <img
+          src={photo}
+          alt="Captured"
+          className="rounded-xl w-[90%] sm:w-[50%] transform -scale-x-100"
         />
+      </div>
+    )}
 
-        <div className="flex w-full py-2 right-slide sm:bg-transparent rounded-xl sm:-bottom-18 absolute bottom-0 justify-center items-center bg-black/30">
-          <button
-            className={`w-[60px] cursor-pointer  rounded-full h-[60px] grid place-content-center border-2 ${
-              photo ? "hidden" : ""
-            }`}
-            onClick={capture}
-          >
-            <div className="w-[50px] h-[50px] rounded-full bg-white"></div>
-          </button>
+    {/* Action Buttons After Photo */}
+    {photo && (
+      <div className="flex flex-col gap-6 mt-8 items-center">
+        <button
+          onClick={() => setPhoto(null)}
+          className="bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] rounded-2xl p-3 cursor-pointer hover:scale-95 transition"
+        >
+          <RefreshCcwIcon className="text-[var(--textColor)]" />
+        </button>
 
-          <button
-            onClick={handleCameraMode}
-            className={`ml-3 cursor-pointer active:scale-75 active:bg-white/30 ${
-              photo ? "hidden" : ""
-            }`}
-            type="button"
-          >
-            <SwitchCamera />
-          </button>
+        <div className="flex items-center gap-6">
+          {clickedFromStory && (
+            <button
+              type="button"
+              className="flex items-center gap-2 text-lg bg-[var(--textColor)] text-[var(--bgColor)] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:scale-95 transition"
+              onClick={() => {
+                setCameraOpen && setCameraOpen(false);
+                dispatch(setStoryImage(photo));
+                dispatch(setStoryTextBg(photo));
+                router.push("/create-story");
+              }}
+            >
+              <PlusSquareIcon weight="light" size={30} />
+              Add to Story
+            </button>
+          )}
+
+          {clickedFromHome && (
+            <button
+              className="flex items-center gap-2 text-lg bg-[var(--textColor)] text-[var(--bgColor)] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:scale-95 transition"
+              type="button"
+            >
+              <PlusIcon strokeWidth={1} size={30} />
+              Add Post
+            </button>
+          )}
         </div>
       </div>
-      <canvas ref={canvasRef} style={{ display: "none" }} />
+    )}
 
-      {photo && (
-        <div className=" w-full font-exo2 pt-4 mt-4 flex flex-col justify-start gap-8 items-center">
-          <img
-            src={photo}
-            className={`rounded-xl w-[90%] sm:w-[50%] -scale-x-100`}
-            alt="Captured"
-          />
-        </div>
-      )}
-      {photo && (
-        <div className="flex w-fit justify-center py-8 items-center flex-col gap-8">
-          <div>
-            <button
-              className="bg-[var(--wrapperColor)] border-2 border-[var(--borderColor)] cursor-pointer rounded-2xl p-3"
-              type="button"
-              onClick={() => setPhoto(null)}
-            >
-              <RefreshCcwIcon />
-            </button>
-          </div>
-          <div className="flex items-center justify-center gap-10">
-            {clickedFromStory && (
-              <button
-                type="button"
-                className=" text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3"
-                onClick={() => {
-                  setCameraOpen && setCameraOpen(false);
-                  dispatch(setStoryImage(photo));
-                  dispatch(setStoryTextBg(photo));
-                  router.push("/create-story");
-                }}
-              >
-                <PlusSquareIcon weight="light" size={40} />
-                Add to Story
-              </button>
-            )}
+    {/* Close Button */}
+    <button
+      onClick={() => setCameraOpen && setCameraOpen(false)}
+      className="absolute top-3 left-3 rounded-full p-2 active:scale-90 hover:bg-white/10 transition"
+      type="button"
+    >
+      <ArrowLeftIcon className="text-[var(--textColor)]" strokeWidth={2} size={30} />
+    </button>
+  </div>
+);
 
-            {clickedFromHome && (
-              <button
-                className=" text-xl flex justify-center items-center bg-[var(--textColor)] text-[var(--bgColor)] rounded-xl font-medium active:scale-90 cursor-pointer py-2 px-3"
-                type="button"
-              >
-                <PlusIcon strokeWidth={1} size={40} />
-                Add Post
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-      <button
-        type="button"
-        onClick={() => setCameraOpen && setCameraOpen(false)}
-        className="fixed top-2 z-50 left-2 active:scale-90 rounded-full  text-red-500 cursor-pointer"
-      >
-        <ArrowLeftIcon
-          className="text-[var(--textColor)] hover:text-green-700"
-          strokeWidth={2}
-          size={35}
-        />
-      </button>
-    </div>
-  );
 }
