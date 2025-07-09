@@ -1,23 +1,49 @@
-'use client'
+"use client";
 
-import { PlusIcon, UserIcon } from 'lucide-react'
-import React, { useEffect } from 'react'
-import Link from 'next/link'
-import { fetchMyStories, fetchOtherStories } from '@/utils/api';
-import { useAppSelector } from '@/store/hooks';
+import { PlusIcon, UserIcon } from "lucide-react";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import { fetchMyStories, fetchOtherStories } from "@/utils/api";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  setMyFetchedStories,
+  setOtherFetchedStories,
+} from "@/features/storySlice";
 
 function Story() {
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.auth.user._id);
 
-  const userId = useAppSelector(state => state.auth.user._id)
+  const myStories = useAppSelector((state) => state.story.myFetchedStories);
+  const otherStories = useAppSelector(
+    (state) => state.story.otherFetchedStories
+  );
+
+  async function getStories() {
+    const myStoriesFromApi = (await fetchMyStories(userId)).data.myStories;
+    const otherStoriesFromApi = await (
+      await fetchOtherStories()
+    ).data.otherStories;
+
+    dispatch(setMyFetchedStories(myStoriesFromApi));
+    dispatch(setOtherFetchedStories(otherStoriesFromApi));
+  }
+
+  const uniqueUsers = Array.from(
+    new Map(otherStories.map((s) => [s.user._id, s.user])).values()
+  );
+
   useEffect(() => {
-    const myStories = fetchMyStories(userId)
-    const otherStories = fetchOtherStories()
-   console.log("myStories", myStories);
-   console.log("otherStories", otherStories);
-
+    getStories();
   }, []);
+
+  useEffect(() => {
+    console.log(otherStories);
+  }, [otherStories]);
+
   return (
     <div className="w-full py-4 px-2 h-fit z-0 flex overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar">
+      {/* add story button */}
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
@@ -38,8 +64,35 @@ function Story() {
           Create Story
         </p>
       </div>
+
+      {/* myStory button */}
+      {myStories && myStories.length > 0 && (
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Link
+            href={`/dash/stories/${myStories[0].user}`}
+            className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
+          >
+            <div className="grid place-items-center w-full h-full">
+              <UserIcon
+                size={40}
+                strokeWidth={1.2}
+                className="text-white group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+          </Link>
+          <p className="text-[13px] font-medium text-[var(--textColor)]">
+            {myStories[0].user.username ?? "My Story"}
+          </p>
+        </div>
+      )}
+
+      {/* {otherStories && otherStories.length > 0 && (
+        otherStories.map((story, index) => (
+          
+        ))
+        )} */}
     </div>
-  )
+  );
 }
 
-export default Story
+export default Story;

@@ -11,7 +11,9 @@ interface UserAuthInterface {
     avatar?: string | null;
     verified?: boolean;
     username?: string | null;
+    fullName?: string | null;
     profilePicture?: string | null;
+    coverPhoto?: string | null;
     bio?: string | null;
     followers?: string[];  
     following?: string[];  

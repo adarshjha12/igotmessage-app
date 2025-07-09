@@ -43,7 +43,7 @@ const getMyStoryController = async (req: Request, res: Response) : Promise<any> 
 }
 
 const getOtherStoryController = async (req: Request, res: Response) : Promise<any> => {
-  const otherStories = await Story.find();
+  const otherStories = await Story.find().populate("user", "username profilePicture").sort({ createdAt: -1 });
   
   if(!otherStories) return res.status(404).json({ message: "No stories found" });
 

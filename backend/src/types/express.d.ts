@@ -15,6 +15,7 @@ declare global {
       fullName?: string | null;
       username?: string | null;
       profilePicture?: string | null;
+      coverPhoto?: string | null;
       bio?: string | null;
     }
   }

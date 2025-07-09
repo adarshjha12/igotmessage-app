@@ -29,9 +29,9 @@ const Schema = new mongoose.Schema(
     username: { type: String, unique: true },
     fullName: { type: String },
     profilePicture: { type: String  },
+    coverPhoto: { type: String  },
     bio: { type: String  },
     verified: { type: Boolean, default: false },
-
     followers: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     following: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
    

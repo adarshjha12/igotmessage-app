@@ -62,6 +62,7 @@ export const verifyOtp = async (req: Request, res: Response): Promise<any> => {
       fullName: '',
       username: '',
       profilePicture: '',
+      coverPhoto: '',
       bio: '',
       phoneNo: null,
     });

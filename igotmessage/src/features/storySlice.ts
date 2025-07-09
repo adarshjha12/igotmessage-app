@@ -1,15 +1,43 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+
+interface MusicData {
+  title: string;
+  artist: string;
+  genre: string;
+  url: string;
+  image: string;
+}
+interface MyStoryType {
+  _id: string;
+  imageUrl: string;
+  musicData?: MusicData;
+  user: {
+    _id: string;
+    username: string;
+    profilePicture: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+interface OtherStoryType {
+  _id: string;
+  imageUrl: string;
+  musicData?: MusicData;
+  user: {
+    _id: string;
+    username: string;
+    profilePicture: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
 interface StoryState {
   storyImage: string;
   storyTextBg: string;
-  musicData: {
-    title: string;
-    artist: string;
-    genre: string;
-    url: string;
-    image: string;
-  };
+  musicData: MusicData;
+  myFetchedStories: MyStoryType[];
+  otherFetchedStories: OtherStoryType[];
   uploadStoryStatus: "loading" | "succeeded" | "failed";
   uploadStoryError: string | null;
   showStoryUploadModal: boolean
@@ -19,7 +47,6 @@ interface Res {
   success: boolean;
   message: string;
 }
-
 
 interface UploadArgs {
     userId: string;
@@ -43,6 +70,8 @@ const initialState: StoryState = {
     url: "",
     image: "",
   },
+  myFetchedStories: [],
+  otherFetchedStories: [],
   uploadStoryStatus: "loading",
   uploadStoryError: null,
   showStoryUploadModal: false
@@ -82,6 +111,14 @@ const storySlice = createSlice({
     setShowStoryUploadModal: (state, action) => {
       state.showStoryUploadModal = action.payload;
     },
+
+    setMyFetchedStories: (state, action) => {
+      state.myFetchedStories = action.payload;
+    },
+
+    setOtherFetchedStories: (state, action) => {
+      state.otherFetchedStories = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(handleStoryUpload.fulfilled, (state, action) => {
@@ -102,4 +139,4 @@ const storySlice = createSlice({
 });
 
 export default storySlice.reducer;
-export const { setStoryImage, setStoryTextBg, setMusicData, setShowStoryUploadModal } = storySlice.actions;
+export const { setStoryImage, setStoryTextBg, setMusicData, setShowStoryUploadModal , setMyFetchedStories, setOtherFetchedStories} = storySlice.actions;

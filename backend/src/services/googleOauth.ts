@@ -48,6 +48,7 @@ passport.use(
           fullName: "",
           profilePicture: "",
           bio: "",
+          coverPhoto: "",
           phoneNo: null,
         });
         await newUser.save();
