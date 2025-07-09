@@ -1,10 +1,21 @@
 'use client'
 
 import { PlusIcon, UserIcon } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
+import { fetchMyStories, fetchOtherStories } from '@/utils/api';
+import { useAppSelector } from '@/store/hooks';
 
 function Story() {
+
+  const userId = useAppSelector(state => state.auth.user._id)
+  useEffect(() => {
+    const myStories = fetchMyStories(userId)
+    const otherStories = fetchOtherStories()
+   console.log("myStories", myStories);
+   console.log("otherStories", otherStories);
+
+  }, []);
   return (
     <div className="w-full py-4 px-2 h-fit z-0 flex overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar">
       <div className="flex flex-col items-center justify-center gap-2">

@@ -48,7 +48,6 @@ import { motion } from "framer-motion";
 import CameraCapture from "../Camera";
 import StoryText from "../text/StoryText";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { uploadStory } from "@/utils/api";
 import ImageGenrator from "../ai/ImageGenrator";
 import { setShowStoryUploadModal } from "@/features/storySlice";
 
@@ -130,7 +129,8 @@ function CreateStoryPageComponent() {
     if (!storyRef.current) return;
 
     setStoryCapturing(true);
-
+    dispatch(setShowStoryUploadModal(true));
+    router.push("/dash/feed");
     setTimeout(async () => {
       if (storyRef.current) {
         const canvas = await html2canvas(storyRef.current, {
@@ -148,8 +148,6 @@ function CreateStoryPageComponent() {
         dispatch(
           setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
         );
-        dispatch(setShowStoryUploadModal(true));
-        router.push("/dash/feed");
       }
     }, 100);
   };
