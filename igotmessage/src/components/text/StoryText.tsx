@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { HexColorPicker } from "react-colorful";
 import { PaintBrushBroadIcon } from "@phosphor-icons/react";
-import { ItalicIcon, TextIcon, UnderlineIcon, XIcon } from "lucide-react";
+import { CheckIcon, ItalicIcon, TextIcon, UnderlineIcon, XIcon } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 
 function StoryText({ storyRef, isCapturing }: any) {
@@ -60,13 +60,13 @@ function StoryText({ storyRef, isCapturing }: any) {
               backgroundColor: solidColorChosen ? bgColor : undefined,
               backgroundImage: gradientColorChosen
                 ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                : storyTextBg !== "" &&
+                : (storyTextBg !== "" &&
                   !solidColorChosen &&
-                  !gradientColorChosen
+                  !gradientColorChosen)
                 ? `url(${storyTextBg})`
-                : !solidColorChosen &&
+                : (!solidColorChosen &&
                   !gradientColorChosen &&
-                  storyTextBg === ""
+                  storyTextBg === "")
                 ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
                 : undefined,
             }}
@@ -141,11 +141,17 @@ function StoryText({ storyRef, isCapturing }: any) {
         ref={storyRef}
         style={{
           backgroundColor: solidColorChosen ? bgColor : undefined,
-          backgroundImage: gradientColorChosen
-            ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-            : storyTextBg !== "" && !solidColorChosen && !gradientColorChosen
-            ? `url(${storyTextBg})`
-            : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
+              backgroundImage: gradientColorChosen
+                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+                : (storyTextBg !== "" &&
+                  !solidColorChosen &&
+                  !gradientColorChosen)
+                ? `url(${storyTextBg})`
+                : (!solidColorChosen &&
+                  !gradientColorChosen &&
+                  storyTextBg === "")
+                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
+                : undefined,
         }}
         className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
       >
@@ -240,8 +246,9 @@ function StoryText({ storyRef, isCapturing }: any) {
                   setGradientColorChosen(false);
                   setSolidColorChosen(true);
                 }}
-                className="py-2 w-full my-4 px-10 rounded-lg border-[var(--borderColor)] bg-gradient-to-r from-blue-500 to-blue-900  text-white text-2xl active:scale-90 cursor-pointer"
+                className="py-2 w-full my-4 px-10 rounded-full flex items-center gap-2 border-1 border-[var(--borderColor)] bg-[var(--wrapperColor)]  text-[var(--textColor)] text-xl active:scale-90 cursor-pointer"
               >
+                <CheckIcon size={25} />
                 Done
               </button>
             </div>
@@ -298,8 +305,9 @@ function StoryText({ storyRef, isCapturing }: any) {
                   setGradientColorChosen(true);
                   setSolidColorChosen(false);
                 }}
-                className="py-2 w-[80%] my-4 px-4 rounded-lg border-[var(--borderColor)] bg-gradient-to-r from-blue-500 to-blue-900  text-white text-2xl active:scale-90 cursor-pointer"
+                 className="py-2 w-fit my-4 px-10 rounded-full flex items-center gap-2 border-1 border-[var(--borderColor)] bg-[var(--wrapperColor)]  text-[var(--textColor)] text-xl active:scale-90 cursor-pointer"
               >
+                <CheckIcon size={25} />
                 Done
               </button>
             </div>
