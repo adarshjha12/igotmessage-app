@@ -64,7 +64,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const avatar = null;
-  const [storyUplodProgress, setStoryUplodProgress] = useState<number | undefined>(0);
+  
 
   console.log(avatar);
 
