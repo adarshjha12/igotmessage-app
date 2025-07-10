@@ -40,8 +40,8 @@ function Story() {
   }, [storyUploadStatus]);
 
   useEffect(() => {
-    console.log(otherStories);
-  }, [otherStories]);
+    console.log(myStories);
+  }, [myStories]);
 
   return (
     <div className="w-full py-4 px-2 h-fit z-0 flex overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar">
@@ -71,7 +71,7 @@ function Story() {
       {myStories && myStories.length > 0 && (
         <div className="flex flex-col items-center justify-center gap-2">
           <Link
-            href={`/dash/stories/${myStories[0].user}`}
+            href={`/stories/${myStories[0].user}`}
             className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
           >
             <div className="grid place-items-center w-full h-full">
@@ -92,7 +92,7 @@ function Story() {
         uniqueUsers.filter((user) => user._id !== myId).map((user, index) => (
           <div key={index} className="flex flex-col items-center justify-center gap-2">
           <Link
-            href={`/dash/stories/${user._id}`}
+            href={`/stories/${user._id}`}
             className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
           >
             <div className="grid place-items-center w-full h-full">

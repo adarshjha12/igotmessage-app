@@ -41,6 +41,13 @@
   --navButtonColor: #002384;
 }
 
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  color: #fff; 
+  z-index: 1000;
+}
+
+
 html {
   width: 100%;
   min-height: 100%;

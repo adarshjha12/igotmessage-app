@@ -54,7 +54,7 @@ const { icon, title, message } = getStatusUI() ?? {
     <Transition show={showStoryUploadModal} as={Fragment}>
       <Dialog
         onClose={() => dispatch(setShowStoryUploadModal(false))}
-        className="relative z-50"
+        className="relative z-[9999]"
       >
         <TransitionChild
           as={Fragment}

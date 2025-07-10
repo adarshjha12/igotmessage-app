@@ -145,6 +145,7 @@ function CreateStoryPageComponent() {
         file,
         storyMusicData,
       });
+      router.push("/dash/feed");
       await dispatch(
         handleStoryUpload({ userId, file, musicData: storyMusicData })
       );
@@ -154,9 +155,7 @@ function CreateStoryPageComponent() {
       dispatch(
         setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
       );
-      router.push("/dash/feed");
       setStoryCapturing(false);
-      dispatch(setShowStoryUploadModal(false));
     });
   };
 
