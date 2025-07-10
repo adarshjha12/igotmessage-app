@@ -127,7 +127,7 @@ function CreateStoryPageComponent() {
 
   const handleCreateStory = async () => {
     if (!storyRef.current) return;
-
+    console.log("handleCreateStory called");
     setStoryCapturing(true);
     dispatch(setShowStoryUploadModal(true));
     router.push("/dash/feed");
