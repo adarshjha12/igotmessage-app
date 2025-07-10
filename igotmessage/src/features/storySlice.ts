@@ -91,6 +91,9 @@ export const handleStoryUpload = createAsyncThunk<Res, UploadArgs>("story/upload
         "Content-Type": "multipart/form-data",
       },
     });
+    console.log('====================================');
+    console.log('thunk called');
+    console.log('====================================');
         console.log(response.data);
     return response.data;
 });
