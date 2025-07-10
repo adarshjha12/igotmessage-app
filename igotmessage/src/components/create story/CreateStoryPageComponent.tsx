@@ -126,29 +126,39 @@ function CreateStoryPageComponent() {
   }
 
   const handleCreateStory = async () => {
-  if (!storyRef.current) return;
-  console.log("handleCreateStory called");
+    if (!storyRef.current) return;
+    console.log("handleCreateStory called");
 
-  setStoryCapturing(true);
-  dispatch(setShowStoryUploadModal(true));
+    setStoryCapturing(true);
+    dispatch(setShowStoryUploadModal(true));
 
-  const canvas = await html2canvas(storyRef.current, { useCORS: true });
-  const dataUrl = canvas.toDataURL("image/png");
-  const blob = await fetch(dataUrl).then((res) => res.blob());
-  const file = new File([blob], "story.png", { type: "image/png" });
+    requestAnimationFrame(async () => {
+      if (!storyRef.current) return;
 
-  console.log("Dispatching handleStoryUpload with:", { userId, file, storyMusicData });
-  await dispatch(
-    handleStoryUpload({ userId, file, musicData: storyMusicData })
-  );
+      const canvas = await html2canvas(storyRef.current, { useCORS: true });
+      const dataUrl = canvas.toDataURL("image/png");
+      const blob = await fetch(dataUrl).then((res) => res.blob());
+      const file = new File([blob], "story.png", { type: "image/png" });
 
-  dispatch(setStoryImage(""));
-  setMusicPlaying(false);
-  dispatch(
-    setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
-  );
-  router.push("/dash/feed");
-};
+      console.log("Dispatching handleStoryUpload with:", {
+        userId,
+        file,
+        storyMusicData,
+      });
+      await dispatch(
+        handleStoryUpload({ userId, file, musicData: storyMusicData })
+      );
+
+      dispatch(setStoryImage(""));
+      setMusicPlaying(false);
+      dispatch(
+        setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
+      );
+      router.push("/dash/feed");
+      setStoryCapturing(false);
+      dispatch(setShowStoryUploadModal(false));
+    });
+  };
 
   return (
     <div className="w-full py-2 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
