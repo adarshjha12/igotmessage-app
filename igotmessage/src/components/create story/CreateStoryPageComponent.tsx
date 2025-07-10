@@ -125,32 +125,30 @@ function CreateStoryPageComponent() {
     }
   }
 
-  // const handleCreateStory = async () => {
-  //   if (!storyRef.current) return;
-  //   console.log("handleCreateStory called");
-  //   setStoryCapturing(true);
-  //   dispatch(setShowStoryUploadModal(true));
-  //   router.push("/dash/feed");
-  //   setTimeout(async () => {
-  //     if (storyRef.current) {
-  //       const canvas = await html2canvas(storyRef.current, {
-  //         useCORS: true,
-  //       });
-  //       const dataUrl = canvas.toDataURL("image/png");
-  //       const blob = await fetch(dataUrl).then((res) => res.blob());
-  //       const file = new File([blob], "story.png", { type: "image/png" });
+  const handleCreateStory = async () => {
+  if (!storyRef.current) return;
+  console.log("handleCreateStory called");
 
-  //       dispatch(
-  //         handleStoryUpload({ userId, file, musicData: storyMusicData })
-  //       );
-  //       dispatch(setStoryImage(""));
-  //       setMusicPlaying(false);
-  //       dispatch(
-  //         setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
-  //       );
-  //     }
-  //   }, 100);
-  // };
+  setStoryCapturing(true);
+  dispatch(setShowStoryUploadModal(true));
+
+  const canvas = await html2canvas(storyRef.current, { useCORS: true });
+  const dataUrl = canvas.toDataURL("image/png");
+  const blob = await fetch(dataUrl).then((res) => res.blob());
+  const file = new File([blob], "story.png", { type: "image/png" });
+
+  console.log("Dispatching handleStoryUpload with:", { userId, file, storyMusicData });
+  await dispatch(
+    handleStoryUpload({ userId, file, musicData: storyMusicData })
+  );
+
+  dispatch(setStoryImage(""));
+  setMusicPlaying(false);
+  dispatch(
+    setMusicData({ title: "", artist: "", genre: "", url: "", image: "" })
+  );
+  router.push("/dash/feed");
+};
 
   return (
     <div className="w-full py-2 overflow-hidden min-h-screen flex flex-col items-center justify-start gap-2 bg-[var(--bgColor)] backdrop-blur-md text-[var(--textColor)] ">
@@ -401,7 +399,7 @@ function CreateStoryPageComponent() {
               </button>
 
               <button
-                // onClick={handleCreateStory}
+                onClick={handleCreateStory}
                 type="button"
                 className=" text-sm flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6"
               >
