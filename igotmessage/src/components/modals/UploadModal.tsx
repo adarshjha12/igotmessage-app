@@ -44,7 +44,11 @@ export default function UploadModal() {
     }
   };
 
-  const { icon, title, message } = getStatusUI();
+const { icon, title, message } = getStatusUI() ?? {
+  icon: null,
+  title: "",
+  message: "",
+};
 
   return (
     <Transition show={showStoryUploadModal} as={Fragment}>
