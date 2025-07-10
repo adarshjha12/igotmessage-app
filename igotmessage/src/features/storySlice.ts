@@ -38,7 +38,7 @@ interface StoryState {
   musicData: MusicData;
   myFetchedStories: MyStoryType[];
   otherFetchedStories: OtherStoryType[];
-  uploadStoryStatus: "" |"loading" | "succeeded" | "failed";
+  uploadStoryStatus: "noApiCalls" |"loading" | "succeeded" | "failed";
   uploadStoryError: string | null;
   showStoryUploadModal: boolean
 }
@@ -72,7 +72,7 @@ const initialState: StoryState = {
   },
   myFetchedStories: [],
   otherFetchedStories: [],
-  uploadStoryStatus: "",
+  uploadStoryStatus: "noApiCalls",
   uploadStoryError: null,
   showStoryUploadModal: false
 };
