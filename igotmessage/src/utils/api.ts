@@ -47,12 +47,12 @@ const verifyOtp = async function (email: string, otp: string) {
 }
 
 const fetchMyStories = async function(userId : string) {
-    const url = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/story/upload-story` : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/story/get-my-stories`;
+    const url = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/story/get-my-stories` : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/story/get-my-stories`;
 
     return await axios.post(url, {userId}, {withCredentials: true})
 }
 const fetchOtherStories = async function() {
-    const url = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/story/upload-story` : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/story/get-other-stories`;
+    const url = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/story/get-other-stories` : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/story/get-other-stories`;
 
     return await axios.get(url,  {withCredentials: true})
 }
