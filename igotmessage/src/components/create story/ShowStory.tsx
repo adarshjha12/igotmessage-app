@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { formatDistanceToNowStrict } from "date-fns";
-import { ImageIcon, MusicIcon, User } from "lucide-react";
+import { ImageIcon, MusicIcon, User, XIcon } from "lucide-react";
 import axios from "axios";
 import { Swiper as SwiperClass } from "swiper";
 
@@ -36,6 +36,7 @@ export default function StoryViewerPage() {
   const swiperRef = useRef<SwiperClass | null>(null);
   const params = useParams();
   const userId = params.userId as string;
+  const router = useRouter();
 
   const [stories, setStories] = useState<StoryType[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -130,8 +131,9 @@ export default function StoryViewerPage() {
 
           {/* Story User Info */}
           {stories[activeIndex].user && (
-            <div className="flex bg-black/50 py-2 px-6 w-full items-center gap-6 absolute top-8 left-0 z-50">
-              {stories[activeIndex].user.profilePicture ? (
+            <div className="flex bg-black/50 py-2 px-6 w-full items-center gap-6 absolute justify-between top-8 left-0 z-50">
+              <div className="flex items-center gap-4 justify-center">
+                {stories[activeIndex].user.profilePicture ? (
                 <img
                   src={stories[activeIndex].user.profilePicture}
                   alt="profile"
@@ -151,6 +153,11 @@ export default function StoryViewerPage() {
                   {timeAgo(stories[activeIndex].createdAt ?? "")}
                 </p>
               </div>
+              </div>
+              <button onClick={() => router.back()} type="button" className="p-2 active:scale-95 rounded-full cursor-pointer">
+                <XIcon
+                  size={24}/>
+              </button >
             </div>
           )}
 
