@@ -32,7 +32,7 @@ function Story() {
   }
 
   const uniqueUsers = Array.from(
-    new Map(otherStories.map((s) => [s.user._id, s.user])).values()
+    new Map(otherStories.filter((s) => s.user && s.user._id).map((s) => [s.user._id, s.user])).values()
   );
 
   useEffect(() => {

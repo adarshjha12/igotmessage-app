@@ -33,23 +33,18 @@ interface StoryType {
 
 export default function StoryViewerPage() {
 
-  const swiperRef = useRef<SwiperClass | null>(null);
   const params = useParams();
   const userId = params.userId as string;
   const router = useRouter();
 
   const [stories, setStories] = useState<StoryType[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [progressPercents, setProgressPercents] = useState<number[]>([]);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const PROGRESS_DURATION = 30000; // 30s
-  const PROGRESS_UPDATE_INTERVAL = 100; // every 100ms
+  
 
   const timeAgo = (dateStr: string) =>
     formatDistanceToNowStrict(new Date(dateStr), { addSuffix: true });
 
+  
   // Fetch stories
   useEffect(() => {
     const fetchStories = async () => {
@@ -60,7 +55,6 @@ export default function StoryViewerPage() {
       try {
         const res = await axios.get(url, { withCredentials: true });
         setStories(res.data.stories);
-        setProgressPercents(new Array(res.data.stories.length).fill(0));
       } catch (err) {
         console.error("Failed to fetch stories:", err);
       }
@@ -70,68 +64,28 @@ export default function StoryViewerPage() {
   }, [userId]);
 
   // Handle auto slide and progress
-  useEffect(() => {
-    if (!stories.length || !swiperRef.current) return;
-
-    // Reset all progress
-    setProgressPercents((prev) =>
-      prev.map((_, idx) =>
-        idx === activeIndex ? 0 : idx < activeIndex ? 100 : 0
-      )
-    );
-
-    // Clear existing timers
-    clearTimeout(timeoutRef.current!);
-    clearInterval(intervalRef.current!);
-
-    // Animate progress
-    let progress = 0;
-    intervalRef.current = setInterval(() => {
-      progress += (PROGRESS_UPDATE_INTERVAL / PROGRESS_DURATION) * 100;
-      setProgressPercents((prev) =>
-        prev.map((val, idx) =>
-          idx === activeIndex ? Math.min(progress, 100) : val
-        )
-      );
-    }, PROGRESS_UPDATE_INTERVAL);
-
-    // Auto move to next slide
-    timeoutRef.current = setTimeout(() => {
-      const nextIndex = activeIndex + 1 < stories.length ? activeIndex + 1 : 0;
-      swiperRef.current?.slideTo(nextIndex); // 🔥 this moves Swiper to next
-    }, PROGRESS_DURATION);
-
-    return () => {
-      clearTimeout(timeoutRef.current!);
-      clearInterval(intervalRef.current!);
-    };
-  }, [activeIndex, stories]);
 
   return (
     <div className="w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]">
       {stories.length > 0 ? (
-        <div>
+        <div className="w-full h-full ">
           {/* Progress Bars */}
-          <div className="flex gap-1 absolute top-4 left-4 right-4 z-50">
-            {stories.map((_, idx) => (
-              <div
-                key={idx}
-                className="flex-1 h-[3px] bg-white/30 overflow-hidden rounded-full"
-              >
-                <div
-                  className="h-full bg-white transition-all"
-                  style={{
-                    width: `${progressPercents[idx]}%`,
-                    transition: "width 100ms linear",
-                  }}
-                />
+          <div className="flex w-full gap-1 px-2 absolute top-4 left-0 right-4 z-50">
+           {stories && stories.length > 0 && 
+           stories.map((_, idx) => (
+            <div className="w-full" key={idx}>
+              <div className="w-full flex justify-center items-center bg-white/50 h-1 rounded-full">
+                <div className="w-full bg-white h-1 rounded-full"></div>
               </div>
-            ))}
+            </div>
+            
+           ))
+           }
           </div>
 
           {/* Story User Info */}
           {stories[activeIndex].user && (
-            <div className="flex bg-black/50 py-2 px-6 w-full items-center gap-6 absolute justify-between top-8 left-0 z-50">
+            <div className="flex bg-black/50 py-2 px-6 w-full items-center gap-6 absolute justify-between top-14 left-0 z-50">
               <div className="flex items-center gap-4 justify-center">
                 {stories[activeIndex].user.profilePicture ? (
                 <img
@@ -164,17 +118,16 @@ export default function StoryViewerPage() {
           {/* Swiper */}
           <Swiper
             modules={[Navigation]}
-            onSwiper={(swiper) => (swiperRef.current = swiper)} 
             onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
             navigation
             spaceBetween={0}
             slidesPerView={1}
-            className="w-full custom-swiper sm:w-[30%] h-full"
+            className="w-full flex items-center justify-center custom-swiper sm:w-[30%] h-full"
           >
             {stories.map((story) => (
               <SwiperSlide
                 key={story._id}
-                className="w-full h-full pt-8 flex items-center justify-center flex-col gap-3"
+                className="w-full h-full pt-[150px] flex items-center justify-center flex-col gap-3"
               >
                 <div className="w-full h-5/6 flex items-center justify-center">
                   {story.imageUrl ? (
