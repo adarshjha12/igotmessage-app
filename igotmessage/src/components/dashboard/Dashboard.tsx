@@ -411,7 +411,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for desktop ends here */}
 
           {/* main starts here (2nd column for desktop) */}
-          <main className="pb-10 sm:px-5 px-3 flex flex-col justify-center items-center">
+          <main className="pb-10 sm:px-5 px-2 flex flex-col justify-center items-center">
             {children}
           </main>
           {/* main ends here */}

@@ -18,7 +18,7 @@ function FeedPageComponent() {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
 
   return (
-    <div className=" w-full pl-1 ">
+    <div className=" w-full ">
       <Story />
       <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur

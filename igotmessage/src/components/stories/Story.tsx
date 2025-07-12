@@ -13,8 +13,10 @@ import {
 function Story() {
   const dispatch = useAppDispatch();
   const myId = useAppSelector((state) => state.auth.user._id);
-  const userId = myId
-  const storyUploadStatus = useAppSelector((state) => state.story.uploadStoryStatus);
+  const userId = myId;
+  const storyUploadStatus = useAppSelector(
+    (state) => state.story.uploadStoryStatus
+  );
 
   const myStories = useAppSelector((state) => state.story.myFetchedStories);
   const otherStories = useAppSelector(
@@ -32,7 +34,11 @@ function Story() {
   }
 
   const uniqueUsers = Array.from(
-    new Map(otherStories.filter((s) => s.user && s.user._id).map((s) => [s.user._id, s.user])).values()
+    new Map(
+      otherStories
+        .filter((s) => s.user && s.user._id)
+        .map((s) => [s.user._id, s.user])
+    ).values()
   );
 
   useEffect(() => {
@@ -44,12 +50,12 @@ function Story() {
   }, [myStories]);
 
   return (
-    <div className="w-full py-4 px-2 h-fit z-0 flex overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar">
+    <div className="w-full py-4 px-0 h-fit z-0 flex overflow-x-auto whitespace-nowrap gap-2 scroll-smooth hide-scrollbar">
       {/* add story button */}
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
-          className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
+          className="relative w-[88px] h-[88px] flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
         >
           <div className="grid place-items-center w-full h-full">
             <UserIcon
@@ -72,9 +78,9 @@ function Story() {
         <div className="flex flex-col items-center justify-center gap-2">
           <Link
             href={`/stories/${myStories[0].user}`}
-            className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
+            className="relative w-[88px] h-[88px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
-            <div className="grid place-items-center w-full h-full">
+            <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
               <UserIcon
                 size={40}
                 strokeWidth={1.2}
@@ -88,27 +94,33 @@ function Story() {
         </div>
       )}
 
-      {uniqueUsers && uniqueUsers.length > 0 && (
-        uniqueUsers.filter((user) => user._id !== myId).map((user, index) => (
-          <div key={index} className="flex flex-col items-center justify-center gap-2">
-          <Link
-            href={`/stories/${user._id}`}
-            className="relative w-[88px] h-[88px] mr-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
-          >
-            <div className="grid place-items-center w-full h-full">
-              <UserIcon
-                size={40}
-                strokeWidth={1.2}
-                className="text-white group-hover:scale-110 transition-transform duration-300"
-              />
+      {uniqueUsers &&
+        uniqueUsers.length > 0 &&
+        uniqueUsers
+          .filter((user) => user._id !== myId)
+          .map((user, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center justify-center gap-2"
+            >
+              <Link
+                href={`/stories/${user._id}`}
+                className="relative w-[88px] h-[88px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+              >
+                <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                  <UserIcon
+                    size={36}
+                    strokeWidth={1.5}
+                    className="text-white group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </Link>
+
+              <p className="text-[13px] font-medium text-[var(--textColor)]">
+                {user.username ?? `other Story ${index}`}
+              </p>
             </div>
-          </Link>
-          <p className="text-[13px] font-medium text-[var(--textColor)]">
-            {user.username ?? `other Story ${index}` }
-          </p>
-        </div>
-        ))
-        )}
+          ))}
     </div>
   );
 }

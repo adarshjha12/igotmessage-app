@@ -98,6 +98,15 @@ body {
   height: 8px;
 }
 
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.animate-progress {
+  animation: progress 30s linear forwards;
+}
+
 
 @keyframes leftSlide {
   0% {
@@ -276,4 +285,13 @@ body {
 
 .animate-bar3 {
   animation: bar3 1s infinite ease-in-out;
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 8px rgba(255,0,150,0.4); }
+  50% { box-shadow: 0 0 14px rgba(255,0,150,0.6); }
+  100% { box-shadow: 0 0 8px rgba(255,0,150,0.4); }
+}
+.animate-pulse-ring {
+  animation: pulseRing 2s infinite;
 }
