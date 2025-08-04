@@ -46,7 +46,6 @@ function Story() {
   }, [storyUploadStatus]);
 
   useEffect(() => {
-    console.log(myStories);
   }, [myStories]);
 
   return (
