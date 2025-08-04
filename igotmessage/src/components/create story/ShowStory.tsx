@@ -11,7 +11,7 @@ import { ImageIcon, MusicIcon, User, XIcon } from "lucide-react";
 import axios from "axios";
 import { Swiper as SwiperClass } from "swiper";
 import { fetchOtherStories as fetchOtherStoriesAPI } from "@/utils/api";
-
+ 
 interface StoryType {
   _id: string;
   imageUrl?: string;

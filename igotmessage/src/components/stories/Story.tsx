@@ -9,6 +9,7 @@ import {
   setMyFetchedStories,
   setOtherFetchedStories,
 } from "@/features/storySlice";
+import SplashScreen from "../SplashScreen";
 
 function Story() {
   const dispatch = useAppDispatch();
@@ -49,12 +50,12 @@ function Story() {
   }, [myStories]);
 
   return (
-    <div className="w-full py-4 px-0 h-fit z-0 flex overflow-x-auto whitespace-nowrap gap-2 scroll-smooth hide-scrollbar">
+    <div className="w-full py-4 px-0 h-fit z-0 flex overflow-x-auto whitespace-nowrap gap-1 scroll-smooth hide-scrollbar">
       {/* add story button */}
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
-          className="relative w-[88px] h-[88px] flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
+          className="relative w-[70px] h-[70px] flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-800 shadow-md hover:scale-105 transition-transform duration-300 ease-out group"
         >
           <div className="grid place-items-center w-full h-full">
             <UserIcon
@@ -64,10 +65,10 @@ function Story() {
             />
           </div>
           <div className="absolute bottom-1.5 right-1.5 bg-black border-2 border-white rounded-full p-1 shadow-sm">
-            <PlusIcon className="text-white" size={14} />
+            <PlusIcon className="text-white" size={10} />
           </div>
         </Link>
-        <p className="text-[13px] font-medium text-[var(--textColor)] ">
+        <p className="text-[10px] font-medium text-[var(--textColor)] ">
           Create Story
         </p>
       </div>
@@ -77,7 +78,7 @@ function Story() {
         <div className="flex flex-col items-center justify-center gap-2">
           <Link
             href={`/stories/${myStories[0].user}`}
-            className="relative w-[88px] h-[88px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+            className="relative w-[70px] h-[70px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
             <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
               <UserIcon
@@ -87,7 +88,7 @@ function Story() {
               />
             </div>
           </Link>
-          <p className="text-[13px] font-medium text-[var(--textColor)]">
+          <p className="text-[10px] font-medium text-[var(--textColor)]">
             {myStories[0].user.username ?? "My Story"}
           </p>
         </div>
@@ -104,7 +105,7 @@ function Story() {
             >
               <Link
                 href={`/stories/${user._id}`}
-                className="relative w-[88px] h-[88px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+                className="relative w-[70px] h-[70px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
               >
                 <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
                   <UserIcon
@@ -115,7 +116,7 @@ function Story() {
                 </div>
               </Link>
 
-              <p className="text-[13px] font-medium text-[var(--textColor)]">
+              <p className="text-[10px] font-medium text-[var(--textColor)]">
                 {user.username ?? `other Story ${index}`}
               </p>
             </div>
