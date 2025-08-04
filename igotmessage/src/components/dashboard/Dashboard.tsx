@@ -102,7 +102,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               )}
               <p
                 className={`md:hidden ${
-                  pathname === "/dash/feed" ? "font-montez  text-2xl" : ""
+                  pathname === "/dash/feed" ? "font-montez  text-3xl" : ""
                 } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-medium cursor-pointer ease-in `}
               >
                 {pathname === "/dash/feed"
