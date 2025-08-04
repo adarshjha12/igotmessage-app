@@ -60,15 +60,15 @@ export default function StoryViewerPage() {
 
   // Helper: group stories by user._id
   const groupByUser = (stories: StoryType[]): StoryType[][] => {
-    const map: { [userId: string]: StoryType[] } = {};
+    const grouped: { [userId: string]: StoryType[] } = {};
     stories.forEach((story) => {
       if (!story.user?._id) return;
-      if (!map[story.user._id]) {
-        map[story.user._id] = [];
+      if (!grouped[story.user._id]) {
+        grouped[story.user._id] = [];
       }
-      map[story.user._id].push(story);
+      grouped[story.user._id].push(story);
     });
-    return Object.values(map);
+    return Object.values(grouped);
   };
 
   // Fetch my stories
@@ -185,7 +185,7 @@ export default function StoryViewerPage() {
 
           {/* Story User Info */}
           {storiesByUsers[currentUserIndex]?.[activeStoryIndex]?.user && (
-            <div className="flex bg-black/50 py-2 px-6 w-full items-center gap-6 absolute justify-between top-10 left-0 z-50">
+            <div className="flex bg-black/50 py-0 px-6 w-full items-center gap-6 absolute justify-between top-10 left-0 z-50">
               <div className="flex items-center gap-4">
                 {storiesByUsers[currentUserIndex][activeStoryIndex].user?.profilePicture ? (
                   <img
@@ -230,7 +230,7 @@ export default function StoryViewerPage() {
             {allStories.map((story) => (
               <SwiperSlide
                 key={story._id}
-                className="w-full h-full pt-[120px] flex items-center justify-center flex-col gap-3"
+                className="w-full h-full pt-[100px] flex items-center justify-center flex-col gap-3"
               >
                 <div className="w-full h-5/6 flex items-center justify-center">
                   {story.imageUrl ? (
@@ -255,7 +255,7 @@ export default function StoryViewerPage() {
         </div>
       ) : (
         <div className="w-full h-full flex items-center justify-center">
-          <p className="text-sm opacity-70">No stories found</p>
+          <p className="text-sm opacity-70">Loading...</p>
         </div>
       )}
     </div>
