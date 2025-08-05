@@ -13,6 +13,8 @@ import {
   ArrowBendDownRightIcon,
   DeviceMobileIcon,
   OptionIcon,
+  UserGearIcon,
+  UserIcon,
 } from "@phosphor-icons/react";
 import { User } from "lucide-react";
 
@@ -181,7 +183,7 @@ function Login() {
             type="button"
             className={`${baseButton} ${emailButtonClick && "hidden"}`}
           >
-            <User fill="black" className="w-6 h-6  " />
+            <User fill="#10eb38" className="text-green-500" size={32} />
             <span className="">
               Continue as Guest
             </span>
