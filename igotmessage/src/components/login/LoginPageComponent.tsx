@@ -158,9 +158,7 @@ function Login() {
             IGotMessage
           </p>
           <p
-            className={`capitalize text-2xl font-semibold font-montez ${
-              isDark ? "text-amber-300" : "text-violet-900"
-            }`}
+            className={`capitalize text-2xl text-yellow-400 font-medium font-montez `}
           >
             the social app
           </p>
