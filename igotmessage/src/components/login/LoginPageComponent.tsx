@@ -208,19 +208,15 @@ function Login() {
           {emailButtonClick && (
             <form action="" className="flex flex-col gap-1 items-center">
               <div className="">
-                <div className=" w-full grid grid-cols-1 sm:[grid-template-columns:2fr_1fr]  gap-4 my-8 justify-center items-center">
-                  <div className="border-1 relative px-2 w-full flex items-center border-white py-1 rounded-md">
+                <div className=" w-full grid grid-cols-1 sm:[grid-template-columns:2fr_1fr]  gap-4 my-8 justify-center items-end">
+                  <div className="px-2 flex-col flex justify-end   rounded-md">
                     <label
                       htmlFor="email"
-                      className={` ${
-                        inputFocus
-                          ? "-translate-y-10  -translate-x-5 scale-90"
-                          : " animate-pulse font-light"
-                      } w-full flex items-center text-left transform transition-all cursor-text duration-300 ease-linear absolute top-1 left-2 font-exo2 text-white pb-2.5 text-xl`}
+                      className={`  w-full flex items-center text-left transform transition-all cursor-text duration-300 ease-linear  font-exo2 text-white pb-2.5 text-xl`}
                     >
                       Please enter your email
                     </label>
-                    <div>
+                    <div className="border-1 px-2 border-white py-2 rounded-xl">
                       <input
                         type="email"
                         ref={inputRef}
@@ -229,12 +225,13 @@ function Login() {
                           setEmail(e.target.value);
                         }}
                         id="email"
+                        autoFocus
                         name="email"
                         autoComplete="email"
                         onFocus={() => setInputFocus(true)}
                         placeholder={inputFocus ? "eg- abc@gmail.com" : ""}
                         inputMode="email"
-                        className=" text-white py-1 px-2 rounded-sm border-transparent outline-none font-semibold tracking-widest placeholder:text-lg"
+                        className=" text-white py-1 px-2 rounded-sm border-transparent outline-none font-semibold tracking-widest placeholder:text-white/50 placeholder:text-lg"
                       />
                     </div>
                   </div>
