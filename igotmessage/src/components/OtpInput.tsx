@@ -130,7 +130,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
                     newInputValues[i] = e.target.value
                     setInputValues(newInputValues)
                   }}
-                  className='w-[50px] h-[50px] pl-3 rounded-xl font-bold text-[var(--textColor)] bg-blue-800 outline-none border-1 border-[var(--borderColor)] text-2xl opacity-75'
+                  className='w-[50px] h-[50px] pl-3 rounded-xl font-bold text-white bg-blue-800 outline-none border-1 border-[var(--borderColor)] text-2xl opacity-75'
                   onInput={(e) => {
                     moveNext(e.target as HTMLInputElement, i)
                   }}
@@ -149,7 +149,7 @@ const OtpInput = ({showOtpField, email, resendCounter, canResend, setResendOtp} 
           })}
         </div>
       <div className='flex gap-5 justify-center items-start'>
-       <button onClick={handleSignin} disabled={canSignIn ? false : true} type='button' className={` text-[var(--textColor)] flex items-center font-exo2 text-xl font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r ${canSignIn ? 'hover:from-green-600 hover:to-green-900' : 'hover:from-red-500 hover:to-red-900'} border-1 rounded-md px-3 py-2`}> Sign in
+       <button onClick={handleSignin} disabled={canSignIn ? false : true} type='button' className={` text-white flex items-center font-exo2 text-xl font-semibold tracking-wider cursor-pointer bg-gradient-to-r from-blue-600 to-blue-900 hover:bg-gradient-to-r ${canSignIn ? 'hover:from-green-600 hover:to-green-900' : 'hover:from-red-500 hover:to-red-900'} border-1 rounded-md px-3 py-2`}> Sign in
         <SignInIcon size={24} weight='bold' className='ml-2'/>
        </button>
 
