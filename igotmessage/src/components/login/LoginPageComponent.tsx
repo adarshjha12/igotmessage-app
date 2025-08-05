@@ -32,15 +32,15 @@ function Login() {
   const [errorSendingEmail, setErrorSendingEmail] = useState(false);
   const baseButton = `
   flex items-center justify-center gap-3
-  w-full max-w-[320px] py-3 px-5
+  w-full max-w-[320px] py-2 px-5
   rounded-2xl border-2
   transition-all duration-200 ease-in-out
   text-lg font-medium
   hover:scale-[1.03] active:scale-[0.97]
   shadow-md hover:shadow-lg
   hover:border-yellow-400 cursor-pointer
-  bg-white dark:bg-neutral-900
-  border-neutral-300 dark:border-neutral-700
+  bg-white 
+  border-neutral-300 
 `;
 
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false);
@@ -181,8 +181,8 @@ function Login() {
             type="button"
             className={`${baseButton} ${emailButtonClick && "hidden"}`}
           >
-            <User fill="white" className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-            <span className="text-gray-800 dark:text-gray-100">
+            <User fill="black" className="w-6 h-6 text-gray-700 " />
+            <span className="text-gray-800 ">
               Continue as Guest
             </span>
           </button>
@@ -198,7 +198,7 @@ function Login() {
             {!googleButtonClick && (
               <img src="/images/google.png" alt="Google" className="w-6 h-6" />
             )}
-            <span className="text-gray-800 dark:text-gray-100 text-xl font-semibold">
+            <span className="text-gray-800 text-xl font-semibold">
               {googleButtonClick ? <NewLoader /> : "Continue with Google"}
             </span>
           </button>
@@ -239,7 +239,7 @@ function Login() {
                   <button
                     type="button"
                     onClick={handleSendOtp}
-                    className={`${baseButton}`}
+                    className={`${baseButton} text-black`}
                   >
                     Get otp
                   </button>
@@ -253,7 +253,7 @@ function Login() {
             className={`${baseButton} ${emailButtonClick ? "hidden" : ""}`}
           >
             <img src="/images/gmail.png" alt="Gmail" className="w-6 h-6" />
-            <span className="text-gray-800 dark:text-gray-100 text-xl font-semibold">
+            <span className="text-gray-800  text-xl font-semibold">
               Continue with Email
             </span>
           </button>
