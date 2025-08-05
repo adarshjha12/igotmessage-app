@@ -39,8 +39,8 @@ function Login() {
   hover:scale-[1.03] active:scale-[0.97]
   shadow-md hover:shadow-lg
   hover:border-yellow-400 cursor-pointer
-  bg-white 
-  border-neutral-300 
+  bg-gray-800 text-white
+  border-gray-600 
 `;
 
   const [showPopupForEmptyInput, setShowPopupForEmptyInput] = useState(false);
@@ -181,8 +181,8 @@ function Login() {
             type="button"
             className={`${baseButton} ${emailButtonClick && "hidden"}`}
           >
-            <User fill="black" className="w-6 h-6 text-gray-700 " />
-            <span className="text-gray-800 ">
+            <User fill="black" className="w-6 h-6  " />
+            <span className="">
               Continue as Guest
             </span>
           </button>
@@ -198,7 +198,7 @@ function Login() {
             {!googleButtonClick && (
               <img src="/images/google.png" alt="Google" className="w-6 h-6" />
             )}
-            <span className="text-gray-800 text-xl font-semibold">
+            <span className="text-xl font-semibold">
               {googleButtonClick ? <NewLoader /> : "Continue with Google"}
             </span>
           </button>
@@ -253,7 +253,7 @@ function Login() {
             className={`${baseButton} ${emailButtonClick ? "hidden" : ""}`}
           >
             <img src="/images/gmail.png" alt="Gmail" className="w-6 h-6" />
-            <span className="text-gray-800  text-xl font-semibold">
+            <span className=" text-xl font-semibold">
               Continue with Email
             </span>
           </button>
