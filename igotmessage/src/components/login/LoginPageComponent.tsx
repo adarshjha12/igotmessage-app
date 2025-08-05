@@ -17,6 +17,7 @@ import {
   UserIcon,
 } from "@phosphor-icons/react";
 import { User } from "lucide-react";
+import SplashScreen from "../SplashScreen";
 
 function Login() {
   const isDark = useSelector((state: RootState) => state.activity.isDark);
@@ -246,7 +247,7 @@ function Login() {
               </div>
             </form>
           )}
-
+          
           <button
             onClick={handleEmailButtonClick}
             className={`${baseButton} ${emailButtonClick ? "hidden" : ""}`}
