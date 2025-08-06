@@ -1,4 +1,5 @@
 import axios from "axios";
+import { headers } from "next/headers";
 
 const checkAuth = async function () {
     const url = process.env.NODE_ENV === 'production' 
@@ -57,4 +58,14 @@ const fetchOtherStories = async function() {
     return await axios.get(url,  {withCredentials: true})
 }
 
-export {checkAuth, sendOtp, verifyOtp, fetchMyStories, fetchOtherStories}
+const handleGuest = async () => {
+    try {
+        const url = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/guest/guest-auth` : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/guest/guest-auth`;
+
+        return await axios.get(url, {withCredentials: true})
+    } catch (error) {
+        console.log('error while handling guest signin', error);
+    }
+}
+
+export {checkAuth, handleGuest, sendOtp, verifyOtp, fetchMyStories, fetchOtherStories}

@@ -5,6 +5,7 @@ declare global {
     interface User {
       _id?: Types.ObjectId | string;  
       googleId?: string | null;
+      isGuest?: boolean
       email?: string | null;
       phoneNo?: number | null;
       title?: string | null;

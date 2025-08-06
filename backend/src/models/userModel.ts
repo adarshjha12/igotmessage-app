@@ -7,6 +7,8 @@ const Schema = new mongoose.Schema(
       unique: true,
       sparse: true,
     },
+    isGuest: { type: Boolean, default: false },
+
     email: {
       type: String,
       unique: true,
@@ -28,13 +30,12 @@ const Schema = new mongoose.Schema(
     },
     username: { type: String, unique: true, sparse: true },
     fullName: { type: String },
-    profilePicture: { type: String  },
-    coverPhoto: { type: String  },
-    bio: { type: String  },
+    profilePicture: { type: String },
+    coverPhoto: { type: String },
+    bio: { type: String },
     verified: { type: Boolean, default: false },
-    followers: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
-    following: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
-   
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

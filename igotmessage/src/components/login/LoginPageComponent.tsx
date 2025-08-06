@@ -2,8 +2,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import OtpInput from "@/components/OtpInput";
 import PopupMessage from "@/components/popups/PopupMessages";
-import { sendOtp } from "@/utils/api";
-import { useSearchParams } from "next/navigation";
+import { handleGuest, sendOtp } from "@/utils/api";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import NewLoader from "@/components/NewLoader";
@@ -51,6 +51,7 @@ function Login() {
   let [resendTimer, setResendTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const [resendOtp, setResendOtp] = useState(false);
+  const router = useRouter()
 
   const timer = function () {
     const interval = setInterval(() => {
@@ -84,6 +85,15 @@ function Login() {
 
   const handleEmailButtonClick = function () {
     setEmailButtonClick(true);
+  };
+
+  const handleGuestSignin = async function () {
+    setGuestButtonClick(true);
+   const res = await handleGuest()
+   console.log("++++++++++++++++++++++", res);
+   if (res?.data.success === true) {
+    router.push('/dash/feed')
+   }
   };
 
   const handleSendOtp = async function () {
@@ -183,7 +193,7 @@ function Login() {
         >
           <button
             type="button"
-            onClick={() => setGuestButtonClick(true)}
+            onClick={handleGuestSignin}
             className={`${baseButton} ${emailButtonClick && "hidden"}`}
           >
             <User fill="#10eb38" className="text-green-500" size={32} />

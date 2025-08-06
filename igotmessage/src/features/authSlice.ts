@@ -5,6 +5,7 @@ interface UserAuthInterface {
   user: {
     _id: string; 
     googleId?: string | null;
+    isGuest?: boolean;
     email?: string | null;
     phoneNo?: number | null;
     title?: string | null;
@@ -19,7 +20,6 @@ interface UserAuthInterface {
     following?: string[];  
     createdAt?: string;    
     updatedAt?: string;
-    isGuest?: boolean
   };
 }
 

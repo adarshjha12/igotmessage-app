@@ -15,6 +15,7 @@ import followRouter from './routers/followRoute'
 import postRouter from './routers/postRoutes'
 import commentRouter from './routers/commentRoute'
 import storyRouter from './routers/storyRoute'
+import guestRouter from './routers/guestRoute'
 
 const PORT = process.env.PORT
 const app = express()
@@ -36,6 +37,7 @@ app.use('/api/follow', followRouter)
 app.use('/api/post', postRouter)
 app.use('/api/commemt', commentRouter)
 app.use('/api/story', storyRouter)
+app.use('/api/guest', guestRouter)
 
 app.get('/', (req, res) =>{
     res.json({mesage: 'welcome to igotmessage'})
@@ -44,7 +46,6 @@ app.get('/', (req, res) =>{
 app.get('/healthCheck', (req, res) =>{
     res.status(200);
 })
-
 
   // keep redis alive
   setInterval(async () => {

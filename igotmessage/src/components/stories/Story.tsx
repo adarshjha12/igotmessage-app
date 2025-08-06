@@ -65,7 +65,7 @@ function Story() {
             />
           </div>
           <div className="absolute bottom-1.5 right-1.5 bg-black border-2 border-white rounded-full p-1 shadow-sm">
-            <PlusIcon className="text-white" size={10} />
+            <PlusIcon className="text-white" size={16} />
           </div>
         </Link>
         <p className="text-[12px] font-medium text-[var(--textColor)] ">
@@ -80,11 +80,11 @@ function Story() {
             href={`/stories/${myStories[0].user}`}
             className="relative w-[75px] h-[75px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
-            <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+            <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full">
               <UserIcon
                 size={40}
                 strokeWidth={1.2}
-                className="text-white group-hover:scale-110 transition-transform duration-300"
+                className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
               />
             </div>
           </Link>
@@ -107,11 +107,11 @@ function Story() {
                 href={`/stories/${user._id}`}
                 className="relative w-[75px] h-[75px]  rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-rose-500 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
               >
-                <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full">
                   <UserIcon
                     size={36}
                     strokeWidth={1.5}
-                    className="text-white group-hover:scale-110 transition-transform duration-300"
+                    className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </Link>
