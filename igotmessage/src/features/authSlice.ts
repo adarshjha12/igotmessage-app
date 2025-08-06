@@ -19,6 +19,7 @@ interface UserAuthInterface {
     following?: string[];  
     createdAt?: string;    
     updatedAt?: string;
+    isGuest?: boolean
   };
 }
 
@@ -39,6 +40,7 @@ const initialState: UserAuthInterface = {
     following: [],
     createdAt: '',
     updatedAt: '',
+    isGuest: false
   },
 };
 

@@ -25,6 +25,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [googleButtonClick, setGoogleButtonClick] = useState(false);
   const [emailButtonClick, setEmailButtonClick] = useState(false);
+  const [guestButtonClick, setGuestButtonClick] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [showOtpSentSuccessPopup, setShowOtpSentSuccessPopup] = useState(false);
   const [unauthorized, setUnauthorized] = useState(false);
@@ -182,11 +183,12 @@ function Login() {
         >
           <button
             type="button"
+            onClick={() => setGuestButtonClick(true)}
             className={`${baseButton} ${emailButtonClick && "hidden"}`}
           >
             <User fill="#10eb38" className="text-green-500" size={32} />
             <span className="">
-              Continue as Guest
+               {guestButtonClick ? <NewLoader color="white" /> : "Continue as Guest"}
             </span>
           </button>
 
@@ -202,7 +204,7 @@ function Login() {
               <img src="/images/google.png" alt="Google" className="w-6 h-6" />
             )}
             <span className="text-xl font-semibold">
-              {googleButtonClick ? <NewLoader /> : "Continue with Google"}
+              {googleButtonClick ? <NewLoader color="white"/> : "Continue with Google"}
             </span>
           </button>
 
@@ -247,7 +249,7 @@ function Login() {
               </div>
             </form>
           )}
-          
+
           <button
             onClick={handleEmailButtonClick}
             className={`${baseButton} ${emailButtonClick ? "hidden" : ""}`}
