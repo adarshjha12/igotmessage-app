@@ -49,6 +49,10 @@ function Dashboard({ children }: { children: ReactNode }) {
     (state: RootState) => state.auth.user.username
   );
   
+  const isGuest = useAppSelector(
+    (state: RootState) => state.auth.user.isGuest
+  );
+  
   const panelOpen = useAppSelector(
     (state: RootState) => state.activity.panelOpen
   );
@@ -619,11 +623,12 @@ function Dashboard({ children }: { children: ReactNode }) {
       </div>
 
       {/* moodal for create profile if no username exist */}
-      {/* {
+      {
         !userName && <CreateProfileModal />
-      } */}
+      }
 
       {/* modal for story upload  */}
+      {/* when user upload story inside create-story page whether uploa success or not, we show this modal*/}
       { showStoryUploadModal && <UploadModal /> }
     </div>
   );

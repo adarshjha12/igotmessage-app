@@ -40,7 +40,8 @@ const getMyStoryController = async (
       return res.status(400).json({ message: "User id not provided" });
 
     const myStories = await Story.find({ user: userId });
-    if (!myStories) return res.status(404).json({ message: "No story found" });
+    
+    if (myStories.length === 0) return res.status(404).json({ message: "No story found" });
 
     res.status(200).json({ message: "Story found", success: true, myStories });
   } catch (error) {
@@ -55,6 +56,7 @@ const getOtherStoryController = async (
   const otherStories = await Story.find()
     .populate("user", "username profilePicture")
     .sort({ createdAt: -1 });
+    console.log(otherStories);
 
   if (!otherStories)
     return res.status(404).json({ message: "No stories found" });

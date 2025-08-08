@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserAuthInterface {
   authenticated: boolean;
@@ -23,6 +23,20 @@ interface UserAuthInterface {
   };
 }
 
+interface Res {
+  success: boolean;
+  message: string;
+}
+
+interface UploadArgs {
+  userId: string;
+  coverPic: File;
+  proFilePic: File
+  fullname: string
+  username: string
+  bio: string
+}
+
 const initialState: UserAuthInterface = {
   authenticated: false,
   user: {
@@ -43,6 +57,8 @@ const initialState: UserAuthInterface = {
     isGuest: false
   },
 };
+
+const handleProfileUpdate = createAsyncThunk()
 
 const authSlice = createSlice({
   name: 'auth',

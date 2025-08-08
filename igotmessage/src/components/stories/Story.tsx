@@ -25,13 +25,17 @@ function Story() {
   );
 
   async function getStories() {
-    const myStoriesFromApi = (await fetchMyStories(userId)).data.myStories;
-    const otherStoriesFromApi = await (
-      await fetchOtherStories()
-    ).data.otherStories;
+    const myStoriesFromApi = await fetchMyStories(userId);
+    const otherStoriesFromApi = await fetchOtherStories();
 
-    dispatch(setMyFetchedStories(myStoriesFromApi));
-    dispatch(setOtherFetchedStories(otherStoriesFromApi));
+    if (myStoriesFromApi?.data?.stories) {
+      dispatch(setMyFetchedStories(myStoriesFromApi.data.stories));
+      
+    }
+    if (otherStoriesFromApi?.data?.otherStories) {
+      dispatch(setOtherFetchedStories(otherStoriesFromApi.data.otherStories));
+      
+    }
   }
 
   const uniqueUsers = Array.from(
@@ -46,8 +50,7 @@ function Story() {
     getStories();
   }, [storyUploadStatus]);
 
-  useEffect(() => {
-  }, [myStories]);
+  useEffect(() => {}, [myStories]);
 
   return (
     <div className="w-full py-4 px-0 h-fit z-0 flex overflow-x-auto whitespace-nowrap gap-2 scroll-smooth hide-scrollbar">
