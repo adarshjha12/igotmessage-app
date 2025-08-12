@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserAuthInterface {
   authenticated: boolean;
   user: {
-    _id: string; 
+    _id: string;
     googleId?: string | null;
     isGuest?: boolean;
     email?: string | null;
@@ -11,14 +11,14 @@ interface UserAuthInterface {
     title?: string | null;
     avatar?: string | null;
     verified?: boolean;
-    username?: string | null;
+    userName?: string | null;
     fullName?: string | null;
     profilePicture?: string | null;
     coverPhoto?: string | null;
     bio?: string | null;
-    followers?: string[];  
-    following?: string[];  
-    createdAt?: string;    
+    followers?: string[];
+    following?: string[];
+    createdAt?: string;
     updatedAt?: string;
   };
 }
@@ -30,41 +30,54 @@ interface Res {
 
 interface UploadArgs {
   userId: string;
-  coverPic: File;
-  proFilePic: File
-  fullname: string
-  username: string
-  bio: string
+  coverPic?: File;
+  profilePic?: File;
+  fullName: string;
+  userName: string;
+  bio: string;
 }
+
+const url =
+  process.env.NODE_ENV === "production"
+    ? "https://igotmessage-app-backend.onrender.com"
+    : "http://localhost:5000";
 
 const initialState: UserAuthInterface = {
   authenticated: false,
   user: {
-    _id: '', // initially empty string
-    googleId: '',
-    email: '',
+    _id: "", // initially empty string
+    googleId: "",
+    email: "",
     phoneNo: null,
-    title: '',
-    avatar: '',
+    title: "",
+    avatar: "",
     verified: false,
-    username: '',
-    profilePicture: '',
-    bio: '',
+    userName: "",
+    profilePicture: "",
+    bio: "",
     followers: [],
     following: [],
-    createdAt: '',
-    updatedAt: '',
-    isGuest: false
+    createdAt: "",
+    updatedAt: "",
+    isGuest: false,
   },
 };
 
-const handleProfileUpdate = createAsyncThunk()
+export const handleProfileUpdate = createAsyncThunk<Res, UploadArgs>(
+  "profile/handleProfileUpdate",
+  async ({ userId, fullName, userName, bio }) => {
+    return { success: true, message: "hh" };
+  }
+);
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    addCurrentUserToStore: (state, action: PayloadAction<UserAuthInterface['user']>) => {
+    addCurrentUserToStore: (
+      state,
+      action: PayloadAction<UserAuthInterface["user"]>
+    ) => {
       state.user = action.payload;
     },
     setAuthStatus: (state, action: PayloadAction<boolean>) => {

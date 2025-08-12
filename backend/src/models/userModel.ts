@@ -28,7 +28,7 @@ const Schema = new mongoose.Schema(
       default:
         "https://res.cloudinary.com/dqj3x4k2h/image/upload/v1735681234/avatars/default-avatar.png",
     },
-    username: { type: String, unique: true, sparse: true },
+    userName: { type: String, unique: true, sparse: true },
     fullName: { type: String },
     profilePicture: { type: String },
     coverPhoto: { type: String },

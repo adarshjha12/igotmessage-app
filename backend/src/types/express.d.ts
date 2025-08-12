@@ -14,7 +14,7 @@ declare global {
       followers?: Types.ObjectId[];
       following?: Types.ObjectId[];
       fullName?: string | null;
-      username?: string | null;
+      userName?: string | null;
       profilePicture?: string | null;
       coverPhoto?: string | null;
       bio?: string | null;

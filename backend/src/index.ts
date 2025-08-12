@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
 import './services/googleOauth'
@@ -6,6 +6,10 @@ import connectToMongoDB  from './db/connection'
 connectToMongoDB()
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import helmet from "helmet";
+import compression from "compression";
+import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 import passport from 'passport'
 import gAuthRouter from './routers/googleRoute'
 import emailAuthRouter from './routers/emailAuth'
@@ -17,19 +21,31 @@ import commentRouter from './routers/commentRoute'
 import storyRouter from './routers/storyRoute'
 import guestRouter from './routers/guestRoute'
 
+
 const PORT = process.env.PORT
 const app = express()
 
 const allowedOrigins = ['http://localhost:3000', 'https://igotmessage-app-frontend.vercel.app']
 
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, 
+  max: 10, 
+  message: { message: "Too many requests, please try again later." },
+  standardHeaders: true, 
+  legacyHeaders: false, 
+});
+
+app.use(limiter);
 app.use(passport.initialize())
 app.use(cors({
     origin: allowedOrigins,
     credentials: true
 }))
-app.use(express.json())
-app.use(cookieParser())
-
+app.disable("x-powered-by");
+app.use(helmet()); 
+app.use(compression()); 
+app.use(morgan("dev")); 
+app.use(express.json()); 
 app.use('/api/google', gAuthRouter)
 app.use('/api/email/auth', emailAuthRouter)
 app.use('/api/current-user', getCurrentUser)
