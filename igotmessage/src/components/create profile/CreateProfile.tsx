@@ -2,7 +2,7 @@
 "use client";
 
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validator from "validator";
 import {
   Camera,
@@ -21,31 +21,63 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  handleProfileUpdate,
+  setShowProfileUpdateModal,
+} from "@/features/authSlice";
+import { useRouter } from "next/navigation";
+import NewLoader from "../NewLoader";
 
-export default function CreateProfileModal() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [coverImage, setCoverImage] = useState<string | null>(null);
-  const [fullName, setFullName] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
+interface CreateProfileModalProps {
+  newUser?: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function CreateProfileModal({
+  newUser,
+  isOpen,
+  onClose,
+}: CreateProfileModalProps) {
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.auth.user._id);
+  const profileUpdateStatus = useAppSelector(
+    (state) => state.auth.user.updateProfileStatus
+  );
+  const router = useRouter();
+  const oldUserData = useAppSelector((state) => state.auth.user);
+  const [profileImage, setProfileImage] = useState<File | undefined>(undefined);
+
+  const [coverImage, setCoverImage] = useState<File | undefined>(undefined);
+  const [profileImagePreview, setProfileImagePreview] = useState<
+    string | undefined
+  >(oldUserData?.profilePicture ?? undefined);
+
+  const [coverImagePreview, setCoverImagePreview] = useState<
+    string | undefined
+  >(oldUserData?.coverPhoto ?? undefined);
+  const [fullName, setFullName] = useState(oldUserData.fullName ?? "");
+  const [username, setUsername] = useState(oldUserData.userName ?? "");
+  const [bio, setBio] = useState(oldUserData.bio ?? "");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [createProfileClicked, setCreateProfileClicked] = useState(false);
+
   const [boxCheckedMessage, setBoxCheckedMessage] = useState("");
 
   const [usernameError, setUsernameError] = useState<string>("");
 
   const [fullnameError, setFullnameError] = useState<string>("");
   validator.isAlpha(fullName);
+  const [openModal, setOpenModal] = useState(isOpen);
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUsername(value);
 
     // Validate username: must start with letter, can have letters, numbers, - _ .
-    const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_.-]*$/;
+    const usernameRegex = /^(?=.*\d)[a-zA-Z][a-zA-Z0-9_.-]*$/;
     if (value && !usernameRegex.test(value)) {
       setUsernameError(
-        'Username must start with a letter and can include numbers, "-", "_", "."'
+        'Username must start with a letter and must include numbers, "-", "_", "."'
       );
     } else if (!value) {
       setUsernameError("");
@@ -60,7 +92,9 @@ export default function CreateProfileModal() {
     const value = e.target.value;
 
     setFullName(value);
-    if (!validator.isAlpha(fullName, "en-US", { ignore: " " })) {
+    const fullNameRegex = /^[A-Za-z][A-Za-z\s]*$/;
+
+    if (value && !fullNameRegex.test(value)) {
       setFullnameError(
         "Fullname must start with a letter and can include spaces"
       );
@@ -75,41 +109,68 @@ export default function CreateProfileModal() {
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setProfileImage(URL.createObjectURL(e.target.files[0]));
+      setProfileImage(e.target.files[0]);
+      setProfileImagePreview(URL.createObjectURL(e.target.files[0]));
     }
   };
 
   const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setCoverImage(URL.createObjectURL(e.target.files[0]));
+      setCoverImage(e.target.files[0]);
+      setCoverImagePreview(URL.createObjectURL(e.target.files[0]));
     }
   };
 
-  const handleCreateProfile = () => {
+  const handleCreateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (username && bio && fullName && !acceptedTerms) {
       setBoxCheckedMessage("Please check the box ");
     } else if (username && bio && fullName && acceptedTerms) {
       setBoxCheckedMessage("");
-
+      dispatch(setShowProfileUpdateModal(true));
+      await dispatch(
+        handleProfileUpdate({
+          userId,
+          userName: username,
+          fullName: fullName,
+          bio,
+          profilePic: profileImage ?? undefined,
+          coverPic: coverImage ?? undefined,
+        })
+      );
     }
   };
 
+  useEffect(() => {
+    if (profileUpdateStatus === "succeeded") {
+      setOpenModal(false);
+      router.push("/dash/profile");
+      console.log("profile update success");
+    } else if (profileUpdateStatus === "failed") {
+      console.log("profile update failed");
+    }
+  }, [profileUpdateStatus]);
+
   return (
     <Dialog
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
+      open={openModal}
+      onClose={onClose}
       className="fixed z-50 inset-0 text-[var(--textColor)] overflow-y-auto bg-black/50 backdrop-blur-sm"
     >
       <div className="flex items-center justify-center min-h-screen p-4">
         <DialogPanel className="w-full relative max-w-lg bg-[var(--bgColor)] rounded-2xl shadow-2xl p-6 space-y-6">
           <DialogTitle className="text-2xl font-semibold text-center flex justify-center items-center gap-4">
-            <EditIcon size={30} strokeWidth={1} className="text-[var(--textColor)]" />
-            Hey, create your profile
+            <EditIcon
+              size={30}
+              strokeWidth={1}
+              className="text-[var(--textColor)]"
+            />
+            {newUser ? "Hey, create your profile" : "Update your profile"}
           </DialogTitle>
           <p className="text-sm text-[var(--textColor)] text-center">
             It takes just one minute.
           </p>
-          <form action="/dgthfhf">
+          <form onSubmit={handleCreateProfile}>
             {/* Cover photo */}
             <div className="relative">
               <input
@@ -118,17 +179,17 @@ export default function CreateProfileModal() {
                 onChange={handleCoverChange}
                 className="hidden"
                 id="coverInput"
-                required
+                name="coverInput"
               />
               <label
                 htmlFor="coverInput"
                 className="block w-full h-40 bg-[var(--wrapperColor)] rounded-xl cursor-pointer overflow-hidden relative"
               >
-                {coverImage ? (
+                {coverImagePreview ? (
                   <img
-                    src={coverImage}
+                    src={coverImagePreview}
                     alt="Cover"
-                    className="object-cover w-full h-full"
+                    className="object-contain w-full h-full"
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full">
@@ -151,14 +212,15 @@ export default function CreateProfileModal() {
                   onChange={handleProfileChange}
                   className="hidden"
                   id="profileInput"
+                  name="profileInput"
                 />
                 <label
                   htmlFor="profileInput"
                   className="block w-32 h-32 rounded-full border-2 border-blue-600/50 bg-[var(--wrapperColor)] overflow-hidden cursor-pointer"
                 >
-                  {profileImage ? (
+                  {profileImagePreview ? (
                     <img
-                      src={profileImage}
+                      src={profileImagePreview}
                       alt="Profile"
                       className="object-cover w-full h-full"
                     />
@@ -189,7 +251,7 @@ export default function CreateProfileModal() {
                     placeholder="Mitchell Starc"
                     className={`w-full px-3 py-2  ${
                       fullnameError === "Good to go" &&
-                      "border-1 border-green-500"
+                      "border-1 border-blue-500"
                     } ${
                       fullnameError !== "Good to go" &&
                       fullnameError !== "" &&
@@ -205,7 +267,7 @@ export default function CreateProfileModal() {
                       <CheckCircleIcon
                         size={24}
                         weight={"fill"}
-                        className="text-green-500"
+                        className="text-blue-500"
                       />
                     )}
                     {fullnameError !== "Good to go" && fullnameError !== "" && (
@@ -222,7 +284,7 @@ export default function CreateProfileModal() {
                     className={`text-md font-medium ${
                       fullnameError !== "Good to go"
                         ? "text-red-500"
-                        : "text-green-500"
+                        : "text-blue-500"
                     } mt-1`}
                   >
                     {fullnameError}
@@ -242,7 +304,7 @@ export default function CreateProfileModal() {
                     placeholder="Starts with letter; can use numbers & - _ ."
                     className={`w-full px-3 py-2  ${
                       usernameError === "Good to go" &&
-                      "border-1 border-green-500"
+                      "border-1 border-blue-500"
                     } ${
                       usernameError !== "Good to go" &&
                       usernameError !== "" &&
@@ -258,10 +320,10 @@ export default function CreateProfileModal() {
                       <CheckCircleIcon
                         size={24}
                         weight={"fill"}
-                        className="text-green-500"
+                        className="text-blue-500"
                       />
                     )}
-                    {usernameError !== "Good to go" && username !== "" && (
+                    {usernameError !== "Good to go" && usernameError !== "" && (
                       <XCircleIcon
                         size={24}
                         weight={"fill"}
@@ -275,7 +337,7 @@ export default function CreateProfileModal() {
                     className={`text-md font-medium ${
                       usernameError !== "Good to go"
                         ? "text-red-500"
-                        : "text-green-500"
+                        : "text-blue-500"
                     } mt-1`}
                   >
                     {usernameError}
@@ -303,7 +365,7 @@ export default function CreateProfileModal() {
                       setAcceptedTerms(e.target.checked);
                       setBoxCheckedMessage("");
                     }}
-                    className="accent-green-500 rounded-4xl h-6 w-6"
+                    className="accent-blue-500 rounded-4xl h-6 w-6"
                     id="terms"
                   />
                   <label htmlFor="terms" className="text-xs">
@@ -327,10 +389,12 @@ export default function CreateProfileModal() {
             {/* Button */}
             <button
               type="submit"
-              onClick={handleCreateProfile}
-              className="w-full my-2 py-2 px-4 bg-primary  rounded-lg text-white font-medium hover:bg-primary/90 disabled:opacity-90 bg-gradient-to-r from-blue-500 to-blue-950 transition"
+              className="w-full flex justify-center items-center cursor-pointer my-2 py-2 px-4 bg-primary rounded-lg text-white font-medium hover:bg-primary/90 disabled:opacity-90 bg-gradient-to-r from-blue-500 to-blue-950 active:scale-95 active:opacity-40 transition"
             >
-              Create Profile
+              {profileUpdateStatus === "loading"
+                ? "Updating..."
+                : `${newUser ? "Create Profile" : "Update Profile"}`}
+              {profileUpdateStatus === "loading" && <NewLoader />}
             </button>
           </form>
           <div className="absolute top-2 right-2">
@@ -339,7 +403,7 @@ export default function CreateProfileModal() {
                 strokeWidth={1.5}
                 size={35}
                 className="text-gray-400 hover:text-gray-600"
-                onClick={() => setIsOpen && setIsOpen(false)}
+                onClick={onClose}
               />
             </button>
           </div>

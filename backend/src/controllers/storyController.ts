@@ -22,10 +22,10 @@ const storyUploadController = async (
       musicData: musicData && JSON.parse(musicData),
     });
 
-    res.status(201).json({ message: "Story uploaded", success: true, story });
+    return res.status(201).json({ message: "Story uploaded", success: true, story });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "IGotMessage Server error", error });
+   return res.status(500).json({ message: "IGotMessage Server error", error });
   }
 };
 
@@ -56,7 +56,6 @@ const getOtherStoryController = async (
   const otherStories = await Story.find()
     .populate("user", "username profilePicture")
     .sort({ createdAt: -1 });
-    console.log(otherStories);
 
   if (!otherStories)
     return res.status(404).json({ message: "No stories found" });

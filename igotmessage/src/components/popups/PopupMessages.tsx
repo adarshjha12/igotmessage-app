@@ -1,22 +1,53 @@
-import React from 'react'
+import { CheckCircle, XCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-type OtpProps = {
-  showPopup?: boolean,
-  message?: string,
-  success?: boolean
+interface PopupMessageProps {
+  show: boolean;
+  type: "success" | "error";
+  message: string;
+  onClose: () => void;
 }
 
-function PopupMessages({ showPopup, message, success}: OtpProps) {
+export default function PopupMessage({
+  show,
+  type,
+  message,
+  onClose,
+}: PopupMessageProps) {
+  const Icon = type === "success" ? CheckCircle : XCircle;
+
   return (
-    <div className={`${showPopup ? 'flex down-slide' : 'hidden'} max-w-[80%] z-50 justify-center h-auto items-center absolute top-0 border-3 ${success ? 'border-green-700' : 'border-red-700' } rounded-md `}>
-      <div className={`${showPopup ? 'flex down-slide' : 'hidden'} max-w-full py-1 flex-col h-auto gap-2.5 rounded-md ${success ? 'bg-gradient-to-tr from-black to-green-600' : 'bg-gradient-to-tr from-black to-red-600'}  text-white font-semibold m-0.5`}> 
-        <div className='w-full flex justify-center text-center'>
-            <p className='px-3 max-w-full h-auto font-exo2 tracking-widest text-sm'>{message}</p>
-        </div>
-        <hr className={` ${showPopup ? 'popup-animation' : ''} border-t-0 border-r-4 border-amber-50 ${success ? 'bg-green-500' : 'bg-red-500'}  rounded-xs outline-none w-0 h-1`} />
-      </div>
-    </div>
-  )
-}
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0, y: -20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.95 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="fixed top-5 left-[10%] sm:left-[30%] z-50 flex items-center gap-3 px-5 py-4 rounded-2xl border border-white/10"
+          style={{
+            backgroundColor: "var(--bgColor)",
+            color: "var(--textColor)",
+            boxShadow:
+              "0 10px 25px rgba(0,0,0,0.4), 0 5px 15px rgba(0,0,0,0.2)",
+          }}
+        >
+          <Icon
+            className={`w-6 h-6 flex-shrink-0 ${
+              type === "success" ? "text-green-400" : "text-red-400"
+            }`}
+          />
+          <span className="font-medium">{message}</span>
 
-export default PopupMessages
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="ml-2 rounded-full p-1 hover:bg-white/10 transition"
+          >
+            <XCircle className="w-5 h-5 opacity-70" />
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

@@ -35,29 +35,35 @@ import {
   SearchIcon,
   SidebarCloseIcon,
   SidebarIcon,
+  UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
 import CreateProfileModal from "../create profile/CreateProfile";
-import UploadModal from "../modals/UploadModal";
+import UploadModal from "../modals/UploadStory";
+import ProfileUpdateModal from "../modals/UpdateProfileModal";
 
 function Dashboard({ children }: { children: ReactNode }) {
   const uploadStatus = useAppSelector((state) => state.story.uploadStoryStatus);
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const userTitle = useAppSelector((state: RootState) => state.auth.user.title);
   const userName = useAppSelector(
-    (state: RootState) => state.auth.user.username
+    (state: RootState) => state.auth.user.userName
   );
-  
-  const isGuest = useAppSelector(
-    (state: RootState) => state.auth.user.isGuest
+  const fullName = useAppSelector(
+    (state: RootState) => state.auth.user.fullName
   );
-  
+
+  const isGuest = useAppSelector((state: RootState) => state.auth.user.isGuest);
+
   const panelOpen = useAppSelector(
     (state: RootState) => state.activity.panelOpen
   );
   const showStoryUploadModal = useAppSelector(
     (state: RootState) => state.story.showStoryUploadModal
+  );
+  const showProfileUpdateModal = useAppSelector(
+    (state: RootState) => state.auth.user.showProfileUpdateModal
   );
   const [searchInput, setSearchInput] = useState("");
   const [searchInputClick, setSearchInputClick] = useState(false);
@@ -67,10 +73,9 @@ function Dashboard({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const avatar = null;
-  
+  const avatar = useAppSelector(state => state.auth.user.profilePicture);
 
-  console.log(avatar);
+  const [showCreateProfileModal, setShowCreateProfileModal] = useState(true);
 
   function handleNavClick(path: string) {
     if (pathname !== path) {
@@ -373,8 +378,24 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : ""
               }`}
             >
-              <UserCircleIcon strokeWidth={1.5} size={28} />
-              <p className={`${sidebarOpen ? "" : "hidden"}`}>Profile</p>
+              <div className=" flex items-center justify-center rounded-full bg-gradient-to-br text-[var(--textColor)]  hover:scale-105 transition-transform duration-300 ease-out">
+                 {avatar ? (
+                    <img
+                      src={avatar}
+                      alt="avatar"
+                      className="w-6 h-6 rounded-xl"
+                    />
+                  ) : (
+                    <div className=" flex items-center justify-center rounded-full transition-transform duration-300 ease-out">
+                      <UserIcon
+                        size={28}
+                        strokeWidth={1.2}
+                        className="text-[var(textColor)] group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+              </div>
+              <p className={`${sidebarOpen ? "" : "hidden"} text-[var(textColor)]`}>{fullName !== "" ? fullName : "You"}</p>
             </Link>
 
             {/* PANEL TOGGLE - Still a button */}
@@ -541,17 +562,19 @@ function Dashboard({ children }: { children: ReactNode }) {
                     <img
                       src={avatar}
                       alt="avatar"
-                      className="w-8 h-8 rounded-xl"
+                      className="w-6 h-6 rounded-xl"
                     />
                   ) : (
-                    <UserCircleIcon
-                      size={25}
-                      weight={pathname === "/dash/profile" ? "fill" : "regular"}
-                      strokeWidth={1.5}
-                    />
+                    <div className=" flex items-center justify-center rounded-full bg-gradient-to-br  shadow-md hover:scale-105 transition-transform duration-300 ease-out group">
+                      <UserIcon
+                        size={25}
+                        strokeWidth={1.2}
+                        className="text-white group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
                   )}
                 </div>
-                <p className="text-sm opacity-70 font-medium">Profile</p>
+                <p className="text-sm opacity-70 font-medium">{"You"}</p>
               </Link>
             </div>
           </nav>
@@ -623,13 +646,12 @@ function Dashboard({ children }: { children: ReactNode }) {
       </div>
 
       {/* moodal for create profile if no username exist */}
-      {
-        !userName && <CreateProfileModal />
-      }
+      {(!userName && !fullName) && <CreateProfileModal isOpen={showCreateProfileModal} newUser={true} onClose={() => setShowCreateProfileModal(false)}/>}
 
       {/* modal for story upload  */}
-      {/* when user upload story inside create-story page whether uploa success or not, we show this modal*/}
-      { showStoryUploadModal && <UploadModal /> }
+      {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}
+      {showStoryUploadModal && <UploadModal />}
+      {showProfileUpdateModal && <ProfileUpdateModal />}
     </div>
   );
 }
