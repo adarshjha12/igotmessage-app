@@ -18,6 +18,7 @@ function Story() {
   const storyUploadStatus = useAppSelector(
     (state) => state.story.uploadStoryStatus
   );
+  const isDark = useAppSelector((state) => state.activity.isDark);
   const myProfilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
   );
@@ -85,7 +86,12 @@ function Story() {
           </div>
         </Link>
 
-        <p className="text-[12px] font-medium text-[var(--textColor)] ">
+        <p
+          className={`text-[12px] font-medium ${
+            isDark ? "text-gray-300" : "text-gray-600"
+          }`}
+        >
+          {" "}
           Create Story
         </p>
       </div>
@@ -114,7 +120,12 @@ function Story() {
             </div>
           </Link>
 
-          <p className="text-[12px] font-medium text-[var(--textColor)]">
+          <p
+            className={`text-[12px] font-medium ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
+            {" "}
             {myStories[0].user.userName ?? "My Story"}
           </p>
         </div>
@@ -150,7 +161,11 @@ function Story() {
                 </div>
               </Link>
 
-              <p className="text-[12px] font-medium text-[var(--textColor)]">
+              <p
+                className={`text-[12px] font-medium ${
+                  isDark ? "text-gray-300" : "text-gray-600"
+                }`}
+              >
                 {user.userName ?? `other Story ${index}`}
               </p>
             </div>
