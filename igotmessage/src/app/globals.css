@@ -288,9 +288,9 @@ body {
 }
 
 @keyframes pulseRing {
-  0% { box-shadow: 0 0 8px rgba(255,0,150,0.4); }
-  50% { box-shadow: 0 0 14px rgba(255,0,150,0.6); }
-  100% { box-shadow: 0 0 8px rgba(255,0,150,0.4); }
+  0% { box-shadow: 0 0 8px rgba(0, 157, 255, 0.4); }
+  50% { box-shadow: 0 0 14px rgba(0, 170, 255, 0.6); }
+  100% { box-shadow: 0 0 8px rgba(0, 136, 255, 0.4); }
 }
 .animate-pulse-ring {
   animation: pulseRing 2s infinite;

@@ -144,6 +144,7 @@ export default function CreateProfileModal({
   useEffect(() => {
     if (profileUpdateStatus === "succeeded") {
       setOpenModal(false);
+      onClose();
       router.push("/dash/profile");
       console.log("profile update success");
     } else if (profileUpdateStatus === "failed") {

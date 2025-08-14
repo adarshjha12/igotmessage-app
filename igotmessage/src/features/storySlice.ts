@@ -14,7 +14,7 @@ interface MyStoryType {
   musicData?: MusicData;
   user: {
     _id: string;
-    username: string;
+    userName: string;
     profilePicture: string;
   };
   createdAt: string;
@@ -26,7 +26,7 @@ interface OtherStoryType {
   musicData?: MusicData;
   user: {
     _id: string;
-    username: string;
+    userName: string;
     profilePicture: string;
   };
   createdAt: string;

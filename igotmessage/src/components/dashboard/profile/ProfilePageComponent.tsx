@@ -29,7 +29,7 @@ export default function ProfileComponent() {
     }
     const timeout = setTimeout(() => {
       dispatch(setProfileUpdateStatus("idle"));
-    }, 5000);
+    }, 10000);
     return () => {
       clearTimeout(timeout)
     };

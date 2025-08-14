@@ -112,16 +112,7 @@ function Panel() {
                   
                 </div>
             </div>
-            <div className='sticky bottom-0 left-2 w-full bg-[var(--bgColor)]/50 backdrop-blur-sm py-3'>
-                <Link  onClick={() => dispatch(setPanelOpen(false))} href='/dash/profile' className='flex w-fit justify-center items-center gap-2.5 border-[var(--borderColor)] rounded-2xl border-2 active:bg-[var(--wrapperColor)] px-3 py-2'>
-                  <p className='text-2xl font-semibold'>{userName ? userName : 'User123'}</p>
-                  <div>
-                    <Image
-                    className='rounded-2xl'
-                    src={avatar? avatar : '/logos/igm.png' } alt='userName ' height={40} width={40}/>
-                  </div>
-                </Link>
-            </div>
+           
     
     </div>
     </>

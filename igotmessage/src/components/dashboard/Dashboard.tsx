@@ -21,7 +21,7 @@ import {
   ChatTeardropDotsIcon,
 } from "@phosphor-icons/react";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Panel from "../Panel";
 import { setPanelOpen } from "@/features/activitySlice";
@@ -46,7 +46,7 @@ import ProfileUpdateModal from "../modals/UpdateProfileModal";
 function Dashboard({ children }: { children: ReactNode }) {
   const uploadStatus = useAppSelector((state) => state.story.uploadStoryStatus);
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
-  const userTitle = useAppSelector((state: RootState) => state.auth.user.title);
+  
   const userName = useAppSelector(
     (state: RootState) => state.auth.user.userName
   );
@@ -76,6 +76,10 @@ function Dashboard({ children }: { children: ReactNode }) {
   const avatar = useAppSelector(state => state.auth.user.profilePicture);
 
   const [showCreateProfileModal, setShowCreateProfileModal] = useState(true);
+
+  const RandomNumber = useMemo(() => {
+    return Math.floor(Math.random() * 10000 + 1);
+  }, []);
 
   function handleNavClick(path: string) {
     if (pathname !== path) {
@@ -127,7 +131,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/notifications"
                   ? "Notifications"
                   : pathname === "/dash/profile"
-                  ? `${userTitle}`
+                  ? `${userName !== "" ? userName : `NewUser${RandomNumber}` }`
                   : ""}
               </p>
             </div>
@@ -395,7 +399,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                     </div>
                   )}
               </div>
-              <p className={`${sidebarOpen ? "" : "hidden"} text-[var(textColor)]`}>{fullName !== "" ? fullName : "You"}</p>
+              <p className={`${sidebarOpen ? "" : "hidden"} text-[var(textColor)]`}>{userName !== "" ? userName + " (You)" : "You"}</p>
             </Link>
 
             {/* PANEL TOGGLE - Still a button */}
