@@ -116,7 +116,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               <p
                 className={`md:hidden ${
                   pathname === "/dash/feed" ? "font-montez  text-4xl" : ""
-                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-semibold cursor-pointer ease-in `}
+                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[500] cursor-pointer ease-in `}
               >
                 {pathname === "/dash/feed"
                   ? "IGotMessage"

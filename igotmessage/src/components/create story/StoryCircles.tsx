@@ -127,7 +127,7 @@ function Story() {
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            {myStories[0].user.userName ?? "My Story"}
+            My Stories
           </p>
         </div>
       )}
