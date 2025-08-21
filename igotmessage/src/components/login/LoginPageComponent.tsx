@@ -261,7 +261,7 @@ function Login() {
                     onClick={handleSendOtp}
                     className={`${baseButton} text-black`}
                   >
-                    Get otp
+                    {loading ? <NewLoader color="white" /> : "Get otp"}
                   </button>
                 </div>
               </div>

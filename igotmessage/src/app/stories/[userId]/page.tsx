@@ -1,11 +1,15 @@
 "use client"
-
-import StorySlider from '@/components/create story/ShowStory';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import React from 'react'
+import NewLoader from '@/components/NewLoader';
+
+const StorySlider = dynamic(() => import("@/components/create story/ShowStory"), {
+  ssr: false,
+  loading: () => <NewLoader color="black"/>,
+})
 
 function page() {
-    const { userId } = useParams();
   return (
    <StorySlider/>
   )

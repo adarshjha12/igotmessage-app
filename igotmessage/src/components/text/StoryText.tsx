@@ -49,7 +49,7 @@ function StoryText({ storyRef, isCapturing }: any) {
   ];
   return (
     <div className="w-full flex  flex-col justify-center items-center">
-      <div className="flex w-full sm:w-[60%] md:w-[50%] p-2 items-center text-3xl text-[var(--textColor)] justify-between">
+      <div className="flex w-full  p-2 items-center text-3xl text-[var(--textColor)] justify-between">
         <button
           onClick={() => setPaintBrushClicked((prev) => !prev)}
           className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
@@ -153,7 +153,7 @@ function StoryText({ storyRef, isCapturing }: any) {
                 ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
                 : undefined,
         }}
-        className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2 sm:w-[60%] md:w-[50%] min-h-[400px]`}
+        className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2`}
       >
         <div className="w-full flex justify-center items-center">
           {isCapturing ? (

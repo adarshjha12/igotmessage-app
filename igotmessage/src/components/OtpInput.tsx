@@ -141,7 +141,7 @@ const OtpInput = ({
                     newInputValues[i] = e.target.value;
                     setInputValues(newInputValues);
                   }}
-                  className="w-[50px] h-[50px] pl-3 rounded-xl font-bold text-white bg-blue-800 outline-none border-1 border-[var(--borderColor)] text-2xl opacity-75"
+                  className="w-[50px] h-[50px] pl-3 rounded-xl font-bold text-white bg-blue-800 outline-none border-1 border-white text-2xl "
                   onInput={(e) => {
                     moveNext(e.target as HTMLInputElement, i);
                   }}

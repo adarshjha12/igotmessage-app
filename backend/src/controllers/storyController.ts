@@ -39,7 +39,8 @@ const getMyStoryController = async (
     if (!userId)
       return res.status(400).json({ message: "User id not provided" });
 
-    const myStories = await Story.find({ user: userId });
+    const myStories = await Story.find({ user: userId }) .populate("user", "userName profilePicture")
+    .sort({ createdAt: -1 });;
     
     if (myStories.length === 0) return res.status(404).json({ message: "No story found" });
 

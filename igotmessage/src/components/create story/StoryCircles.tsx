@@ -9,7 +9,7 @@ import {
   setMyFetchedStories,
   setOtherFetchedStories,
 } from "@/features/storySlice";
-import SplashScreen from "../SplashScreen";
+
 
 function Story() {
   const dispatch = useAppDispatch();
@@ -32,12 +32,13 @@ function Story() {
     const myStoriesFromApi = await fetchMyStories(userId);
     const otherStoriesFromApi = await fetchOtherStories();
 
-    if (myStoriesFromApi?.data?.stories) {
-      dispatch(setMyFetchedStories(myStoriesFromApi.data.stories));
+    if (myStoriesFromApi?.data?.myStories) {
+      dispatch(setMyFetchedStories(myStoriesFromApi.data.myStories));
     }
     if (otherStoriesFromApi?.data?.otherStories) {
       dispatch(setOtherFetchedStories(otherStoriesFromApi.data.otherStories));
     }
+    
   }
 
   const uniqueUsers = Array.from(
@@ -52,7 +53,6 @@ function Story() {
     getStories();
   }, [storyUploadStatus]);
 
-  useEffect(() => {}, [myStories]);
 
   return (
     <div className="w-full py-4 px-0 h-fit z-0 flex overflow-x-auto whitespace-nowrap gap-2 scroll-smooth hide-scrollbar">
@@ -63,7 +63,7 @@ function Story() {
           className={`relative w-[75px] h-[75px] flex items-center justify-center rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group overflow-hidden
     ${
       myProfilePicture
-        ? "bg-gray-500"
+        ? "bg-gray-600"
         : "bg-gradient-to-br from-blue-500 to-indigo-800"
     }`}
         >
@@ -100,23 +100,25 @@ function Story() {
       {myStories && myStories.length > 0 && (
         <div className="flex flex-col items-center justify-center gap-2">
           <Link
-            href={`/stories/${myStories[0].user}`}
+            href={`/stories/${myStories[0].user._id}`}
             className="relative w-[75px] h-[75px] rounded-full bg-gradient-to-tr from-blue-500  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
-            <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full overflow-hidden">
-              {myStories[0]?.user.profilePicture ? (
-                <img
-                  src={myStories[0].user.profilePicture}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <UserIcon
-                  size={40}
-                  strokeWidth={1.2}
-                  className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
-                />
-              )}
+            <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
+              <div className="flex items-center justify-center w-full h-full bg-gray-600 rounded-full overflow-hidden">
+                {myStories[0]?.user.profilePicture ? (
+                  <img
+                    src={myStories[0].user.profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <UserIcon
+                    size={40}
+                    strokeWidth={1.2}
+                    className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
+                  />
+                )}
+              </div>
             </div>
           </Link>
 
@@ -125,7 +127,6 @@ function Story() {
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            {" "}
             {myStories[0].user.userName ?? "My Story"}
           </p>
         </div>
@@ -144,20 +145,22 @@ function Story() {
                 href={`/stories/${user._id}`}
                 className="relative w-[75px] h-[75px] rounded-full bg-gradient-to-tr from-blue-500  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
               >
-                <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full overflow-hidden">
-                  {user.profilePicture ? (
-                    <img
-                      src={user.profilePicture}
-                      alt="Profile"
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <UserIcon
-                      size={36}
-                      strokeWidth={1.5}
-                      className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
-                    />
-                  )}
+                <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
+                  <div className="flex items-center justify-center w-full h-full rounded-full overflow-hidden bg-gray-500">
+                    {user.profilePicture ? (
+                      <img
+                        src={user.profilePicture}
+                        alt="Profile"
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <UserIcon
+                        size={36}
+                        strokeWidth={1.5}
+                        className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
+                      />
+                    )}
+                  </div>
                 </div>
               </Link>
 

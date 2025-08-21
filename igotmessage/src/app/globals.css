@@ -1,10 +1,9 @@
 @import "tailwindcss";
-@import 'swiper/css';
-@import 'swiper/css/effect-coverflow';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
 @import "tw-animate-css";
-
 
 @theme {
   --font-sans: var(--font-geist-sans);
@@ -26,6 +25,7 @@
   --iconColor: #000;
   --highlightColor: #91e970;
   --navButtonColor: #a3cefb;
+  --btnColor: #1e2838;
 }
 
 .dark {
@@ -39,14 +39,14 @@
   --shadowBorder: #494949;
   --highlightColor: #a5ba1b;
   --navButtonColor: #002384;
+  --btnColor: #1e2838;
 }
 
 .custom-swiper .swiper-button-next,
 .custom-swiper .swiper-button-prev {
-  color: #ffffff; 
+  color: #ffffff;
   z-index: 1000;
 }
-
 
 html {
   width: 100%;
@@ -70,21 +70,20 @@ input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-    appearance: textfield;
-    -moz-appearance: textfield;
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
-
 
 body {
   scrollbar-width: thin;
-   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
- }
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
 
- .scroll-hidden::-webkit-scrollbar {
+.scroll-hidden::-webkit-scrollbar {
   display: none;
 }
 .scroll-hidden {
@@ -92,26 +91,28 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-
 ::-webkit-scrollbar {
   width: 0px;
   height: 8px;
 }
 
 @keyframes progress {
-  from { width: 0%; }
-  to { width: 100%; }
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 .animate-progress {
   animation: progress 30s linear forwards;
 }
 
-
 @keyframes leftSlide {
   0% {
     transform: scaleX(0);
-    transform-origin: right;  
+    transform-origin: right;
   }
   100% {
     transform: scaleX(1);
@@ -177,7 +178,7 @@ body {
 }
 
 .rotate-loader {
-  animation: rotateloader 0.5s linear infinite ;
+  animation: rotateloader 0.5s linear infinite;
 }
 
 @keyframes panel {
@@ -192,7 +193,7 @@ body {
 }
 
 .panel-slide {
-  animation: panel 0.1s linear ;
+  animation: panel 0.1s linear;
 }
 
 @keyframes panelClose {
@@ -235,7 +236,7 @@ body {
   }
   100% {
     /* scale: 1.3; */
-        rotate: -45deg;
+    rotate: -45deg;
   }
 }
 
@@ -256,23 +257,38 @@ body {
   animation: translate 6s linear infinite;
 }
 
-.hjh{
+.hjh {
   background-color: #10eb38;
 }
 
 @keyframes bar1 {
-  0%, 100% { height: 20%; }
-  50% { height: 100%; }
+  0%,
+  100% {
+    height: 20%;
+  }
+  50% {
+    height: 100%;
+  }
 }
 
 @keyframes bar2 {
-  0%, 100% { height: 100%; }
-  50% { height: 10%; }
+  0%,
+  100% {
+    height: 100%;
+  }
+  50% {
+    height: 10%;
+  }
 }
 
 @keyframes bar3 {
-  0%, 100% { height: 50%; }
-  50% { height: 20%; }
+  0%,
+  100% {
+    height: 50%;
+  }
+  50% {
+    height: 20%;
+  }
 }
 
 .animate-bar1 {
@@ -288,9 +304,15 @@ body {
 }
 
 @keyframes pulseRing {
-  0% { box-shadow: 0 0 8px rgba(0, 157, 255, 0.4); }
-  50% { box-shadow: 0 0 14px rgba(0, 170, 255, 0.6); }
-  100% { box-shadow: 0 0 8px rgba(0, 136, 255, 0.4); }
+  0% {
+    box-shadow: 0 0 8px rgba(0, 157, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(0, 170, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(0, 136, 255, 0.4);
+  }
 }
 .animate-pulse-ring {
   animation: pulseRing 2s infinite;

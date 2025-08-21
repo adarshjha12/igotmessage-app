@@ -1,6 +1,6 @@
 "use client";
 
-import Story from "@/components/stories/Story";
+import Story from "@/components/create story/StoryCircles";
 import React, { useEffect, useState } from "react";
 import musicTracks from "@/utils/music";
 import CameraCapture from "@/components/Camera";

@@ -1,13 +1,29 @@
-import React from 'react'
+import React from "react";
 
-function Button({text} : {text: string}) {
+function Button({ text }: { text: string }) {
+  const baseButton = `
+  flex items-center justify-center gap-3
+  w-full max-w-[320px] py-2 px-5
+  rounded-2xl border-2
+  transition-all duration-200 ease-in-out
+  text-lg font-medium
+  hover:scale-[1.03] active:scale-[0.97]
+  shadow-md hover:shadow-lg
+  hover:border-yellow-400 cursor-pointer
+  bg-gray-800 text-white
+  border-gray-600 
+`;
   return (
-    <div className='border-[.1px] flex justify-center items-center p-[1px] border-white w-fit rounded-full'>
-        <button className='px-1 py-0.5 text-white text-xs font-exo2 bg-gradient-to-r from-blue-600 to-blue-950 rounded-full '>
-            {text}
-        </button>
+    <div>
+      <button
+        type="button"
+        // onClick={handleGuestSignin}
+        className={`${baseButton}`}
+      >
+        {text}
+      </button>
     </div>
-  )
+  );
 }
 
-export default Button
+export default Button;
