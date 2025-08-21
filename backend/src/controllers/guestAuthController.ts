@@ -16,7 +16,7 @@ async function handleGuestAuth(req: Request, res: Response): Promise<any> {
       isGuest: true,
     });
     user.save()
-    const payload = {id: user._id.toString(), username: user.username}
+    const payload = {id: user._id.toString(), username: user.userName}
     const token = jwt.sign(payload, process.env.JWT_SECRET!);
 
     res.cookie("authToken", token, {
