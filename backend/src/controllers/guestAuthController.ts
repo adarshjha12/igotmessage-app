@@ -8,7 +8,7 @@ const redirectUrl =
     ? `${process.env.PROD_FRONTEND_URL}/dash/feed`
     : `${process.env.DEV_FRONTEND_URL}/dash/feed`;
 
-async function handleGuestAuth(req: Request, res: Response): Promise<any> {
+async function handleGuestAuth(req: Request, res: Response): Promise<void> {
   try {
     const user = await new User({
       userName: "guest" + randomNumber,
@@ -25,14 +25,14 @@ async function handleGuestAuth(req: Request, res: Response): Promise<any> {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    return res.status(201).json({
+     res.status(201).json({
       success: true,
       message: `guest user guest${randomNumber} created successfully.`,
     });
   } catch (error) {
     console.log(error);
 
-    return res
+     res
       .status(500)
       .json({ success: false, message: `IGotMessage server error`, error });
   }
