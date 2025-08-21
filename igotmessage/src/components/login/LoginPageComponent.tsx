@@ -51,7 +51,7 @@ function Login() {
   let [resendTimer, setResendTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const [resendOtp, setResendOtp] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const timer = function () {
     const interval = setInterval(() => {
@@ -89,11 +89,11 @@ function Login() {
 
   const handleGuestSignin = async function () {
     setGuestButtonClick(true);
-   const res = await handleGuest()
-   console.log("++++++++++++++++++++++", res);
-   if (res?.data.success === true) {
-    router.push('/dash/feed')
-   }
+    const res = await handleGuest();
+    console.log("++++++++++++++++++++++", res);
+    if (res?.data.success === true) {
+      router.push("/dash/feed");
+    }
   };
 
   const handleSendOtp = async function () {
@@ -198,7 +198,11 @@ function Login() {
           >
             <User fill="#10eb38" className="text-green-500" size={32} />
             <span className="">
-               {guestButtonClick ? <NewLoader color="white" /> : "Continue as Guest"}
+              {guestButtonClick ? (
+                <NewLoader color="white" />
+              ) : (
+                "Continue as Guest"
+              )}
             </span>
           </button>
 
@@ -214,7 +218,11 @@ function Login() {
               <img src="/images/google.png" alt="Google" className="w-6 h-6" />
             )}
             <span className="text-xl font-semibold">
-              {googleButtonClick ? <NewLoader color="white"/> : "Continue with Google"}
+              {googleButtonClick ? (
+                <NewLoader color="white" />
+              ) : (
+                "Continue with Google"
+              )}
             </span>
           </button>
 
@@ -265,9 +273,7 @@ function Login() {
             className={`${baseButton} ${emailButtonClick ? "hidden" : ""}`}
           >
             <img src="/images/gmail.png" alt="Gmail" className="w-6 h-6" />
-            <span className=" text-xl font-semibold">
-              Continue with Email
-            </span>
+            <span className=" text-xl font-semibold">Continue with Email</span>
           </button>
         </div>
         <OtpInput
@@ -279,30 +285,33 @@ function Login() {
         />
       </div>
       <PopupMessage
-        showPopup={showOtpSentSuccessPopup}
+        show={showOtpSentSuccessPopup}
+        onClose={() => setShowOtpSentSuccessPopup(false)}
+        type="success"
         message={`Otp sent successfully to ${email}`}
-        success={true}
       />
 
       <PopupMessage
-        showPopup={showPopupForEmptyInput}
+        onClose={() => setShowPopupForEmptyInput(false)}
+        show={showPopupForEmptyInput}
+        type="error"
         message="Please enter email address"
-        success={false}
       />
 
       <PopupMessage
-        showPopup={errorSendingEmail}
+        onClose={() => setErrorSendingEmail(false)}
+        show={errorSendingEmail}
+        type="error"
         message={`${email} is invalid`}
-        success={false}
       />
 
       <PopupMessage
-        showPopup={unauthorized}
+        onClose={() => setUnauthorized(false)}
+        type="error"
+        show={unauthorized}
         message={`you are unauthorized. please select option below to continue`}
-        success={false}
       />
 
-      <div id="recaptcha-container"></div>
       {loading && <NewLoader />}
 
       {/* this is the start of violet background */}

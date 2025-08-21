@@ -12,7 +12,7 @@ const redirectUrl =
 async function handleGuestAuth(req: Request, res: Response): Promise<any> {
   try {
     const user = await new User({
-      username: "guest" + randomNumber,
+      userName: "guest" + randomNumber,
       isGuest: true,
     });
     user.save()
