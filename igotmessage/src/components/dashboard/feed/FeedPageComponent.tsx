@@ -20,6 +20,7 @@ function FeedPageComponent() {
   return (
     <div className=" w-full ">
       <Story />
+      <SplashScreen/>
       <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur
         ipsa, minima non reiciendis voluptatum possimus amet quaerat unde
