@@ -7,7 +7,7 @@ interface UserPayload {
   email?: string;
 }
 
-export const getCurrentUser = async (req: Request, res: Response): Promise<Response> => {
+export const getCurrentUser = async (req: Request, res: Response): Promise<any> => {
   const token = req.cookies.authToken;
 
   if (!token) {
