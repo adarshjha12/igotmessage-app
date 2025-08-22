@@ -115,7 +115,7 @@ function Story() {
                   <UserIcon
                     size={40}
                     strokeWidth={1.2}
-                    className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
+                    className="text-white group-hover:scale-110 transition-transform duration-300"
                   />
                 )}
               </div>

@@ -8,7 +8,7 @@ interface UserPayload {
 }
 
 export const getCurrentUser = async (req: Request, res: Response): Promise<any> => {
-  const token = req.cookies.authToken;
+  const token = req.cookies.authToken;  
 
   if (!token) {
     console.log('no token provided');

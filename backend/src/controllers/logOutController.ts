@@ -7,7 +7,7 @@ const logOut = async (req: Request, res: Response): Promise<any> => {
     return res
       .status(400)
       .json({ success: false, message: "no token provided" });
-  }
+  }  
 
   res.clearCookie("authToken", {
     httpOnly: true,

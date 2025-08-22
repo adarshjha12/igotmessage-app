@@ -3,6 +3,6 @@ import logOut from '../controllers/logOutController'
 
 const logOutRouter = express.Router()
 
-logOutRouter.post('/', logOut)
+logOutRouter.get('/', logOut)
 
 export default logOutRouter

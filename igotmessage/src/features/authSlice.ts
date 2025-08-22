@@ -22,8 +22,10 @@ interface UserAuthInterface {
     createdAt?: string;
     updatedAt?: string;
     updateProfileStatus: "idle" | "loading" | "succeeded" | "failed";
+    logOutStatus: "idle" | "loading" | "succeeded" | "failed";
     updateProfileError: string | null;
-    showProfileUpdateModal: boolean
+    showProfileUpdateModal: boolean;
+    logOutError: string | null;
   };
 }
 
@@ -84,8 +86,10 @@ const initialState: UserAuthInterface = {
     updatedAt: "",
     isGuest: false,
     updateProfileStatus: "idle",
+    logOutStatus: "idle",
     updateProfileError: null,
-    showProfileUpdateModal: false
+    logOutError: null,
+    showProfileUpdateModal: false,
   },
 };
 
@@ -115,6 +119,16 @@ export const handleProfileUpdate = createAsyncThunk<Res, UploadArgs>(
   }
 );
 
+export const logOut = createAsyncThunk("logOut", async () => {
+  const newUrl =
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/logout`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/logout`;
+
+  const response = await axios.get(newUrl, { withCredentials: true });
+  return response.data;
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -138,11 +152,11 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(handleProfileUpdate.fulfilled, (state, action) => {
       state.user.updateProfileStatus = "succeeded";
-      state.user.userName = action.payload.profile.userName
-      state.user.fullName = action.payload.profile.fullName
-      state.user.bio = action.payload.profile.bio
-      state.user.profilePicture = action.payload.profile.profilePicture
-      state.user.coverPhoto = action.payload.profile.coverPhoto
+      state.user.userName = action.payload.profile.userName;
+      state.user.fullName = action.payload.profile.fullName;
+      state.user.bio = action.payload.profile.bio;
+      state.user.profilePicture = action.payload.profile.profilePicture;
+      state.user.coverPhoto = action.payload.profile.coverPhoto;
     });
 
     builder.addCase(handleProfileUpdate.rejected, (state, action) => {
@@ -154,8 +168,27 @@ const authSlice = createSlice({
       state.user.updateProfileStatus = "loading";
       state.user.updateProfileError = null;
     });
+
+    builder.addCase(logOut.fulfilled, (state) => {
+      state.user.logOutStatus = "succeeded";
+    });
+
+    builder.addCase(logOut.rejected, (state, action) => {
+      state.user.logOutStatus = "failed";
+      state.user.logOutError = action.error.message ?? null;
+    });
+
+    builder.addCase(logOut.pending, (state) => {
+      state.user.logOutStatus = "loading";
+      state.user.updateProfileError = null;
+    });
   },
 });
 
-export const { addCurrentUserToStore, setAuthStatus, setShowProfileUpdateModal, setProfileUpdateStatus } = authSlice.actions;
+export const {
+  addCurrentUserToStore,
+  setAuthStatus,
+  setShowProfileUpdateModal,
+  setProfileUpdateStatus,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -1,129 +1,183 @@
-import { MoonIcon, SunIcon, ArrowLeftIcon, ArrowRightIcon, ShieldIcon, InfoIcon, GroupIcon, Settings2Icon, ArrowDownUp, Cross, X } from 'lucide-react'
-import React, { useState } from 'react'
-import Toggle from '../Toggle'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/store/store'
-import { setDarkMode, setPanelOpen } from '@/features/activitySlice'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import Image from 'next/image'
-import { CrosshairIcon, CrossIcon } from '@phosphor-icons/react'
+"use client";
+
+import {
+  MoonIcon,
+  SunIcon,
+  ArrowRightIcon,
+  ShieldIcon,
+  InfoIcon,
+  GroupIcon,
+  Settings2Icon,
+  ArrowDownUp,
+  X,
+  LogOutIcon,
+} from "lucide-react";
+import React, { useState } from "react";
+import Toggle from "../Toggle";
+import { RootState } from "@/store/store";
+import { setDarkMode } from "@/features/activitySlice";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { logOut } from "@/features/authSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import NewLoader from "../NewLoader";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
-    closeModal?: (value: boolean) => void
+  closeModal?: (value: boolean) => void;
 }
 
 function MainModal({ closeModal }: Props) {
-  const isDark = useSelector((state: RootState) => state.activity.isDark)
-  const userName = useSelector((state: RootState) => state.auth.user.title)
+  const isDark = useAppSelector((state: RootState) => state.activity.isDark);
+  const [dataSaver, setDataSaver] = useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const logOutStatus = useAppSelector(
+    (state: RootState) => state.auth.user.logOutStatus
+  );
 
-  const [dataSaver, setDataSaver] = useState(false)
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const avatar = null
-
-  const enableDarkMode = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-      dispatch(setDarkMode(false))
-    } else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-      dispatch(setDarkMode(true))
+  async function handleLogout() {
+    const res = await dispatch(logOut());
+    if (res.meta.requestStatus === "fulfilled") {
+      router.push("/login");
     }
   }
 
-  return (
-    <div className="fixed top-[10%] up-slide w-full left-0 z-50 flex items-center justify-center ">
-      <div className="relative w-[90%] max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] py-6 px-2 shadow-2xl transition-all duration-300">
+  const enableDarkMode = () => {
+    if (isDark) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      dispatch(setDarkMode(false));
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      dispatch(setDarkMode(true));
+    }
+  };
 
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+        onClick={() => closeModal && closeModal(false)}
+      />
+      <motion.div
+        key="modal"
+        initial={{ scale: 0.9, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 50 }}
+        transition={{ type: "spring", stiffness: 300, damping: 18 }}
+        className="fixed top-[10%] left-1/2 z-50 w-[90%] max-w-lg max-h-[80vh] -translate-x-1/2 rounded-2xl 
+                   bg-[var(--wrapperColor)]/50 backdrop-blur-lg text-[var(--textColor)] shadow-2xl overflow-y-auto"
+      >
         {/* Close Button */}
         <button
           onClick={() => closeModal && closeModal(false)}
-          className="absolute top-4 right-4 p-2 rounded-full active:bg-[var(--wrapperColor)] active:scale-75 cursor-pointer"
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-[var(--wrapperColor)] transition"
         >
-          <X size={30} className="text-[var(--iconColor)]" />
+          <X size={28} className="text-[var(--iconColor)]" />
         </button>
 
-        {/* Settings Header */}
-        <div className="text-3xl mb-6 flex gap-2 px-2 items-center font-medium">
-          <Settings2Icon className="text-[var(--iconColor)]" size={35} strokeWidth={1.5} />
-          <p>Settings</p>
-        </div>
-
-        {/* Dark Mode Toggle */}
-        <div className="mb-4 flex justify-between items-center rounded-xl px-4 py-1 bg-[var(--bgColor)]">
-          <div className="flex items-center gap-2">
-            <p className="text-xl font-medium text-[var(--textColor)]">Dark Mode</p>
-            {isDark ? (
-              <MoonIcon fill="#393939" strokeWidth={1.5} size={40} />
-            ) : (
-              <SunIcon size={38} strokeWidth={2} className="text-amber-600" />
-            )}
-          </div>
-          <button onClick={enableDarkMode} className="rounded-full active:scale-90">
-            <Toggle toggleNow={isDark} />
-          </button>
-        </div>
-
-        {/* Data Saver Toggle */}
-        <div className="mb-8 flex justify-between items-center rounded-xl px-4 py-2  bg-[var(--bgColor)]">
-          <div className="flex items-center gap-2">
-            <p className="text-xl font-medium text-[var(--textColor)]">Data Saver</p>
-            <ArrowDownUp size={28} className="text-[var(--textColor)]" />
-          </div>
-          <button onClick={() => setDataSaver(prev => !prev)} className="rounded-full active:scale-90">
-            <Toggle toggleNow={dataSaver} />
-          </button>
-        </div>
-
-        {/* Visit Links */}
-        <div className="mb-6 pt-6">
-          <div className="text-3xl mb-4 px-2 flex gap-2 items-center font-medium">
-            <ArrowRightIcon className="text-[var(--iconColor)] -rotate-45" size={35} strokeWidth={1.5} />
-            <p>Visit</p>
-          </div>
-          <div className="space-y-3">
-            <Link href="/about-dev" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--wrapperColor)] hover:scale-95 transition">
-              <InfoIcon className="text-[var(--iconColor)]" />
-              About Dev
-            </Link>
-            <Link href="/privacy-policy" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--wrapperColor)] hover:scale-95 transition">
-              <ShieldIcon className="text-[var(--iconColor)]" />
-              Privacy Policy
-            </Link>
-            <Link href="/community-guidelines" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--wrapperColor)] hover:scale-95 transition">
-              <GroupIcon className="text-[var(--iconColor)]" />
-              Community Guidelines
-            </Link>
-            <Link href="/terms" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--wrapperColor)] hover:scale-95 transition">
-              <InfoIcon className="text-[var(--iconColor)]" />
-              terms and condiions
-            </Link>
-          </div>
-        </div>
-
-        {/* User Info Button
-        <div className="pt-3 border-t border-[var(--borderColor)]">
-          <Link
-            href="/dash/profile"
-            onClick={() => dispatch(setPanelOpen(false))}
-            className="flex items-center gap-3 px-4 py-2 border-2 border-[var(--borderColor)] rounded-2xl hover:scale-95 transition"
-          >
-            <p className="text-xl font-semibold">{userName ? userName : 'User123'}</p>
-            <Image
-              className="rounded-2xl"
-              src={avatar || '/logos/igm.png'}
-              alt="avatar"
-              width={40}
-              height={40}
+        <div className="px-6 py-8 space-y-8">
+          {/* Settings Header */}
+          <div className="flex gap-3 items-center text-3xl font-semibold">
+            <Settings2Icon
+              className="text-[var(--iconColor)]"
+              size={34}
+              strokeWidth={1.5}
             />
-          </Link>
-        </div> */}
-      </div>
-    </div>
-  )
+            <p>Settings</p>
+          </div>
+
+          {/* Dark Mode Toggle */}
+          <div className="flex justify-between items-center rounded-xl p-4 bg-[var(--bgColor)] hover:shadow-md transition">
+            <div className="flex items-center gap-3">
+              <p className="text-lg font-medium">Dark Mode</p>
+              {isDark ? (
+                <MoonIcon size={30} className="text-indigo-400" />
+              ) : (
+                <SunIcon size={30} className="text-amber-500" />
+              )}
+            </div>
+            <button onClick={enableDarkMode}>
+              <Toggle toggleNow={isDark} />
+            </button>
+          </div>
+
+          {/* Data Saver Toggle */}
+          <div className="flex justify-between items-center rounded-xl p-4 bg-[var(--bgColor)] hover:shadow-md transition">
+            <div className="flex items-center gap-3">
+              <p className="text-lg font-medium">Data Saver</p>
+              <ArrowDownUp size={26} className="text-emerald-500" />
+            </div>
+            <button onClick={() => setDataSaver((prev) => !prev)}>
+              <Toggle toggleNow={dataSaver} />
+            </button>
+          </div>
+
+          {/* Visit Links */}
+          <div>
+            <div className="flex gap-3 items-center text-2xl font-semibold mb-4">
+              <ArrowRightIcon
+                className="text-[var(--iconColor)] -rotate-45"
+                size={30}
+              />
+              <p>Visit</p>
+            </div>
+            <div className="space-y-3">
+              <Link
+                href="/about-dev"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+              >
+                <InfoIcon className="text-[var(--iconColor)]" /> About Dev
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+              >
+                <ShieldIcon className="text-[var(--iconColor)]" /> Privacy
+                Policy
+              </Link>
+              <Link
+                href="/community-guidelines"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+              >
+                <GroupIcon className="text-[var(--iconColor)]" /> Community
+                Guidelines
+              </Link>
+              <Link
+                href="/terms"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+              >
+                <InfoIcon className="text-[var(--iconColor)]" /> Terms &
+                Conditions
+              </Link>
+            </div>
+          </div>
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl 
+                       bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold shadow-lg 
+                       hover:scale-95 active:scale-90 transition"
+          >
+            {logOutStatus === "loading" ? (
+              <NewLoader color="white" />
+            ) : (
+              <>
+                <LogOutIcon /> Logout
+              </>
+            )}
+          </button>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  );
 }
 
-export default MainModal
+export default MainModal;

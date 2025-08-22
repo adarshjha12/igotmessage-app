@@ -75,7 +75,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(state => state.auth.user.profilePicture);
 
-  const [showCreateProfileModal, setShowCreateProfileModal] = useState(true);
+  const [showCreateProfileModal, setShowCreateProfileModal] = useState(false);
 
   const RandomNumber = useMemo(() => {
     return Math.floor(Math.random() * 10000 + 1);
@@ -86,6 +86,18 @@ function Dashboard({ children }: { children: ReactNode }) {
       router.push(path);
     }
   }
+
+  useEffect(() => {
+    if (!userName && !isGuest) {
+      setShowCreateProfileModal(true);
+    }
+    console.log("username", userName);
+    console.log("setShowCreateProfileModal", showCreateProfileModal);
+    
+    return () => {
+      
+    };
+  }, [userName]);
 
   return (
     <div
@@ -116,7 +128,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               <p
                 className={`md:hidden ${
                   pathname === "/dash/feed" ? "font-montez  text-4xl" : ""
-                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 font-[500] cursor-pointer ease-in `}
+                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 ${isDark ? "font-[500]" : "font-[600]"} cursor-pointer ease-in `}
               >
                 {pathname === "/dash/feed"
                   ? "IGotMessage"
@@ -131,7 +143,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/notifications"
                   ? "Notifications"
                   : pathname === "/dash/profile"
-                  ? `${userName !== "" ? userName : `NewUser${RandomNumber}` }`
+                  ? `${userName ? userName : `NewUser${RandomNumber}` }`
                   : ""}
               </p>
             </div>
@@ -573,7 +585,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                       <UserIcon
                         size={25}
                         strokeWidth={1.2}
-                        className="text-white group-hover:scale-110 transition-transform duration-300"
+                        className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
                       />
                     </div>
                   )}
@@ -650,7 +662,7 @@ function Dashboard({ children }: { children: ReactNode }) {
       </div>
 
       {/* moodal for create profile if no username exist */}
-      {(!userName && !fullName) && <CreateProfileModal isOpen={showCreateProfileModal} newUser={true} onClose={() => setShowCreateProfileModal(false)}/>}
+      {showCreateProfileModal && <CreateProfileModal isOpen={showCreateProfileModal} newUser={true} onClose={() => setShowCreateProfileModal(false)}/>}
 
       {/* modal for story upload  */}
       {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}
