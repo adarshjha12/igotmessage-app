@@ -91,12 +91,6 @@ function Dashboard({ children }: { children: ReactNode }) {
     if (!userName && !isGuest) {
       setShowCreateProfileModal(true);
     }
-    console.log("username", userName);
-    console.log("setShowCreateProfileModal", showCreateProfileModal);
-    
-    return () => {
-      
-    };
   }, [userName]);
 
   return (

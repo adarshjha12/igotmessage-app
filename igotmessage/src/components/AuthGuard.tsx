@@ -27,7 +27,6 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         if (response.data?.success === true) {
           dispatch(addCurrentUserToStore(response.data.userData));
           dispatch(setAuthStatus(true));
-          console.log("user verified successfully");
           setVerified(true);
           setLoading(false);
         }

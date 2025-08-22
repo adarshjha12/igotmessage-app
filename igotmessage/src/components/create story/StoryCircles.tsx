@@ -63,7 +63,7 @@ function Story() {
           className={`relative w-[75px] h-[75px] flex items-center justify-center rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group overflow-hidden
     ${
       myProfilePicture
-        ? "bg-gray-600"
+        ? "bg-[var(--bgColor)]"
         : "bg-gradient-to-br from-blue-500 to-indigo-800"
     }`}
         >
@@ -104,7 +104,7 @@ function Story() {
             className="relative w-[75px] h-[75px] rounded-full bg-gradient-to-tr from-blue-500  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
             <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
-              <div className="flex items-center justify-center w-full h-full bg-gray-600 rounded-full overflow-hidden">
+              <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full overflow-hidden">
                 {myStories[0]?.user.profilePicture ? (
                   <img
                     src={myStories[0].user.profilePicture}
@@ -146,7 +146,7 @@ function Story() {
                 className="relative w-[75px] h-[75px] rounded-full bg-gradient-to-tr from-blue-500  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
               >
                 <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
-                  <div className="flex items-center justify-center w-full h-full rounded-full overflow-hidden bg-gray-500">
+                  <div className="flex items-center justify-center w-full h-full rounded-full overflow-hidden bg-[var(--bgColor)]">
                     {user.profilePicture ? (
                       <img
                         src={user.profilePicture}

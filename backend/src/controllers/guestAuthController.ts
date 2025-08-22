@@ -2,13 +2,9 @@ import { Request, Response } from "express";
 import { User } from "../models/userModel";
 import jwt from "jsonwebtoken";
 
-const randomNumber = Math.floor(Math.random() * 100000 + 1);
-const redirectUrl =
-  process.env.NODE_ENV === "production"
-    ? `${process.env.PROD_FRONTEND_URL}/dash/feed`
-    : `${process.env.DEV_FRONTEND_URL}/dash/feed`;
-
 async function handleGuestAuth(req: Request, res: Response): Promise<void> {
+  const randomNumber = Math.floor(Math.random() * 100000 + 1);
+
   try {
     const user = await new User({
       userName: "guest" + randomNumber,
