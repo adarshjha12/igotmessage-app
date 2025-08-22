@@ -70,8 +70,8 @@ function MainModal({ closeModal }: Props) {
         initial={{ scale: 0.9, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 50 }}
-        transition={{ type: "spring", stiffness: 300, damping: 18 }}
-        className="fixed top-[10%] left-1/2 z-50 w-[90%] max-w-lg max-h-[80vh] -translate-x-1/2 rounded-2xl 
+        transition={{ type: "spring", stiffness: 500, damping: 18 }}
+        className="fixed top-[4%] left-1/2 z-50 w-[90%] max-w-lg max-h-[90vh] -translate-x-1/2 rounded-2xl 
                    bg-[var(--wrapperColor)]/50 backdrop-blur-lg text-[var(--textColor)] shadow-2xl overflow-y-auto"
       >
         {/* Close Button */}

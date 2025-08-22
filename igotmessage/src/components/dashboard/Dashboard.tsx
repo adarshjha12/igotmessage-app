@@ -581,10 +581,10 @@ function Dashboard({ children }: { children: ReactNode }) {
                       className="w-6 h-6 rounded-xl"
                     />
                   ) : (
-                    <div className=" flex items-center justify-center rounded-full bg-gradient-to-br  shadow-md hover:scale-105 transition-transform duration-300 ease-out group">
+                    <div className=" flex items-center justify-center rounded-full hover:scale-105 transition-transform duration-300 ease-out group">
                       <UserIcon
                         size={25}
-                        strokeWidth={1.2}
+                        strokeWidth={1.5}
                         className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
                       />
                     </div>
