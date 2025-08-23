@@ -6,7 +6,9 @@ import NewLoader from '@/components/NewLoader';
 
 const StorySlider = dynamic(() => import("@/components/create story/ShowStory"), {
   ssr: false,
-  loading: () => <NewLoader color="black"/>,
+  loading: () => <div className='flex items-center justify-center h-screen w-full'>
+    <NewLoader color="black"/>
+  </div>,
 })
 
 function page() {

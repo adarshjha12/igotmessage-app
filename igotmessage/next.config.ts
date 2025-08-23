@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
         hostname: 'media.istockphoto.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+        pathname: '/**'
+      },
     ],
   },
 }

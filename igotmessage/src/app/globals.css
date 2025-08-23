@@ -106,7 +106,7 @@ body {
 }
 
 .animate-progress {
-  animation: progress 30s linear forwards;
+  animation: progress 15s linear forwards;
 }
 
 @keyframes leftSlide {
