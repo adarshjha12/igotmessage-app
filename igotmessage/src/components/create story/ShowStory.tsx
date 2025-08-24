@@ -294,7 +294,7 @@ export default function StoryViewerPage() {
             <div className="fixed top-24 z-50 right-4 scale-75 gap-2  flex items-center ">
               <button
                 type="button"
-                className="p-2 hover:bg-white/20 rounded-full cursor-pointer"
+                className="p-2 bg-gray-800 hover:bg-white/20 rounded-full cursor-pointer"
                 onClick={() => {
                   setIsMuted(!isMuted);
                   if (audioRef.current) {

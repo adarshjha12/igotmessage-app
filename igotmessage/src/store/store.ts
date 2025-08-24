@@ -4,12 +4,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from '../features/authSlice'
 import activityReducer from '../features/activitySlice'
 import storyReducer from '../features/storySlice'
+import postReducer from '../features/postSlice'
 
  const store = configureStore({
     reducer: {
         auth: authReducer,
         activity: activityReducer,
-        story: storyReducer
+        story: storyReducer,
+        post: postReducer
     }
 })
 
