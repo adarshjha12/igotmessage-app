@@ -9,33 +9,34 @@ export interface Poll {
 
 export interface PostPayload {
   text: string;
-  files: File[]; 
-  privacy: "public" | "friends" | "private"; 
+  files: File[];
+  privacy: "public" | "friends" | "private";
   type: PostType;
   poll: Poll | null;
 }
 
 interface PostState {
   posts: PostPayload[];
-  creating: boolean;
-  error: string | null;
+  uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
+  uploadPostError: string | null;
+  showPostUploadModal: boolean;
 }
 
 const initialState: PostState = {
   posts: [],
-  creating: false,
-  error: null,
+  uploadPostStatus: "idle",
+  uploadPostError: null,
+  showPostUploadModal: false,
 };
+
+
 
 const postSlice = createSlice({
   name: "post",
   initialState,
-  reducers: {
-    
-  },
+  reducers: {},
 });
 
-export const {} =
-  postSlice.actions;
+export const {} = postSlice.actions;
 
 export default postSlice.reducer;

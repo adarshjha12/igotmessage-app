@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -18,6 +18,18 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
+import { Textarea } from "@headlessui/react";
+import StoryTemplates from "@/components/create story/StoryTemplates";
+import PopupMessage from "@/components/popups/PopupMessages";
+import MusicComponent from "@/components/create story/MusicComponent";
+
+interface MusicData {
+  title: string;
+  artist?: string;
+  genre?: string;
+  url: string;
+  image?: string;
+}
 
 export default function CreatePost() {
   const maxChars = 500;
@@ -27,35 +39,35 @@ export default function CreatePost() {
   const [files, setFiles] = useState<File[]>([]);
   const [posting, setPosting] = useState(false);
   const [posType, setPostType] = useState<"normal" | "poll">("normal");
-
+  const [templateImage, setTemplateImage] = useState("");
   const [privacy, setPrivacy] = useState<"public" | "private">("public");
   const [showPoll, setShowPoll] = useState(false);
   const [pollQuestion, setPollQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState<string[]>(["", ""]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [fileMode, setFileMode] = useState<"image" | "video" | null>(null);
+  const [libraryClicked, setLibraryClicked] = useState(false);
+  const [musicClicked, setMusicClicked] = useState(false);
+  const [showTemplateSelectedPopup, setShowTemplateSelectedPopup] =
+    useState(true);
+  const [showMusicSelectedPopup, setShowMusicSelectedPopup] = useState(true);
+  const [musicData, setMusicData] = useState<MusicData>({
+    title: "",
+    artist: "",
+    genre: "",
+    url: "",
+    image: "",
+  });
 
   const remaining = maxChars - text.length;
   const canPost =
     (text.trim().length > 0 || files.length > 0 || pollQuestion.trim()) &&
     remaining >= 0;
 
-  const pickFiles = (mode: "image" | "video") => {
-    setFileMode(mode);
-    fileInputRef.current?.click();
-  };
-
   const onFiles = (list: FileList | null) => {
     if (!list) return;
-    const next = Array.from(list);
-    const filtered = next.filter((f) =>
-      fileMode === "image"
-        ? f.type.startsWith("image/")
-        : f.type.startsWith("video/")
-    );
+    const newFiles = Array.from(list);
     setFiles((prev) => {
-      const all = [...prev, ...filtered];
+      const all = [...prev, ...newFiles];
       return all.slice(0, maxFiles);
     });
   };
@@ -109,8 +121,17 @@ export default function CreatePost() {
     }
   };
 
+  useEffect(() => {
+    setShowTemplateSelectedPopup(true);
+    setShowMusicSelectedPopup(true);
+    setTimeout(() => {
+      setShowTemplateSelectedPopup(false);
+    setShowMusicSelectedPopup(false);
+    }, 5000);
+  }, [templateImage, musicData.url]);
+
   return (
-    <div className="relative min-h-screen flex items-start justify-center bg-[var(--bgColor)]/5 overflow-hidden p-5 text-lg">
+    <div className="relative min-h-screen flex items-start justify-center bg-[var(--bgColor)]/5 overflow-hidden p-2 text-lg">
       {/* Background shapes */}
       <div className="absolute inset-0 -z-10 grid grid-cols-1 sm:grid-cols-2 gap-10 px-12">
         <div className="flex flex-col rounded-b-full rotate-12 blur-2xl bg-blue-700 h-80 w-80"></div>
@@ -119,7 +140,7 @@ export default function CreatePost() {
       </div>
 
       {/* Card */}
-      <div className=" w-full max-w-2xl rounded-2xl border border-[var(--textColor)]/30 bg-[var(--bgColor)]/80 backdrop-blur-md shadow-lg p-6">
+      <div className="overflow-y-auto h-full sm:min-h-[600px] w-full max-w-2xl rounded-2xl border border-[var(--textColor)]/30 bg-[var(--bgColor)]/50 backdrop-blur-md shadow-lg p-6">
         {/* User header + Privacy */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -178,24 +199,30 @@ export default function CreatePost() {
             {/* Upload / Options */}
             <div className="flex flex-wrap gap-3 mb-4">
               <button
-                onClick={() => pickFiles("image")}
+                onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-700 text-white hover:bg-blue-800 transition font-semibold"
               >
                 <Image className="w-5 h-5" /> Photo
               </button>
 
               <button
-                onClick={() => pickFiles("video")}
+                onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-700 text-white hover:bg-purple-800 transition font-semibold"
               >
                 <Video className="w-5 h-5" /> Video
               </button>
 
-              <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-700 text-white hover:bg-green-800 transition font-semibold">
+              <button
+                onClick={() => setLibraryClicked((prev) => !prev)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-700 text-white hover:bg-green-800 transition font-semibold"
+              >
                 <FileStack className="w-5 h-5" /> Library
               </button>
 
-              <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-700 text-white hover:bg-pink-800 transition font-semibold">
+              <button
+                onClick={() => setMusicClicked((prev) => !prev)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-700 text-white hover:bg-pink-800 transition font-semibold"
+              >
                 <Music className="w-5 h-5" /> Music
               </button>
 
@@ -212,14 +239,29 @@ export default function CreatePost() {
                 ref={fileInputRef}
                 className="hidden"
                 multiple
-                accept={fileMode === "image" ? "image/*" : "video/*"}
+                accept="image/*,video/*"
                 onChange={(e) => onFiles(e.target.files)}
               />
             </div>
 
+            {musicData.url !== "" && (
+              <div className="flex px-2 h-fit py-1 w-fit my-4 border-1 border-[var(--borderColor)]/30 rounded-xl gap-2 items-center justify-center overflow-hidden">
+                <Music strokeWidth={1.5}/>
+                <div className="overflow-hidden">
+                  <p className="translate-animation text-nowrap text-sm">
+                    {musicData.title.slice(0, 20)}
+                  </p>
+                </div>
+                <button onClick={() => setMusicData({ title: "", url: "" })}>
+                  <X />
+                </button>
+              </div>
+            )}
             {/* Preview */}
             <AnimatePresence>
-              {files.length > 0 && (
+              {(files.length > 0 ||
+                templateImage !== "" ||
+                musicData.url !== "") && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -260,6 +302,24 @@ export default function CreatePost() {
                       </div>
                     );
                   })}
+                  {templateImage !== "" && (
+                    <div className="relative rounded-xl overflow-hidden border border-[var(--textColor)]/30">
+                      <img
+                        src={templateImage}
+                        alt="template"
+                        className="w-full h-40 object-cover"
+                      />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setTemplateImage("");
+                        }}
+                        className="absolute top-1 right-1 bg-[var(--bgColor)]/50 rounded-full p-1 backdrop-blur-sm shadow hover:bg-[var(--bgColor)]/70 transition"
+                      >
+                        <X className="w-4 h-4 text-[var(--textColor)]" />
+                      </button>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -277,17 +337,16 @@ export default function CreatePost() {
             >
               <button
                 onClick={() => setShowPoll(false)}
-                className="flex items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 rounded-md hover:bg-gray-700 transition"
+                className="flex items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
               >
                 <ArrowLeft className="w-4 h-4" /> Go Back
               </button>
 
-              <input
-                type="text"
+              <textarea
                 value={pollQuestion}
                 onChange={(e) => setPollQuestion(e.target.value)}
                 placeholder="Poll Question"
-                className="w-full p-2 rounded-md border border-gray-700 bg-gray-900 text-white mb-3 focus:outline-none"
+                className="w-full min-h-[150px] p-2 rounded-md border border-gray-700 bg-gray-900  text-white mb-3 focus:outline-none"
               />
 
               <div className="space-y-2">
@@ -342,6 +401,50 @@ export default function CreatePost() {
             Post
           </button>
         </div>
+        {libraryClicked && (
+          <div className="min-h-screen absolute top-0 bg-[var(--bgColor)]/80 backdrop-blur-lg p-6 flex items-center justify-center z-50">
+            {templateImage !== "" && (
+              <PopupMessage
+                show={showTemplateSelectedPopup}
+                type="success"
+                message="image Added"
+                onClose={() => setShowTemplateSelectedPopup(false)}
+              />
+            )}
+            <button
+              onClick={() => setLibraryClicked(false)}
+              className="flex fixed top-4 left-2 items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+            >
+              <ArrowLeft className="w-4 h-4" /> Go Back
+            </button>
+            <StoryTemplates
+              feedPost={true}
+              setTemplateImage={setTemplateImage}
+            />
+          </div>
+        )}
+        {musicClicked && (
+          <div className="min-h-screen w-full absolute top-0 left-0 bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 flex flex-col items-center justify-center z-40">
+            {musicData.url !== "" && (
+                <PopupMessage
+                show={showMusicSelectedPopup}
+                type="success"
+                message="music selected"
+                onClose={() => setShowMusicSelectedPopup(false)}
+              />
+            )}
+            <button
+              onClick={() => setMusicClicked(false)}
+              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <MusicComponent
+              postFeed={true}
+              setMusicDataForPost={setMusicData}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

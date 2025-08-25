@@ -37,11 +37,15 @@ interface Props {
   setMusicModal?: (value: boolean) => void;
   setChevronActive?: (value: boolean) => void;
   muteMusicOfParent?: (value: "yes" | "no") => void;
+  postFeed? : boolean
+  setMusicDataForPost? : (value : any) => void
 }
 function MusicComponent({
   setMusicModal,
   setChevronActive,
   muteMusicOfParent,
+  postFeed,
+  setMusicDataForPost
 }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -99,9 +103,11 @@ function MusicComponent({
   return (
     <div className="flex scroll-smooth h-full overflow-y-auto rounded-2xl w-full sm:w-full border-1 py-2 flex-col items-center px-2 sm:px-4 justify-start  bg-[var(--bgColor)]/50 backdrop-blur-md  text-[var(--text-color)] gap-2">
       <div className="flex flex-col justify-center items-center">
-        <p className="flex text-xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center">
+        {!postFeed && (
+          <p className="flex text-xl text-center bg-[var(--bgColor)]/50 rounded-2xl px-2 font-semibold items-center py-2 mb-4 justify-center">
           <Music2 size={40} strokeWidth={1.5} /> Select your favourite music
         </p>
+        )}
         <div className="flex gap-2 w-full justify-evenly items-start">
           <div className="relative">
             <button
@@ -327,9 +333,13 @@ function MusicComponent({
 
               <button
                 onClick={() => {
-                  setMusicModal && setMusicModal(false);
+                  if (postFeed) {
+                    setMusicDataForPost?.(item);
+                  } else {
+                    setMusicModal && setMusicModal(false);
                   setChevronActive && setChevronActive(false);
                   dispatch(setMusicData(item));
+                  }
                 }}
                 className="flex rounded-full active:bg-[var(--wrapperColor)] active:scale-50 p-1 items-center justify-center cursor-pointer"
               >

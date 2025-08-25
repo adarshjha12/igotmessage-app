@@ -12,7 +12,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
 import { useAppDispatch } from "@/store/hooks";
 
-function StoryTemplates() {
+interface Props {
+  feedPost?: boolean;
+  setTemplateImage?: (url: string) => void;
+}
+
+function StoryTemplates({ feedPost, setTemplateImage }: Props) {
   const dispatch = useAppDispatch();
   const [cityImagesShow, setCityImagesShow] = React.useState(false);
   const [grayImagesShow, setGrayImagesShow] = React.useState(false);
@@ -74,43 +79,51 @@ function StoryTemplates() {
                   : "overflow-hidden h-[150px]"
               } flex-wrap justify-start items-center`}
             >
-              {cityImages.sort((a, b) => a.url.localeCompare(b.url)).map((image, index) => (
-                <div
-                  key={index}
-                  className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
-                >
-                  <Image
-                    onLoad={() => handleImageLoad(index, "city")}
-                    style={
-                      loadedImagesCity[index] ? { opacity: 1 } : { opacity: 0 }
-                    }
-                    className=" object-cover rounded-md"
-                    src={image.url}
-                    priority
-                    sizes="150px"
-                    fill
-                    alt=""
-                  />
-                  {!loadedImagesCity[index] && (
-                    <div className="absolute rounded-md w-full h-full flex justify-center items-center">
-                      <ImageIcon size={30} />
-                    </div>
-                  )}
-                  {loadedImagesCity[index] && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        dispatch(setStoryImage(image.url));
-                        dispatch(setStoryTextBg(image.url));
-                      }}
-                      className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
-                    >
-                      <Plus size={20} />
-                      Select
-                    </button>
-                  )}
-                </div>
-              ))}
+              {cityImages
+                .sort((a, b) => a.url.localeCompare(b.url))
+                .map((image, index) => (
+                  <div
+                    key={index}
+                    className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
+                  >
+                    <Image
+                      onLoad={() => handleImageLoad(index, "city")}
+                      style={
+                        loadedImagesCity[index]
+                          ? { opacity: 1 }
+                          : { opacity: 0 }
+                      }
+                      className=" object-cover rounded-md"
+                      src={image.url}
+                      priority
+                      sizes="150px"
+                      fill
+                      alt=""
+                    />
+                    {!loadedImagesCity[index] && (
+                      <div className="absolute rounded-md w-full h-full flex justify-center items-center">
+                        <ImageIcon size={30} />
+                      </div>
+                    )}
+                    {loadedImagesCity[index] && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (feedPost) {
+                            setTemplateImage?.(image.url);
+                          } else {
+                            dispatch(setStoryImage(image.url));
+                            dispatch(setStoryTextBg(image.url));
+                          }
+                        }}
+                        className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
+                      >
+                        <Plus size={20} />
+                        Select
+                      </button>
+                    )}
+                  </div>
+                ))}
             </div>
             <button
               onClick={() => setCityImagesShow((prev) => !prev)}
@@ -167,8 +180,12 @@ function StoryTemplates() {
                     <button
                       type="button"
                       onClick={() => {
-                        dispatch(setStoryImage(image.url));
-                        dispatch(setStoryTextBg(image.url));
+                        if (feedPost) {
+                          setTemplateImage?.(image.url);
+                        } else {
+                          dispatch(setStoryImage(image.url));
+                          dispatch(setStoryTextBg(image.url));
+                        }
                       }}
                       className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
                     >
@@ -236,8 +253,12 @@ function StoryTemplates() {
                     <button
                       type="button"
                       onClick={() => {
-                        dispatch(setStoryImage(image.url));
-                        dispatch(setStoryTextBg(image.url));
+                        if (feedPost) {
+                          setTemplateImage?.(image.url);
+                        } else {
+                          dispatch(setStoryImage(image.url));
+                          dispatch(setStoryTextBg(image.url));
+                        }
                       }}
                       className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
                     >
@@ -305,8 +326,12 @@ function StoryTemplates() {
                     <button
                       type="button"
                       onClick={() => {
-                        dispatch(setStoryImage(image.url));
-                        dispatch(setStoryTextBg(image.url));
+                        if (feedPost) {
+                          setTemplateImage?.(image.url);
+                        } else {
+                          dispatch(setStoryImage(image.url));
+                          dispatch(setStoryTextBg(image.url));
+                        }
                       }}
                       className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
                     >
@@ -375,8 +400,12 @@ function StoryTemplates() {
                     <button
                       type="button"
                       onClick={() => {
-                        dispatch(setStoryImage(image.url));
-                        dispatch(setStoryTextBg(image.url));
+                        if (feedPost) {
+                          setTemplateImage?.(image.url);
+                        } else {
+                          dispatch(setStoryImage(image.url));
+                          dispatch(setStoryTextBg(image.url));
+                        }
                       }}
                       className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
                     >

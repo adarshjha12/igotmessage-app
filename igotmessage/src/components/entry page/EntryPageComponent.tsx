@@ -20,19 +20,15 @@ export default function EntryPage() {
         const response = await checkAuth();
 
         if (response.data.success === true) {
-          setTimeout(() => {
             setLoading(false);
             setChecked(true);
             setIsVerified(true);
             dispatch(addCurrentUserToStore(response.data.userData));
             router.push("/dash/feed");
-          }, 2000);
         } else {
           setIsVerified(false);
-          setTimeout(() => {
             setLoading(false);
             setChecked(true);
-          }, 1000);
         }
       } catch (error) {
         setIsVerified(false);

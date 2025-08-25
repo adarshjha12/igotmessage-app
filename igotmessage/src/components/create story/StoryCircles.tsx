@@ -60,7 +60,7 @@ function Story() {
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
-          className={`relative w-[75px] h-[75px] flex items-center justify-center border-3 border-[var(--borderColor)]/50 p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group overflow-hidden
+          className={`relative w-[75px] h-[75px] flex items-center justify-center border-3 ${myProfilePicture && "border-[var(--borderColor)]/50"} p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group overflow-hidden
     ${
       myProfilePicture
         ? "bg-[var(--bgColor)]"
