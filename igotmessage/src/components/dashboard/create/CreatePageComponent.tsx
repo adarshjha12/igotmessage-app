@@ -101,7 +101,7 @@ export default function CreatePost() {
         text: text.trim(),
         files,
         privacy,
-        type: posType,
+        posType,
         poll: showPoll
           ? {
               question: pollQuestion,
@@ -228,7 +228,10 @@ export default function CreatePost() {
               </button>
 
               <button
-                onClick={() => setShowPoll(true)}
+                onClick={() => {
+                  setShowPoll(true)
+                  setPostType("poll")
+                }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition active:scale-90 bg-yellow-500 text-black"
               >
                 <BarChart3 className="w-5 h-5" /> Poll
@@ -336,7 +339,10 @@ export default function CreatePost() {
               className="p-4 border border-gray-700 rounded-xl bg-black text-white mb-4"
             >
               <button
-                onClick={() => setShowPoll(false)}
+                onClick={() => {
+                  setShowPoll(false)
+                  setPostType("normal")
+                }}
                 className="flex items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
               >
                 <ArrowLeft className="w-4 h-4" /> Go Back

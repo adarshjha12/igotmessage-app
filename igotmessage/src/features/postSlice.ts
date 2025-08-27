@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
-export type PostType = "text" | "photo" | "video" | "poll";
+export type PostType = "normal" | "poll";
 
 export interface Poll {
   question: string;
@@ -11,7 +12,7 @@ export interface PostPayload {
   text: string;
   files: File[];
   privacy: "public" | "friends" | "private";
-  type: PostType;
+  postType: PostType;
   poll: Poll | null;
 }
 
@@ -29,12 +30,65 @@ const initialState: PostState = {
   showPostUploadModal: false,
 };
 
+const backendUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://igotmessage-app-backend.onrender.com"
+    : "http://localhost:5000";
+
+export const uploadPost = createAsyncThunk(
+  "post/uploadPost",
+  async (args: PostPayload) => {
+    const { text, files, privacy, postType, poll } = args;
+    const formData = new FormData();
+
+    formData.append("privacy", privacy);
+    formData.append("postType", postType);
+    if (postType === "normal") {
+      if (files.length > 0) {
+        files.forEach((file) => {
+          formData.append("files", file);
+        });
+      }
+      formData.append("text", text);
+    } else if (postType === "poll") {
+      formData.append("poll", JSON.stringify(poll));
+    }
+
+    const response = await axios.post(`${backendUrl}/api/post/create-post`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
-  reducers: {},
+  reducers: {
+    setShowPostUploadModal: (state, action: PayloadAction<boolean>) => {
+      state.showPostUploadModal = action.payload;
+    },
+  },
+   extraReducers: (builder) => {
+      builder.addCase(uploadPost.fulfilled, (state, action) => {
+        state.uploadPostStatus = "succeeded";
+      });
+  
+      builder.addCase(uploadPost.rejected, (state, action) => {
+        state.uploadPostStatus = "failed";
+        state.uploadPostError = action.error.message ?? null;
+      });
+  
+      builder.addCase(uploadPost.pending, (state) => {
+        state.uploadPostStatus = "loading";
+        state.uploadPostError = null;
+      });
+    },
 });
 
-export const {} = postSlice.actions;
+export const { setShowPostUploadModal} = postSlice.actions;
 
 export default postSlice.reducer;
