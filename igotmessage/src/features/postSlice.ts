@@ -29,8 +29,6 @@ const initialState: PostState = {
   showPostUploadModal: false,
 };
 
-
-
 const postSlice = createSlice({
   name: "post",
   initialState,

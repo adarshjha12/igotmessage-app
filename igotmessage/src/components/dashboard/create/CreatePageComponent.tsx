@@ -22,6 +22,7 @@ import { Textarea } from "@headlessui/react";
 import StoryTemplates from "@/components/create story/StoryTemplates";
 import PopupMessage from "@/components/popups/PopupMessages";
 import MusicComponent from "@/components/create story/MusicComponent";
+import ImageCropper from "@/components/ImageCropper";
 
 interface MusicData {
   title: string;
@@ -232,7 +233,6 @@ export default function CreatePost() {
               >
                 <BarChart3 className="w-5 h-5" /> Poll
               </button>
-
               {/* Hidden file input */}
               <input
                 type="file"
@@ -424,7 +424,7 @@ export default function CreatePost() {
           </div>
         )}
         {musicClicked && (
-          <div className="min-h-screen w-full absolute top-0 left-0 bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 flex flex-col items-center justify-center z-40">
+          <div className="min-h-[600px] max-h-[700px] w-full absolute top-0 left-0 bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 pb-6 flex flex-col items-center justify-center z-40">
             {musicData.url !== "" && (
                 <PopupMessage
                 show={showMusicSelectedPopup}
@@ -435,7 +435,7 @@ export default function CreatePost() {
             )}
             <button
               onClick={() => setMusicClicked(false)}
-              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
+              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 bg-[var(--bgColor)] text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
             >
               <X className="w-8 h-8" />
             </button>

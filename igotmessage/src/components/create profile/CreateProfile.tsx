@@ -18,6 +18,7 @@ import {
   ArrowUp,
   ArrowUpRight,
   EditIcon,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react";
@@ -28,6 +29,7 @@ import {
 } from "@/features/authSlice";
 import { useRouter } from "next/navigation";
 import NewLoader from "../NewLoader";
+import ImageCropper from "../ImageCropper";
 
 interface CreateProfileModalProps {
   newUser?: boolean;
@@ -48,11 +50,14 @@ export default function CreateProfileModal({
   const router = useRouter();
   const oldUserData = useAppSelector((state) => state.auth.user);
   const [profileImage, setProfileImage] = useState<File | undefined>(undefined);
+  const [temporaryProfileImage, setTemporaryProfileImage] =
+    useState<any>(undefined);
 
   const [coverImage, setCoverImage] = useState<File | undefined>(undefined);
   const [profileImagePreview, setProfileImagePreview] = useState<
     string | undefined
   >(oldUserData?.profilePicture ?? undefined);
+  const [startConversion, setStartConversion] = useState(false);
 
   const [coverImagePreview, setCoverImagePreview] = useState<
     string | undefined
@@ -69,6 +74,8 @@ export default function CreateProfileModal({
   const [fullnameError, setFullnameError] = useState<string>("");
   validator.isAlpha(fullName);
   const [openModal, setOpenModal] = useState(isOpen);
+  const [showProfilePicEditor, setShowProfilePicEditor] = useState(false);
+
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUsername(value);
@@ -108,9 +115,11 @@ export default function CreateProfileModal({
   };
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setProfileImage(e.target.files[0]);
-      setProfileImagePreview(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files?.[0];
+    if (file) {
+      setTemporaryProfileImage(file);
+      setShowProfilePicEditor(true);
+      console.log(file, "new file selected");
     }
   };
 
@@ -151,6 +160,24 @@ export default function CreateProfileModal({
       console.log("profile update failed");
     }
   }, [profileUpdateStatus]);
+
+  useEffect(() => {
+    if (startConversion) {
+      async function handleProfileConversion() {
+        if (temporaryProfileImage !== undefined) {
+          const blob = await (await fetch(temporaryProfileImage)).blob();
+          const file = new File([blob], "cropped.png", { type: blob.type });
+          setProfileImage(file);
+          setProfileImagePreview(URL.createObjectURL(file));
+          setTemporaryProfileImage(null);
+          setStartConversion(false);
+        }
+      }
+
+      handleProfileConversion();
+    }
+    return () => {};
+  }, [startConversion]);
 
   return (
     <Dialog
@@ -236,6 +263,29 @@ export default function CreateProfileModal({
                 </div>
               </div>
             </div>
+            {showProfilePicEditor && (
+              <div className="flex justify-center items-center z-40 inset-0 bg-[var(--bgColor)]/80 absolute">
+                <div className=" bg-[var(--bgColor)]/30 backdrop-blur-md text-[var(--textColor)] min-w-[90vw] sm:min-w-[60vw] rounded-2xl border-1 border-[var(--borderColor)]/50 px-4 py-8 md:min-w-[40vw] h-auto ">
+                  <button
+                    type="button"
+                    className="absolute top-2 right-2"
+                    onClick={() => setShowProfilePicEditor(false)}
+                  >
+                    <X
+                      className="text-[var(--textColor)] active:scale-90"
+                      strokeWidth={2}
+                      size={25}
+                    />
+                  </button>
+                  <ImageCropper
+                    image={temporaryProfileImage}
+                    setImage={setTemporaryProfileImage}
+                    closeEditor={() => setShowProfilePicEditor(false)}
+                    startConverting={() => setStartConversion(true)}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Form fields */}
             <div className="space-y-4">
