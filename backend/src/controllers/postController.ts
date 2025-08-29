@@ -5,9 +5,9 @@ import { Request, Response } from "express";
 
 export const createPost = async (req: Request, res: Response) => {
    try {
-    const { userId, imageUrl, caption, musicUrl } = req.body;
+    const { userId,  text, musicData } = req.body;
 
-    const post = new Post({ user: userId, imageUrl, caption, musicUrl });
+    const post = new Post({ user: userId,  text, musicData });
     await post.save();
 
     await User.findByIdAndUpdate(userId, { $push: { posts: post._id } });

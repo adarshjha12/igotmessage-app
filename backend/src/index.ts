@@ -22,7 +22,7 @@ import storyRouter from "./routers/storyRoute";
 import guestRouter from "./routers/guestRoute";
 import profileRouter from "./routers/profileRoute";
 import logOutRouter from "./routers/logOutRoute";
-import imageGenRouter from "./routers/imageGenRoute";
+import aiTextGenRouter from "./routers/aiTextGenRoute";
 // import webhookRouter from "./routers/webhookRoute";
 
 const PORT = process.env.PORT;
@@ -73,7 +73,7 @@ app.use("/api/story", storyRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/logout", logOutRouter);
-app.use("/api/image/ai", imageGenRouter);
+app.use("/api/text/ai", aiTextGenRouter);
 
 app.get("/", (req, res) => {
   res.json({ mesage: "welcome to igotmessage" });

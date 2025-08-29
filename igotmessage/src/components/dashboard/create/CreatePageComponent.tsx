@@ -108,6 +108,7 @@ export default function CreatePost() {
               options: pollOptions.filter((opt) => opt.trim() !== ""),
             }
           : null,
+          music: musicData
       };
 
       console.log("Submitting post:", payload);

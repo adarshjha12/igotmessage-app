@@ -8,12 +8,21 @@ export interface Poll {
   options: string[];
 }
 
+export interface MusicData {
+  title: string;
+  artist: string;
+  genre: string;
+  url: string;
+  image: string;
+}
+
 export interface PostPayload {
-  text: string;
-  files: File[];
+  text?: string;
+  files?: File[];
   privacy: "public" | "friends" | "private";
   postType: PostType;
-  poll: Poll | null;
+  poll?: Poll | null;
+  music?: MusicData
 }
 
 interface PostState {
@@ -44,12 +53,15 @@ export const uploadPost = createAsyncThunk(
     formData.append("privacy", privacy);
     formData.append("postType", postType);
     if (postType === "normal") {
-      if (files.length > 0) {
+      if (files && files.length > 0) {
         files.forEach((file) => {
           formData.append("files", file);
         });
       }
-      formData.append("text", text);
+      if (text) {
+        formData.append("text", text);
+      }
+      formData.append("music", JSON.stringify(args.music));
     } else if (postType === "poll") {
       formData.append("poll", JSON.stringify(poll));
     }
