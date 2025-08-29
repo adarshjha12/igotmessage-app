@@ -1,11 +1,14 @@
 import { User } from "../models/userModel";
 import { Post } from "../models/postModel";
+import imagekit from "../utils/imagekitConfig";
 
 import { Request, Response } from "express";
 
 export const createPost = async (req: Request, res: Response) => {
    try {
-    const { userId,  text, musicData } = req.body;
+    const { userId, text, musicData, poll, postType, privacy  } = req.body;
+
+    req.file?.mimetype.startsWith("video/")
 
     const post = new Post({ user: userId,  text, musicData });
     await post.save();

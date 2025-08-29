@@ -19,7 +19,7 @@ export interface MusicData {
 export interface PostPayload {
   text?: string;
   files?: File[];
-  privacy: "public" | "friends" | "private";
+  privacy: "public" | "private";
   postType: PostType;
   poll?: Poll | null;
   music?: MusicData

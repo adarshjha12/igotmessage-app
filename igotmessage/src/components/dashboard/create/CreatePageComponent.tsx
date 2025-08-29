@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -16,6 +16,8 @@ import {
   Plus,
   Trash,
   ArrowLeft,
+  Sparkles,
+  SendHorizontalIcon,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { Textarea } from "@headlessui/react";
@@ -23,6 +25,9 @@ import StoryTemplates from "@/components/create story/StoryTemplates";
 import PopupMessage from "@/components/popups/PopupMessages";
 import MusicComponent from "@/components/create story/MusicComponent";
 import ImageCropper from "@/components/ImageCropper";
+import Toggle from "@/components/Toggle";
+import axios from "axios";
+import NewLoader from "@/components/NewLoader";
 
 interface MusicData {
   title: string;
@@ -33,10 +38,13 @@ interface MusicData {
 }
 
 export default function CreatePost() {
-  const maxChars = 500;
+  const maxChars = 1500;
   const maxFiles = 2;
   const currentUser = useAppSelector((state) => state.auth.user);
   const [text, setText] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [displayedText, setDisplayedText] = useState("");
+
   const [files, setFiles] = useState<File[]>([]);
   const [posting, setPosting] = useState(false);
   const [posType, setPostType] = useState<"normal" | "poll">("normal");
@@ -51,6 +59,7 @@ export default function CreatePost() {
   const [showTemplateSelectedPopup, setShowTemplateSelectedPopup] =
     useState(true);
   const [showMusicSelectedPopup, setShowMusicSelectedPopup] = useState(true);
+  const [enableAiText, setEnableAiText] = useState(false);
   const [musicData, setMusicData] = useState<MusicData>({
     title: "",
     artist: "",
@@ -63,6 +72,22 @@ export default function CreatePost() {
   const canPost =
     (text.trim().length > 0 || files.length > 0 || pollQuestion.trim()) &&
     remaining >= 0;
+
+  const [aiTextLoading, setAiTextLoading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
+    }
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+  };
 
   const onFiles = (list: FileList | null) => {
     if (!list) return;
@@ -108,7 +133,7 @@ export default function CreatePost() {
               options: pollOptions.filter((opt) => opt.trim() !== ""),
             }
           : null,
-          music: musicData
+        music: musicData,
       };
 
       console.log("Submitting post:", payload);
@@ -123,26 +148,70 @@ export default function CreatePost() {
     }
   };
 
+  function startStreaming(fullText: string) {
+    let i = 0;
+
+    const interval = setInterval(() => {
+      if (i >= fullText.length) {
+        clearInterval(interval);
+        return;
+      }
+
+      setDisplayedText((prev) => prev + fullText[i]);
+      i++;
+    }, 30);
+  }
+
+  const url =
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/text/ai`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/text/ai`;
+
+  async function handleAiTextGeneration() {
+    setDisplayedText("");
+    setAiTextLoading(true);
+    const prompt = inputText;
+    try {
+      const response = await axios.post(url, {
+        prompt,
+      });
+
+      setText(response.data?.output);
+      startStreaming(response.data?.output);
+      setAiTextLoading(false);
+      setInputText("");
+    } catch (error) {
+      console.error("Error:", error);
+      setAiTextLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    console.log("text", text.length);
+
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+  if (displayedText.includes("undefined")) {
+    setDisplayedText((prev) => prev.replace(/undefined/g, ""));
+  }
+}, [displayedText]);
+
+
   useEffect(() => {
     setShowTemplateSelectedPopup(true);
     setShowMusicSelectedPopup(true);
     setTimeout(() => {
       setShowTemplateSelectedPopup(false);
-    setShowMusicSelectedPopup(false);
+      setShowMusicSelectedPopup(false);
     }, 5000);
   }, [templateImage, musicData.url]);
 
   return (
-    <div className="relative min-h-screen flex items-start justify-center bg-[var(--bgColor)]/5 overflow-hidden p-2 text-lg">
-      {/* Background shapes */}
-      <div className="absolute inset-0 -z-10 grid grid-cols-1 sm:grid-cols-2 gap-10 px-12">
-        <div className="flex flex-col rounded-b-full rotate-12 blur-2xl bg-blue-700 h-80 w-80"></div>
-        <div className="flex flex-col rounded-b-full rotate-45 blur-2xl bg-blue-800 h-96 w-96"></div>
-        <div className="hidden sm:flex flex-col -rotate-12 blur-2xl bg-blue-700 h-80 w-80"></div>
-      </div>
-
+    <div className="relative min-h-screen flex items-start justify-center mb-12 bg-[var(--bgColor)]/5 overflow-y-auto py-2 text-lg">
       {/* Card */}
-      <div className="overflow-y-auto h-full sm:min-h-[600px] w-full max-w-2xl rounded-2xl border border-[var(--textColor)]/30 bg-[var(--bgColor)]/50 backdrop-blur-md shadow-lg p-6">
+      <div className="overflow-y-auto h-full sm:min-h-[600px] w-full px-4 rounded-2xl border border-[var(--textColor)]/30 bg-[var(--wrapperColor)]/50 backdrop-blur-md mb-12 shadow-lg py-6">
         {/* User header + Privacy */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -189,54 +258,143 @@ export default function CreatePost() {
         {/* Normal Post Mode */}
         {!showPoll && (
           <>
+            <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-1 rounded-2xl bg-gradient-to-r from-indigo-500/50 to-purple-500/50 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-[var(--textColor)] animate-pulse" />
+                <p className="text-sm font-medium text-[var(--textColor)]">
+                  AI Text
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEnableAiText((prev) => !prev)}
+                className="transform scale-90 hover:scale-100 transition-transform duration-200"
+              >
+                <Toggle toggleNow={enableAiText} />
+              </button>
+            </div>
             {/* Textarea */}
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              maxLength={maxChars}
-              placeholder="What's happening?"
-              className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--textColor)]/30 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-4 placeholder:text-[var(--textColor)]/50 text-lg"
-            />
+            {!enableAiText && (
+              <textarea
+                ref={textareaRef}
+                value={text}
+                onChange={handleTextAreaChange}
+                maxLength={maxChars}
+                placeholder={"What's happening?"}
+                className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2 placeholder:text-[var(--textColor)]/80 text-lg placeholder:text-xl overflow-hidden"
+              />
+            )}
+
+            {enableAiText && (
+              <div className="w-full flex flex-col justify-center mb-10 items-center">
+                {aiTextLoading && (
+                  <div className="w-full p-4 flex mb-4 justify-end items-center">
+                    <span className="text-[var(--textColor)] opacity-60 text-3xl animate-pulse">
+                      Thinking...
+                    </span>
+                  </div>
+                )}
+                {displayedText && (
+                  <div
+                    className="
+                    w-full 
+                    min-h-[100px] 
+                    p-4 
+                    rounded-2xl 
+                    border 
+                    border-[var(--textColor)]/30 
+                    bg-[var(--bgColor)]/80
+                    backdrop-blur-md 
+                    text-[var(--textColor)] 
+                    text-lg 
+                    leading-relaxed 
+                    whitespace-pre-wrap 
+                    shadow-md 
+                    transition-all 
+                    duration-300 mb-4
+                    ease-in-out
+                  "
+                  >
+                    <span>{displayedText}</span>
+                  </div>
+                )}
+                <div className="w-full flex gap-3 justify-center items-center px-4 py-2 rounded-2xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2">
+                  <input
+                    type="text"
+                    value={inputText}
+                    onChange={handleInputChange}
+                    placeholder="Enter prompt"
+                    className="w-full min-h-[50px] placeholder:text-[var(--textColor)]/80 border-none outline-none text-lg placeholder:text-xl overflow-hidden"
+                  />
+                  <button
+                    type="button"
+                    disabled={inputText.length === 0 || aiTextLoading}
+                    onClick={handleAiTextGeneration}
+                    className="transform active:scale-75 active:bg-green-500 scale-90 hover:scale-100 transition-transform duration-200 rounded-full p-1 px-3 text-[var(--bgColor)] bg-[var(--textColor)] "
+                  >
+                    {aiTextLoading ? (
+                      <NewLoader />
+                    ) : (
+                      <SendHorizontalIcon
+                        strokeWidth={1.5}
+                        size={34}
+                        className="text-[var(--bgColor)]"
+                      />
+                    )}
+                  </button>
+                </div>
+                <div className="w-full flex justify-center items-center"></div>
+              </div>
+            )}
 
             {/* Upload / Options */}
             <div className="flex flex-wrap gap-3 mb-4">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-700 text-white hover:bg-blue-800 transition font-semibold"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
-                <Image className="w-5 h-5" /> Photo
+                <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-blue-500/30 to-transparent blur-md"></span>
+                <Image className="w-5 h-5 text-blue-500 relative z-10" /> Photo
               </button>
 
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-700 text-white hover:bg-purple-800 transition font-semibold"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
-                <Video className="w-5 h-5" /> Video
+                <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-purple-500/30 to-transparent blur-md"></span>
+                <Video className="w-5 h-5 text-purple-500 relative z-10" />{" "}
+                Video
               </button>
 
               <button
                 onClick={() => setLibraryClicked((prev) => !prev)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-700 text-white hover:bg-green-800 transition font-semibold"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
-                <FileStack className="w-5 h-5" /> Library
+                <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-green-500/30 to-transparent blur-md"></span>
+                <FileStack className="w-5 h-5 text-green-500 relative z-10" />{" "}
+                Library
               </button>
 
               <button
                 onClick={() => setMusicClicked((prev) => !prev)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-700 text-white hover:bg-pink-800 transition font-semibold"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
-                <Music className="w-5 h-5" /> Music
+                <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-pink-500/30 to-transparent blur-md"></span>
+                <Music className="w-5 h-5 text-pink-500 relative z-10" /> Music
               </button>
 
               <button
                 onClick={() => {
-                  setShowPoll(true)
-                  setPostType("poll")
+                  setShowPoll(true);
+                  setPostType("poll");
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition active:scale-90 bg-yellow-500 text-black"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
-                <BarChart3 className="w-5 h-5" /> Poll
+                <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-yellow-500/30 to-transparent blur-md"></span>
+                <BarChart3 className="w-5 h-5 text-yellow-500 relative z-10" />{" "}
+                Poll
               </button>
+
               {/* Hidden file input */}
               <input
                 type="file"
@@ -250,7 +408,7 @@ export default function CreatePost() {
 
             {musicData.url !== "" && (
               <div className="flex px-2 h-fit py-1 w-fit my-4 border-1 border-[var(--borderColor)]/30 rounded-xl gap-2 items-center justify-center overflow-hidden">
-                <Music strokeWidth={1.5}/>
+                <Music strokeWidth={1.5} />
                 <div className="overflow-hidden">
                   <p className="translate-animation text-nowrap text-sm">
                     {musicData.title.slice(0, 20)}
@@ -341,8 +499,8 @@ export default function CreatePost() {
             >
               <button
                 onClick={() => {
-                  setShowPoll(false)
-                  setPostType("normal")
+                  setShowPoll(false);
+                  setPostType("normal");
                 }}
                 className="flex items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
               >
@@ -433,7 +591,7 @@ export default function CreatePost() {
         {musicClicked && (
           <div className="min-h-[600px] max-h-[700px] w-full absolute top-0 left-0 bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 pb-6 flex flex-col items-center justify-center z-40">
             {musicData.url !== "" && (
-                <PopupMessage
+              <PopupMessage
                 show={showMusicSelectedPopup}
                 type="success"
                 message="music selected"
