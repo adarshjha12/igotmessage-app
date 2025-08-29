@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setAuthStatus } from '@/features/authSlice';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Loader from '@/components/Loader';
 import LoginPageComponent from '@/components/login/LoginPageComponent';
 import SplashScreen from '@/components/SplashScreen';
 
