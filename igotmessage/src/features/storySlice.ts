@@ -28,6 +28,7 @@ interface OtherStoryType {
     _id: string;
     userName: string;
     profilePicture: string;
+    isGuest: boolean;
   };
   createdAt: string;
   updatedAt: string;

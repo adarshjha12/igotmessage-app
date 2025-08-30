@@ -209,9 +209,9 @@ export default function CreatePost() {
   }, [templateImage, musicData.url]);
 
   return (
-    <div className="relative min-h-screen flex items-start justify-center mb-12 bg-[var(--bgColor)]/5 overflow-y-auto py-2 text-lg">
+    <div className="relative min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
       {/* Card */}
-      <div className="overflow-y-auto h-full sm:min-h-[600px] w-full px-4 rounded-2xl border border-[var(--textColor)]/30 bg-[var(--wrapperColor)]/50 backdrop-blur-md mb-12 shadow-lg py-6">
+      <div className=" h-full sm:min-h-[600px] w-full px-4 rounded-2xl border border-[var(--textColor)]/30 bg-[var(--wrapperColor)]/50 overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6">
         {/* User header + Privacy */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">

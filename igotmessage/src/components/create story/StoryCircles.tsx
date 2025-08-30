@@ -135,7 +135,7 @@ function Story() {
       {uniqueUsers &&
         uniqueUsers.length > 0 &&
         uniqueUsers
-          .filter((user) => user._id !== myId)
+          .filter((user) => user._id !== myId && user.isGuest !== true)
           .map((user, index) => (
             <div
               key={index}

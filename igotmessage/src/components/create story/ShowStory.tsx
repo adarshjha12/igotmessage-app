@@ -29,6 +29,7 @@ interface StoryType {
     _id: string;
     userName: string;
     profilePicture: string;
+    isGuest: boolean;
   };
   musicData?: {
     title?: string;
@@ -120,11 +121,17 @@ export default function StoryViewerPage() {
     const getStories = async () => {
       const myStories = await fetchMyStories();
       const otherUsersStories = await fetchOtherStories();
-      const combined = [myStories, ...otherUsersStories];
+
+      // filter out guest users
+      const filteredStories = otherUsersStories.filter(
+        (userStories: StoryType[]) => !userStories[0]?.user?.isGuest
+      );
+
+      const combined = [myStories, ...filteredStories];
       setStoriesByUsers(combined);
       setCurrentUserIndex(0);
       setActiveStoryIndex(0);
-      console.log(otherUsersStories);
+      console.log(filteredStories);
     };
 
     getStories();

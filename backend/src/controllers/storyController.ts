@@ -39,7 +39,7 @@ const getMyStoryController = async (
     if (!userId)
       return res.status(400).json({ message: "User id not provided" });
 
-    const myStories = await Story.find({ user: userId }) .populate("user", "userName profilePicture")
+    const myStories = await Story.find({ user: userId }) .populate("user", "userName profilePicture isGuest")
     .sort({ createdAt: -1 });;
     
     if (myStories.length === 0) return res.status(404).json({ message: "No story found" });
@@ -55,7 +55,7 @@ const getOtherStoryController = async (
   res: Response
 ): Promise<any> => {
   const otherStories = await Story.find()
-    .populate("user", "userName profilePicture")
+    .populate("user", "userName profilePicture isGuest")
     .sort({ createdAt: -1 });
 
   if (!otherStories)
