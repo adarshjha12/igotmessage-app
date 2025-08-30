@@ -24,9 +24,9 @@ export default function PopupMessage({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="fixed top-5 left-[10%] sm:left-[30%] z-50 flex items-center gap-3 px-5 py-4 rounded-2xl border border-white/10"
+          className="fixed top-5 left-[10%] sm:left-[30%] z-50 flex items-center gap-3 px-5 py-4 rounded-2xl border border-[var(--borderColor)]/30"
           style={{
-            backgroundColor: "var(--bgColor)",
+            backgroundColor: "var(--wrapperColor)",
             color: "var(--textColor)",
             boxShadow:
               "0 10px 25px rgba(0,0,0,0.4), 0 5px 15px rgba(0,0,0,0.2)",

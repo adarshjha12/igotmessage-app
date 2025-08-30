@@ -67,6 +67,7 @@ export default function CreatePost() {
     url: "",
     image: "",
   });
+  const [showVideoDurationError, setShowVideoDurationError] = useState(false);
 
   const remaining = maxChars - text.length;
   const canPost =
@@ -89,12 +90,45 @@ export default function CreatePost() {
     setInputText(e.target.value);
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowVideoDurationError(false);
+    }, 10000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [showVideoDurationError]);
+
   const onFiles = (list: FileList | null) => {
     if (!list) return;
     const newFiles = Array.from(list);
-    setFiles((prev) => {
-      const all = [...prev, ...newFiles];
-      return all.slice(0, maxFiles);
+
+    newFiles.forEach((file) => {
+      if (file.type.startsWith("video/")) {
+        const video = document.createElement("video");
+        video.preload = "metadata";
+
+        video.onloadedmetadata = () => {
+          window.URL.revokeObjectURL(video.src);
+          const duration = video.duration;
+
+          if (duration >= 50) {
+            setShowVideoDurationError(true);
+          } else {
+            setFiles((prev) => {
+              const all = [...prev, file];
+              return all.slice(0, maxFiles);
+            });
+          }
+        };
+
+        video.src = URL.createObjectURL(file);
+      } else {
+        setFiles((prev) => {
+          const all = [...prev, file];
+          return all.slice(0, maxFiles);
+        });
+      }
     });
   };
 
@@ -193,11 +227,10 @@ export default function CreatePost() {
   }, []);
 
   useEffect(() => {
-  if (displayedText.includes("undefined")) {
-    setDisplayedText((prev) => prev.replace(/undefined/g, ""));
-  }
-}, [displayedText]);
-
+    if (displayedText.includes("undefined")) {
+      setDisplayedText((prev) => prev.replace(/undefined/g, ""));
+    }
+  }, [displayedText]);
 
   useEffect(() => {
     setShowTemplateSelectedPopup(true);
@@ -611,6 +644,14 @@ export default function CreatePost() {
           </div>
         )}
       </div>
+      {showVideoDurationError && (
+        <PopupMessage
+          show={showVideoDurationError}
+          type="error"
+          message="Video must be less than 50 seconds"
+          onClose={() => setShowVideoDurationError(false)}
+        />
+      )}
     </div>
   );
 }
