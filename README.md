@@ -1,6 +1,6 @@
 IGotMessage app link- https://igotmessage-app-frontend.vercel.app/
 
-IGotMessage is a fully-featured social media app built by me to showcase my full stack development skills. It includes core features like posts, stories, chats, video calls, and more — all designed to deliver a modern, interactive experience.
+IGotMessage is a fully-featured next gen ai powered social media app built by me to showcase my full stack development skills. It includes core features like posts, stories, chats, video calls, and more — all designed to deliver a modern, interactive experience.
 
 # Cross-Platform Social Media App
 
