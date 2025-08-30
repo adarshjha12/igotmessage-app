@@ -41,7 +41,7 @@ interface MusicData {
 }
 
 export default function CreatePost() {
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const postingStatus = useAppSelector((state) => state.post.uploadPostStatus);
   const postId = useAppSelector((state) => state.post.postId);
@@ -257,16 +257,18 @@ export default function CreatePost() {
     if (postingStatus === "succeeded") {
       dispatch(setShowPostUploadModal(false));
       console.log("post id", postId);
-      
-      router.replace(`/post/${postId}`)
+
+      router.push(`/post/${postId}`);
       setPosting(false);
       setShowSuccessPopup(true);
-      setTimeout(() => {
+
+      const timer = setTimeout(() => {
         setShowSuccessPopup(false);
       }, 10000);
+
+      return () => clearTimeout(timer);
     }
-    return () => {};
-  }, [postingStatus]);
+  }, [postingStatus, postId, router, dispatch]);
 
   useEffect(() => {
     if (displayedText.includes("undefined")) {
@@ -279,14 +281,14 @@ export default function CreatePost() {
     setTimeout(() => {
       setShowTemplateSelectedPopup(false);
     }, 5000);
-  }, [templateImage])
+  }, [templateImage]);
 
   useEffect(() => {
     setShowMusicSelectedPopup(true);
     setTimeout(() => {
       setShowMusicSelectedPopup(false);
     }, 5000);
-  }, [ musicData.url]);
+  }, [musicData.url]);
 
   return (
     <div className="relative min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
@@ -483,6 +485,10 @@ export default function CreatePost() {
                   setPostType("poll");
                   setMusicClicked(false);
                   setLibraryClicked(false);
+                  setDisplayedText("");
+                  setText("");
+                  setFiles([]);
+                  setTemplateImage("");
                 }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >

@@ -17,14 +17,14 @@ export interface MusicData {
 }
 
 export interface PostPayload {
-  userId: string
+  userId: string;
   text?: string;
   files?: File[];
   templateImage?: string;
   privacy: "public" | "private";
   postType: PostType;
   poll?: Poll | null;
-  musicData?: MusicData
+  musicData?: MusicData;
 }
 
 interface PostState {
@@ -32,7 +32,7 @@ interface PostState {
   uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadPostError: string | null;
   showPostUploadModal: boolean;
-  postId?: string
+  postId?: string;
 }
 
 const initialState: PostState = {
@@ -50,7 +50,16 @@ const backendUrl =
 export const uploadPost = createAsyncThunk(
   "post/uploadPost",
   async (args: PostPayload) => {
-    const {userId, text, files, privacy, postType, poll, musicData, templateImage } = args;
+    const {
+      userId,
+      text,
+      files,
+      privacy,
+      postType,
+      poll,
+      musicData,
+      templateImage,
+    } = args;
     const formData = new FormData();
     formData.append("userId", userId);
     formData.append("privacy", privacy);
@@ -72,7 +81,8 @@ export const uploadPost = createAsyncThunk(
       formData.append("poll", JSON.stringify(poll));
     }
 
-    const response = await axios.post(`${backendUrl}/api/post/create-post`,
+    const response = await axios.post(
+      `${backendUrl}/api/post/create-post`,
       formData,
       {
         withCredentials: true,
@@ -89,25 +99,29 @@ const postSlice = createSlice({
     setShowPostUploadModal: (state, action: PayloadAction<boolean>) => {
       state.showPostUploadModal = action.payload;
     },
-  },
-   extraReducers: (builder) => {
-      builder.addCase(uploadPost.fulfilled, (state, action) => {
-        state.uploadPostStatus = "succeeded";
-        state.postId = action.payload.post._id
-      });
-  
-      builder.addCase(uploadPost.rejected, (state, action) => {
-        state.uploadPostStatus = "failed";
-        state.uploadPostError = action.error.message ?? null;
-      });
-  
-      builder.addCase(uploadPost.pending, (state) => {
-        state.uploadPostStatus = "loading";
-        state.uploadPostError = null;
-      });
+
+    setUploadPostStatus: (state, action) => {
+      state.uploadPostStatus = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(uploadPost.fulfilled, (state, action) => {
+      state.uploadPostStatus = "succeeded";
+      state.postId = action.payload.post._id;
+    });
+
+    builder.addCase(uploadPost.rejected, (state, action) => {
+      state.uploadPostStatus = "failed";
+      state.uploadPostError = action.error.message ?? null;
+    });
+
+    builder.addCase(uploadPost.pending, (state) => {
+      state.uploadPostStatus = "loading";
+      state.uploadPostError = null;
+    });
+  },
 });
 
-export const { setShowPostUploadModal} = postSlice.actions;
+export const { setShowPostUploadModal, setUploadPostStatus } = postSlice.actions;
 
 export default postSlice.reducer;

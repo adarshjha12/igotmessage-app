@@ -129,6 +129,10 @@ const storySlice = createSlice({
     setOtherFetchedStories: (state, action) => {
       state.otherFetchedStories = action.payload;
     },
+
+    setUploadStoryStatus: (state, action) => {
+      state.uploadStoryStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(handleStoryUpload.fulfilled, (state, action) => {
@@ -155,4 +159,5 @@ export const {
   setShowStoryUploadModal,
   setMyFetchedStories,
   setOtherFetchedStories,
+  setUploadStoryStatus,
 } = storySlice.actions;

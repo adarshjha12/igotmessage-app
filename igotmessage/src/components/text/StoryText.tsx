@@ -187,7 +187,7 @@ function StoryText({ storyRef, isCapturing }: any) {
                 color,
                 backgroundColor: "transparent",
               }}
-              className={`border-none text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
+              className={`border-none min-h-[600px] text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
               placeholder="🖋️ Write something..."
             />
           )}

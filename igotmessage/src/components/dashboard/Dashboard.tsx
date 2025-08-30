@@ -42,11 +42,23 @@ import MainModal from "../modals/MainModal";
 import CreateProfileModal from "../create profile/CreateProfile";
 import UploadModal from "../modals/UploadStory";
 import ProfileUpdateModal from "../modals/UpdateProfileModal";
+import { setProfileUpdateStatus } from "@/features/authSlice";
+import { setUploadStoryStatus } from "@/features/storySlice";
+import { setUploadPostStatus } from "@/features/postSlice";
 
 function Dashboard({ children }: { children: ReactNode }) {
-  const uploadStatus = useAppSelector((state) => state.story.uploadStoryStatus);
+  const uploadStoryStatus = useAppSelector(
+    (state) => state.story.uploadStoryStatus
+  );
+  const uploadPostStatus = useAppSelector(
+    (state) => state.post.uploadPostStatus
+  );
+
+  const updateProfileStatus = useAppSelector(
+    (state) => state.auth.user.updateProfileStatus
+  );
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
-  
+
   const userName = useAppSelector(
     (state: RootState) => state.auth.user.userName
   );
@@ -73,7 +85,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const avatar = useAppSelector(state => state.auth.user.profilePicture);
+  const avatar = useAppSelector((state) => state.auth.user.profilePicture);
 
   const [showCreateProfileModal, setShowCreateProfileModal] = useState(false);
 
@@ -92,6 +104,28 @@ function Dashboard({ children }: { children: ReactNode }) {
       setShowCreateProfileModal(true);
     }
   }, [userName]);
+
+  useEffect(() => {
+    if (
+      updateProfileStatus === "succeeded" ||
+      uploadStoryStatus === "succeeded" ||
+      uploadPostStatus === "succeeded"
+    ) {
+      const timeout = setTimeout(() => {
+        if (updateProfileStatus === "succeeded") {
+          dispatch(setProfileUpdateStatus("idle"));
+        }
+        if (uploadStoryStatus === "succeeded") {
+          dispatch(setUploadStoryStatus("idle"));
+        }
+        if (uploadPostStatus === "succeeded") {
+          dispatch(setUploadPostStatus("idle"));
+        }
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [updateProfileStatus, uploadStoryStatus, uploadPostStatus, dispatch]);
 
   return (
     <div
@@ -122,7 +156,9 @@ function Dashboard({ children }: { children: ReactNode }) {
               <p
                 className={`md:hidden ${
                   pathname === "/dash/feed" ? "font-montez  text-4xl" : ""
-                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 ${isDark ? "font-[500]" : "font-[600]"} cursor-pointer ease-in `}
+                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 ${
+                  isDark ? "font-[500]" : "font-[600]"
+                } cursor-pointer ease-in `}
               >
                 {pathname === "/dash/feed"
                   ? "IGotMessage"
@@ -137,7 +173,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/notifications"
                   ? "Notifications"
                   : pathname === "/dash/profile"
-                  ? `${userName ? userName : `NewUser${RandomNumber}` }`
+                  ? `${userName ? userName : `NewUser${RandomNumber}`}`
                   : ""}
               </p>
             </div>
@@ -389,23 +425,29 @@ function Dashboard({ children }: { children: ReactNode }) {
               }`}
             >
               <div className=" flex items-center justify-center rounded-full bg-gradient-to-br text-[var(--textColor)]  hover:scale-105 transition-transform duration-300 ease-out">
-                 {avatar ? (
-                    <img
-                      src={avatar}
-                      alt="avatar"
-                      className="w-6 h-6 rounded-xl"
+                {avatar ? (
+                  <img
+                    src={avatar}
+                    alt="avatar"
+                    className="w-6 h-6 rounded-xl"
+                  />
+                ) : (
+                  <div className=" flex items-center justify-center rounded-full transition-transform duration-300 ease-out">
+                    <UserIcon
+                      size={28}
+                      strokeWidth={1.2}
+                      className="text-[var(textColor)] group-hover:scale-110 transition-transform duration-300"
                     />
-                  ) : (
-                    <div className=" flex items-center justify-center rounded-full transition-transform duration-300 ease-out">
-                      <UserIcon
-                        size={28}
-                        strokeWidth={1.2}
-                        className="text-[var(textColor)] group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
+                  </div>
+                )}
               </div>
-              <p className={`${sidebarOpen ? "" : "hidden"} text-[var(textColor)]`}>{userName !== "" ? userName + " (You)" : "You"}</p>
+              <p
+                className={`${
+                  sidebarOpen ? "" : "hidden"
+                } text-[var(textColor)]`}
+              >
+                {userName !== "" ? userName + " (You)" : "You"}
+              </p>
             </Link>
 
             {/* PANEL TOGGLE - Still a button */}
@@ -656,7 +698,13 @@ function Dashboard({ children }: { children: ReactNode }) {
       </div>
 
       {/* moodal for create profile if no username exist */}
-      {showCreateProfileModal && <CreateProfileModal isOpen={showCreateProfileModal} newUser={true} onClose={() => setShowCreateProfileModal(false)}/>}
+      {showCreateProfileModal && (
+        <CreateProfileModal
+          isOpen={showCreateProfileModal}
+          newUser={true}
+          onClose={() => setShowCreateProfileModal(false)}
+        />
+      )}
 
       {/* modal for story upload  */}
       {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}
