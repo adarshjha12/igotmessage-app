@@ -59,9 +59,9 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
       <hr className="w-[10%] my-6 h-[1px] bg-[var(--borderColor)]" />
       <div className="w-full flex px-2 gap-3 flex-col justify-center items-center">
         <div className="flex gap-2 justify-center items-center">
-          <ImageIcon size={30} />
-          <p className="text-xl text-center font-medium text-[var(--textColor)]">
-            You can choose from here also
+          <ImageIcon size={30} color="red"/>
+          <p className="text-2xl tracking-wider text-center font-medium text-[var(--textColor)]">
+            Image Library
           </p>
         </div>
         {/* <hr className='w-full h-[1px] bg-[var(--borderColor)]'/> */}
@@ -76,7 +76,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
               className={`flex gap-6 ${
                 cityImagesShow
                   ? "overflow-auto down-slide h-full"
-                  : "overflow-hidden h-[150px]"
+                  : "overflow-hidden h-[100px]"
               } flex-wrap justify-start items-center`}
             >
               {cityImages
@@ -84,7 +84,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                 .map((image, index) => (
                   <div
                     key={index}
-                    className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
+                    className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
                   >
                     <Image
                       onLoad={() => handleImageLoad(index, "city")}
@@ -96,7 +96,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                       className=" object-cover rounded-md"
                       src={image.url}
                       priority
-                      sizes="150px"
+                      sizes="100px"
                       fill
                       alt=""
                     />
@@ -151,13 +151,13 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
               className={`flex gap-6 ${
                 petImagesShow
                   ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[150px]"
+                  : "overflow-hidden h-[100px]"
               } flex-wrap justify-start items-center`}
             >
               {petImages.map((image, index) => (
                 <div
                   key={index}
-                  className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
+                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
                 >
                   <Image
                     onLoad={() => handleImageLoad(index, "pets")}
@@ -167,7 +167,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                     className=" object-cover rounded-md"
                     src={image.url}
                     priority
-                    sizes="150px"
+                    sizes="100px"
                     fill
                     alt=""
                   />
@@ -222,13 +222,13 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
               className={`flex gap-6 ${
                 natureImagesShow
                   ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[150px]"
+                  : "overflow-hidden h-[100px]"
               } flex-wrap justify-start items-center`}
             >
               {natureImages.map((image, index) => (
                 <div
                   key={index}
-                  className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
+                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
                 >
                   <Image
                     onLoad={() => handleImageLoad(index, "nature")}
@@ -240,7 +240,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                     className=" object-cover rounded-md"
                     src={image.url}
                     priority
-                    sizes="150px"
+                    sizes="100px"
                     fill
                     alt=""
                   />
@@ -295,13 +295,13 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
               className={`flex gap-6 ${
                 patternImagesShow
                   ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[150px]"
+                  : "overflow-hidden h-[100px]"
               } flex-wrap justify-start items-center`}
             >
               {patternImages.map((image, index) => (
                 <div
                   key={index}
-                  className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
+                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
                 >
                   <Image
                     onLoad={() => handleImageLoad(index, "pattern")}
@@ -313,7 +313,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                     className=" object-cover rounded-md"
                     src={image.url}
                     priority
-                    sizes="150px"
+                    sizes="100px"
                     fill
                     alt=""
                   />
@@ -369,13 +369,13 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
               className={`flex gap-6 ${
                 grayImagesShow
                   ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[150px]"
+                  : "overflow-hidden h-[100px]"
               } flex-wrap justify-start items-center`}
             >
               {grayImages.map((image, index) => (
                 <div
                   key={index}
-                  className="flex w-[150px] h-[150px] justify-center text-center items-center relative"
+                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
                 >
                   <Image
                     onLoad={() => handleImageLoad(index, "grayscale")}
@@ -387,7 +387,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                     className=" object-cover rounded-md"
                     src={image.url}
                     priority
-                    sizes="150px"
+                    sizes="100px"
                     fill
                     alt=""
                   />

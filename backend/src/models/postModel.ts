@@ -4,6 +4,7 @@ const PostSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     mediaUrls: { type: [String] },
+    templateImage: { type: String },
     text: { type: String },
     postType: { type: String, default: "normal" },
     poll: {},

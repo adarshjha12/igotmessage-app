@@ -19,7 +19,7 @@ import {
   Sparkles,
   SendHorizontalIcon,
 } from "lucide-react";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Textarea } from "@headlessui/react";
 import StoryTemplates from "@/components/create story/StoryTemplates";
 import PopupMessage from "@/components/popups/PopupMessages";
@@ -28,6 +28,9 @@ import ImageCropper from "@/components/ImageCropper";
 import Toggle from "@/components/Toggle";
 import axios from "axios";
 import NewLoader from "@/components/NewLoader";
+import { setShowPostUploadModal, uploadPost } from "@/features/postSlice";
+import UploadPostModal from "@/components/modals/UploadPostModal";
+import { useRouter } from "next/navigation";
 
 interface MusicData {
   title: string;
@@ -38,6 +41,15 @@ interface MusicData {
 }
 
 export default function CreatePost() {
+  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const postingStatus = useAppSelector((state) => state.post.uploadPostStatus);
+  const postId = useAppSelector((state) => state.post.postId);
+  const showPostUploadModal = useAppSelector(
+    (state) => state.post.showPostUploadModal
+  );
+  const userId = useAppSelector((state) => state.auth.user._id);
+
   const maxChars = 1500;
   const maxFiles = 2;
   const currentUser = useAppSelector((state) => state.auth.user);
@@ -47,7 +59,7 @@ export default function CreatePost() {
 
   const [files, setFiles] = useState<File[]>([]);
   const [posting, setPosting] = useState(false);
-  const [posType, setPostType] = useState<"normal" | "poll">("normal");
+  const [postType, setPostType] = useState<"normal" | "poll">("normal");
   const [templateImage, setTemplateImage] = useState("");
   const [privacy, setPrivacy] = useState<"public" | "private">("public");
   const [showPoll, setShowPoll] = useState(false);
@@ -59,6 +71,7 @@ export default function CreatePost() {
   const [showTemplateSelectedPopup, setShowTemplateSelectedPopup] =
     useState(true);
   const [showMusicSelectedPopup, setShowMusicSelectedPopup] = useState(true);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [enableAiText, setEnableAiText] = useState(false);
   const [musicData, setMusicData] = useState<MusicData>({
     title: "",
@@ -71,7 +84,10 @@ export default function CreatePost() {
 
   const remaining = maxChars - text.length;
   const canPost =
-    (text.trim().length > 0 || files.length > 0 || pollQuestion.trim()) &&
+    (text.trim().length > 0 ||
+      files.length > 0 ||
+      pollQuestion.trim() ||
+      templateImage) &&
     remaining >= 0;
 
   const [aiTextLoading, setAiTextLoading] = useState(false);
@@ -155,21 +171,25 @@ export default function CreatePost() {
     if (!canPost) return;
     try {
       setPosting(true);
+      dispatch(setShowPostUploadModal(true));
 
       const payload = {
+        userId,
         text: text.trim(),
         files,
+        templateImage,
         privacy,
-        posType,
+        postType,
         poll: showPoll
           ? {
               question: pollQuestion,
               options: pollOptions.filter((opt) => opt.trim() !== ""),
             }
           : null,
-        music: musicData,
+        musicData: musicData,
       };
 
+      await dispatch(uploadPost(payload));
       console.log("Submitting post:", payload);
       setPostType("normal");
       setText("");
@@ -177,8 +197,21 @@ export default function CreatePost() {
       setPollQuestion("");
       setPollOptions(["", ""]);
       setShowPoll(false);
-    } finally {
+      setTemplateImage("");
+      setMusicData({
+        title: "",
+        url: "",
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch(setShowPostUploadModal(false));
       setPosting(false);
+      setPostType("normal");
+      setText("");
+      setFiles([]);
+      setPollQuestion("");
+      setPollOptions(["", ""]);
+      setShowPoll(false);
     }
   };
 
@@ -221,10 +254,19 @@ export default function CreatePost() {
   }
 
   useEffect(() => {
-    console.log("text", text.length);
-
+    if (postingStatus === "succeeded") {
+      dispatch(setShowPostUploadModal(false));
+      console.log("post id", postId);
+      
+      router.replace(`/post/${postId}`)
+      setPosting(false);
+      setShowSuccessPopup(true);
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 10000);
+    }
     return () => {};
-  }, []);
+  }, [postingStatus]);
 
   useEffect(() => {
     if (displayedText.includes("undefined")) {
@@ -234,12 +276,17 @@ export default function CreatePost() {
 
   useEffect(() => {
     setShowTemplateSelectedPopup(true);
-    setShowMusicSelectedPopup(true);
     setTimeout(() => {
       setShowTemplateSelectedPopup(false);
+    }, 5000);
+  }, [templateImage])
+
+  useEffect(() => {
+    setShowMusicSelectedPopup(true);
+    setTimeout(() => {
       setShowMusicSelectedPopup(false);
     }, 5000);
-  }, [templateImage, musicData.url]);
+  }, [ musicData.url]);
 
   return (
     <div className="relative min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
@@ -303,9 +350,9 @@ export default function CreatePost() {
                   <button
                     type="button"
                     onClick={() => {
-                      setEnableAiText((prev) => !prev)
-                      setMusicClicked(false)
-                      setLibraryClicked(false)
+                      setEnableAiText((prev) => !prev);
+                      setMusicClicked(false);
+                      setLibraryClicked(false);
                     }}
                     className="transform scale-90 hover:scale-100 transition-transform duration-200"
                   >
@@ -616,15 +663,7 @@ export default function CreatePost() {
           </button>
         </div>
         {libraryClicked && (
-          <div className="bg-[var(--bgColor)]/80 backdrop-blur-lg p-6 flex items-center justify-center ">
-            {templateImage !== "" && (
-              <PopupMessage
-                show={showTemplateSelectedPopup}
-                type="success"
-                message="image Added"
-                onClose={() => setShowTemplateSelectedPopup(false)}
-              />
-            )}
+          <div className="bg-[var(--bgColor)]/80 backdrop-blur-lg p-2 flex items-center justify-center ">
             <button
               onClick={() => setLibraryClicked(false)}
               className="flex fixed top-4 left-2 items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
@@ -639,14 +678,6 @@ export default function CreatePost() {
         )}
         {musicClicked && (
           <div className=" w-full bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 pb-6 flex flex-col items-center justify-center">
-            {musicData.url !== "" && (
-              <PopupMessage
-                show={showMusicSelectedPopup}
-                type="success"
-                message="music selected"
-                onClose={() => setShowMusicSelectedPopup(false)}
-              />
-            )}
             <button
               onClick={() => setMusicClicked(false)}
               className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 bg-blue-600 text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
@@ -662,10 +693,41 @@ export default function CreatePost() {
       </div>
       {showVideoDurationError && (
         <PopupMessage
+          key={1}
           show={showVideoDurationError}
           type="error"
           message="Video must be less than 50 seconds"
           onClose={() => setShowVideoDurationError(false)}
+        />
+      )}
+      {templateImage !== "" && (
+        <div className="fixed top-4 z-50 flex items-start justify-center mt-5">
+          <PopupMessage
+            key={2}
+            show={showTemplateSelectedPopup}
+            type="success"
+            message="image Added"
+            onClose={() => setShowTemplateSelectedPopup(false)}
+          />
+        </div>
+      )}
+      {musicData.url !== "" && (
+        <div className="fixed top-4 z-50 flex items-start justify-center mt-5">
+          <PopupMessage
+            show={showMusicSelectedPopup}
+            type="success"
+            message="music selected"
+            onClose={() => setShowMusicSelectedPopup(false)}
+          />
+        </div>
+      )}
+      {showPostUploadModal && <UploadPostModal />}
+      {showSuccessPopup && (
+        <PopupMessage
+          show={showSuccessPopup}
+          type="success"
+          message="Post Uploaded Successfully"
+          onClose={() => setShowSuccessPopup(false)}
         />
       )}
     </div>

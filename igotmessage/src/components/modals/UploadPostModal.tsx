@@ -6,7 +6,7 @@ import { CheckCircle2, XCircle, UploadCloud } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setShowPostUploadModal } from "@/features/postSlice";
 
-export default function UploadModal() {
+export default function UploadPostModal() {
   const dispatch = useAppDispatch();
   const uploadStatus = useAppSelector((state) => state.post.uploadPostStatus);
   const showPostUploadModal = useAppSelector(

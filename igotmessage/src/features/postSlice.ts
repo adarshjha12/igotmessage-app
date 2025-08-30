@@ -10,19 +10,21 @@ export interface Poll {
 
 export interface MusicData {
   title: string;
-  artist: string;
-  genre: string;
+  artist?: string;
+  genre?: string;
   url: string;
-  image: string;
+  image?: string;
 }
 
 export interface PostPayload {
+  userId: string
   text?: string;
   files?: File[];
+  templateImage?: string;
   privacy: "public" | "private";
   postType: PostType;
   poll?: Poll | null;
-  music?: MusicData
+  musicData?: MusicData
 }
 
 interface PostState {
@@ -30,6 +32,7 @@ interface PostState {
   uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadPostError: string | null;
   showPostUploadModal: boolean;
+  postId?: string
 }
 
 const initialState: PostState = {
@@ -47,9 +50,9 @@ const backendUrl =
 export const uploadPost = createAsyncThunk(
   "post/uploadPost",
   async (args: PostPayload) => {
-    const { text, files, privacy, postType, poll } = args;
+    const {userId, text, files, privacy, postType, poll, musicData, templateImage } = args;
     const formData = new FormData();
-
+    formData.append("userId", userId);
     formData.append("privacy", privacy);
     formData.append("postType", postType);
     if (postType === "normal") {
@@ -61,7 +64,10 @@ export const uploadPost = createAsyncThunk(
       if (text) {
         formData.append("text", text);
       }
-      formData.append("music", JSON.stringify(args.music));
+      if (templateImage) {
+        formData.append("templateImage", templateImage);
+      }
+      formData.append("musicData", JSON.stringify(musicData));
     } else if (postType === "poll") {
       formData.append("poll", JSON.stringify(poll));
     }
@@ -87,6 +93,7 @@ const postSlice = createSlice({
    extraReducers: (builder) => {
       builder.addCase(uploadPost.fulfilled, (state, action) => {
         state.uploadPostStatus = "succeeded";
+        state.postId = action.payload.post._id
       });
   
       builder.addCase(uploadPost.rejected, (state, action) => {
