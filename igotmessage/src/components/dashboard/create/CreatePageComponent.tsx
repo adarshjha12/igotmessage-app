@@ -291,93 +291,101 @@ export default function CreatePost() {
         {/* Normal Post Mode */}
         {!showPoll && (
           <>
-            <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-1 rounded-2xl bg-gradient-to-r from-indigo-500/50 to-purple-500/50 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[var(--textColor)] animate-pulse" />
-                <p className="text-sm font-medium text-[var(--textColor)]">
-                  AI Text
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setEnableAiText((prev) => !prev)}
-                className="transform scale-90 hover:scale-100 transition-transform duration-200"
-              >
-                <Toggle toggleNow={enableAiText} />
-              </button>
-            </div>
-            {/* Textarea */}
-            {!enableAiText && (
-              <textarea
-                ref={textareaRef}
-                value={text}
-                onChange={handleTextAreaChange}
-                maxLength={maxChars}
-                placeholder={"What's happening?"}
-                className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2 placeholder:text-[var(--textColor)]/80 text-lg placeholder:text-xl overflow-hidden"
-              />
-            )}
-
-            {enableAiText && (
-              <div className="w-full flex flex-col justify-center mb-10 items-center">
-                {aiTextLoading && (
-                  <div className="w-full p-4 flex mb-4 justify-end items-center">
-                    <span className="text-[var(--textColor)] opacity-60 text-3xl animate-pulse">
-                      Thinking...
-                    </span>
+            {!musicClicked && !libraryClicked && (
+              <>
+                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-1 rounded-2xl bg-gradient-to-r from-indigo-500/50 to-purple-500/50 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-[var(--textColor)] animate-pulse" />
+                    <p className="text-sm font-medium text-[var(--textColor)]">
+                      AI Text
+                    </p>
                   </div>
-                )}
-                {displayedText && (
-                  <div
-                    className="
-                    w-full 
-                    min-h-[100px] 
-                    p-4 
-                    rounded-2xl 
-                    border 
-                    border-[var(--textColor)]/30 
-                    bg-[var(--bgColor)]/80
-                    backdrop-blur-md 
-                    text-[var(--textColor)] 
-                    text-lg 
-                    leading-relaxed 
-                    whitespace-pre-wrap 
-                    shadow-md 
-                    transition-all 
-                    duration-300 mb-4
-                    ease-in-out
-                  "
-                  >
-                    <span>{displayedText}</span>
-                  </div>
-                )}
-                <div className="w-full flex gap-3 justify-center items-center px-4 py-2 rounded-2xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2">
-                  <input
-                    type="text"
-                    value={inputText}
-                    onChange={handleInputChange}
-                    placeholder="Enter prompt"
-                    className="w-full min-h-[50px] placeholder:text-[var(--textColor)]/80 border-none outline-none text-lg placeholder:text-xl overflow-hidden"
-                  />
                   <button
                     type="button"
-                    disabled={inputText.length === 0 || aiTextLoading}
-                    onClick={handleAiTextGeneration}
-                    className="transform active:scale-75 active:bg-green-500 scale-90 hover:scale-100 transition-transform duration-200 rounded-full p-1 px-3 text-[var(--bgColor)] bg-[var(--textColor)] "
+                    onClick={() => {
+                      setEnableAiText((prev) => !prev)
+                      setMusicClicked(false)
+                      setLibraryClicked(false)
+                    }}
+                    className="transform scale-90 hover:scale-100 transition-transform duration-200"
                   >
-                    {aiTextLoading ? (
-                      <NewLoader />
-                    ) : (
-                      <SendHorizontalIcon
-                        strokeWidth={1.5}
-                        size={34}
-                        className="text-[var(--bgColor)]"
-                      />
-                    )}
+                    <Toggle toggleNow={enableAiText} />
                   </button>
                 </div>
-                <div className="w-full flex justify-center items-center"></div>
-              </div>
+
+                {/* Conditional rendering */}
+                {!enableAiText ? (
+                  <textarea
+                    ref={textareaRef}
+                    value={text}
+                    onChange={handleTextAreaChange}
+                    maxLength={maxChars}
+                    placeholder={"What's happening?"}
+                    className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2 placeholder:text-[var(--textColor)]/80 text-lg placeholder:text-xl overflow-hidden"
+                  />
+                ) : (
+                  <div className="w-full flex flex-col justify-center mb-10 items-center">
+                    {aiTextLoading && (
+                      <div className="w-full p-4 flex mb-4 justify-end items-center">
+                        <span className="text-[var(--textColor)] opacity-60 text-3xl animate-pulse">
+                          Thinking...
+                        </span>
+                      </div>
+                    )}
+
+                    {displayedText && (
+                      <div
+                        className="
+                          w-full 
+                          min-h-[100px] 
+                          p-4 
+                          rounded-2xl 
+                          border 
+                          border-[var(--textColor)]/30 
+                          bg-[var(--bgColor)]/80
+                          backdrop-blur-md 
+                          text-[var(--textColor)] 
+                          text-lg 
+                          leading-relaxed 
+                          whitespace-pre-wrap 
+                          shadow-md 
+                          transition-all 
+                          duration-300 mb-4
+                          ease-in-out
+                        "
+                      >
+                        <span>{displayedText}</span>
+                      </div>
+                    )}
+
+                    <div className="w-full flex gap-3 justify-center items-center px-4 py-2 rounded-2xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2">
+                      <input
+                        type="text"
+                        value={inputText}
+                        onChange={handleInputChange}
+                        placeholder="Enter prompt"
+                        className="w-full min-h-[50px] placeholder:text-[var(--textColor)]/80 border-none outline-none text-lg placeholder:text-xl overflow-hidden"
+                      />
+                      <button
+                        type="button"
+                        disabled={inputText.length === 0 || aiTextLoading}
+                        onClick={handleAiTextGeneration}
+                        className="transform active:scale-75 active:bg-green-500 scale-90 hover:scale-100 transition-transform duration-200 rounded-full p-1 px-3 text-[var(--bgColor)] bg-[var(--textColor)] "
+                      >
+                        {aiTextLoading ? (
+                          <NewLoader />
+                        ) : (
+                          <SendHorizontalIcon
+                            strokeWidth={1.5}
+                            size={34}
+                            className="text-[var(--bgColor)]"
+                          />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             {/* Upload / Options */}
@@ -400,7 +408,10 @@ export default function CreatePost() {
               </button>
 
               <button
-                onClick={() => setLibraryClicked((prev) => !prev)}
+                onClick={() => {
+                  setLibraryClicked((prev) => !prev);
+                  setMusicClicked(false);
+                }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
                 <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-green-500/30 to-transparent blur-md"></span>
@@ -409,7 +420,10 @@ export default function CreatePost() {
               </button>
 
               <button
-                onClick={() => setMusicClicked((prev) => !prev)}
+                onClick={() => {
+                  setMusicClicked((prev) => !prev);
+                  setLibraryClicked(false);
+                }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
                 <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-pink-500/30 to-transparent blur-md"></span>
@@ -420,6 +434,8 @@ export default function CreatePost() {
                 onClick={() => {
                   setShowPoll(true);
                   setPostType("poll");
+                  setMusicClicked(false);
+                  setLibraryClicked(false);
                 }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bgColor)] text-[var(--textColor)] border border-[var(--textColor)]/30 transition-all duration-200 font-semibold relative overflow-hidden group active:scale-95"
               >
@@ -528,7 +544,7 @@ export default function CreatePost() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="p-4 border border-gray-700 rounded-xl bg-black text-white mb-4"
+              className="p-4 w-full border border-gray-700 rounded-xl bg-black text-white mb-4"
             >
               <button
                 onClick={() => {
@@ -600,7 +616,7 @@ export default function CreatePost() {
           </button>
         </div>
         {libraryClicked && (
-          <div className="min-h-screen absolute top-0 bg-[var(--bgColor)]/80 backdrop-blur-lg p-6 flex items-center justify-center z-50">
+          <div className="bg-[var(--bgColor)]/80 backdrop-blur-lg p-6 flex items-center justify-center ">
             {templateImage !== "" && (
               <PopupMessage
                 show={showTemplateSelectedPopup}
@@ -622,7 +638,7 @@ export default function CreatePost() {
           </div>
         )}
         {musicClicked && (
-          <div className="min-h-[600px] max-h-[700px] w-full absolute top-0 left-0 bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 pb-6 flex flex-col items-center justify-center z-40">
+          <div className=" w-full bg-[var(--bgColor)]/50 backdrop-blur-lg p-2 pb-6 flex flex-col items-center justify-center">
             {musicData.url !== "" && (
               <PopupMessage
                 show={showMusicSelectedPopup}
@@ -633,7 +649,7 @@ export default function CreatePost() {
             )}
             <button
               onClick={() => setMusicClicked(false)}
-              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 bg-[var(--bgColor)] text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
+              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 bg-blue-600 text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
             >
               <X className="w-8 h-8" />
             </button>
