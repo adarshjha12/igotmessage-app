@@ -171,24 +171,24 @@ export default function StoryViewerPage() {
   ]);
 
   useEffect(() => {
-    if (storiesByUsers?.[currentUserIndex]?.[activeStoryIndex].musicData?.url) {
-      if (audioRef.current) {
-        audioRef.current?.pause();
+    const audio = audioRef.current;
+    if (!audio) return;
 
-        audioRef.current.src =
-          storiesByUsers[currentUserIndex][activeStoryIndex].musicData.url;
-        audioRef.current.play();
-      }
+    const url =
+      storiesByUsers?.[currentUserIndex]?.[activeStoryIndex]?.musicData?.url;
+    if (url) {
+      audio.pause();
+      audio.src = url;
+      const p = audio.play();
+      if (p)
+        p.catch((err) => {
+          if (err?.name !== "AbortError")
+            console.error("audio play error:", err);
+        });
     } else {
-      audioRef.current?.pause();
+      audio.pause();
     }
-  }, [
-    activeStoryIndex,
-    currentUserIndex,
-    storiesByUsers,
-    userStoryStartIndices,
-    router,
-  ]);
+  }, [activeStoryIndex, currentUserIndex, storiesByUsers]);
 
   // When Swiper slide changes → update indices
   const handleSlideChange = (swiper: SwiperClass) => {

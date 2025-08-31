@@ -1,58 +1,73 @@
 import React, { useState } from "react";
-
 import TextareaAutosize from "react-textarea-autosize";
 import { HexColorPicker } from "react-colorful";
-import { PaintBrushBroadIcon } from "@phosphor-icons/react";
-import { CheckIcon, ItalicIcon, TextIcon, UnderlineIcon, XIcon } from "lucide-react";
+import { CheckIcon, ItalicIcon, UnderlineIcon, XIcon } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
+
+/**
+ * Modern aesthetic redesign of StoryText with a working Background Color chooser.
+ * Key fixes:
+ * - Restored background chooser (Solid / Gradient) flow with HexColorPicker(s)
+ * - Overlay components with proper z-index & backdrop blur
+ * - Replaced dynamic Tailwind class `opacity-${bgOpacity}` with inline opacity style
+ * - Mobile-friendly, scrollable toolbar
+ */
 
 function StoryText({ storyRef, isCapturing }: any) {
   const storyTextBg = useAppSelector((state) => state.story.storyTextBg);
+
   const [fontSize, setFontSize] = useState("50");
   const [weight, setWeight] = useState<"normal" | "extrabold">("normal");
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
   const [color, setColor] = useState("white");
+
+  // Background controls
   const [bgColor, setBgColor] = useState("#428bf5");
   const [gradientColor1, setGradientColor1] = useState("#58f1f1");
   const [gradientColor2, setGradientColor2] = useState("#481bba");
-  const [bgOpacity, setBgOpacity] = useState("100");
+  const [bgOpacity, setBgOpacity] = useState("100"); // 0-100
 
   const [paintBrushClicked, setPaintBrushClicked] = useState(false);
-  const [fontWeightClicked, setFontWeightClicked] = useState(false);
   const [fontStyleClicked, setFontStyleClicked] = useState(false);
-  const [fontUnderlineClicked, setFontUnderlineClicked] = useState(false);
   const [fontColorClicked, setFontColorClicked] = useState(false);
-  const [fontItalicClicked, setFontItalicClicked] = useState(false);
   const [fontSizeClicked, setFontSizeClicked] = useState(false);
-  const [solidClicked, setSolidClicked] = useState(false);
-  const [gradientClicked, setGradientClicked] = useState(false);
+
   const [solidColorChosen, setSolidColorChosen] = useState(false);
   const [gradientColorChosen, setGradientColorChosen] = useState(false);
-  const [fontStyle, setFontStyle] = useState("normal");
 
   const [storyText, setStoryText] = useState("");
+  const [fontStyle, setFontStyle] = useState("normal");
 
   const fontStyles = [
-    {
-      style: "normal",
-    },
-    {
-      style: "montez",
-    },
-    {
-      style: "audioWide",
-    },
-    {
-      style: "exo2",
-    },
+    { style: "normal" },
+    { style: "montez" },
+    { style: "audioWide" },
+    { style: "exo2" },
   ];
+
+  // Compute background style
+  const bgStyle: React.CSSProperties = {};
+  if (solidColorChosen) {
+    bgStyle.backgroundColor = bgColor;
+  } else if (gradientColorChosen) {
+    bgStyle.backgroundImage = `linear-gradient(90deg, ${gradientColor1}, ${gradientColor2})`;
+  } else if (storyTextBg) {
+    bgStyle.backgroundImage = `url(${storyTextBg})`;
+  } else {
+    bgStyle.backgroundImage = `linear-gradient(90deg, ${gradientColor1}, ${gradientColor2})`;
+  }
+  bgStyle.opacity = Number(bgOpacity) / 100;
+
   return (
-    <div className="w-full flex  flex-col justify-center items-center">
-      <div className="flex w-full  p-2 items-center text-3xl text-[var(--textColor)] justify-between">
+    <div className="w-full flex flex-col items-center">
+      {/* Toolbar */}
+      <div className="flex w-full p-3 gap-3 overflow-x-auto rounded-xl bg-white/10 backdrop-blur-md shadow-md items-center text-xl text-[var(--textColor)] justify-between sm:justify-center">
+        {/* Background Selector (opens working chooser) */}
         <button
-          onClick={() => setPaintBrushClicked((prev) => !prev)}
-          className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
+          aria-label="Choose background"
+          onClick={() => setPaintBrushClicked(true)}
+          className="p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0"
           type="button"
         >
           <div
@@ -60,100 +75,88 @@ function StoryText({ storyRef, isCapturing }: any) {
               backgroundColor: solidColorChosen ? bgColor : undefined,
               backgroundImage: gradientColorChosen
                 ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                : (storyTextBg !== "" &&
-                  !solidColorChosen &&
-                  !gradientColorChosen)
+                : storyTextBg
                 ? `url(${storyTextBg})`
-                : (!solidColorChosen &&
-                  !gradientColorChosen &&
-                  storyTextBg === "")
-                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                : undefined,
+                : `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
             }}
-            className={`h-8 w-8 rounded-full border-[var(--borderColor)] border-1`}
-          ></div>
+            className="h-8 w-8 rounded-full border border-[var(--borderColor)]"
+          />
         </button>
+
+        {/* Font Style */}
         <button
-          onClick={() => setFontStyleClicked((prev) => !prev)}
-          className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
+          aria-label="Choose font style"
+          onClick={() => setFontStyleClicked(true)}
+          className="p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0"
           type="button"
         >
-          <span>F</span>
-          <span className="font-montez">f</span>
+          <span className="font-montez text-2xl">Aa</span>
         </button>
+
+        {/* Bold */}
         <button
-          onClick={() => {
-            setFontWeightClicked((prev) => !prev);
-            setWeight((prev) => (prev === "normal" ? "extrabold" : "normal"));
-          }}
-          className={`p-2 ${
+          aria-label="Toggle bold"
+          onClick={() => setWeight((prev) => (prev === "normal" ? "extrabold" : "normal"))}
+          className={`p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0 ${
             weight === "extrabold" ? "font-extrabold" : "font-light"
-          } active:scale-90 active:bg-[var(--wrapperColor)] rounded-full cursor-pointer`}
+          }`}
           type="button"
         >
           B
         </button>
+
+        {/* Font Color */}
         <button
-          onClick={() => setFontColorClicked((prev) => !prev)}
-          className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
+          aria-label="Choose text color"
+          onClick={() => setFontColorClicked(true)}
+          className="p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0"
           type="button"
         >
-          <div className="flex items-center border-[var(--borderColor)] border-1 text-[var(--textColor)] rounded-md px-2">
-            <div className="">T</div>
-            <div
-              style={{ backgroundColor: color }}
-              className={`h-4 border-[var(--borderColor)] border-1 w-4 rounded-full`}
-            ></div>
+          <div className="flex items-center gap-1 border border-[var(--borderColor)] rounded-md px-2 py-1">
+            <div className="text-sm">T</div>
+            <div style={{ backgroundColor: color }} className="h-4 w-4 rounded-full border border-[var(--borderColor)]" />
           </div>
         </button>
+
+        {/* Font Size */}
         <button
-          onClick={() => setFontSizeClicked((prev) => !prev)}
-          className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
+          aria-label="Choose font size"
+          onClick={() => setFontSizeClicked(true)}
+          className="p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0"
           type="button"
         >
-          <div className="flex items-end  text-[var(--textColor)] rounded-md px-2">
-            <div className="text-sm">T</div>
+          <div className="flex items-end text-[var(--textColor)] rounded-md px-2">
+            <div className="text-xs">T</div>
             <div>T</div>
           </div>
         </button>
+
+        {/* Italic */}
         <button
-          onClick={() => {
-            setFontItalicClicked((prev) => !prev);
-            setItalic((prev) => !prev);
-          }}
-          className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
+          aria-label="Toggle italic"
+          onClick={() => setItalic((prev) => !prev)}
+          className="p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0"
           type="button"
         >
-          <ItalicIcon size={35} />
+          <ItalicIcon size={20} />
         </button>
+
+        {/* Underline */}
         <button
-          onClick={() => {
-            setFontUnderlineClicked((prev) => !prev);
-            setUnderline((prev) => !prev);
-          }}
-          className="p-2 rounded-full active:scale-90 active:bg-[var(--wrapperColor)] cursor-pointer"
+          aria-label="Toggle underline"
+          onClick={() => setUnderline((prev) => !prev)}
+          className="p-2 rounded-full bg-white/5 hover:bg-white/20 transition active:scale-90 shadow shrink-0"
           type="button"
         >
-          <UnderlineIcon size={35} />
+          <UnderlineIcon size={20} />
         </button>
       </div>
+
+      {/* Text Canvas */}
       <div
         ref={storyRef}
-        style={{
-          backgroundColor: solidColorChosen ? bgColor : undefined,
-              backgroundImage: gradientColorChosen
-                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                : (storyTextBg !== "" &&
-                  !solidColorChosen &&
-                  !gradientColorChosen)
-                ? `url(${storyTextBg})`
-                : (!solidColorChosen &&
-                  !gradientColorChosen &&
-                  storyTextBg === "")
-                ? `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`
-                : undefined,
-        }}
-        className={`w-full opacity-${bgOpacity} flex items-center justify-center px-2`}
+        style={bgStyle}
+        className={`w-full flex items-center justify-center px-3 py-6 rounded-xl shadow-lg mt-3`}
       >
         <div className="w-full flex justify-center items-center">
           {isCapturing ? (
@@ -187,200 +190,233 @@ function StoryText({ storyRef, isCapturing }: any) {
                 color,
                 backgroundColor: "transparent",
               }}
-              className={`border-none min-h-[600px] text-center font-${fontStyle} placeholder:text-center outline-none w-[90%] placeholder:text-[${color}]`}
+              className={`border-none min-h-[400px] text-center font-${fontStyle} placeholder:text-center outline-none w-[90%]`}
               placeholder="🖋️ Write something..."
             />
           )}
         </div>
       </div>
 
-      {/* conditional contents render here */}
-      {paintBrushClicked && (
-        <div className="fixed inset-0 w-full z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
-          <div
-            className={`flex w-full text-2xl p-16  border-[var(-borderColor)] sm:w-[40%] rounded-2xl relative gap-4 items-start bg-[var(--wrapperColor)] justify-center flex-col ${
-              solidClicked || gradientClicked ? "hidden" : ""
-            }`}
-          >
-            <button
-              className="absolute text-[var(--textColor)] cursor-pointer top-2 p-2 right-6 active:scale-90"
-              onClick={() => setPaintBrushClicked((prev) => !prev)}
-              type="button"
-            >
-              <XIcon size={35} />
-            </button>
-            <button
-              onClick={() => setSolidClicked((prev) => !prev)}
-              type="button"
-              className="flex gap-4 w-full px-4 py-2 rounded-md border-1 border-[var(--borderColor)] cursor-pointer items-center"
-            >
-              <div
-                style={{ backgroundColor: bgColor }}
-                className="h-8 w-8 rounded-full border-[var(--borderColor)] border-1"
-              ></div>
-              <p>Solid</p>
-            </button>
-            <button
-              onClick={() => setGradientClicked((prev) => !prev)}
-              className="flex gap-4 w-full px-4 py-2 rounded-md border-1 border-[var(--borderColor)]  cursor-pointer items-center"
-              type="button"
-            >
-              <div
-                style={{
-                  background: `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
-                }}
-                className="h-8 w-8 rounded-full border-[var(--borderColor)] border-1"
-              ></div>
-              <p>Gradient</p>
-            </button>
-          </div>
-          {solidClicked && (
-            <div className="flex flex-col gap-6 justify-center items-center">
-              <HexColorPicker color={bgColor} onChange={setBgColor} />
-              <button
-                type="button"
-                onClick={() => {
-                  setPaintBrushClicked(false);
-                  setSolidClicked(false);
-                  setGradientClicked(false);
-                  setGradientColorChosen(false);
-                  setSolidColorChosen(true);
-                }}
-                className="py-2 w-full my-4 px-10 rounded-full flex items-center gap-2 border-1 border-[var(--borderColor)] bg-[var(--wrapperColor)]  text-[var(--textColor)] text-xl active:scale-90 cursor-pointer"
-              >
-                <CheckIcon size={25} />
-                Done
-              </button>
-            </div>
-          )}
-          {gradientClicked && (
-            <div className="flex flex-col bg-[var(--wrapperColor)] p-4 rounded-2xl w-full sm:w-[60%]  border-[var(--borderColor)] gap-4 items-center justify-center">
-              <div className="flex  gap-4 text-2xl items-center justify-center">
-                <div className="scale-75">
-                  <p>Start Color</p>
-                  <HexColorPicker
-                    className=""
-                    color={gradientColor1}
-                    onChange={setGradientColor1}
-                  />
-                </div>
-                <div className="scale-75">
-                  <p>End Color</p>
-                  <HexColorPicker
-                    color={gradientColor2}
-                    onChange={setGradientColor2}
-                  />
-                </div>
-              </div>
-              <div className="flex gap-4 items-start justify-center flex-col">
-                <div className="flex gap-4 items-center justify-center">
-                  <p>Preview Gradient-</p>
-
-                  <div
-                    className="w-[200px] h-16 rounded-4xl"
-                    style={{
-                      background: `linear-gradient(to right, ${gradientColor1}, ${gradientColor2})`,
-                    }}
-                  ></div>
-                </div>
-                <div className="flex gap-4 items-center justify-center">
-                  <p>Opacity-</p>
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    step={5}
-                    value={bgOpacity}
-                    onChange={(e) => setBgOpacity(e.target.value)}
-                    className="w-[200px] h-3 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-400 dark:bg-gray-700"
-                  />
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setPaintBrushClicked(false);
-                  setSolidClicked(false);
-                  setGradientClicked(false);
-                  setGradientColorChosen(true);
-                  setSolidColorChosen(false);
-                }}
-                 className="py-2 w-fit my-4 px-10 rounded-full flex items-center gap-2 border-1 border-[var(--borderColor)] bg-[var(--wrapperColor)]  text-[var(--textColor)] text-xl active:scale-90 cursor-pointer"
-              >
-                <CheckIcon size={25} />
-                Done
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
+      {/* Overlays */}
       {fontColorClicked && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
-          <HexColorPicker color={color} onChange={(color) => setColor(color)} />
-          <button
-            type="button"
-            onClick={() => setFontColorClicked(false)}
-            className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
-          >
-            Done
-          </button>
-        </div>
+        <Overlay onClose={() => setFontColorClicked(false)}>
+          <HexColorPicker color={color} onChange={setColor} />
+        </Overlay>
       )}
 
       {fontSizeClicked && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
-          <input
-            type="range"
-            min="5"
-            max="80"
-            value={fontSize}
-            onChange={(e) => setFontSize(e.target.value)}
-            className="w-[280px] accent-amber-300"
-          />
-          <button
-            type="button"
-            onClick={() => setFontSizeClicked(false)}
-            className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--bgColor)] text-[var(--textColor)] text-2xl active:scale-90 cursor-pointer"
-          >
-            Done
-          </button>
-        </div>
+        <Overlay onClose={() => setFontSizeClicked(false)}>
+          <div className="flex flex-col items-center gap-3">
+            <input
+              type="range"
+              min="5"
+              max="80"
+              value={fontSize}
+              onChange={(e) => setFontSize(e.target.value)}
+              className="w-[260px] accent-amber-400"
+            />
+            <div className="text-sm opacity-80">{fontSize}px</div>
+          </div>
+        </Overlay>
       )}
 
       {fontStyleClicked && (
-        <div>
-          <div className="fixed inset-0 z-50 bg-black/50 flex items-center flex-col gap-6 justify-center">
-            <div className="w-full bg-[var(--wrapperColor)] rounded-2xl p-6 sm:w-[30%] text-[var(--textColor)] flex text-3xl flex-col  items-center gap-8 justify-center">
-              <div className="w-full  text-[var(--textColor)] flex text-3xl font-medium items-center gap-4 justify-center">
-                {fontStyles.map((item, index) => (
-                  <button
-                    type="button"
-                    onClick={() => setFontStyle(item.style)}
-                    key={index}
-                    className={`p-2 ${
-                      fontStyle === item.style
-                        ? "border-1 border-[var(--borderColor)]"
-                        : ""
-                    } active:bg-[var(--wrapperColor)] rounded-md cursor-pointer font-${
-                      item.style
-                    }`}
-                  >
-                    Abc
-                  </button>
-                ))}
-              </div>
+        <Overlay onClose={() => setFontStyleClicked(false)}>
+          <div className="flex gap-3 flex-wrap">
+            {fontStyles.map((item, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setFontStyle(item.style)}
+                className={`px-3 py-2 rounded-lg text-xl transition ${
+                  fontStyle === item.style
+                    ? "border border-[var(--borderColor)] bg-white/20"
+                    : "bg-white/5"
+                } font-${item.style}`}
+              >
+                Abc
+              </button>
+            ))}
+          </div>
+        </Overlay>
+      )}
+
+      {paintBrushClicked && (
+        <BackgroundOverlay
+          initialTab={solidColorChosen ? "solid" : gradientColorChosen ? "gradient" : "choose"}
+          bgColor={bgColor}
+          setBgColor={setBgColor}
+          gradientColor1={gradientColor1}
+          setGradientColor1={setGradientColor1}
+          gradientColor2={gradientColor2}
+          setGradientColor2={setGradientColor2}
+          bgOpacity={bgOpacity}
+          setBgOpacity={setBgOpacity}
+          onClose={() => setPaintBrushClicked(false)}
+          onChooseSolid={() => {
+            setSolidColorChosen(true);
+            setGradientColorChosen(false);
+            setPaintBrushClicked(false);
+          }}
+          onChooseGradient={() => {
+            setSolidColorChosen(false);
+            setGradientColorChosen(true);
+            setPaintBrushClicked(false);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function Overlay({ children, onClose }: any) {
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+      <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl flex flex-col gap-4 items-center">
+        {children}
+        <button
+          type="button"
+          onClick={onClose}
+          className="px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-lg text-white"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Background chooser with Solid / Gradient tabs (WORKING) */
+function BackgroundOverlay({
+  initialTab = "choose",
+  bgColor,
+  setBgColor,
+  gradientColor1,
+  setGradientColor1,
+  gradientColor2,
+  setGradientColor2,
+  bgOpacity,
+  setBgOpacity,
+  onClose,
+  onChooseSolid,
+  onChooseGradient,
+}: any) {
+  const [tab, setTab] = useState<"choose" | "solid" | "gradient">(initialTab);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/45 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="w-full max-w-[620px] bg-[var(--wrapperColor)] text-[var(--textColor)] rounded-2xl shadow-2xl border border-[var(--borderColor)] overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--borderColor)]">
+          <div className="font-medium">Background</div>
+          <button
+            aria-label="Close background chooser"
+            className="p-2 rounded-full hover:bg-white/10"
+            onClick={onClose}
+            type="button"
+          >
+            <XIcon size={20} />
+          </button>
+        </div>
+
+        {tab === "choose" && (
+          <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button
+              onClick={() => setTab("solid")}
+              type="button"
+              className="flex gap-4 w-full px-4 py-3 rounded-xl border border-[var(--borderColor)] bg-white/5 hover:bg-white/10 transition items-center"
+            >
+              <div style={{ backgroundColor: bgColor }} className="h-8 w-8 rounded-full border border-[var(--borderColor)]" />
+              <p>Solid</p>
+            </button>
+
+            <button
+              onClick={() => setTab("gradient")}
+              type="button"
+              className="flex gap-4 w-full px-4 py-3 rounded-xl border border-[var(--borderColor)] bg-white/5 hover:bg-white/10 transition items-center"
+            >
+              <div
+                style={{ background: `linear-gradient(90deg, ${gradientColor1}, ${gradientColor2})` }}
+                className="h-8 w-8 rounded-full border border-[var(--borderColor)]"
+              />
+              <p>Gradient</p>
+            </button>
+          </div>
+        )}
+
+        {tab === "solid" && (
+          <div className="p-5 flex flex-col items-center gap-5">
+            <HexColorPicker color={bgColor} onChange={setBgColor} />
+            <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => setFontStyleClicked(false)}
-                className="py-2 px-4 rounded-md border-1 border-[var(--borderColor)] bg-[var(--textColor)] text-[var(--bgColor)] text-2xl active:scale-90 cursor-pointer"
+                onClick={() => onChooseSolid()}
+                className="px-5 py-2 rounded-full flex items-center gap-2 border border-[var(--borderColor)] bg-[var(--wrapperColor)]"
               >
-                Done
+                <CheckIcon size={18} /> Done
+              </button>
+              <button
+                type="button"
+                onClick={() => setTab("choose")}
+                className="px-5 py-2 rounded-full border border-[var(--borderColor)] bg-white/10"
+              >
+                Back
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {tab === "gradient" && (
+          <div className="p-5 flex flex-col gap-5 items-center">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-sm opacity-80">Start Color</p>
+                <HexColorPicker color={gradientColor1} onChange={setGradientColor1} />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-sm opacity-80">End Color</p>
+                <HexColorPicker color={gradientColor2} onChange={setGradientColor2} />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <div className="flex items-center gap-3">
+                <span className="opacity-80">Opacity</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={5}
+                  value={bgOpacity}
+                  onChange={(e) => setBgOpacity(e.target.value)}
+                  className="w-[220px] h-3 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-400 dark:bg-gray-700"
+                />
+                <span className="w-10 text-right opacity-80">{bgOpacity}%</span>
+              </div>
+              <div
+                className="w-[180px] h-10 rounded-full border border-[var(--borderColor)]"
+                style={{ background: `linear-gradient(90deg, ${gradientColor1}, ${gradientColor2})` }}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => onChooseGradient()}
+                className="px-5 py-2 rounded-full flex items-center gap-2 border border-[var(--borderColor)] bg-[var(--wrapperColor)]"
+              >
+                <CheckIcon size={18} /> Done
+              </button>
+              <button
+                type="button"
+                onClick={() => setTab("choose")}
+                className="px-5 py-2 rounded-full border border-[var(--borderColor)] bg-white/10"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

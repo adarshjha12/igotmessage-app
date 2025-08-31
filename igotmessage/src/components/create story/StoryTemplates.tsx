@@ -128,7 +128,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
             <button
               onClick={() => setCityImagesShow((prev) => !prev)}
               type="button"
-              className="flex w-full bg-[var(--bgColor)]/50 backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
+              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
             >
               <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
                 {cityImagesShow ? "Show less" : "Show more"}
@@ -199,7 +199,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
             <button
               onClick={() => setPetImagesShow((prev) => !prev)}
               type="button"
-              className="flex w-full bg-[var(--bgColor)]/50 backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
+              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
             >
               <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
                 {petImagesShow ? "Show less" : "Show more"}
@@ -272,7 +272,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
             <button
               onClick={() => setNatureImagesShow((prev) => !prev)}
               type="button"
-              className="flex w-full bg-[var(--bgColor)]/50 backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
+              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
             >
               <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
                 {natureImagesShow ? "Show less" : "Show more"}
@@ -345,7 +345,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
             <button
               onClick={() => setPatternImagesShow((prev) => !prev)}
               type="button"
-              className="flex w-full bg-[var(--bgColor)]/50 backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
+              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
             >
               <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
                 {patternImagesShow ? "Show less" : "Show more"}
@@ -419,7 +419,7 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
             <button
               onClick={() => setGrayImagesShow((prev) => !prev)}
               type="button"
-              className="flex w-full bg-[var(--bgColor)]/50 backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
+              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
             >
               <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
                 {grayImagesShow ? "Show less" : "Show more"}
