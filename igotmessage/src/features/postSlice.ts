@@ -3,9 +3,14 @@ import axios from "axios";
 
 export type PostType = "normal" | "poll";
 
+export interface PollOption {
+  text: string;
+  votes?: string[]; // optional, backend will handle adding users
+}
+
 export interface Poll {
   question: string;
-  options: string[];
+  options: PollOption[];
 }
 
 export interface MusicData {

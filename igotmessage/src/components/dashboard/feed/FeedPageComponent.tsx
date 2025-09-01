@@ -9,74 +9,64 @@ import SplashScreen from "@/components/SplashScreen";
 import { DownloadIcon } from "@phosphor-icons/react";
 import MainModal from "@/components/modals/MainModal";
 import Skeleton from "react-loading-skeleton";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
+import dynamic from "next/dynamic";
 import CreateProfile from "@/components/create profile/CreateProfile";
+import { InfoIcon } from "lucide-react";
+import { logOut } from "@/features/authSlice";
+import { useRouter } from "next/navigation";
 // import { useRouter, useSearchParams } from 'next/navigation'
 
+const Posts = dynamic(() => import("@/components/dashboard/feed/Posts"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-[200px] w-full">
+      <NewLoader />
+    </div>
+  ),
+});
+
 function FeedPageComponent() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const res = await dispatch(logOut());
+    if (res.meta.requestStatus === "fulfilled") {
+      router.push("/login");
+    }
+  }
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
+  const isGuest = useAppSelector((state: RootState) => state.auth.user.isGuest);
 
   return (
-    <div className=" w-full ">
+    <div className=" w-full min-h-screen pb-12">
       <Story />
-      <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur
-        ipsa, minima non reiciendis voluptatum possimus amet quaerat unde
-        consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis
-        aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus
-        asperiores consequatur, est ex exercitationem officiis, architecto, eum
-        fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi
-        consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam
-        unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore,
-        sunt suscipit. Sint porro atque molestias eum expedita repellat cum
-        nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit
-        repellat ipsa quasi officia qui excepturi rem sapiente modi molestias
-        provident?
-      </p>
-      <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur
-        ipsa, minima non reiciendis voluptatum possimus amet quaerat unde
-        consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis
-        aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus
-        asperiores consequatur, est ex exercitationem officiis, architecto, eum
-        fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi
-        consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam
-        unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore,
-        sunt suscipit. Sint porro atque molestias eum expedita repellat cum
-        nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit
-        repellat ipsa quasi officia qui excepturi rem sapiente modi molestias
-        provident?
-      </p>
-      <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur
-        ipsa, minima non reiciendis voluptatum possimus amet quaerat unde
-        consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis
-        aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus
-        asperiores consequatur, est ex exercitationem officiis, architecto, eum
-        fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi
-        consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam
-        unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore,
-        sunt suscipit. Sint porro atque molestias eum expedita repellat cum
-        nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit
-        repellat ipsa quasi officia qui excepturi rem sapiente modi molestias
-        provident?
-      </p>
-      <p className="bg-[var(--wrapperColor)] p-6 rounded-4xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum tenetur
-        ipsa, minima non reiciendis voluptatum possimus amet quaerat unde
-        consequatur iusto maxime molestiae aperiam id itaque. Veritatis corporis
-        aperiam recusandae quidem laborum, ipsum laboriosam? Repellendus
-        asperiores consequatur, est ex exercitationem officiis, architecto, eum
-        fuga temporibus accusantium nisi. Eum vitae ut iste hic quo animi
-        consequuntur repudiandae architecto aliquid impedit? Expedita quibusdam
-        unde tempore vero iusto sapiente tenetur iste veniam laborum! Dolore,
-        sunt suscipit. Sint porro atque molestias eum expedita repellat cum
-        nesciunt. Temporibus hic quidem adipisci laudantium, molestiae velit
-        repellat ipsa quasi officia qui excepturi rem sapiente modi molestias
-        provident?
-      </p>
-      <div></div>
+      {isGuest && (
+        <div className="flex items-start gap-3 p-4 rounded-2xl border border-blue-200 bg-[var(--wrapperColor)] shadow-sm">
+          <div className="flex-shrink-0 text-blue-500">
+            <InfoIcon className="w-6 h-6" />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-sm text-[var(--textColor)]/90 leading-relaxed">
+              <span className="font-medium">Note:</span> Dear User, we can’t
+              show your personal stories and posts because you are a guest.
+              Please <span className="font-semibold  text-black bg-gray-300 px-1 rounded-2xl">Signup</span>{" "}
+              with google or email to access all features.
+            </p>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="mt-3 px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors shadow"
+            >
+              Signup
+            </button>
+          </div>
+        </div>
+      )}
+
+      <Posts />
     </div>
   );
 }

@@ -60,11 +60,11 @@ function Story() {
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
-          className={`relative w-[75px] h-[75px] flex items-center justify-center ${myProfilePicture && " border-3 border-[var(--borderColor)]/30"} p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group
+          className={`relative w-[75px] h-[75px] flex items-center justify-center ${myProfilePicture && " border-3 border-pink-700"} p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group
     ${
       myProfilePicture
         ? "bg-[var(--bgColor)]"
-        : "bg-gradient-to-br from-blue-500 to-indigo-800"
+        : "bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400"
     }`}
         >
           {myProfilePicture ? (
@@ -81,8 +81,8 @@ function Story() {
             />
           )}
 
-          <div className="absolute bottom-1.5 right-0 bg-blue-600  rounded-full p-1 shadow-sm">
-            <PlusIcon className="text-white" size={16} />
+          <div className="absolute bottom-0.5 -right-1 bg-[var(--textColor)]  rounded-full p-0.5 shadow-sm">
+            <PlusIcon className="text-[var(--bgColor)]" strokeWidth={2.5} size={22} />
           </div>
         </Link>
 
@@ -115,7 +115,7 @@ function Story() {
                   <UserIcon
                     size={40}
                     strokeWidth={1.2}
-                    className="text-white group-hover:scale-110 transition-transform duration-300"
+                    className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
                   />
                 )}
               </div>
@@ -135,7 +135,7 @@ function Story() {
       {uniqueUsers &&
         uniqueUsers.length > 0 &&
         uniqueUsers
-          .filter((user) => user._id !== myId && user.isGuest !== true)
+          .filter((user) => user._id !== myId)
           .map((user, index) => (
             <div
               key={index}

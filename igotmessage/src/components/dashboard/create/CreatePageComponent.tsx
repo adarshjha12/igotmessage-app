@@ -31,6 +31,8 @@ import NewLoader from "@/components/NewLoader";
 import { setShowPostUploadModal, uploadPost } from "@/features/postSlice";
 import UploadPostModal from "@/components/modals/UploadPostModal";
 import { useRouter } from "next/navigation";
+import PopupWithLink from "@/components/popups/PopupWithLink";
+import { setPostId } from "@/features/authSlice";
 
 interface MusicData {
   title: string;
@@ -183,7 +185,7 @@ export default function CreatePost() {
         poll: showPoll
           ? {
               question: pollQuestion,
-              options: pollOptions.filter((opt) => opt.trim() !== ""),
+              options: pollOptions.map((option) => ({ text: option.trim() })),
             }
           : null,
         musicData: musicData,
@@ -255,18 +257,11 @@ export default function CreatePost() {
 
   useEffect(() => {
     if (postingStatus === "succeeded") {
+      dispatch(setPostId( postId ?? ""))
       dispatch(setShowPostUploadModal(false));
       console.log("post id", postId);
-
-      router.push(`/post/${postId}`);
       setPosting(false);
       setShowSuccessPopup(true);
-
-      const timer = setTimeout(() => {
-        setShowSuccessPopup(false);
-      }, 10000);
-
-      return () => clearTimeout(timer);
     }
   }, [postingStatus, postId, router, dispatch]);
 
@@ -669,12 +664,12 @@ export default function CreatePost() {
           </button>
         </div>
         {libraryClicked && (
-          <div className="bg-[var(--bgColor)]/80 backdrop-blur-lg py-2 flex items-center justify-center ">
+          <div className=" w-full backdrop-blur-lg mt-4 rounded-2xl py-2 flex items-center justify-center ">
             <button
               onClick={() => setLibraryClicked(false)}
-              className="flex fixed top-4 left-2 items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+              className="flex fixed top-4 left-2 items-center gap-2 mb-4 text-sm px-3 py-1 text-[var(--textColor)] rounded-md hover:bg-red-700 transition"
             >
-              <ArrowLeft className="w-4 h-4" /> Go Back
+              <X className="w-8 h-8" />
             </button>
             <StoryTemplates
               feedPost={true}
@@ -683,10 +678,10 @@ export default function CreatePost() {
           </div>
         )}
         {musicClicked && (
-          <div className=" w-full bg-[var(--bgColor)]/50 backdrop-blur-lg py-2 pb-6 flex flex-col items-center justify-center">
+          <div className=" w-full backdrop-blur-lg mt-4 rounded-2xl py-2 flex items-center justify-center ">
             <button
               onClick={() => setMusicClicked(false)}
-              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 bg-blue-600 text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
+              className="flex fixed top-8 left-2 items-center gap-2 mb-4 text-sm z-50 px-3 py-1 text-[var(--textColor)] ] rounded-md hover:bg-red-700 transition"
             >
               <X className="w-8 h-8" />
             </button>
@@ -729,7 +724,9 @@ export default function CreatePost() {
       )}
       {showPostUploadModal && <UploadPostModal />}
       {showSuccessPopup && (
-        <PopupMessage
+        <PopupWithLink
+          linkHref={`/post/${postId}`}
+          linkText="View Post"
           show={showSuccessPopup}
           type="success"
           message="Post Uploaded Successfully"

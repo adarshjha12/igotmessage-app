@@ -9,7 +9,6 @@ import "swiper/css/navigation";
 import { formatDistanceToNowStrict } from "date-fns";
 import {
   ImageIcon,
-  MusicIcon,
   User,
   XIcon,
   Volume2,
@@ -120,18 +119,13 @@ export default function StoryViewerPage() {
 
     const getStories = async () => {
       const myStories = await fetchMyStories();
-      const otherUsersStories = await fetchOtherStories();
+      const otherUsersStories = await fetchOtherStories();      
 
-      // filter out guest users
-      const filteredStories = otherUsersStories.filter(
-        (userStories: StoryType[]) => !userStories[0]?.user?.isGuest
-      );
-
-      const combined = [myStories, ...filteredStories];
+      const combined = [myStories, ...otherUsersStories];
       setStoriesByUsers(combined);
       setCurrentUserIndex(0);
       setActiveStoryIndex(0);
-      console.log(filteredStories);
+      console.log(otherUsersStories);
     };
 
     getStories();

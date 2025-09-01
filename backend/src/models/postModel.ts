@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ref } from "process";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -7,7 +8,16 @@ const PostSchema = new mongoose.Schema(
     templateImage: { type: String },
     text: { type: String },
     postType: { type: String, default: "normal" },
-    poll: {},
+    privacy: { type: String, default: "public" },
+    poll: {
+      question: { type: String },
+      options: [
+        {
+          text: { type: String },
+          votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+        },
+      ],
+    },
     musicData: {
       title: { type: String },
       artist: { type: String },
@@ -16,6 +26,7 @@ const PostSchema = new mongoose.Schema(
       image: { type: String },
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    shares: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }

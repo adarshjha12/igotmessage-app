@@ -19,6 +19,7 @@ interface UserAuthInterface {
     bio?: string | null;
     followers?: string[];
     following?: string[];
+    posts?: string[];
     createdAt?: string;
     updatedAt?: string;
     updateProfileStatus: "idle" | "loading" | "succeeded" | "failed";
@@ -78,6 +79,7 @@ const initialState: UserAuthInterface = {
     avatar: "",
     verified: false,
     userName: "",
+    posts: [],
     profilePicture: "",
     bio: "",
     followers: [],
@@ -148,6 +150,9 @@ const authSlice = createSlice({
     setShowProfileUpdateModal: (state, action: PayloadAction<boolean>) => {
       state.user.showProfileUpdateModal = action.payload;
     },
+    setPostId: (state, action: PayloadAction<string>) => {
+      state.user.posts?.push(action.payload)
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(handleProfileUpdate.fulfilled, (state, action) => {
@@ -190,5 +195,6 @@ export const {
   setAuthStatus,
   setShowProfileUpdateModal,
   setProfileUpdateStatus,
+  setPostId
 } = authSlice.actions;
 export default authSlice.reducer;

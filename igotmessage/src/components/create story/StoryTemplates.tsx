@@ -1,402 +1,94 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, Plus } from "lucide-react";
+import { ImageIcon } from "@phosphor-icons/react";
+import { useAppDispatch } from "@/store/hooks";
+import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
+
+// JSON imports
 import grayImages from "../../json/Story images/grayscale.json";
 import petImages from "../../json/Story images/pets.json";
 import natureImages from "../../json/Story images/natural.json";
 import patternImages from "../../json/Story images/pattern.json";
 import cityImages from "../../json/Story images/city.json";
-import { ImageIcon, SelectionIcon, ThumbsUpIcon } from "@phosphor-icons/react";
-import { ChevronDown, Plus } from "lucide-react";
-import { RootState } from "@/store/store";
-import { useSelector, useDispatch } from "react-redux";
-import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
-import { useAppDispatch } from "@/store/hooks";
 
 interface Props {
   feedPost?: boolean;
   setTemplateImage?: (url: string) => void;
 }
 
-function StoryTemplates({ feedPost, setTemplateImage }: Props) {
-  const dispatch = useAppDispatch();
-  const [cityImagesShow, setCityImagesShow] = React.useState(false);
-  const [grayImagesShow, setGrayImagesShow] = React.useState(false);
-  const [petImagesShow, setPetImagesShow] = React.useState(false);
-  const [natureImagesShow, setNatureImagesShow] = React.useState(false);
-  const [patternImagesShow, setPatternImagesShow] = React.useState(false);
-  const [loadedImagesCity, setLoadedImagesCity] = React.useState<{
-    [key: number]: boolean;
-  }>({});
-  const [loadedImagesPets, setLoadedImagesPets] = React.useState<{
-    [key: number]: boolean;
-  }>({});
-  const [loadedImagesNature, setLoadedImagesNature] = React.useState<{
-    [key: number]: boolean;
-  }>({});
-  const [loadedImagesPattern, setLoadedImagesPattern] = React.useState<{
-    [key: number]: boolean;
-  }>({});
-  const [loadedImagesGrayscale, setLoadedImagesGrayscale] = React.useState<{
-    [key: number]: boolean;
-  }>({});
+interface SectionProps {
+  title: string;
+  images: { url: string }[];
+  feedPost?: boolean;
+  setTemplateImage?: (url: string) => void;
+  defaultOpen?: boolean;
+}
 
-  const handleImageLoad = (index: number, type: string) => {
-    if (type === "city") {
-      setLoadedImagesCity((prev) => ({ ...prev, [index]: true }));
-    } else if (type === "pets") {
-      setLoadedImagesPets((prev) => ({ ...prev, [index]: true }));
-    } else if (type === "nature") {
-      setLoadedImagesNature((prev) => ({ ...prev, [index]: true }));
-    } else if (type === "pattern") {
-      setLoadedImagesPattern((prev) => ({ ...prev, [index]: true }));
-    } else if (type === "grayscale") {
-      setLoadedImagesGrayscale((prev) => ({ ...prev, [index]: true }));
-    }
-  };
+const ImageSection: React.FC<SectionProps> = ({
+  title,
+  images,
+  feedPost,
+  setTemplateImage,
+  defaultOpen,
+}) => {
+  const dispatch = useAppDispatch();
+  const [show, setShow] = React.useState(!!defaultOpen);
+  const [loaded, setLoaded] = React.useState<{ [key: number]: boolean }>({});
 
   return (
-    <div className="w-full h-full rounded-2xl flex flex-col justify-center items-center">
-      <hr className="w-[10%] my-6 h-[1px] bg-[var(--borderColor)]" />
-      <div className="w-full flex px-2 gap-3 flex-col justify-center items-center">
-        <div className="flex gap-2 justify-center items-center">
-          <ImageIcon size={30} color="red"/>
-          <p className="text-2xl tracking-wider text-center font-medium text-[var(--textColor)]">
-            Image Library
-          </p>
-        </div>
-        {/* <hr className='w-full h-[1px] bg-[var(--borderColor)]'/> */}
-        <div className="w-full flex gap-0 flex-col justify-center items-center">
-          <div className="w-full flex px-3 flex-col items-start flex-wrap justify-center">
-            <p
-              className={` text-[var(--textColor)] pt-4 pb-2 font-semibold text-2xl`}
-            >
-              City
-            </p>
-            <div
-              className={`flex gap-6 ${
-                cityImagesShow
-                  ? "overflow-auto down-slide h-full"
-                  : "overflow-hidden h-[100px]"
-              } flex-wrap justify-start items-center`}
-            >
-              {cityImages
-                .sort((a, b) => a.url.localeCompare(b.url))
-                .map((image, index) => (
-                  <div
-                    key={index}
-                    className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
-                  >
-                    <Image
-                      onLoad={() => handleImageLoad(index, "city")}
-                      style={
-                        loadedImagesCity[index]
-                          ? { opacity: 1 }
-                          : { opacity: 0 }
-                      }
-                      className=" object-cover rounded-md"
-                      src={image.url}
-                      priority
-                      sizes="100px"
-                      fill
-                      alt=""
-                    />
-                    {!loadedImagesCity[index] && (
-                      <div className="absolute rounded-md w-full h-full flex justify-center items-center">
-                        <ImageIcon size={30} />
-                      </div>
-                    )}
-                    {loadedImagesCity[index] && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (feedPost) {
-                            setTemplateImage?.(image.url);
-                          } else {
-                            dispatch(setStoryImage(image.url));
-                            dispatch(setStoryTextBg(image.url));
-                          }
-                        }}
-                        className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
-                      >
-                        <Plus size={20} />
-                        Select
-                      </button>
-                    )}
-                  </div>
-                ))}
-            </div>
-            <button
-              onClick={() => setCityImagesShow((prev) => !prev)}
-              type="button"
-              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
-            >
-              <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
-                {cityImagesShow ? "Show less" : "Show more"}
-              </p>
-              <ChevronDown
-                size={25}
-                className={`text-[var(--textColor)] ${
-                  cityImagesShow ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-          <div className="w-full flex px-3 flex-col items-start flex-wrap justify-center">
-            <p
-              className={` text-[var(--textColor)] pt-4 pb-2 font-semibold text-2xl`}
-            >
-              Pets
-            </p>
-            <div
-              className={`flex gap-6 ${
-                petImagesShow
-                  ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[100px]"
-              } flex-wrap justify-start items-center`}
-            >
-              {petImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
-                >
-                  <Image
-                    onLoad={() => handleImageLoad(index, "pets")}
-                    style={
-                      loadedImagesPets[index] ? { opacity: 1 } : { opacity: 0 }
-                    }
-                    className=" object-cover rounded-md"
-                    src={image.url}
-                    priority
-                    sizes="100px"
-                    fill
-                    alt=""
-                  />
-                  {!loadedImagesPets[index] && (
-                    <div className="absolute rounded-md w-full h-full flex justify-center items-center">
-                      <ImageIcon size={30} />
-                    </div>
-                  )}
-                  {loadedImagesPets[index] && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (feedPost) {
-                          setTemplateImage?.(image.url);
-                        } else {
-                          dispatch(setStoryImage(image.url));
-                          dispatch(setStoryTextBg(image.url));
-                        }
-                      }}
-                      className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
-                    >
-                      <Plus size={20} />
-                      Select
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setPetImagesShow((prev) => !prev)}
-              type="button"
-              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
-            >
-              <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
-                {petImagesShow ? "Show less" : "Show more"}
-              </p>
-              <ChevronDown
-                size={25}
-                className={`text-[var(--textColor)] ${
-                  petImagesShow ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-          <div className="w-full flex px-3 flex-col items-start flex-wrap justify-center">
-            <p
-              className={` text-[var(--textColor)] pt-4 pb-2 font-semibold text-2xl`}
-            >
-              Nature
-            </p>
-            <div
-              className={`flex gap-6 ${
-                natureImagesShow
-                  ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[100px]"
-              } flex-wrap justify-start items-center`}
-            >
-              {natureImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
-                >
-                  <Image
-                    onLoad={() => handleImageLoad(index, "nature")}
-                    style={
-                      loadedImagesNature[index]
-                        ? { opacity: 1 }
-                        : { opacity: 0 }
-                    }
-                    className=" object-cover rounded-md"
-                    src={image.url}
-                    priority
-                    sizes="100px"
-                    fill
-                    alt=""
-                  />
-                  {!loadedImagesNature[index] && (
-                    <div className="absolute rounded-md w-full h-full flex justify-center items-center">
-                      <ImageIcon size={30} />
-                    </div>
-                  )}
-                  {loadedImagesNature[index] && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (feedPost) {
-                          setTemplateImage?.(image.url);
-                        } else {
-                          dispatch(setStoryImage(image.url));
-                          dispatch(setStoryTextBg(image.url));
-                        }
-                      }}
-                      className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
-                    >
-                      <Plus size={20} />
-                      Select
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setNatureImagesShow((prev) => !prev)}
-              type="button"
-              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
-            >
-              <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
-                {natureImagesShow ? "Show less" : "Show more"}
-              </p>
-              <ChevronDown
-                size={25}
-                className={`text-[var(--textColor)] ${
-                  natureImagesShow ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-          <div className="w-full flex px-3 flex-col items-start flex-wrap justify-center">
-            <p
-              className={` text-[var(--textColor)] pt-4 pb-2 font-semibold text-2xl`}
-            >
-              Pattern
-            </p>
-            <div
-              className={`flex gap-6 ${
-                patternImagesShow
-                  ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[100px]"
-              } flex-wrap justify-start items-center`}
-            >
-              {patternImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
-                >
-                  <Image
-                    onLoad={() => handleImageLoad(index, "pattern")}
-                    style={
-                      loadedImagesPattern[index]
-                        ? { opacity: 1 }
-                        : { opacity: 0 }
-                    }
-                    className=" object-cover rounded-md"
-                    src={image.url}
-                    priority
-                    sizes="100px"
-                    fill
-                    alt=""
-                  />
-                  {!loadedImagesPattern[index] && (
-                    <div className="absolute rounded-md w-full h-full flex justify-center items-center">
-                      <ImageIcon size={30} />
-                    </div>
-                  )}
-                  {loadedImagesPattern[index] && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (feedPost) {
-                          setTemplateImage?.(image.url);
-                        } else {
-                          dispatch(setStoryImage(image.url));
-                          dispatch(setStoryTextBg(image.url));
-                        }
-                      }}
-                      className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
-                    >
-                      <Plus size={20} />
-                      Select
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setPatternImagesShow((prev) => !prev)}
-              type="button"
-              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
-            >
-              <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
-                {patternImagesShow ? "Show less" : "Show more"}
-              </p>
-              <ChevronDown
-                size={25}
-                className={`text-[var(--textColor)] ${
-                  patternImagesShow ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
+    <div className="w-full flex flex-col gap-3 mb-6">
+      <button
+        onClick={() => setShow((prev) => !prev)}
+        className="flex w-full items-center justify-between px-2 py-2 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
+      >
+        <p className="text-xl font-semibold text-[var(--textColor)]">{title}</p>
+        <ChevronDown
+          size={22}
+          className={`text-[var(--textColor)] transition-transform ${
+            show ? "rotate-180" : ""
+          }`}
+        />
+      </button>
 
-          <div className="w-full flex px-3 flex-col items-start flex-wrap justify-center">
-            <p
-              className={` text-[var(--textColor)] pt-4 pb-2 font-semibold text-2xl`}
-            >
-              Grayscale
-            </p>
-            <div
-              className={`flex gap-6 ${
-                grayImagesShow
-                  ? "down-slide overflow-auto h-full"
-                  : "overflow-hidden h-[100px]"
-              } flex-wrap justify-start items-center`}
-            >
-              {grayImages.map((image, index) => (
+      <AnimatePresence initial={false}>
+        {show && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 px-2"
+          >
+            {images
+              .sort((a, b) => a.url.localeCompare(b.url))
+              .map((image, index) => (
                 <div
                   key={index}
-                  className="flex w-[100px] h-[100px] justify-center text-center items-center relative"
+                  className="relative group aspect-square rounded-xl overflow-hidden shadow-md"
                 >
                   <Image
-                    onLoad={() => handleImageLoad(index, "grayscale")}
-                    style={
-                      loadedImagesGrayscale[index]
-                        ? { opacity: 1 }
-                        : { opacity: 0 }
-                    }
-                    className=" object-cover rounded-md"
                     src={image.url}
-                    priority
-                    sizes="100px"
-                    fill
                     alt=""
+                    fill
+                    className={`object-cover transition-opacity duration-500 ${
+                      loaded[index] ? "opacity-100" : "opacity-0"
+                    }`}
+                    onLoad={() =>
+                      setLoaded((prev) => ({ ...prev, [index]: true }))
+                    }
                   />
-                  {!loadedImagesGrayscale[index] && (
-                    <div className="absolute rounded-md w-full h-full flex justify-center items-center">
-                      <ImageIcon size={30} />
+
+                  {!loaded[index] && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200/20">
+                      <ImageIcon size={28} />
                     </div>
                   )}
-                  {loadedImagesGrayscale[index] && (
+
+                  {loaded[index] && (
                     <button
                       type="button"
                       onClick={() => {
@@ -407,32 +99,52 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
                           dispatch(setStoryTextBg(image.url));
                         }
                       }}
-                      className="absolute cursor-pointer active:scale-75 flex py-1 rounded-full px-2 bg-[var(--bgColor)]/50 backdrop-blur-sm justify-center items-center gap-2 bottom-2 z-20  text-[var(--textColor)]"
+                      className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1.5 flex items-center gap-1 
+                                 rounded-full bg-[var(--bgColor)]/70 backdrop-blur-sm text-sm font-medium 
+                                 text-[var(--textColor)] opacity-0 group-hover:opacity-100 transition"
                     >
-                      <Plus size={20} />
+                      <Plus size={16} />
                       Select
                     </button>
                   )}
                 </div>
               ))}
-            </div>
-            <button
-              onClick={() => setGrayImagesShow((prev) => !prev)}
-              type="button"
-              className="flex w-full backdrop-blur-sm px-2 py-2 active:scale-75 rounded-md justify-center gap-4 items-center cursor-pointer"
-            >
-              <p className="text-xl py-2 font-semibold text-[var(--textColor)]">
-                {grayImagesShow ? "Show less" : "Show more"}
-              </p>
-              <ChevronDown
-                size={25}
-                className={`text-[var(--textColor)] ${
-                  grayImagesShow ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-        </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+function StoryTemplates({ feedPost, setTemplateImage }: Props) {
+  const sections = [
+    { title: "City", images: cityImages, defaultOpen: true },
+    { title: "Pets", images: petImages },
+    { title: "Nature", images: natureImages },
+    { title: "Pattern", images: patternImages },
+    { title: "Grayscale", images: grayImages },
+  ];
+
+  return (
+    <div className="w-full h-full rounded-2xl flex flex-col justify-start items-center p-4">
+      <div className="flex gap-2 items-center mb-4">
+        <ImageIcon size={28} className="text-red-500" />
+        <p className="text-2xl font-semibold tracking-wide text-[var(--textColor)]">
+          Image Library
+        </p>
+      </div>
+
+      <div className="w-full flex flex-col">
+        {sections.map((section, i) => (
+          <ImageSection
+            key={i}
+            title={section.title}
+            images={section.images}
+            feedPost={feedPost}
+            setTemplateImage={setTemplateImage}
+            defaultOpen={section.defaultOpen}
+          />
+        ))}
       </div>
     </div>
   );

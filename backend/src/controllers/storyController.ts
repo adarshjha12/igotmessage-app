@@ -22,10 +22,12 @@ const storyUploadController = async (
       musicData: musicData && JSON.parse(musicData),
     });
 
-    return res.status(201).json({ message: "Story uploaded", success: true, story });
+    return res
+      .status(201)
+      .json({ message: "Story uploaded", success: true, story });
   } catch (error) {
     console.error(error);
-   return res.status(500).json({ message: "IGotMessage Server error", error });
+    return res.status(500).json({ message: "IGotMessage Server error", error });
   }
 };
 
@@ -39,12 +41,24 @@ const getMyStoryController = async (
     if (!userId)
       return res.status(400).json({ message: "User id not provided" });
 
-    const myStories = await Story.find({ user: userId }) .populate("user", "userName profilePicture isGuest")
-    .sort({ createdAt: -1 });;
-    
-    if (myStories.length === 0) return res.status(404).json({ message: "No story found" });
+    const myStories = await Story.find({ user: userId })
+      .populate({
+        path: "user",
+        select: "userName profilePicture isGuest",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      })
+      .sort({ createdAt: -1 });
 
-    res.status(200).json({ message: "Story found", success: true, myStories });
+    const filteredStories = myStories.filter((story) => story.user);
+
+    if (filteredStories.length === 0)
+      return res.status(404).json({ message: "No story found" });
+
+    res.status(200).json({
+      message: "Story found",
+      success: true,
+      myStories: filteredStories,
+    });
   } catch (error) {
     res.status(500).json({ message: "IGotMessage Server error", error });
   }
@@ -55,15 +69,23 @@ const getOtherStoryController = async (
   res: Response
 ): Promise<any> => {
   const otherStories = await Story.find()
-    .populate("user", "userName profilePicture isGuest")
+    .populate({
+      path: "user",
+      select: "userName profilePicture isGuest",
+      match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+    })
     .sort({ createdAt: -1 });
 
-  if (!otherStories)
+  const filteredStories = otherStories.filter((story) => story.user);
+
+  if (filteredStories.length === 0)
     return res.status(404).json({ message: "No stories found" });
 
-  res
-    .status(200)
-    .json({ message: "Stories found", success: true, otherStories });
+  res.status(200).json({
+    message: "Stories found",
+    success: true,
+    otherStories: filteredStories,
+  });
 };
 
 const getStoryByIdController = async (
@@ -76,14 +98,19 @@ const getStoryByIdController = async (
       return res
         .status(400)
         .json({ message: "no userId provided", success: false });
-    const stories = await Story.find({ user: userId }).populate("user", "userName profilePicture");
+    const stories = await Story.find({ user: userId }).populate(
+      "user",
+      "userName profilePicture"
+    );
     if (!stories || stories.length === 0)
       return res
         .status(404)
         .json({ message: "stories not found", success: false });
     res.status(200).json({ message: "stories found", success: true, stories });
   } catch (error) {
-    res.status(500).json({ message: " server error on IGotMessage", success: false });
+    res
+      .status(500)
+      .json({ message: " server error on IGotMessage", success: false });
   }
 };
 export {
