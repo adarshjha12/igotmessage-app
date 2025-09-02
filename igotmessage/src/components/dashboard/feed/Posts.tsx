@@ -56,9 +56,7 @@ export default function Posts() {
 
     const parsedPosts =
       typeof data.posts === "string" ? JSON.parse(data.posts) : data.posts;
-
-    console.log(parsedPosts[0].privacy);
-
+      
     setPosts((prev) => {
       const merged = [...prev, ...parsedPosts];
       const uniquePosts = Array.from(

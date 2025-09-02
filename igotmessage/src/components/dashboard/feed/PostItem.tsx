@@ -16,6 +16,7 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { useAppSelector } from "@/store/hooks";
 import axios from "axios";
+import Comment from "./Comment";
 
 export interface PostItemProps {
   post: Post;
@@ -23,6 +24,7 @@ export interface PostItemProps {
 
 export default function PostItem({ post }: PostItemProps) {
   const [likeClicked, setLikeClicked] = useState(false);
+  const [commentOpen, setCommentOpen] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likes?.length ?? 0);
   const userId = useAppSelector((state) => state.auth.user._id);
 
@@ -145,13 +147,14 @@ export default function PostItem({ post }: PostItemProps) {
         >
           <Heart
             strokeWidth={likeClicked ? 0 : 2}
-            fill={likeClicked ? "magenta" : "none"}
+            fill={likeClicked ? "red" : "none"}
             size={32}
           />
-          <span className="text-lg">{likeCount}</span>
+          <span className="text-lg">{likeCount} {likeCount === 1 ? "Like" : "Likes"}</span>
         </button>
         <button
           type="button"
+          onClick={() => setCommentOpen(prev => !prev)}
           className="flex items-center gap-2 hover:text-blue-500 transition"
         >
           <MessageCircle size={30} />
@@ -165,6 +168,12 @@ export default function PostItem({ post }: PostItemProps) {
           <span className="text-lg">{post?.shares?.length ?? 0}</span>
         </button>
       </div>
+
+      {commentOpen && (
+        <div className="mt-4 rounded-2xl">
+          <Comment postId={post._id} />
+        </div>
+      )}
     </div>
   );
 }
