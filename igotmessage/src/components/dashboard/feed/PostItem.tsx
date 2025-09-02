@@ -30,7 +30,7 @@ export default function PostItem({ post }: PostItemProps) {
           <Link href="#">
             {post.user?.profilePicture ? (
               <img
-                src={post.user.profilePicture}
+                src={post.user.profilePicture ?? ""}
                 alt="avatar"
                 className="w-11 h-11 border border-[var(--borderColor)]/50 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
               />
