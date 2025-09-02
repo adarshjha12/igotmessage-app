@@ -182,7 +182,7 @@ function Login() {
           ""
         ) : (
           <div
-            className={`mt-3 flex items-center justify-center gap-2 font-medium text-[var(--textColor)]/80`}
+            className={`mt-3 flex items-center justify-center gap-2 font-medium text-white/80`}
           >
             <img src="/images/makeInIndia.png" className="w-12 h-auto" alt="" />
             <p> A Make in India Initiative</p>
@@ -197,8 +197,8 @@ function Login() {
           <button
             type="button"
             onClick={handleGuestSignin}
-            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-[var(--wrapperColor)]/80 backdrop-blur-sm
-    shadow-sm hover:shadow-md hover:bg-[var(--wrapperColor)] transition-all duration-300 ease-in-out
+            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-gray-800/80 backdrop-blur-sm
+    shadow-sm hover:shadow-md hover:bg-gray-800 transition-all duration-300 ease-in-out
     text-white font-medium text-base sm:text-lg active:scale-95
     ${emailButtonClick && "hidden"}`}
           >
@@ -223,8 +223,8 @@ function Login() {
           {/* Google Button */}
           <button
             onClick={handleGoogleButtonClick}
-            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-[var(--wrapperColor)]/80 backdrop-blur-sm
-    shadow-sm hover:shadow-md hover:bg-[var(--wrapperColor)] transition-all duration-300 ease-in-out
+            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-gray-800/80 backdrop-blur-sm
+    shadow-sm hover:shadow-md hover:bg-gray-800 transition-all duration-300 ease-in-out
     text-white font-medium text-base sm:text-lg active:scale-95
     ${googleButtonClick ? "w-[260px]" : ""} ${
               emailButtonClick ? "hidden" : ""
@@ -245,8 +245,8 @@ function Login() {
           {/* Email Button */}
           <button
             onClick={handleEmailButtonClick}
-            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-[var(--wrapperColor)]/80 backdrop-blur-sm
-    shadow-sm hover:shadow-md hover:bg-[var(--wrapperColor)] transition-all duration-300 ease-in-out
+            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-gray-800/80 backdrop-blur-sm
+    shadow-sm hover:shadow-md hover:bg-gray-800 transition-all duration-300 ease-in-out
     text-white font-medium text-base sm:text-lg active:scale-95
     ${emailButtonClick ? "hidden" : ""}`}
           >
