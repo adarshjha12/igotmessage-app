@@ -28,7 +28,7 @@ export default function PostItem({ post }: PostItemProps) {
       <div className="flex px-4 items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <Link href="#">
-            {post.user.profilePicture ? (
+            {post.user?.profilePicture ? (
               <img
                 src={post.user.profilePicture}
                 alt="avatar"
