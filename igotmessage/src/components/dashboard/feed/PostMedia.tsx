@@ -109,7 +109,7 @@ function MediaItem({ url }: { url: string }) {
   }
 
   return (
-    <div className="relative  rounded-xl overflow-hidden">
+    <div className="relative bg-[var(--bgColor)]/50 backdrop-blur-lg rounded-xl overflow-hidden">
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-gray-400">
           <ImageIcon className="w-8 h-8 animate-pulse" />

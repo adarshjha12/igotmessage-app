@@ -70,13 +70,18 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
       });
 
+    const filteredPosts = posts.filter((post) => post.user);
+
     const total = await Post.countDocuments();
 
-    const hasMore = skip + posts.length < total;
+    const hasMore = skip + filteredPosts.length < total;
 
-    return res
-      .status(200)
-      .json({ success: true, message: "Posts found", posts, hasMore });
+    return res.status(200).json({
+      success: true,
+      message: "Posts found",
+      posts: filteredPosts,
+      hasMore,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: "Server error" });
