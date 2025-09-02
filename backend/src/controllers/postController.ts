@@ -33,8 +33,8 @@ export const createPost = async (req: Request, res: Response): Promise<any> => {
       mediaUrls: mediaUrls || [],
       templateImage: templateImage || "",
       postType,
-      poll: poll && JSON.parse(poll) ,
-      text : text || "",
+      poll: poll && JSON.parse(poll),
+      text: text || "",
       musicData: musicData && JSON.parse(musicData),
       privacy: privacy || "public",
     });
@@ -53,22 +53,26 @@ export const createPost = async (req: Request, res: Response): Promise<any> => {
 
 export const getPosts = async (req: Request, res: Response): Promise<any> => {
   try {
-    let {page} = req.query
+    let { page } = req.query;
 
-    const pageNo = parseInt(page as string)
-    const limit = 10
+    const pageNo = parseInt(page as string);
+    const limit = 10;
 
-    const skip = (pageNo - 1) * 20
+    const skip = (pageNo - 1) * 20;
 
     const posts = await Post.find()
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .populate("user", "userId profilePicture userName isGuest");
+      .populate({
+        path: "user",
+        select: "userName profilePicture isGuest",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      });
 
-      const total = await Post.countDocuments()
+    const total = await Post.countDocuments();
 
-      const hasMore = skip + posts.length < total
+    const hasMore = skip + posts.length < total;
 
     return res
       .status(200)
