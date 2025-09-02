@@ -18,6 +18,7 @@ import {
 } from "@phosphor-icons/react";
 import { User } from "lucide-react";
 import SplashScreen from "../SplashScreen";
+import Image from "next/image";
 
 function Login() {
   const isDark = useSelector((state: RootState) => state.activity.isDark);
@@ -184,7 +185,7 @@ function Login() {
           <div
             className={`mt-3 flex items-center justify-center gap-2 font-medium text-white/80`}
           >
-            <img src="/images/makeInIndia.png" className="w-12 h-auto" alt="" />
+            <Image width={60} height={60} src="/images/makeInIndia.png" alt="img" />
             <p> A Make in India Initiative</p>
           </div>
         )}
