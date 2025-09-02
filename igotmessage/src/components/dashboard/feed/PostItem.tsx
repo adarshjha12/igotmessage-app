@@ -139,7 +139,7 @@ export default function PostItem({ post }: PostItemProps) {
       )}
 
       {/* --- Footer Actions --- */}
-      <div className="flex px-4 items-center justify-between mt-3 pt-3 border-t border-[var(--borderColor)]/40 text-[var(--textColor)]/80 text-sm">
+      <div className="flex px-4 items-center justify-between mt-3 pt-3 text-[var(--textColor)]/80 text-sm">
         <button
           type="button"
           onClick={handleLike}
@@ -148,7 +148,7 @@ export default function PostItem({ post }: PostItemProps) {
           <Heart
             strokeWidth={likeClicked ? 0 : 2}
             fill={likeClicked ? "red" : "none"}
-            size={32}
+            size={likeClicked ? 34 : 32}
           />
           <span className="text-lg">{likeCount} {likeCount === 1 ? "Like" : "Likes"}</span>
         </button>
