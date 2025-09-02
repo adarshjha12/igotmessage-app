@@ -25,9 +25,9 @@ export default function Poll({ postId, pollData }: PollProps) {
   );
 
   return (
-    <div className="flex flex-col gap-3 mt-4">
+    <div className="flex flex-col gap-3 px-4 mt-4">
       {/* Question */}
-      <div className="font-semibold px-4 gap-2 flex item-center text-lg text-[var(--textColor)] mb-2">
+      <div className="font-semibold gap-2 flex item-center text-lg text-[var(--textColor)] mb-2">
         <BarChart3 size={30} className="text-rose-600" />
         {pollData.question}
       </div>

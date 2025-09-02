@@ -185,7 +185,7 @@ function Login() {
           <div
             className={`mt-3 flex items-center justify-center gap-2 font-medium text-white/80`}
           >
-            <Image width={60} height={60}  src="/images/lion.png" alt="img" />
+            <Image width={60} height={60} className="h-auto"  src="/images/lion.png" alt="img" />
             <p> A Make in India Initiative</p>
           </div>
         )}

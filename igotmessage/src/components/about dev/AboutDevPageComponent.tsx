@@ -153,7 +153,7 @@ function AboutDevPageComponent() {
                 isDark ? "text-green-400" : "text-green-600"
               }`}
             >
-              <img src="/images/makeInIndia.png" className="w-12 h-auto" alt="" />
+              <img src="/images/lion.png" className="w-12 h-auto" alt="" />
               <p> A Make in India Initiative</p>
             </div>
           </div>

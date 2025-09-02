@@ -164,7 +164,7 @@ function Panel() {
               className={`mt-3 flex items-center justify-center gap-2 font-medium text-[var(--textColor)]/80`}
             >
               <img
-                src="/images/makeInIndia.png"
+                src="/images/lion.png"
                 className="w-12 h-auto"
                 alt=""
               />
