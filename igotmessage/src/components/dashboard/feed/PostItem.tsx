@@ -39,7 +39,10 @@ export default function PostItem({ post }: PostItemProps) {
 
   const handleLike = async () => {
     try {
-      setLikeClicked((prev) => !prev);
+      setLikeClicked((prev) => {
+        setLikeCount((count) => (prev ? count - 1 : count + 1));
+        return !prev;
+      });
 
       const res = await axios.post(
         url,
@@ -48,7 +51,7 @@ export default function PostItem({ post }: PostItemProps) {
       );
 
       if (res) {
-        setLikeCount(res.data.likeCount)
+        setLikeCount(res.data.likeCount);
       }
       console.log(res);
     } catch (error) {
@@ -57,14 +60,6 @@ export default function PostItem({ post }: PostItemProps) {
       setLikeClicked((prev) => !prev);
     }
   };
-
-  // useEffect(() => {
-  //   if (likeClicked) {
-  //       setLikeCount((prev) => prev + 1);
-  //   } else {
-  //     setLikeCount((prev) => (prev > 0 ? prev - 1 : 0));
-  //   }
-  // }, [likeClicked]);
 
   return (
     <div className="rounded-2xl bg-[var(--wrapperColor)] py-5  shadow-lg hover:shadow-xl transition-shadow duration-300">
