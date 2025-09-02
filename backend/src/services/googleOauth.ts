@@ -2,6 +2,8 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { User } from "../models/userModel";
 
+const randomNumber = Math.floor(Math.random() * 100000 + 1);
+
 const clientID = process.env.CLIENT_ID!;
 const clientSecret = process.env.CLIENT_SECRET!;
 const callbackURL =
@@ -45,6 +47,7 @@ passport.use(
           title: profile.displayName,
           avatar: profile.photos?.[0]?.value || "",
           fullName: "",
+          userName: "user" + randomNumber,
           profilePicture: "",
           bio: "",
           coverPhoto: "",

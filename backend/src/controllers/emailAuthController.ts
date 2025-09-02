@@ -7,6 +7,9 @@ import apiInstance from '../services/brevoClient';
 
 const generateOTP = (): string => Math.floor(1000 + Math.random() * 9000).toString();
 
+  const randomNumber = Math.floor(Math.random() * 100000 + 1);
+
+
 export const sendOtp = async (req: Request, res: Response): Promise<any> => {
   const { email } = req.body;
   if (!email) {
@@ -60,6 +63,7 @@ export const verifyOtp = async (req: Request, res: Response): Promise<any> => {
       followers: [],
       following: [],
       fullName: '',
+      userName: "user" + randomNumber,
       profilePicture: '',
       coverPhoto: '',
       bio: '',
