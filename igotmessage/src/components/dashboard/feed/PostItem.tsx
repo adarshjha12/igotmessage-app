@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostMedia from "./PostMedia";
 import Poll from "./Poll";
 import {
@@ -14,6 +14,8 @@ import {
 import { Post } from "./Posts";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import { useAppSelector } from "@/store/hooks";
+import axios from "axios";
 
 export interface PostItemProps {
   post: Post;
@@ -21,6 +23,48 @@ export interface PostItemProps {
 
 export default function PostItem({ post }: PostItemProps) {
   const [likeClicked, setLikeClicked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post?.likes?.length ?? 0);
+  const userId = useAppSelector((state) => state.auth.user._id);
+
+  const url =
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/post/toggle-like`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/toggle-like`;
+
+  useEffect(() => {
+    if (post.likes?.includes(userId)) {
+      setLikeClicked(true);
+    }
+  }, [post, userId]);
+
+  const handleLike = async () => {
+    try {
+      setLikeClicked((prev) => !prev);
+
+      const res = await axios.post(
+        url,
+        { userId, postId: post._id },
+        { withCredentials: true }
+      );
+
+      if (res) {
+        setLikeCount(res.data.likeCount)
+      }
+      console.log(res);
+    } catch (error) {
+      console.error("toggle like error", error);
+
+      setLikeClicked((prev) => !prev);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (likeClicked) {
+  //       setLikeCount((prev) => prev + 1);
+  //   } else {
+  //     setLikeCount((prev) => (prev > 0 ? prev - 1 : 0));
+  //   }
+  // }, [likeClicked]);
 
   return (
     <div className="rounded-2xl bg-[var(--wrapperColor)] py-5  shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -101,11 +145,15 @@ export default function PostItem({ post }: PostItemProps) {
       <div className="flex px-4 items-center justify-between mt-3 pt-3 border-t border-[var(--borderColor)]/40 text-[var(--textColor)]/80 text-sm">
         <button
           type="button"
-          onClick={() => setLikeClicked((prev) => !prev)}
+          onClick={handleLike}
           className="flex items-center gap-2 hover:text-red-500 transition"
         >
-          <Heart strokeWidth={likeClicked ? 0 : 2} fill={likeClicked ? "magenta" : "none"} size={32} />
-          <span className="text-lg">{post?.likes?.length ?? 0}</span>
+          <Heart
+            strokeWidth={likeClicked ? 0 : 2}
+            fill={likeClicked ? "magenta" : "none"}
+            size={32}
+          />
+          <span className="text-lg">{likeCount}</span>
         </button>
         <button
           type="button"

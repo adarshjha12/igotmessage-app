@@ -58,7 +58,7 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
     const pageNo = parseInt(page as string);
     const limit = 10;
 
-    const skip = (pageNo - 1) * 20;
+    const skip = (pageNo - 1) * limit;
 
     const posts = await Post.find()
       .sort({ createdAt: -1 })
@@ -90,23 +90,40 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
 
 export const toggleLike = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { postId } = req.params;
-    const { userId } = req.body;
+    const { userId, postId } = req.body;
 
     const post = await Post.findById(postId);
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    const isLiked = post.likes.includes(userId);
+    const isLiked = post.likes.some(id => id.toString() === userId.toString());
+
+    let updatedPost;
 
     if (isLiked) {
-      post.likes.filter((id) => id !== userId);
+      updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        { $pull: { likes: userId } },
+        { new: true } 
+      );
+      return res.json({
+        message: "Unliked",
+        isLiked: false,
+        likeCount: updatedPost?.likes.length || 0,
+      });
     } else {
-      post.likes.push(userId);
+      updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        { $addToSet: { likes: userId } },
+        { new: true }
+      );
+      return res.json({
+        message: "Liked",
+        isLiked: true,
+        likeCount: updatedPost?.likes.length || 0,
+      });
     }
-
-    await post.save();
-    res.json({ message: isLiked ? "Unliked" : "Liked", isLiked: !isLiked });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err });
   }
 };
+

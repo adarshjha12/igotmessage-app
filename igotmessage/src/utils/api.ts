@@ -82,19 +82,6 @@ const handleGuest = async () => {
   }
 };
 
-// const getPosts = async () => {
-//   try {
-//     const url =
-//       process.env.NODE_ENV === "production"
-//         ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/post/get-posts`
-//         : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/get-posts`;
-
-//     return await axios.get(url, { withCredentials: true });
-//   } catch (error) {
-//     console.log("error while getting posts", error);
-//   }
-// };
-
 export {
   checkAuth,
   handleGuest,
@@ -102,5 +89,4 @@ export {
   verifyOtp,
   fetchMyStories,
   fetchOtherStories,
-  // getPosts
 };

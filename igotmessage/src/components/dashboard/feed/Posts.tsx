@@ -81,7 +81,7 @@ export default function Posts() {
       hasMore={hasMore}
       loader={
         <div className="w-full h-[100px] flex justify-center items-center">
-          loading...
+          {hasMore ? "loading..." : "No more posts"}
         </div>
       }
       // loader={<div className="w-full h-[100px] justify-center items-start"><NewLoader color="[var(--textColor)]"/></div>}
