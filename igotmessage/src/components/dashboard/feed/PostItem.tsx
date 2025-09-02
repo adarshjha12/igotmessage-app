@@ -3,10 +3,8 @@ import PostMedia from "./PostMedia";
 import Poll from "./Poll";
 import {
   UserIcon,
-  MoreHorizontal,
   Heart,
   MessageCircle,
-  Share2,
   MoreVertical,
   Send,
   Globe,
@@ -16,7 +14,6 @@ import {
 import { Post } from "./Posts";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { CheckCircleIcon } from "@phosphor-icons/react";
 
 export interface PostItemProps {
   post: Post;
@@ -24,9 +21,9 @@ export interface PostItemProps {
 
 export default function PostItem({ post }: PostItemProps) {
   return (
-    <div className="rounded-2xl bg-[var(--wrapperColor)] p-5 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="rounded-2xl bg-[var(--wrapperColor)] py-5  shadow-lg hover:shadow-xl transition-shadow duration-300">
       {/* --- Header --- */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex px-4 items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <Link href="#">
             {post.user.profilePicture ? (
@@ -81,7 +78,7 @@ export default function PostItem({ post }: PostItemProps) {
       {post.postType === "normal" ? (
         <div>
           {post.text && (
-            <p className="mb-3 text-lg font-medium text-[var(--textColor)] leading-relaxed">
+            <p className="mb-3 px-4 text-lg font-medium text-[var(--textColor)] leading-relaxed">
               {post.text}
             </p>
           )}
@@ -101,7 +98,7 @@ export default function PostItem({ post }: PostItemProps) {
       )}
 
       {/* --- Footer Actions --- */}
-      <div className="flex items-center justify-between mt-3 pt-3 border-t border-[var(--borderColor)]/40 text-[var(--textColor)]/80 text-sm">
+      <div className="flex px-4 items-center justify-between mt-3 pt-3 border-t border-[var(--borderColor)]/40 text-[var(--textColor)]/80 text-sm">
         <button className="flex items-center gap-2 hover:text-red-500 transition">
           <Heart size={32} />
           <span className="text-lg">{post.likes?.length ?? 0}</span>
@@ -112,7 +109,7 @@ export default function PostItem({ post }: PostItemProps) {
         </button>
         <button className="flex items-center gap-2 hover:text-green-500 transition">
           <Send size={30} />
-          <span className="text-lg">Share</span>
+          <span className="text-lg">{post.shares?.length ?? 0}</span>
         </button>
       </div>
     </div>

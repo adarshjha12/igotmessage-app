@@ -181,48 +181,78 @@ function Login() {
         {emailButtonClick ? (
           ""
         ) : (
-          <p className={`${otpSent ? "hidden" : ""} text-center mb-2`}>
-            {" "}
-            Choose one of the options below to experience something very cool
-          </p>
+          <div
+            className={`mt-3 flex items-center justify-center gap-2 font-medium text-[var(--textColor)]/80`}
+          >
+            <img src="/images/makeInIndia.png" className="w-12 h-auto" alt="" />
+            <p> A Make in India Initiative</p>
+          </div>
         )}
         <div
           className={` ${
             otpSent ? "hidden" : null
           } flex flex-col items-center justify-center gap-4`}
         >
+          {/* Guest Button */}
           <button
             type="button"
             onClick={handleGuestSignin}
-            className={`${baseButton} ${emailButtonClick && "hidden"}`}
+            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-[var(--wrapperColor)]/80 backdrop-blur-sm
+    shadow-sm hover:shadow-md hover:bg-[var(--wrapperColor)] transition-all duration-300 ease-in-out
+    text-white font-medium text-base sm:text-lg active:scale-95
+    ${emailButtonClick && "hidden"}`}
           >
-            <User fill="#10eb38" className="text-green-500" size={32} />
-            <span className="">
+            <User className="w-6 h-6 text-green-500" />
+            <span className="flex flex-wrap text-center leading-snug">
               {guestButtonClick ? (
-                <NewLoader color="white" />
+                <NewLoader color="black" />
               ) : (
                 "Continue as Guest"
               )}
             </span>
           </button>
 
-          <p className={`text-2xl ${emailButtonClick ? "hidden" : ""}`}>or</p>
+          <p
+            className={`text-base sm:text-lg font-medium text-gray-300 my-3 ${
+              emailButtonClick ? "hidden" : ""
+            }`}
+          >
+            or
+          </p>
 
+          {/* Google Button */}
           <button
             onClick={handleGoogleButtonClick}
-            className={`${baseButton} ${googleButtonClick ? "w-[250px]" : ""} ${
+            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-[var(--wrapperColor)]/80 backdrop-blur-sm
+    shadow-sm hover:shadow-md hover:bg-[var(--wrapperColor)] transition-all duration-300 ease-in-out
+    text-white font-medium text-base sm:text-lg active:scale-95
+    ${googleButtonClick ? "w-[260px]" : ""} ${
               emailButtonClick ? "hidden" : ""
             }`}
           >
             {!googleButtonClick && (
               <img src="/images/google.png" alt="Google" className="w-6 h-6" />
             )}
-            <span className="text-xl font-semibold">
+            <span className="flex flex-wrap text-center leading-snug">
               {googleButtonClick ? (
-                <NewLoader color="white" />
+                <NewLoader color="black" />
               ) : (
                 "Continue with Google"
               )}
+            </span>
+          </button>
+
+          {/* Email Button */}
+          <button
+            onClick={handleEmailButtonClick}
+            className={`flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-gray-300 bg-[var(--wrapperColor)]/80 backdrop-blur-sm
+    shadow-sm hover:shadow-md hover:bg-[var(--wrapperColor)] transition-all duration-300 ease-in-out
+    text-white font-medium text-base sm:text-lg active:scale-95
+    ${emailButtonClick ? "hidden" : ""}`}
+          >
+            <img src="/images/gmail.png" alt="Gmail" className="w-6 h-6" />
+            <span className="flex flex-wrap text-center leading-snug">
+              Continue with Email
             </span>
           </button>
 
@@ -267,14 +297,6 @@ function Login() {
               </div>
             </form>
           )}
-
-          <button
-            onClick={handleEmailButtonClick}
-            className={`${baseButton} ${emailButtonClick ? "hidden" : ""}`}
-          >
-            <img src="/images/gmail.png" alt="Gmail" className="w-6 h-6" />
-            <span className=" text-xl font-semibold">Continue with Email</span>
-          </button>
         </div>
         <OtpInput
           showOtpField={otpSent}

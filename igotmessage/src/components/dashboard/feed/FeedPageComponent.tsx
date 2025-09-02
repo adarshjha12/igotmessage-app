@@ -44,12 +44,12 @@ function FeedPageComponent() {
     <div className=" w-full min-h-screen pb-12">
       <Story />
       {isGuest && (
-        <div className="flex items-start gap-3 p-4 rounded-2xl border border-blue-200 bg-[var(--wrapperColor)] shadow-sm">
+        <div className="flex items-start gap-3 mb-4 p-4 rounded-2xl border border-blue-200 bg-[var(--wrapperColor)] shadow-sm">
           <div className="flex-shrink-0 text-blue-500">
             <InfoIcon className="w-6 h-6" />
           </div>
           <div className="flex flex-col">
-            <p className="text-sm text-[var(--textColor)]/90 leading-relaxed">
+            <p className="text-md text-[var(--textColor)]/90 leading-relaxed">
               <span className="font-medium">Note:</span> Dear User, we can’t
               show your personal stories and posts because you are a guest.
               Please <span className="font-semibold  text-black bg-gray-300 px-1 rounded-2xl">Signup</span>{" "}

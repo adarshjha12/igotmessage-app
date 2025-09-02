@@ -160,6 +160,16 @@ function Panel() {
                 </>
               )}
             </button>
+            <div
+              className={`mt-3 flex items-center justify-center gap-2 font-medium text-[var(--textColor)]/80`}
+            >
+              <img
+                src="/images/makeInIndia.png"
+                className="w-12 h-auto"
+                alt=""
+              />
+              <p> A Make in India Initiative</p>
+            </div>
           </div>
         </motion.div>
       )}
