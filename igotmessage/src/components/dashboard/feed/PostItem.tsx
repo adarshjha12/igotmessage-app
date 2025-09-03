@@ -134,18 +134,20 @@ export default function PostItem({ post }: PostItemProps) {
       )}
 
       {/* --- Footer Actions --- */}
-      <div className="flex items-center justify-between mt-3 pt-3  text-[var(--textColor)]/80 text-sm">
+      <div className="flex items-center justify-between mt-3 pt-3  text-[var(--textColor)]/80 text-sm transition-all duration-400 ease-in">
         <button
           type="button"
           onClick={handleLike}
-          className="flex items-center gap-2 hover:text-red-500 transition"
+          className="flex items-center gap-2 hover:text-red-500 transition-all duration-400 ease-in"
         >
           <Heart
             strokeWidth={likeClicked ? 0 : 2}
             fill={likeClicked ? "red" : "none"}
-            // size={likeClicked ? 34 : 32}
-            className={`w-8 h-8 sm:w-6 sm:h-6 ${likeClicked && "w-9 h-9"}`}
+            className={`w-8 h-8 sm:w-6 sm:h-6 transition-transform duration-300 ${
+              likeClicked ? "scale-110" : "scale-100"
+            }`}
           />
+
           <span className="text-lg sm:text-sm">
             {likeCount} {likeCount === 1 ? "Like" : "Likes"}
           </span>
@@ -154,7 +156,7 @@ export default function PostItem({ post }: PostItemProps) {
         <button
           type="button"
           onClick={() => setCommentOpen((prev) => !prev)}
-          className="flex items-center gap-2 hover:text-blue-500 transition"
+          className="flex items-center gap-2 hover:text-blue-500 transition-all duration-400 ease-in"
         >
           <MessageCircle className="w-8 h-8 sm:w-6 sm:h-6" />
           <span className="text-lg sm:text-sm">
@@ -164,7 +166,7 @@ export default function PostItem({ post }: PostItemProps) {
 
         <button
           type="button"
-          className="flex items-center gap-2 hover:text-green-500 transition"
+          className="flex items-center gap-2 hover:text-green-500 transition-all duration-400 ease-in"
         >
           <Send className="w-7 h-7 sm:w-6 sm:h-6" />
           <span className="text-lg sm:text-sm">
