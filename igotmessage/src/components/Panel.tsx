@@ -77,10 +77,10 @@ function Panel() {
           {/* Content */}
           <div className="flex flex-col gap-10 px-6 py-4">
             {/* Header */}
-            <div className="flex items-center gap-3 text-3xl font-bold">
+            <div className="flex items-center gap-3 text-2xl font-bold">
               <Settings2Icon
                 className="text-[var(--iconColor)]"
-                size={36}
+                size={26}
                 strokeWidth={1.5}
               />
               <p>Settings</p>
@@ -92,11 +92,11 @@ function Panel() {
               <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--wrapperColor)] hover:shadow-lg transition">
                 <div className="flex items-center gap-3">
                   {isDark ? (
-                    <MoonIcon size={28} className="text-indigo-400" />
+                    <MoonIcon size={22} className="text-indigo-400" />
                   ) : (
-                    <SunIcon size={28} className="text-amber-600" />
+                    <SunIcon size={22} className="text-amber-600" />
                   )}
-                  <p className="text-lg font-semibold">Dark Mode</p>
+                  <p className="text-sm font-semibold">Dark Mode</p>
                 </div>
                 <button onClick={enableDarkMode}>
                   <Toggle toggleNow={isDark} />
@@ -106,8 +106,8 @@ function Panel() {
               {/* Data Saver */}
               <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--wrapperColor)] hover:shadow-lg transition">
                 <div className="flex items-center gap-3">
-                  <ArrowDownUp size={26} className="text-emerald-400" />
-                  <p className="text-lg font-semibold">Data Saver</p>
+                  <ArrowDownUp size={22} className="text-emerald-400" />
+                  <p className="text-sm font-semibold">Data Saver</p>
                 </div>
                 <button onClick={() => setDataSaver((prev) => !prev)}>
                   <Toggle toggleNow={dataSaver} />
@@ -120,29 +120,29 @@ function Panel() {
               <div className="flex items-center gap-3 text-2xl font-bold">
                 <ArrowRightIcon
                   className="text-[var(--iconColor)] -rotate-45"
-                  size={32}
+                  size={26}
                 />
                 <p>Visit</p>
               </div>
               <Link
                 href="/about-dev"
-                className="flex items-center gap-3 p-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+                className="flex items-center text-sm gap-3 p-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
               >
-                <InfoIcon className="text-[var(--iconColor)]" />
+                <InfoIcon size={22} className="text-[var(--iconColor)]" />
                 About Dev
               </Link>
               <Link
                 href="/privacy-policy"
-                className="flex items-center gap-3 p-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+                className="flex items-center text-sm gap-3 p-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
               >
-                <ShieldIcon className="text-[var(--iconColor)]" />
+                <ShieldIcon size={22} className="text-[var(--iconColor)]" />
                 Privacy Policy
               </Link>
               <Link
                 href="/community-guidelines"
-                className="flex items-center gap-3 p-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
+                className="flex items-center text-sm gap-3 p-3 rounded-xl bg-[var(--wrapperColor)] hover:shadow-md transition"
               >
-                <GroupIcon className="text-[var(--iconColor)]" />
+                <GroupIcon size={22} className="text-[var(--iconColor)]" />
                 Community Guidelines
               </Link>
             </div>
@@ -150,7 +150,7 @@ function Panel() {
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="mt-6 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold shadow-lg hover:scale-95 active:scale-90 transition"
+              className="mt-6 text-md flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold shadow-lg hover:scale-95 active:scale-90 transition"
             >
               {logOutStatus === "loading" ? (
                 <NewLoader color="white" />
@@ -161,7 +161,7 @@ function Panel() {
               )}
             </button>
             <div
-              className={`mt-3 flex items-center justify-center gap-2 font-medium text-[var(--textColor)]/80`}
+              className={`mt-3 flex items-center justify-center gap-2 font-medium text-sm text-[var(--textColor)]/80`}
             >
               <img
                 src="/images/lion.png"

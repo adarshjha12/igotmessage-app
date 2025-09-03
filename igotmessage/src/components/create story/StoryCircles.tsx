@@ -55,12 +55,12 @@ function Story() {
 
 
   return (
-    <div className="w-full py-4 px-0 h-fit z-0 flex overflow-x-auto whitespace-nowrap gap-2 scroll-smooth hide-scrollbar">
+    <div className="w-full py-4 px-4 h-fit z-0 flex overflow-x-auto whitespace-nowrap justify-start gap-2 scroll-smooth hide-scrollbar">
       {/* add story button */}
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
-          className={`relative w-[75px] h-[75px] flex items-center justify-center ${myProfilePicture && " border-3 border-pink-700"} p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group
+          className={`relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] flex items-center justify-center ${myProfilePicture && " border-3 border-pink-700"} p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group
     ${
       myProfilePicture
         ? "bg-[var(--bgColor)]"
@@ -87,7 +87,7 @@ function Story() {
         </Link>
 
         <p
-          className={`text-[12px] font-medium ${
+          className={`text-[12px] sm:text-[10px] font-medium ${
             isDark ? "text-gray-300" : "text-gray-600"
           }`}
         >
@@ -101,7 +101,7 @@ function Story() {
         <div className="flex flex-col items-center justify-center gap-2">
           <Link
             href={`/stories/${myStories[0].user._id}`}
-            className="relative w-[75px] h-[75px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+            className="relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
             <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
               <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full overflow-hidden">
@@ -123,7 +123,7 @@ function Story() {
           </Link>
 
           <p
-            className={`text-[12px] font-medium ${
+            className={`text-[12px] sm:text-[10px] font-medium ${
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
           >
@@ -143,7 +143,7 @@ function Story() {
             >
               <Link
                 href={`/stories/${user._id}`}
-                className="relative w-[75px] h-[75px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+                className="relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
               >
                 <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
                   <div className="flex items-center justify-center w-full h-full rounded-full overflow-hidden bg-[var(--bgColor)]">
@@ -165,7 +165,7 @@ function Story() {
               </Link>
 
               <p
-                className={`text-[12px] font-medium ${
+                className={`text-[12px] sm:text-[10px] font-medium ${
                   isDark ? "text-gray-300" : "text-gray-600"
                 }`}
               >

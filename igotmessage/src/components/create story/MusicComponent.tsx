@@ -81,17 +81,23 @@ function MusicComponent({
   };
 
   return (
-    <div className="flex flex-col h-full w-full rounded-2xl p-4 gap-4 bg-[var(--bgColor)]/60 backdrop-blur-md text-[var(--textColor)] overflow-y-auto">
+    <div className="flex flex-col h-full w-full rounded-2xl p-4 sm:p-2 gap-4 sm:gap-2 bg-[var(--bgColor)]/60 backdrop-blur-md text-[var(--textColor)] overflow-y-auto">
       {/* Header */}
       {!postFeed && (
-        <div className="flex items-center justify-center gap-3 p-3 rounded-2xl bg-[var(--bgColor)]/40 shadow-sm">
-          <Music2 size={32} strokeWidth={1.5} className="text-red-500" />
-          <p className="text-xl font-semibold">Select your favourite music</p>
+        <div className="flex items-center justify-center gap-3 sm:gap-2 p-3 sm:p-2 rounded-2xl bg-[var(--bgColor)]/40 shadow-sm">
+          <Music2
+            size={32}
+            strokeWidth={1.5}
+            className="text-red-500 sm:size-6"
+          />
+          <p className="text-xl sm:text-sm font-semibold">
+            Select your favourite music
+          </p>
         </div>
       )}
 
       {/* Controls */}
-      <div className="flex gap-4 justify-center">
+      <div className="flex gap-4 sm:gap-2 justify-center">
         {/* Sort */}
         <div className="relative">
           <button
@@ -99,49 +105,49 @@ function MusicComponent({
               setShowSortPopup((prev) => !prev);
               setShowFilterPopup(false);
             }}
-            className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
+            className="flex flex-col items-center gap-1 sm:gap-0.5 px-3 py-2 sm:px-2 sm:py-1 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-1">
               {aToZActive ? (
-                <SortAsc size={22} strokeWidth={1.5} />
+                <SortAsc size={22} strokeWidth={1.5} className="sm:size-4" />
               ) : (
-                <SortDesc size={22} strokeWidth={1.5} />
+                <SortDesc size={22} strokeWidth={1.5} className="sm:size-4" />
               )}
-              <p className="text-lg font-medium">Sort</p>
+              <p className="text-lg sm:text-xs font-medium">Sort</p>
             </div>
-            <p className="px-2 text-xs border rounded-md border-[var(--borderColor)]">
+            <p className="px-2 text-xs sm:text-[10px] border rounded-md border-[var(--borderColor)]">
               {aToZActive ? "A-Z" : "Z-A"}
             </p>
           </button>
 
           {/* Sort Popup */}
           {showSortPopup && (
-            <div className="fixed inset-x-0 top-[40%] z-40 mx-auto w-[280px] p-4 rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] shadow-lg backdrop-blur-sm flex flex-col items-center">
+            <div className="fixed inset-x-0 top-[40%] z-40 mx-auto w-[280px] sm:w-[220px] p-4 sm:p-2 rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] shadow-lg backdrop-blur-sm flex flex-col items-center">
               <button
                 onClick={() => setAToZActive(true)}
-                className={`w-full flex items-center gap-2 p-2 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
+                className={`w-full flex items-center gap-2 sm:gap-1 p-2 sm:p-1 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
                   aToZActive
                     ? "bg-[var(--textColor)] text-[var(--bgColor)] font-semibold"
                     : ""
                 }`}
               >
-                <SortAsc size={22} /> A-Z
+                <SortAsc size={22} className="sm:size-4" /> A-Z
               </button>
               <button
                 onClick={() => setAToZActive(false)}
-                className={`w-full flex items-center gap-2 p-2 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
+                className={`w-full flex items-center gap-2 sm:gap-1 p-2 sm:p-1 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
                   !aToZActive
                     ? "bg-[var(--textColor)] text-[var(--bgColor)] font-semibold"
                     : ""
                 }`}
               >
-                <SortDesc size={22} /> Z-A
+                <SortDesc size={22} className="sm:size-4" /> Z-A
               </button>
               <button
                 onClick={() => setShowSortPopup(false)}
-                className="mt-3 px-4 py-2 rounded-lg bg-blue-600 text-white flex items-center gap-2 active:scale-95"
+                className="mt-3 sm:mt-2 px-4 sm:px-2 py-2 sm:py-1 rounded-lg bg-blue-600 text-white flex items-center gap-2 sm:gap-1 active:scale-95 text-sm sm:text-xs"
               >
-                <CheckIcon size={18} /> Done
+                <CheckIcon size={18} className="sm:size-4" /> Done
               </button>
             </div>
           )}
@@ -154,13 +160,17 @@ function MusicComponent({
               setShowFilterPopup((prev) => !prev);
               setShowSortPopup(false);
             }}
-            className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
+            className="flex flex-col items-center gap-1 sm:gap-0.5 px-3 py-2 sm:px-2 sm:py-1 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
           >
-            <div className="flex items-center gap-2">
-              <FilterIcon size={22} strokeWidth={1.5} />
-              <p className="text-lg font-medium">Filter</p>
+            <div className="flex items-center gap-2 sm:gap-1">
+              <FilterIcon
+                size={22}
+                strokeWidth={1.5}
+                className="sm:size-4"
+              />
+              <p className="text-lg sm:text-xs font-medium">Filter</p>
             </div>
-            <p className="px-2 text-xs border rounded-md border-[var(--borderColor)]">
+            <p className="px-2 text-xs sm:text-[10px] border rounded-md border-[var(--borderColor)]">
               {allButtonActive
                 ? "All"
                 : bollywoodButtonActive
@@ -171,20 +181,20 @@ function MusicComponent({
 
           {/* Filter Popup */}
           {showFilterPopup && (
-            <div className="fixed inset-x-0 top-[40%] z-40 mx-auto w-[280px] p-4 rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] shadow-lg backdrop-blur-sm flex flex-col items-center">
+            <div className="fixed inset-x-0 top-[40%] z-40 mx-auto w-[280px] sm:w-[220px] p-4 sm:p-2 rounded-2xl bg-[var(--wrapperColor)] text-[var(--textColor)] shadow-lg backdrop-blur-sm flex flex-col items-center">
               <button
                 onClick={() => {
                   setAllButtonActive(true);
                   setBollywoodButtonActive(false);
                   setRockButtonActive(false);
                 }}
-                className={`w-full flex items-center gap-2 p-2 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
+                className={`w-full flex items-center gap-2 sm:gap-1 p-2 sm:p-1 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
                   allButtonActive
                     ? "bg-[var(--textColor)] text-[var(--bgColor)] font-semibold"
                     : ""
                 }`}
               >
-                <Piano size={22} /> All
+                <Piano size={22} className="sm:size-4" /> All
               </button>
               <button
                 onClick={() => {
@@ -192,13 +202,13 @@ function MusicComponent({
                   setAllButtonActive(false);
                   setRockButtonActive(false);
                 }}
-                className={`w-full flex items-center gap-2 p-2 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
+                className={`w-full flex items-center gap-2 sm:gap-1 p-2 sm:p-1 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
                   bollywoodButtonActive
                     ? "bg-[var(--textColor)] text-[var(--bgColor)] font-semibold"
                     : ""
                 }`}
               >
-                <Speaker size={22} /> Bollywood
+                <Speaker size={22} className="sm:size-4" /> Bollywood
               </button>
               <button
                 onClick={() => {
@@ -206,19 +216,19 @@ function MusicComponent({
                   setAllButtonActive(false);
                   setBollywoodButtonActive(false);
                 }}
-                className={`w-full flex items-center gap-2 p-2 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
+                className={`w-full flex items-center gap-2 sm:gap-1 p-2 sm:p-1 rounded-xl border border-[var(--borderColor)] mb-2 transition active:scale-95 ${
                   rockButtonActive
                     ? "bg-[var(--textColor)] text-[var(--bgColor)] font-semibold"
                     : ""
                 }`}
               >
-                <Guitar size={22} /> Rock
+                <Guitar size={22} className="sm:size-4" /> Rock
               </button>
               <button
                 onClick={() => setShowFilterPopup(false)}
-                className="mt-3 px-4 py-2 rounded-lg bg-blue-600 text-white flex items-center gap-2 active:scale-95"
+                className="mt-3 sm:mt-2 px-4 sm:px-2 py-2 sm:py-1 rounded-lg bg-blue-600 text-white flex items-center gap-2 sm:gap-1 active:scale-95 text-sm sm:text-xs"
               >
-                <CheckIcon size={18} /> Done
+                <CheckIcon size={18} className="sm:size-4" /> Done
               </button>
             </div>
           )}
@@ -226,7 +236,7 @@ function MusicComponent({
       </div>
 
       {/* Music List */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 sm:gap-2">
         {musicData
           .filter((item) => {
             if (allButtonActive) return true;
@@ -243,26 +253,26 @@ function MusicComponent({
           .map((item, index) => (
             <div
               key={index}
-              className="flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/20 shadow-sm"
+              className="flex items-center justify-between gap-3 sm:gap-2 p-3 sm:p-2 rounded-xl border border-[var(--borderColor)] bg-[var(--bgColor)]/20 shadow-sm"
             >
               {/* Left: Artwork + Play/Pause */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 sm:gap-2">
                 <Image
                   src={item.image}
                   alt="artist"
                   width={40}
                   height={40}
-                  className="rounded-lg w-10 h-10"
+                  className="rounded-lg w-10 h-10 sm:w-8 sm:h-8"
                 />
                 <button
                   type="button"
                   onClick={() => handlePlayPause(item.url, index)}
-                  className="p-2 rounded-full hover:bg-[var(--borderColor)]/20 transition"
+                  className="p-2 sm:p-1 rounded-full hover:bg-[var(--borderColor)]/20 transition"
                 >
                   {musicSource.index === index && musicSource.playing ? (
-                    <PauseIcon size={22} />
+                    <PauseIcon size={22} className="sm:size-4" />
                   ) : (
-                    <Play size={22} />
+                    <Play size={22} className="sm:size-4" />
                   )}
                 </button>
                 {musicSource.index === index && musicSource.playing && (
@@ -273,7 +283,7 @@ function MusicComponent({
               {/* Middle: Song Name */}
               <div className="flex-1 overflow-hidden">
                 <p
-                  className={`truncate text-sm font-medium ${
+                  className={`truncate text-sm sm:text-xs font-medium ${
                     musicSource.index === index && musicSource.playing
                       ? "text-blue-500"
                       : ""
@@ -294,9 +304,9 @@ function MusicComponent({
                     dispatch(setMusicData(item));
                   }
                 }}
-                className="p-2 rounded-full hover:bg-[var(--borderColor)]/20 transition"
+                className="p-2 sm:p-1 rounded-full hover:bg-[var(--borderColor)]/20 transition"
               >
-                <Plus size={22} />
+                <Plus size={22} className="sm:size-4" />
               </button>
             </div>
           ))}

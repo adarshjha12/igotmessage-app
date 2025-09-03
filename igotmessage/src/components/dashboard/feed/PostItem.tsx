@@ -55,18 +55,16 @@ export default function PostItem({ post }: PostItemProps) {
       if (res) {
         setLikeCount(res.data.likeCount);
       }
-      console.log(res);
     } catch (error) {
       console.error("toggle like error", error);
-
       setLikeClicked((prev) => !prev);
     }
   };
 
   return (
-    <div className="rounded-2xl bg-[var(--wrapperColor)] py-5  shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="rounded-2xl bg-[var(--wrapperColor)] p-5 shadow-lg hover:shadow-xl transition-shadow duration-300">
       {/* --- Header --- */}
-      <div className="flex px-4 items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <Link href="#">
             {post.user?.profilePicture ? (
@@ -84,7 +82,7 @@ export default function PostItem({ post }: PostItemProps) {
 
           <div className="flex flex-col">
             <Link href="#">
-              <span className="font-semibold text-xl text-[var(--textColor)] hover:underline cursor-pointer">
+              <span className="font-semibold text-xl sm:text-base text-[var(--textColor)] hover:underline cursor-pointer">
                 {post?.user?.userName}
               </span>
             </Link>
@@ -95,18 +93,19 @@ export default function PostItem({ post }: PostItemProps) {
                 <Lock className="w-3 h-3 text-red-500" />
               )}
 
-              <span className="text-sm text-[var(--textColor)]/60">
+              <span className="text-sm sm:text-xs text-[var(--textColor)]/60">
                 {formatDistanceToNow(new Date(post?.createdAt ?? ""), {
                   addSuffix: true,
                 })}
               </span>
             </div>
           </div>
-          <div>
+
+          {post?.user && (
             <div className="w-5 h-5 flex items-center justify-center rounded-full bg-blue-500">
               <Check size={14} className="text-white" strokeWidth={3} />
             </div>
-          </div>
+          )}
         </div>
 
         {/* Three dots menu */}
@@ -115,31 +114,27 @@ export default function PostItem({ post }: PostItemProps) {
         </button>
       </div>
 
-      {/* --- Text --- */}
+      {/* --- Text / Media / Poll --- */}
       {post?.postType === "normal" ? (
-        <div>
+        <>
           {post?.text && (
-            <p className="mb-3 px-4 text-lg font-medium text-[var(--textColor)] leading-relaxed">
+            <p className="mb-3 text-lg sm:text-sm font-medium text-[var(--textColor)] leading-relaxed">
               {post.text}
             </p>
           )}
 
-          {/* --- Media --- */}
           {post?.mediaUrls && post.mediaUrls.length > 0 && (
-            <div className="rounded-xl overflow-hidden mb-3">
+            <div className=" rounded-xl mb-3">
               <PostMedia urls={post.mediaUrls} />
             </div>
           )}
-        </div>
+        </>
       ) : (
-        <div>
-          {/* --- Poll --- */}
-          {post?.poll && <Poll postId={post._id} pollData={post.poll} />}
-        </div>
+        post?.poll && <Poll postId={post._id} pollData={post.poll} />
       )}
 
       {/* --- Footer Actions --- */}
-      <div className="flex px-4 items-center justify-between mt-3 pt-3 text-[var(--textColor)]/80 text-sm">
+      <div className="flex items-center justify-between mt-3 pt-3  text-[var(--textColor)]/80 text-sm">
         <button
           type="button"
           onClick={handleLike}
@@ -148,29 +143,39 @@ export default function PostItem({ post }: PostItemProps) {
           <Heart
             strokeWidth={likeClicked ? 0 : 2}
             fill={likeClicked ? "red" : "none"}
-            size={likeClicked ? 34 : 32}
+            // size={likeClicked ? 34 : 32}
+            className={`w-8 h-8 sm:w-6 sm:h-6 ${likeClicked && "w-9 h-9"}`}
           />
-          <span className="text-lg">{likeCount} {likeCount === 1 ? "Like" : "Likes"}</span>
+          <span className="text-lg sm:text-sm">
+            {likeCount} {likeCount === 1 ? "Like" : "Likes"}
+          </span>
         </button>
+
         <button
           type="button"
-          onClick={() => setCommentOpen(prev => !prev)}
+          onClick={() => setCommentOpen((prev) => !prev)}
           className="flex items-center gap-2 hover:text-blue-500 transition"
         >
-          <MessageCircle size={30} />
-          <span className="text-lg">{post?.comments?.length ?? 0}</span>
+          <MessageCircle className="w-8 h-8 sm:w-6 sm:h-6" />
+          <span className="text-lg sm:text-sm">
+            {post?.comments?.length ?? 0}
+          </span>
         </button>
+
         <button
           type="button"
           className="flex items-center gap-2 hover:text-green-500 transition"
         >
-          <Send size={30} />
-          <span className="text-lg">{post?.shares?.length ?? 0}</span>
+          <Send className="w-7 h-7 sm:w-6 sm:h-6" />
+          <span className="text-lg sm:text-sm">
+            {post?.shares?.length ?? 0}
+          </span>
         </button>
       </div>
 
+      {/* --- Comments Section --- */}
       {commentOpen && (
-        <div className="mt-4 rounded-2xl">
+        <div className="mt-4 px-1">
           <Comment postId={post._id} />
         </div>
       )}

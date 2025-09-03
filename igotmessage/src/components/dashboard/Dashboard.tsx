@@ -135,11 +135,17 @@ function Dashboard({ children }: { children: ReactNode }) {
         className={` w-full flex items-start justify-center transition-colors duration-200 relative `}
       >
         <div
-          className={` w-full grid grid-cols-1  items-center sm:items-start transition-all duration-200 ease-in ${
-            sidebarOpen
-              ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2.5fr_1.5fr]"
-              : "md:gap-5 md:[grid-template-columns:1fr_5fr] lg:[grid-template-columns:1fr_5fr_3fr]"
-          }`}
+          className={`
+    w-full grid grid-cols-1 gap-2 
+    justify-items-stretch sm:justify-items-center
+    items-center sm:items-start
+    ${
+      sidebarOpen
+        ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1fr]"
+        : "md:[grid-template-columns:0.2fr_2fr] lg:[grid-template-columns:0.5fr_4fr_2fr]"
+    }
+    transition-all duration-200 ease-in
+  `}
         >
           {/* header starts here */}
           <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-2 items-center ">
@@ -260,41 +266,41 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for desktop starts here (1st column for desktop) */}
 
           <nav
-            className={`px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] pb-20 right-slide hidden my-2 md:flex rounded-xl flex-col gap-4  text-[var(--textColor)] justify-start ${
-              !sidebarOpen ? "items-center" : ""
-            } md:sticky md:top-2 `}
+            className={`hidden md:flex col-span-1 px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] pb-20 right-slide my-2 rounded-xl flex-col gap-4 sticky top-3 text-[var(--textColor)] justify-start `}
           >
             <div
-              className={`flex items-center gap-4 bg-[var(--bgColor)] py-2 mb-8 rounded-full justify-center text-[var(--textColor)] ${
-                sidebarOpen ? "px-4" : "px-0 bg-transparent"
-              }`}
+              className={`flex items-center justify-center gap-3 
+              bg-[var(--bgColor)] py-2 mb-8 rounded-full text-[var(--textColor)]
+              ${sidebarOpen ? "px-4" : "px-0 bg-transparent"}
+            `}
             >
-              <Link href="/dash/feed">
-                <p
-                  className={`font-montez z-10 text-3xl cursor-pointer font-[600] ${
-                    sidebarOpen ? "" : "hidden"
-                  }`}
-                >
-                  IGotMessage
-                </p>
-              </Link>
+              {/* Title */}
+              {sidebarOpen && (
+                <Link href="/dash/feed" className="flex items-center">
+                  <p className="font-montez text-2xl font-semibold leading-none">
+                    IGotMessage
+                  </p>
+                </Link>
+              )}
+
+              {/* Toggle Button */}
               <button
                 onClick={() => setSidebarOpen((prev) => !prev)}
                 type="button"
                 title={sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
-                className="cursor-pointer flex items-center justify-center"
+                className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-[var(--wrapperColor)] transition"
               >
                 {sidebarOpen ? (
                   <SidebarCloseIcon
-                    className="hover:scale-125 transition-all"
+                    className="hover:scale-110 transition-transform"
                     strokeWidth={1.5}
-                    size={33}
+                    size={30}
                   />
                 ) : (
                   <SidebarIcon
-                    className="hover:scale-125 transition-all"
+                    className="hover:scale-110  transition-transform"
                     strokeWidth={1.5}
-                    size={33}
+                    size={30}
                   />
                 )}
               </button>
@@ -305,13 +311,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/feed"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] active:rounded-full active:scale-90 ${
                 pathname === "/dash/feed"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <HouseIcon size={28} strokeWidth={1.5} />
+              <HouseIcon size={22} strokeWidth={1.5} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Feed</p>
             </Link>
 
@@ -320,10 +326,10 @@ function Dashboard({ children }: { children: ReactNode }) {
               onClick={() => setCameraClick((prev) => !prev)}
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
               type="button"
             >
-              <CameraIcon strokeWidth={1.5} size={28} />
+              <CameraIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Camera</p>
             </button>
 
@@ -331,10 +337,10 @@ function Dashboard({ children }: { children: ReactNode }) {
             <button
               className={` ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] hidden md:flex lg:hidden ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] hidden md:flex lg:hidden ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
               type="button"
             >
-              <SearchIcon strokeWidth={1.5} size={28} />
+              <SearchIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Search</p>
             </button>
 
@@ -343,13 +349,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/create"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
                 pathname === "/dash/create"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <PlusSquareIcon strokeWidth={1.5} size={28} />
+              <PlusSquareIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Create</p>
             </Link>
 
@@ -358,13 +364,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/chats"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
                 pathname === "/dash/chats"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <ChatsCircleIcon strokeWidth={1.5} size={28} />
+              <ChatsCircleIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Messages</p>
             </Link>
 
@@ -373,13 +379,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/reels"
               className={`font-medium ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } gap-2 justify-start px-3 text-xl py-1 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } gap-2 justify-start px-3 text-xl sm:text-sm py-1 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
                 pathname === "/reels"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <PlayIcon strokeWidth={1.5} size={28} />
+              <PlayIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Reels</p>
             </Link>
 
@@ -388,13 +394,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/calls"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } font-medium justify-start items-center gap-2 text-xl px-3 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } font-medium justify-start items-center gap-2 text-xl sm:text-sm px-3 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
                 pathname === "/dash/calls"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <VideoCameraIcon strokeWidth={1.5} size={28} />
+              <VideoCameraIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Calls</p>
             </Link>
 
@@ -403,13 +409,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/notifications"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
                 pathname === "/dash/notifications"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <HeartIcon strokeWidth={1.5} size={28} />
+              <HeartIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Notifications</p>
             </Link>
 
@@ -418,7 +424,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/profile"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
                 pathname === "/dash/profile"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
@@ -434,7 +440,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 ) : (
                   <div className=" flex items-center justify-center rounded-full transition-transform duration-300 ease-out">
                     <UserIcon
-                      size={28}
+                      size={22}
                       strokeWidth={1.2}
                       className="text-[var(textColor)] group-hover:scale-110 transition-transform duration-300"
                     />
@@ -456,7 +462,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               type="button"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 active:bg-[var(--wrapperColor)] text-xl hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full active:rounded-full active:scale-90 font-medium cursor-pointer z-10`}
+              } justify-start items-center gap-2 active:bg-[var(--wrapperColor)] text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full active:rounded-full active:scale-90 font-medium cursor-pointer z-10`}
             >
               <div
                 className={`${
@@ -466,7 +472,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 }`}
               >
                 <XIcon
-                  size={28}
+                  size={22}
                   className={`${panelOpen ? "rotate-180" : "rotate-0"}`}
                   strokeWidth={2}
                 />
@@ -479,7 +485,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                     : "opacity-0 scale-0"
                 }`}
               >
-                <ListIcon size={28} />
+                <ListIcon size={22} />
                 <p className={`${sidebarOpen ? "" : "hidden"}`}>Menu</p>
               </div>
             </button>
@@ -488,14 +494,18 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for desktop ends here */}
 
           {/* main starts here (2nd column for desktop) */}
-          <main className="pb-10 sm:px-5 px-2 flex flex-col justify-center items-center">
+          <main
+            className={`pb-10 ${
+              !sidebarOpen ? "w-full" : "sm:max-w-[600px] xl:max-w-[700px]"
+            } sm:px-5 px-2 flex flex-col justify-center items-center col-span-1`}
+          >
             {children}
           </main>
           {/* main ends here */}
 
           {/* nav for mobile starts here */}
 
-          <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 md:hidden flex fixed left-0 bottom-0">
+          <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 md:hidden flex fixed left-0 bottom-0 -z-10">
             <div className="w-full items-center flex justify-between">
               <Link
                 href="/dash/feed"
@@ -633,7 +643,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for mobile ends here */}
 
           {/* third column for desktop starts here */}
-          <div className="hidden lg:flex my-2 mx-2 sticky top-2">
+          <div className="col-span-1 hidden sticky top-3 lg:block my-2 mx-2 ">
             <div className="relative w-full ">
               <div
                 className={`flex items-center bg-[var(--wrapperColor)] transition-all ease-in-out duration-300 px-3 border-1 border-[var(--borderColor)] rounded-full 
@@ -656,7 +666,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   onChange={(e) => setSearchInput(e.target.value)}
                   type="search"
                   placeholder="Search"
-                  className="ml-2 w-full h-10 px-4 py-2 bg-transparent text-[var(--textColor)] placeholder:text-gray-500 text-base rounded-full outline-none border-none"
+                  className="ml-2 w-full h-10 px-4 py-2 bg-transparent text-[var(--textColor)] placeholder:text-gray-500 text-base sm:text-sm rounded-full outline-none border-none"
                 />
               </div>
 

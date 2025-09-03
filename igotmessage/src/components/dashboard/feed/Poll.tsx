@@ -27,7 +27,7 @@ export default function Poll({ postId, pollData }: PollProps) {
   return (
     <div className="flex flex-col gap-3 px-4 mt-4">
       {/* Question */}
-      <div className="font-semibold gap-2 flex item-center text-lg text-[var(--textColor)] mb-2">
+      <div className="font-semibold gap-2 flex items-center text-lg sm:text-sm text-[var(--textColor)] mb-2">
         <BarChart3 size={30} className="text-rose-600" />
         {pollData.question}
       </div>
@@ -58,7 +58,7 @@ export default function Poll({ postId, pollData }: PollProps) {
             {/* Option Text */}
             <div className="relative flex justify-between items-center px-4 py-3">
               <span
-                className={`flex items-center gap-2 text-[var(--textColor)] ${
+                className={`flex items-center gap-2 text-sm sm:text-xs text-[var(--textColor)] ${
                   userVoted ? "font-semibold" : ""
                 }`}
               >
@@ -74,7 +74,7 @@ export default function Poll({ postId, pollData }: PollProps) {
       })}
 
       {/* Footer */}
-      <span className="text-xs text-[var(--textColor)]/60 mt-1">
+      <span className="text-sm sm:text-xs text-[var(--textColor)]/60 mt-1">
         Total votes: {totalVotes}
       </span>
     </div>

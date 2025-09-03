@@ -27,10 +27,10 @@ function AboutDevPageComponent() {
       <div className="max-w-3xl mx-auto flex flex-col gap-10 mt-20">
         {/* App Intro */}
         <div className="bg-[var(--wrapperColor)] p-8 rounded-2xl shadow-lg text-center">
-          <h1 className="text-4xl font-extrabold mb-3 font-montez">
+          <h1 className="text-4xl sm:2xl font-extrabold mb-3 font-montez">
             IGotMessage
           </h1>
-          <p className="text-lg leading-relaxed">
+          <p className="text-lg sm:text-sm leading-relaxed">
             <strong className="font-semibold">IGotMessage</strong> is not just
             another social media app. It is an{" "}
             <span
@@ -63,7 +63,7 @@ function AboutDevPageComponent() {
             >
               Adarsh Kumar Jha
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-lg sm:text-sm text-muted-foreground">
               Full Stack Web & React Native Developer
             </p>
           </div>
@@ -103,7 +103,7 @@ function AboutDevPageComponent() {
 
         {/* Note Section */}
         <div className="bg-[var(--wrapperColor)] p-5 rounded-xl shadow-md text-center">
-          <p className="text-lg leading-relaxed">
+          <p className="text-lg sm:text-sm leading-relaxed">
             🚀 Web app is live. Android & iOS apps are coming soon, powered by{" "}
             <strong>React Native</strong>.
           </p>
@@ -111,7 +111,7 @@ function AboutDevPageComponent() {
 
         {/* Footer */}
         <footer className="text-center border-t border-[var(--borderColor)] pt-6 mt-10">
-          <p className="text-lg">
+          <p className="text-lg sm:text-sm">
             Made with ❤️ by <strong>Adarsh</strong>
           </p>
           <p className="mt-1">
@@ -124,7 +124,7 @@ function AboutDevPageComponent() {
               JhaFusion LLC
             </span>
           </p>
-          <div className="mt-2 text-sm space-y-1">
+          <div className="mt-2 text-lg sm:text-sm space-y-1">
             <p className="flex items-center justify-center gap-2">
               <MailIcon size={16} />
               Email:

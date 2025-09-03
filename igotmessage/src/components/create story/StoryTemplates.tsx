@@ -45,10 +45,12 @@ const ImageSection: React.FC<SectionProps> = ({
         onClick={() => setShow((prev) => !prev)}
         className="flex w-full items-center justify-between px-2 py-2 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
       >
-        <p className="text-xl font-semibold text-[var(--textColor)]">{title}</p>
+        <p className="text-xl sm:text-lg font-semibold text-[var(--textColor)]">
+          {title}
+        </p>
         <ChevronDown
           size={22}
-          className={`text-[var(--textColor)] transition-transform ${
+          className={`sm:w-4 sm:h-4 text-[var(--textColor)] transition-transform ${
             show ? "rotate-180" : ""
           }`}
         />
@@ -61,14 +63,14 @@ const ImageSection: React.FC<SectionProps> = ({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 px-2"
+            className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-4 px-2"
           >
             {images
               .sort((a, b) => a.url.localeCompare(b.url))
               .map((image, index) => (
                 <div
                   key={index}
-                  className="relative group aspect-square rounded-xl overflow-hidden shadow-md"
+                  className="relative group aspect-square w-28 sm:w-20 rounded-xl sm:rounded-lg overflow-hidden shadow-md"
                 >
                   <Image
                     src={image.url}
@@ -84,7 +86,7 @@ const ImageSection: React.FC<SectionProps> = ({
 
                   {!loaded[index] && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-200/20">
-                      <ImageIcon size={28} />
+                      <ImageIcon className="w-7 h-7 sm:w-5 sm:h-5" />
                     </div>
                   )}
 
@@ -99,11 +101,12 @@ const ImageSection: React.FC<SectionProps> = ({
                           dispatch(setStoryTextBg(image.url));
                         }
                       }}
-                      className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1.5 flex items-center gap-1 
-                                 rounded-full bg-[var(--bgColor)]/70 backdrop-blur-sm text-sm font-medium 
-                                 text-[var(--textColor)] opacity-0 group-hover:opacity-100 transition"
+                      className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 sm:px-2 py-1.5 sm:py-1 
+                                 flex items-center gap-1 rounded-full bg-[var(--bgColor)]/70 backdrop-blur-sm 
+                                 text-sm sm:text-xs font-medium text-[var(--textColor)] 
+                                 opacity-0 group-hover:opacity-100 transition"
                     >
-                      <Plus size={16} />
+                      <Plus className="w-4 h-4 sm:w-3 sm:h-3" />
                       Select
                     </button>
                   )}
@@ -126,10 +129,10 @@ function StoryTemplates({ feedPost, setTemplateImage }: Props) {
   ];
 
   return (
-    <div className="w-full h-full rounded-2xl flex flex-col justify-start items-center p-4">
+    <div className="w-full h-full rounded-2xl flex flex-col justify-start items-center p-4 sm:p-2">
       <div className="flex gap-2 items-center mb-4">
-        <ImageIcon size={28} className="text-red-500" />
-        <p className="text-2xl font-semibold tracking-wide text-[var(--textColor)]">
+        <ImageIcon className="w-7 h-7 sm:w-5 sm:h-5 text-red-500" />
+        <p className="text-2xl sm:text-lg font-semibold tracking-wide text-[var(--textColor)]">
           Image Library
         </p>
       </div>

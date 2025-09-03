@@ -164,8 +164,9 @@ function CreateStoryPageComponent() {
       <div className="w-full sm:w-[70%] px-2 pt-2 h-full flex flex-col items-center justify-start gap-2 ">
         <form
           action=""
-          className="flex w-full items-center pr-4 pb-2 justify-between gap-3"
+          className="flex w-full items-center px-2 pb-2 justify-between gap-3"
         >
+          {/* Image Button */}
           {storyImageChosen === "" ? (
             <button
               onClick={() => {
@@ -174,36 +175,31 @@ function CreateStoryPageComponent() {
                 setAIButtonClicked(false);
               }}
               type="button"
-              className={`relative group sm:w-fit hover:bg-opacity-90 cursor-pointer rounded-2xl px-2 py-1 flex active:bg-[var(--wrapperColor)] items-center gap-3 justify-center active:scale-95 ${
+              className={`relative group rounded-2xl px-3 sm:px-2 py-2 sm:py-1 flex items-center justify-center gap-2 sm:gap-1 active:scale-95 ${
                 selectImageClicked
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}
             >
-              <div className="flex flex-col items-center justify-center gap-1">
-                <ImagePlusIcon
-                  size="40"
-                  strokeWidth={1}
-                  className={`${
-                    selectImageClicked
-                      ? " text-[var(--bgColor)]"
-                      : "text-[var(--textColor)]"
-                  }`}
-                />
-                {/* <p className='text-sm font-semibold font-exo2'>Select Image</p> */}
-              </div>
+              <ImagePlusIcon
+                className={`w-7 h-7 sm:w-5 sm:h-5 ${
+                  selectImageClicked
+                    ? "text-[var(--bgColor)]"
+                    : "text-[var(--textColor)]"
+                }`}
+              />
               <input
                 type="file"
                 onChange={handleImageChange}
-                className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer`}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
             </button>
           ) : (
             <div
               title="Choose From"
-              className="backdrop-blur-md down-slide text-[var(--textColor)] rounded-md py-2 gap-0 flex flex-col justify-center items-center"
+              className="backdrop-blur-md text-[var(--textColor)] rounded-md py-2 flex flex-col items-center"
             >
-              <div className="flex justify-center border-1 border-[var(--textColor)] gap-1 rounded-md py-1 items-center">
+              <div className="flex justify-center border border-[var(--textColor)] rounded-md py-1 items-center gap-2 sm:gap-1">
                 <button
                   onClick={() => {
                     setSelectMusicClicked(false);
@@ -211,16 +207,16 @@ function CreateStoryPageComponent() {
                     setAIButtonClicked(false);
                   }}
                   type="button"
-                  className="relative active:scale-75 cursor-pointer flex items-center flex-col justify-end px-1 gap-1"
+                  className="relative flex items-center flex-col justify-center px-2 sm:px-1 active:scale-90"
                 >
-                  <ImagePlusIcon strokeWidth={1} size={40} />
+                  <ImagePlusIcon className="w-6 h-6 sm:w-5 sm:h-5" />
                   <input
                     type="file"
                     onChange={handleImageChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
                 </button>
-                <p className="text-xs">or</p>
+                <p className="text-xs sm:text-[10px]">or</p>
                 <button
                   onClick={() => {
                     dispatch(setStoryImage(""));
@@ -230,30 +226,27 @@ function CreateStoryPageComponent() {
                     setAIButtonClicked(false);
                   }}
                   type="button"
-                  className="active:scale-75 flex flex-col cursor-pointer justify-end items-center gap-1 px-1"
+                  className="flex flex-col justify-center items-center px-2 sm:px-1 active:scale-90"
                 >
-                  <LayoutDashboardIcon strokeWidth={1} size={40} />
+                  <LayoutDashboardIcon className="w-6 h-6 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>
           )}
+
+          {/* Camera */}
           <button
             onClick={() => {
               setCameraOpen((prev) => !prev);
               setSelectWriteClicked(false);
             }}
             type="button"
-            className="cursor-pointer active:scale-75"
+            className="cursor-pointer active:scale-90"
           >
-            <CameraIcon
-              size={45}
-              strokeWidth={1}
-              weight="light"
-              className="text-[var(--textColor)]"
-            />
+            <CameraIcon className="w-7 h-7 sm:w-5 sm:h-5 text-[var(--textColor)]" />
           </button>
-          {cameraOpen && <div></div>}
 
+          {/* Music */}
           <button
             onClick={() => {
               setSelectMusicClicked((prev) => !prev);
@@ -261,42 +254,31 @@ function CreateStoryPageComponent() {
             }}
             disabled={selectMusicDisabled}
             type="button"
-            className={`${
-              selectMusicDisabled ? "opacity-50 cursor-not-allowed" : ""
-            } cursor-pointer justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${
+            className={`rounded-2xl px-3 sm:px-2 py-2 sm:py-1 flex items-center gap-2 sm:gap-1 active:scale-95 ${
               selectMusicClicked
                 ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                 : ""
-            }`}
+            } ${selectMusicDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            <div className="flex relative justify-center items-center">
-              <div className="flex flex-col items-center justify-center gap-1">
-                <Music2Icon
-                  size="40"
-                  strokeWidth={1}
-                  className={`${
-                    selectMusicClicked ? " text-[var(--bgColor)]" : ""
-                  }`}
-                />
-                {/* <p className='text-sm font-semibold opacity-70 font-exo2'>Select Music</p> */}
-              </div>
-              <div className="absolute -right-2">
-                {" "}
-                <ChevronDown
-                  size={30}
-                  strokeWidth={1.5}
-                  className={`transition-all duration-150 ease-in ${
-                    chevronActive ? "rotate-180" : ""
-                  } ${
-                    selectMusicClicked
-                      ? "text-[var(--bgColor)]"
-                      : "text-[var(--textColor)]"
-                  }`}
-                />
-              </div>
-            </div>
+            <Music2Icon
+              className={`w-7 h-7 sm:w-5 sm:h-5 ${
+                selectMusicClicked
+                  ? "text-[var(--bgColor)]"
+                  : "text-[var(--textColor)]"
+              }`}
+            />
+            <ChevronDown
+              className={`w-5 h-5 sm:w-4 sm:h-4 transition-transform ${
+                chevronActive ? "rotate-180" : ""
+              } ${
+                selectMusicClicked
+                  ? "text-[var(--bgColor)]"
+                  : "text-[var(--textColor)]"
+              }`}
+            />
           </button>
 
+          {/* Write */}
           <button
             onClick={() => {
               setSelectWriteClicked((prev) => !prev);
@@ -304,38 +286,29 @@ function CreateStoryPageComponent() {
               setAIButtonClicked(false);
               setSelectMusicClicked(false);
               dispatch(setStoryImage(""));
-              setMusicPlaying((prev) => prev === true && false);
-              if (
-                audioRef.current &&
-                !audioRef.current.paused &&
-                selectWriteClicked === true
-              ) {
+              setMusicPlaying(false);
+              if (audioRef.current && !audioRef.current.paused) {
                 audioRef.current.pause();
                 audioRef.current.currentTime = 0;
               }
             }}
             type="button"
-            className={` cursor-pointer justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${
+            className={`rounded-2xl px-3 sm:px-2 py-2 sm:py-1 flex items-center gap-2 sm:gap-1 active:scale-95 ${
               selectWriteClicked
                 ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                 : ""
             }`}
           >
-            <div className="flex relative justify-center items-center">
-              <div className="flex flex-col items-center justify-center gap-1">
-                <PenBoxIcon
-                  size="40"
-                  strokeWidth={1}
-                  className={`${
-                    selectWriteClicked
-                      ? " text-[var(--bgColor)]"
-                      : "text-[var(--textColor)]"
-                  }`}
-                />
-                {/* <p className='text-sm opacity-70 font-semibold font-exo2'>Write</p> */}
-              </div>
-            </div>
+            <PenBoxIcon
+              className={`w-7 h-7 sm:w-5 sm:h-5 ${
+                selectWriteClicked
+                  ? "text-[var(--bgColor)]"
+                  : "text-[var(--textColor)]"
+              }`}
+            />
           </button>
+
+          {/* AI */}
           <button
             onClick={() => {
               setCameraOpen(false);
@@ -346,13 +319,13 @@ function CreateStoryPageComponent() {
               setAIButtonClicked((prev) => !prev);
             }}
             type="button"
-            className={`cursor-pointer relative justify-center sm:w-fit rounded-2xl px-2 py-1 flex items-center gap-3 active:bg-[var(--wrapperColor)] active:scale-95 ${
+            className={`rounded-2xl px-3 sm:px-2 py-2 sm:py-1 flex items-center gap-2 sm:gap-1 active:scale-95 ${
               aiButtonClicked
                 ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                 : "text-[var(--textColor)]"
             }`}
           >
-            <Sparkles size={40} strokeWidth={1} className=" rotate-6" />
+            <Sparkles className="w-7 h-7 sm:w-5 sm:h-5 rotate-6" />
           </button>
         </form>
         {(storyImageChosen !== "" || selectWriteClicked) && (
@@ -390,7 +363,7 @@ function CreateStoryPageComponent() {
             <div className="flex w-full justify-evenly gap-6 items-center">
               <button
                 type="button"
-                className=" text-sm flex justify-center items-center border-2 border-red-500 text-red-500 rounded-full font-medium active:scale-90 cursor-pointer py-2 px-6"
+                className="text-sm sm:text-xs flex justify-center items-center border-2 border-red-500 text-red-500 rounded-full font-medium active:scale-90 cursor-pointer py-2 px-4 sm:py-1.5 sm:px-3"
                 onClick={() => {
                   dispatch(setStoryImage(""));
                   dispatch(setMusicData({}));
@@ -410,10 +383,9 @@ function CreateStoryPageComponent() {
               <button
                 onClick={handleCreateStory}
                 type="button"
-                className=" text-sm flex justify-center items-center gap-1 bg-[var(--textColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6"
+                className="text-sm sm:text-xs flex justify-center items-center gap-1 sm:gap-0.5 bg-[var(--textColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6 sm:py-1.5 sm:px-4"
               >
-                {" "}
-                <PlusSquareIcon size={25} />
+                <PlusSquareIcon className="w-5 h-5 sm:w-4 sm:h-4" />
                 Add Story
               </button>
             </div>

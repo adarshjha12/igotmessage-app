@@ -88,7 +88,7 @@ export default function Comment({ postId }: { postId: string }) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-5 bg-[var(--bgColor)] rounded-2xl shadow-lg space-y-4">
+    <div className="w-full max-w-2xl mx-auto p-5 bg-[var(--bgColor)]/50 backdrop-blur-lg rounded-2xl shadow-lg space-y-4">
       {/* Comments list */}
       <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400/40">
         {comments.map((c) => (
@@ -109,14 +109,14 @@ export default function Comment({ postId }: { postId: string }) {
               )}
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-xl text-[var(--textColor)]">
+                  <span className="font-semibold text-xl sm:text-sm text-[var(--textColor)]">
                     {c.user}
                   </span>
-                  <span className="text-md text-[var(--textColor)]/60">
+                  <span className="text-md sm:text-sm text-[var(--textColor)]/60">
                     {c.time}
                   </span>
                 </div>
-                <p className="text-lg text-[var(--textColor)] leading-relaxed">
+                <p className="text-lg sm:text-xs text-[var(--textColor)] leading-relaxed">
                   {c.text}
                 </p>
                 <div className="flex gap-3 mt-1">
@@ -126,7 +126,7 @@ export default function Comment({ postId }: { postId: string }) {
                         replyingTo?.id === c.id ? null : { id: c.id, user: c.user }
                       )
                     }
-                    className="text-md text-rose-600 font-semibold hover:underline"
+                    className="text-md sm:text-sm text-rose-600 font-semibold hover:underline"
                   >
                     Reply
                   </button>
@@ -138,7 +138,7 @@ export default function Comment({ postId }: { postId: string }) {
                           [c.id]: !prev[c.id],
                         }))
                       }
-                      className="flex items-center gap-1 text-md text-[var(--textColor)]/80 hover:underline"
+                      className="flex items-center gap-1 text-md sm:text-sm text-[var(--textColor)]/80 hover:underline"
                     >
                       {expandedReplies[c.id] ? (
                         <>
@@ -178,14 +178,14 @@ export default function Comment({ postId }: { postId: string }) {
                     )}
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-md text-[var(--textColor)]">
+                        <span className="font-semibold text-md sm:text-sm text-[var(--textColor)]">
                           {r.user}
                         </span>
-                        <span className="text-md text-[var(--textColor)]/60">
+                        <span className="text-md sm:text-sm text-[var(--textColor)]/60">
                           {r.time}
                         </span>
                       </div>
-                      <p className="text-sm text-[var(--textColor)]">
+                      <p className="text-sm sm:text-xs text-[var(--textColor)]">
                         {r.text}
                       </p>
                     </div>
@@ -200,7 +200,7 @@ export default function Comment({ postId }: { postId: string }) {
       {/* Shared Input Box */}
       <div className="space-y-2">
         {replyingTo && (
-          <div className="flex items-center justify-between text-lg text-white bg-blue-500 px-3 py-1 rounded-md">
+          <div className="flex items-center justify-between text-lg sm:text-sm text-white bg-blue-500 px-3 py-1 rounded-md">
             Replying to <span className="font-semibold">{replyingTo.user}</span>
             <button
               onClick={() => {
