@@ -62,9 +62,9 @@ export default function PostItem({ post }: PostItemProps) {
   };
 
   return (
-    <div className="rounded-2xl bg-[var(--wrapperColor)] p-5 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="rounded-2xl bg-[var(--wrapperColor)] py-5 px-1 sm:px-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
       {/* --- Header --- */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between px-4 mb-4">
         <div className="flex items-center gap-3">
           <Link href="#">
             {post.user?.profilePicture ? (
@@ -118,7 +118,7 @@ export default function PostItem({ post }: PostItemProps) {
       {post?.postType === "normal" ? (
         <>
           {post?.text && (
-            <p className="mb-3 text-lg sm:text-sm font-medium text-[var(--textColor)] leading-relaxed">
+            <p className="mb-3 px-4 text-lg sm:text-sm font-medium text-[var(--textColor)] leading-relaxed">
               {post.text}
             </p>
           )}
@@ -134,7 +134,7 @@ export default function PostItem({ post }: PostItemProps) {
       )}
 
       {/* --- Footer Actions --- */}
-      <div className="flex items-center justify-between mt-3 pt-3  text-[var(--textColor)]/80 text-sm transition-all duration-400 ease-in">
+      <div className=" px-4 grid grid-cols-3 justify-items-center mt-3 pt-3  text-[var(--textColor)]/80 text-sm transition-all duration-400 ease-in">
         <button
           type="button"
           onClick={handleLike}
@@ -143,14 +143,14 @@ export default function PostItem({ post }: PostItemProps) {
           <Heart
             strokeWidth={likeClicked ? 0 : 2}
             fill={likeClicked ? "red" : "none"}
-            className={`w-8 h-8 sm:w-6 sm:h-6 transition-transform duration-300 ${
+            className={`w-8 h-8 sm:w-7 sm:h-7 transition-transform duration-300 ${
               likeClicked ? "scale-110" : "scale-100"
             }`}
           />
 
-          <span className="text-lg sm:text-sm">
-            {likeCount} {likeCount === 1 ? "Like" : "Likes"}
-          </span>
+            <span className="text-lg sm:text-sm">
+              {likeCount} {likeCount === 1 ? "Like" : "Likes"}
+            </span>
         </button>
 
         <button
@@ -158,20 +158,20 @@ export default function PostItem({ post }: PostItemProps) {
           onClick={() => setCommentOpen((prev) => !prev)}
           className="flex items-center gap-2 hover:text-blue-500 transition-all duration-400 ease-in"
         >
-          <MessageCircle className="w-8 h-8 sm:w-6 sm:h-6" />
-          <span className="text-lg sm:text-sm">
-            {post?.comments?.length ?? 0}
-          </span>
+          <MessageCircle className="w-7 h-7 sm:w-6 sm:h-6" />
+          {post.comments?.length! > 0 && (
+            <span className="text-lg sm:text-sm">{post.comments?.length}</span>
+          )}
         </button>
 
         <button
           type="button"
           className="flex items-center gap-2 hover:text-green-500 transition-all duration-400 ease-in"
         >
-          <Send className="w-7 h-7 sm:w-6 sm:h-6" />
-          <span className="text-lg sm:text-sm">
-            {post?.shares?.length ?? 0}
-          </span>
+          <Send className="w-6 h-6 sm:w-5 sm:h-5" />
+          { post.shares?.length! > 0 && (
+            <span className="text-lg sm:text-sm">{post?.shares?.length}</span>
+          )}
         </button>
       </div>
 

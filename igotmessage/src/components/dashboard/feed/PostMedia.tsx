@@ -107,7 +107,6 @@ function MediaItem({
       <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 rounded-xl z-0 overflow-hidden">
         {!loaded && (
           <div className="w-full h-[400px] flex items-center justify-center text-gray-400 z-10">
-            <ImageIcon className="w-8 h-8 animate-pulse" />
           </div>
         )}
 
@@ -131,7 +130,7 @@ function MediaItem({
           </button>
         )}
 
-        {totalMediaCount && (
+        {totalMediaCount && totalMediaCount > 1 && (
           <div className="absolute top-2 right-2 font-medium text-sm bg-white/80 text-black px-2 py-1 rounded-xl z-30">
             {mediaIndex}/{totalMediaCount}
           </div>
