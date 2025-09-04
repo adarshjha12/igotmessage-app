@@ -19,10 +19,12 @@ export default function Poll({ postId, pollData }: PollProps) {
     // TODO: send vote API
   };
 
-  const totalVotes = pollData?.options?.reduce(
-    (sum, o) => sum + (o.votes?.length || 0),
-    0
-  );
+  let totalVotes = 0;
+  pollData?.options?.forEach((o) => {
+    totalVotes += o.votes?.length || 0;
+  });
+
+  console.log(totalVotes);
 
   return (
     <div className="flex flex-col gap-3 px-4 mt-4">
@@ -62,7 +64,9 @@ export default function Poll({ postId, pollData }: PollProps) {
                   userVoted ? "font-semibold" : ""
                 }`}
               >
-                {userVoted && <Check strokeWidth={4} size={30} className="text-blue-500" />}
+                {userVoted && (
+                  <Check strokeWidth={4} size={30} className="text-blue-500" />
+                )}
                 {opt.text}
               </span>
               <span className="text-sm font-medium text-[var(--textColor)]/70">

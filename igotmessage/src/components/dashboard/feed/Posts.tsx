@@ -52,7 +52,6 @@ export default function Posts() {
   const fetchPosts = async () => {
     const res = await axios.get(`${url}/api/post/get-posts?page=${page}`);
     const data = await res.data;
-    console.log(data.posts);
 
     const parsedPosts =
       typeof data.posts === "string" ? JSON.parse(data.posts) : data.posts;

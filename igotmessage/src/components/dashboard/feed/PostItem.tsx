@@ -13,20 +13,27 @@ import {
 } from "lucide-react";
 import { Post } from "./Posts";
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
 import { useAppSelector } from "@/store/hooks";
 import axios from "axios";
 import Comment from "./Comment";
+import { generateRandomString } from "@/utils/api";
+import PopupWithLink from "@/components/popups/PopupWithLink";
 
 export interface PostItemProps {
   post: Post;
 }
 
 export default function PostItem({ post }: PostItemProps) {
+  const isDark = useAppSelector((state) => state.activity.isDark);
+  const isGuest = useAppSelector((state) => state.auth.user.isGuest);
   const [likeClicked, setLikeClicked] = useState(false);
   const [commentOpen, setCommentOpen] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likes?.length ?? 0);
   const userId = useAppSelector((state) => state.auth.user._id);
+  const [showGuestError, setShowGuestError] = useState(false);
+
+  const randomAvatarNames = generateRandomString();
 
   const url =
     process.env.NODE_ENV === "production"
@@ -34,12 +41,16 @@ export default function PostItem({ post }: PostItemProps) {
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/toggle-like`;
 
   useEffect(() => {
-    if (post.likes?.includes(userId)) {
+    if (!isGuest && post.likes?.includes(userId)) {
       setLikeClicked(true);
     }
   }, [post, userId]);
 
   const handleLike = async () => {
+    if (isGuest) {
+      setShowGuestError(true);
+      return
+    }
     try {
       setLikeClicked((prev) => {
         setLikeCount((count) => (prev ? count - 1 : count + 1));
@@ -74,17 +85,22 @@ export default function PostItem({ post }: PostItemProps) {
                 className="w-11 h-11 border border-[var(--borderColor)]/50 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
               />
             ) : (
-              <div className="w-11 h-11 flex items-center justify-center rounded-full bg-[var(--borderColor)]/20">
-                <UserIcon size={24} className="text-[var(--textColor)]/80" />
-              </div>
+              <img
+                src={`https://api.dicebear.com/9.x/avataaars/svg?seed=b`}
+                alt="avatar"
+                className="w-11 h-11 border border-[var(--borderColor)]/50 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
+              />
             )}
           </Link>
 
           <div className="flex flex-col">
-            <Link href="#">
+            <Link href="#" className="flex items-center gap-2">
               <span className="font-semibold text-xl sm:text-base text-[var(--textColor)] hover:underline cursor-pointer">
                 {post?.user?.userName}
               </span>
+              <div className="w-4 h-4 flex items-center justify-center rounded-full bg-blue-500">
+              <Check size={14} className="text-white" strokeWidth={3} />
+            </div>
             </Link>
             <div className="flex items-center gap-2">
               {post?.privacy === "public" ? (
@@ -94,18 +110,13 @@ export default function PostItem({ post }: PostItemProps) {
               )}
 
               <span className="text-sm sm:text-xs text-[var(--textColor)]/60">
-                {formatDistanceToNow(new Date(post?.createdAt ?? ""), {
+                {formatDistanceToNowStrict(new Date(post?.createdAt ?? ""), {
                   addSuffix: true,
                 })}
               </span>
             </div>
           </div>
 
-          {post?.user && (
-            <div className="w-5 h-5 flex items-center justify-center rounded-full bg-blue-500">
-              <Check size={14} className="text-white" strokeWidth={3} />
-            </div>
-          )}
         </div>
 
         {/* Three dots menu */}
@@ -134,43 +145,84 @@ export default function PostItem({ post }: PostItemProps) {
       )}
 
       {/* --- Footer Actions --- */}
-      <div className=" px-4 grid grid-cols-3 justify-items-center mt-3 pt-3  text-[var(--textColor)]/80 text-sm transition-all duration-400 ease-in">
+
+      <div
+        className={`rounded-full px-4 py-3 grid grid-cols-3 justify-items-center mt-3 text-sm shadow-lg transition-all duration-300 ${
+          isDark
+            ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-200/90"
+            : "bg-gradient-to-br from-white via-gray-50 to-white text-gray-800/90"
+        }`}
+      >
+        {/* Like Button */}
         <button
           type="button"
           onClick={handleLike}
-          className="flex items-center gap-2 hover:text-red-500 transition-all duration-400 ease-in"
+          className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
         >
           <Heart
             strokeWidth={likeClicked ? 0 : 2}
-            fill={likeClicked ? "red" : "none"}
-            className={`w-8 h-8 sm:w-7 sm:h-7 transition-transform duration-300 ${
-              likeClicked ? "scale-110" : "scale-100"
+            fill={likeClicked ? "#ff2525" : "none"}
+            className={`w-7 h-7 sm:w-6 sm:h-6 transition-transform duration-300 ${
+              likeClicked
+                ? "scale-110 text-blue-500"
+                : "scale-100 group-hover:scale-110"
             }`}
           />
-
-            <span className="text-lg sm:text-sm">
-              {likeCount} {likeCount === 1 ? "Like" : "Likes"}
-            </span>
+          <span
+            className={`text-base sm:text-sm font-medium transition-colors ${
+              isDark ? "group-hover:text-red-400" : "group-hover:text-red-500"
+            }`}
+          >
+            {likeCount} {likeCount === 1 ? "Like" : "Likes"}
+          </span>
         </button>
 
+        {/* Comment Button */}
         <button
           type="button"
           onClick={() => setCommentOpen((prev) => !prev)}
-          className="flex items-center gap-2 hover:text-blue-500 transition-all duration-400 ease-in"
+          className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
         >
-          <MessageCircle className="w-7 h-7 sm:w-6 sm:h-6" />
+          <MessageCircle
+            className={`w-6 h-6 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110 ${
+              isDark ? "group-hover:text-blue-400" : "group-hover:text-blue-500"
+            }`}
+          />
           {post.comments?.length! > 0 && (
-            <span className="text-lg sm:text-sm">{post.comments?.length}</span>
+            <span
+              className={`text-base sm:text-sm font-medium transition-colors ${
+                isDark
+                  ? "group-hover:text-blue-400"
+                  : "group-hover:text-blue-500"
+              }`}
+            >
+              {post.comments?.length}
+            </span>
           )}
         </button>
 
+        {/* Share Button */}
         <button
           type="button"
-          className="flex items-center gap-2 hover:text-green-500 transition-all duration-400 ease-in"
+          className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
         >
-          <Send className="w-6 h-6 sm:w-5 sm:h-5" />
-          { post.shares?.length! > 0 && (
-            <span className="text-lg sm:text-sm">{post?.shares?.length}</span>
+          <Send
+            className={`w-6 h-6 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110 ${
+              isDark
+                ? "group-hover:text-green-400"
+                : "group-hover:text-green-500"
+            }`}
+          />
+          {post.shares?.length! > 0 && (
+            <span
+              className={`text-base sm:text-sm font-medium transition-colors ${
+                isDark
+                  ? "group-hover:text-green-400"
+                  : "group-hover:text-green-500"
+              }`}
+            >
+              {post?.shares?.length}
+            </span>
           )}
         </button>
       </div>
@@ -181,6 +233,7 @@ export default function PostItem({ post }: PostItemProps) {
           <Comment postId={post._id} />
         </div>
       )}
+        {showGuestError && <PopupWithLink linkHref="/login" linkText="signup" type="error" message="Sorry, Guest users can't like" show={showGuestError} onClose={() => setShowGuestError(false)} />}
     </div>
   );
 }

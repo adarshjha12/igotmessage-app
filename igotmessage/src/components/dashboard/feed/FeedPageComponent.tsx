@@ -49,9 +49,9 @@ function FeedPageComponent() {
             <InfoIcon className="w-6 h-6" />
           </div>
           <div className="flex flex-col">
-            <p className="text-md text-[var(--textColor)]/90 leading-relaxed">
+            <p className="text-md sm:text-xs text-[var(--textColor)]/90 leading-relaxed">
               <span className="font-medium">Note:</span> Dear User, we can’t
-              show your personal stories and posts because you are a guest.
+              show your stories, posts and comments because you are a guest.
               Please <span className="font-semibold  text-black bg-gray-300 px-1 rounded-2xl">Signup</span>{" "}
               with google or email to access all features.
             </p>

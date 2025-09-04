@@ -68,7 +68,7 @@ app.use("/api/email/auth", emailAuthRouter);
 app.use("/api/current-user", getCurrentUser);
 app.use("/api/follow", followRouter);
 app.use("/api/post", postRouter);
-app.use("/api/commemt", commentRouter);
+app.use("/api/comment", commentRouter);
 app.use("/api/story", storyRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/profile", profileRouter);

@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { User } from "../models/userModel";
+import { generateRandomString } from "../utils/apis";
 
 const randomNumber = Math.floor(Math.random() * 100000 + 1);
 
@@ -10,6 +11,8 @@ const callbackURL =
   process.env.NODE_ENV === "production"
     ? "https://igotmessage-app-backend.onrender.com/api/google/auth/callback/redirect"
     : "http://localhost:5000/api/google/auth/callback/redirect";
+
+const randomAvatarStrings = generateRandomString();
 
 passport.use(
   new GoogleStrategy(
@@ -34,7 +37,7 @@ passport.use(
 
         if (existingUser) {
           existingUser.googleId = profile.id;
-          existingUser.avatar = profile.photos?.[0]?.value || "";
+          existingUser.avatar = `https://api.dicebear.com/9.x/avataaars/svg?seed=${randomAvatarStrings}`;
           existingUser.title = profile.displayName;
           await existingUser.save();
           return done(null, existingUser);
@@ -45,7 +48,7 @@ passport.use(
           googleId: profile.id,
           email: email || "",
           title: profile.displayName,
-          avatar: profile.photos?.[0]?.value || "",
+          avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=${randomAvatarStrings}`,
           fullName: "",
           userName: "user" + randomNumber,
           profilePicture: "",

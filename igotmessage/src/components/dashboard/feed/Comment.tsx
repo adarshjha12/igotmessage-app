@@ -1,132 +1,196 @@
 "use client";
-import { useState } from "react";
-import {
-  Send,
-  Smile,
-  UserCircle,
-  ChevronDown,
-  ChevronUp,
-  X,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Send, Smile, ChevronDown, ChevronUp, X, UserIcon } from "lucide-react";
+import axios from "axios";
+import { useAppSelector } from "@/store/hooks";
+import PopupWithLink from "@/components/popups/PopupWithLink";
+import { formatDistanceToNowStrict } from "date-fns";
 
 interface ReplyType {
-  id: string;
-  user: string;
-  avatar?: string;
+  _id: string;
+  user: {
+    _id: string;
+    userName: string;
+    profilePicture: string;
+  };
   text: string;
-  time: string;
+  updatedAt: string;
 }
 
 interface CommentType {
-  id: string;
-  user: string;
-  avatar?: string;
+  _id: string;
+  user: {
+    _id: string;
+    userName: string;
+    profilePicture: string;
+  };
   text: string;
-  time: string;
+  postId: string;
+
+  createdAt: string;
+  updatedAt: string;
   replies?: ReplyType[];
 }
 
 export default function Comment({ postId }: { postId: string }) {
-  const [comments, setComments] = useState<CommentType[]>([
-    {
-      id: "1",
-      user: "John Doe",
-      text: "🔥 This looks amazing!",
-      time: "2h",
-      replies: [
-        { id: "11", user: "Sarah Lee", text: "Totally agree 👏", time: "1h" },
-      ],
-    },
-    {
-      id: "2",
-      user: "Sarah Lee",
-      text: "Wow great work 👏",
-      time: "30m",
-      replies: [],
-    },
-  ]);
+  const userId = useAppSelector((state) => state.auth.user._id);
+  const isGuest = useAppSelector((state) => state.auth.user.isGuest);
+  const [showGuestError, setShowGuestError] = useState(false);
 
+  const url =
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
+
+  const [comments, setComments] = useState<CommentType[]>([]);
   const [input, setInput] = useState("");
-  const [replyingTo, setReplyingTo] = useState<null | { id: string; user: string }>(null);
-  const [expandedReplies, setExpandedReplies] = useState<{ [key: string]: boolean }>({});
+  const [replyingTo, setReplyingTo] = useState<null | {
+    replierId: string;
+    commentId: string;
+    userName: string;
+  }>(null);
+  const [expandedReplies, setExpandedReplies] = useState<{
+    [key: string]: boolean;
+  }>({});
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleAddComment = async function (postId: string, userId: string) {
+    try {
+      const res = await axios.post(
+        `${url}/api/comment/add-comment`,
+        { postId, userId, text: input },
+        { withCredentials: true }
+      );
+      if (res.data) {
+        setComments((prev) => [res.data.comment, ...prev]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    if (replyingTo) {
-      // Handle reply
-      const newReply: ReplyType = {
-        id: Date.now().toString(),
-        user: "You",
-        text: input,
-        time: "Just now",
-      };
-
-      setComments((prev) =>
-        prev.map((c) =>
-          c.id === replyingTo.id
-            ? { ...c, replies: [...(c.replies || []), newReply] }
-            : c
-        )
+  const handleAddReply = async (userId: string, commentId: string) => {
+    try {
+      console.log(replyingTo);
+      
+      const res = await axios.post(
+        `${url}/api/comment/add-reply`,
+        { userId, commentId, text: input },
+        { withCredentials: true }
       );
 
-      setExpandedReplies((prev) => ({ ...prev, [replyingTo.id]: true }));
-      setReplyingTo(null);
+      if (res.data) {
+        setComments((prev) =>
+          prev.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  replies: [res.data.reply, ...(comment.replies ?? []) ],
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSend = async function () {
+    if (isGuest) {
+      setShowGuestError(true);
+      return;
     } else {
-      // Handle new comment
-      const newComment: CommentType = {
-        id: Date.now().toString(),
-        user: "You",
-        text: input,
-        time: "Just now",
-        replies: [],
-      };
-      setComments((prev) => [...prev, newComment]);
+      setShowGuestError(false);
+
+      if (replyingTo) {
+        handleAddReply(replyingTo.replierId, replyingTo.commentId);
+      } else {
+        handleAddComment(postId, userId);
+      }
     }
 
     setInput("");
   };
 
+  useEffect(() => {
+    async function getComments(postId: string) {
+      try {
+        const res = await axios.post(
+          `${url}/api/comment/get-comments`,
+          { postId },
+          { withCredentials: true }
+        );
+        if (res.data) {
+          setComments((prev) => {
+            const combined = [...prev, ...res.data.comments];
+            const unique = Array.from(
+              new Map(
+                combined.map((comment) => [comment._id, comment])
+              ).values()
+            );
+            return unique;
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (postId) {
+      getComments(postId);
+    }
+    return () => {};
+  }, [postId]);
+
   return (
-    <div className="w-full max-w-2xl mx-auto p-5 bg-[var(--bgColor)]/50 backdrop-blur-lg rounded-2xl shadow-lg space-y-4">
+    <div className="w-full max-w-2xl mx-auto py-5 px-2 sm:px-4  backdrop-blur-lg rounded-2xl shadow-lg space-y-4">
       {/* Comments list */}
       <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400/40">
         {comments.map((c) => (
-          <div key={c.id} className="space-y-1">
+          <div key={c._id} className="space-y-1">
             {/* Main Comment */}
             <div className="flex gap-3 items-start group hover:bg-[var(--wrapperColor)]/50 rounded-xl p-2 transition">
-              {c.avatar ? (
+              {c.user.profilePicture ? (
                 <img
-                  src={c.avatar}
-                  alt={c.user}
+                  src={c.user.profilePicture}
+                  alt={c.user.userName}
                   className="w-9 h-9 rounded-full object-cover ring-1 ring-gray-200"
                 />
               ) : (
-                <UserCircle
-                  strokeWidth={1.2}
-                  className="w-9 h-9 text-[var(--textColor)]/70"
-                />
+                <div className=" rounded-full p-1 bg-[var(--bgColor)] text-[var(--textColor)]">
+                  <UserIcon
+                    strokeWidth={1.5}
+                    className="w-9 h-9 sm:w-7 sm:h-7"
+                  />
+                </div>
               )}
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-xl sm:text-sm text-[var(--textColor)]">
-                    {c.user}
+                  <span className="font-semibold text-md sm:text-sm text-[var(--textColor)]">
+                    {c.user.userName}
                   </span>
-                  <span className="text-md sm:text-sm text-[var(--textColor)]/60">
-                    {c.time}
+                  <span className="text-xs sm:text-sm text-[var(--textColor)]/60">
+                    {formatDistanceToNowStrict(new Date(c?.updatedAt ?? ""), {
+                      addSuffix: true,
+                    })}{" "}
                   </span>
                 </div>
-                <p className="text-lg sm:text-xs text-[var(--textColor)] leading-relaxed">
+                <p className="text-md sm:text-xs text-[var(--textColor)] leading-relaxed">
                   {c.text}
                 </p>
                 <div className="flex gap-3 mt-1">
                   <button
                     onClick={() =>
                       setReplyingTo(
-                        replyingTo?.id === c.id ? null : { id: c.id, user: c.user }
+                        replyingTo?.commentId === c._id
+                          ? null
+                          : {
+                              commentId: c._id,
+                              replierId: userId,
+                              userName: c.user.userName,
+                            }
                       )
                     }
-                    className="text-md sm:text-sm text-rose-600 font-semibold hover:underline"
+                    className="text-md sm:text-sm text-pink-600 font-semibold hover:underline"
                   >
                     Reply
                   </button>
@@ -135,12 +199,12 @@ export default function Comment({ postId }: { postId: string }) {
                       onClick={() =>
                         setExpandedReplies((prev) => ({
                           ...prev,
-                          [c.id]: !prev[c.id],
+                          [c._id]: !prev[c._id],
                         }))
                       }
                       className="flex items-center gap-1 text-md sm:text-sm text-[var(--textColor)]/80 hover:underline"
                     >
-                      {expandedReplies[c.id] ? (
+                      {expandedReplies[c._id] ? (
                         <>
                           Hide Replies <ChevronUp className="w-3 h-3" />
                         </>
@@ -157,35 +221,39 @@ export default function Comment({ postId }: { postId: string }) {
             </div>
 
             {/* Replies */}
-            {expandedReplies[c.id] && c.replies && c.replies.length > 0 && (
+            {expandedReplies[c._id] && c.replies && c.replies.length > 0 && (
               <div className="ml-12 space-y-2">
                 {c.replies.map((r) => (
                   <div
-                    key={r.id}
+                    key={r._id}
                     className="flex gap-2 items-start bg-[var(--wrapperColor)]/40 rounded-xl p-2"
                   >
-                    {r.avatar ? (
+                    {r.user.profilePicture ? (
                       <img
-                        src={r.avatar}
-                        alt={r.user}
-                        className="w-7 h-7 rounded-full object-cover"
+                        src={r.user.profilePicture}
+                        alt={r.user.userName}
+                        className="w-7 h-7 border border-gray-400 rounded-full object-cover"
                       />
                     ) : (
-                      <UserCircle
-                        strokeWidth={1}
-                        className="w-7 h-7 text-[var(--textColor)]/70"
-                      />
+                      <div className=" rounded-full p-1 bg-[var(--bgColor)] text-[var(--textColor)]">
+                        <UserIcon
+                          strokeWidth={2}
+                          className="w-6 h-6 sm:w-5 sm:h-5"
+                        />
+                      </div>
                     )}
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-md sm:text-sm text-[var(--textColor)]">
-                          {r.user}
+                        <span className="font-semibold text-sm sm:text-sm text-[var(--textColor)]">
+                          {r.user.userName}
                         </span>
-                        <span className="text-md sm:text-sm text-[var(--textColor)]/60">
-                          {r.time}
+                        <span className="text-[10px] sm:text-sm text-[var(--textColor)]/60">
+                          {formatDistanceToNowStrict(new Date(r?.updatedAt ?? ""), {
+                            addSuffix: true,
+                          })}
                         </span>
                       </div>
-                      <p className="text-sm sm:text-xs text-[var(--textColor)]">
+                      <p className="text-xs text-[var(--textColor)]">
                         {r.text}
                       </p>
                     </div>
@@ -201,7 +269,8 @@ export default function Comment({ postId }: { postId: string }) {
       <div className="space-y-2">
         {replyingTo && (
           <div className="flex items-center justify-between text-lg sm:text-sm text-white bg-blue-500 px-3 py-1 rounded-md">
-            Replying to <span className="font-semibold">{replyingTo.user}</span>
+            Replying to{" "}
+            <span className="font-semibold">{replyingTo.userName}</span>
             <button
               onClick={() => {
                 setReplyingTo(null);
@@ -232,6 +301,16 @@ export default function Comment({ postId }: { postId: string }) {
           </button>
         </div>
       </div>
+      {showGuestError && (
+        <PopupWithLink
+          linkHref="/login"
+          linkText="signup"
+          type="error"
+          message="Sorry, Guest users can't comment"
+          show={showGuestError}
+          onClose={() => setShowGuestError(false)}
+        />
+      )}
     </div>
   );
 }
