@@ -505,7 +505,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* nav for mobile starts here */}
 
-          <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 md:hidden flex fixed left-0 bottom-0 -z-10">
+          <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 md:hidden flex fixed left-0 bottom-0 z-10">
             <div className="w-full items-center flex justify-between">
               <Link
                 href="/dash/feed"
