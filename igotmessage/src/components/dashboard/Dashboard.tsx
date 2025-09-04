@@ -45,8 +45,10 @@ import ProfileUpdateModal from "../modals/UpdateProfileModal";
 import { setProfileUpdateStatus } from "@/features/authSlice";
 import { setUploadStoryStatus } from "@/features/storySlice";
 import { setUploadPostStatus } from "@/features/postSlice";
+import BottomNav from "./BottomNav";
 
 function Dashboard({ children }: { children: ReactNode }) {
+
   const uploadStoryStatus = useAppSelector(
     (state) => state.story.uploadStoryStatus
   );
@@ -67,6 +69,9 @@ function Dashboard({ children }: { children: ReactNode }) {
   );
 
   const isGuest = useAppSelector((state: RootState) => state.auth.user.isGuest);
+  const profilePicture = useAppSelector((state: RootState) => state.auth.user.profilePicture);
+
+
 
   const panelOpen = useAppSelector(
     (state: RootState) => state.activity.panelOpen
@@ -506,7 +511,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           <main
             className={`pb-10 ${
               !sidebarOpen ? "w-full" : "sm:max-w-[600px] xl:max-w-[700px]"
-            } sm:px-5 px-2 flex flex-col justify-center items-center col-span-1`}
+            } sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
           >
             {children}
           </main>
@@ -514,141 +519,8 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* nav for mobile starts here */}
 
-          <nav className="w-full py-3 bg-[var(--bgColor)] border-y-1 border-[var(--shadowBorder)] px-2 md:hidden flex fixed left-0 bottom-0 z-10">
-            <div className="w-full items-center flex justify-between">
-              <Link
-                href="/dash/feed"
-                className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}
-              >
-                <div
-                  className={`flex flex-col rounded-xl ${
-                    pathname === "/dash/feed"
-                      ? "bg-[var(--navButtonColor)]"
-                      : ""
-                  } px-4 items-center justify-center gap-1`}
-                >
-                  <HouseIcon
-                    size={25}
-                    weight={pathname === "/dash/feed" ? "fill" : "regular"}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <p className="text-sm opacity-70 font-medium">Home</p>
-              </Link>
+                <BottomNav pathname={pathname} avatar={profilePicture as string} />
 
-              <Link
-                href="/dash/create"
-                className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}
-              >
-                <div
-                  className={`flex flex-col rounded-xl ${
-                    pathname === "/dash/create"
-                      ? "bg-[var(--navButtonColor)]"
-                      : ""
-                  } px-4 items-center justify-center gap-1`}
-                >
-                  <PlusSquareIcon
-                    size={25}
-                    weight={pathname === "/dash/create" ? "fill" : "regular"}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <p className="text-sm opacity-70 font-medium">Create</p>
-              </Link>
-
-              {/* Messages */}
-              <Link
-                href="/dash/chats"
-                className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}
-              >
-                <div
-                  className={`flex flex-col rounded-xl ${
-                    pathname === "/dash/chats"
-                      ? "bg-[var(--navButtonColor)]"
-                      : ""
-                  } px-4 items-center justify-center gap-1`}
-                >
-                  <ChatsCircleIcon
-                    size={25}
-                    weight={pathname === "/dash/chats" ? "fill" : "regular"}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <p className="text-sm opacity-70 font-medium">Messages</p>
-              </Link>
-
-              {/* Reels */}
-              <Link
-                href="/reels"
-                className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}
-              >
-                <div
-                  className={`flex flex-col rounded-xl ${
-                    pathname === "/reels" ? "bg-[var(--navButtonColor)]" : ""
-                  } px-4 items-center justify-center gap-1`}
-                >
-                  <PlayIcon
-                    size={25}
-                    weight={pathname === "/reels" ? "fill" : "regular"}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <p className="text-sm opacity-70 font-medium">Reels</p>
-              </Link>
-
-              {/* Calls */}
-              <Link
-                href="/dash/calls"
-                className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}
-              >
-                <div
-                  className={`flex flex-col rounded-xl ${
-                    pathname === "/dash/calls"
-                      ? "bg-[var(--navButtonColor)]"
-                      : ""
-                  } px-4 items-center justify-center gap-1`}
-                >
-                  <VideoCameraIcon
-                    size={25}
-                    weight={pathname === "/dash/calls" ? "fill" : "regular"}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <p className="text-sm opacity-70 font-medium">Calls</p>
-              </Link>
-
-              {/* Profile */}
-              <Link
-                href="/dash/profile"
-                className={`flex flex-col items-center justify-center relative gap-1 cursor-pointer active:bg-[var(--wrapperColor)]`}
-              >
-                <div
-                  className={`flex flex-col rounded-xl ${
-                    pathname === "/dash/profile"
-                      ? "bg-[var(--navButtonColor)]"
-                      : ""
-                  } px-4 items-center justify-center gap-1`}
-                >
-                  {avatar ? (
-                    <img
-                      src={avatar}
-                      alt="avatar"
-                      className="w-6 h-6 rounded-xl"
-                    />
-                  ) : (
-                    <div className=" flex items-center justify-center rounded-full hover:scale-105 transition-transform duration-300 ease-out group">
-                      <UserIcon
-                        size={25}
-                        strokeWidth={1.5}
-                        className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                </div>
-                <p className="text-sm opacity-70 font-medium">{"You"}</p>
-              </Link>
-            </div>
-          </nav>
           {/* nav for mobile ends here */}
 
           {/* third column for desktop starts here */}

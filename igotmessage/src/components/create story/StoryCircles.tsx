@@ -60,7 +60,7 @@ function Story() {
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
           href="/create-story"
-          className={`relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] flex items-center justify-center ${myProfilePicture && " border-3 border-pink-700"} p-[2px] rounded-full shadow-md hover:scale-105 transition-transform duration-300 ease-out group
+          className={`relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] flex items-center justify-center p-[2px] rounded-full shadow-md hover:scale-105 mr-2 transition-transform duration-300 ease-out group
     ${
       myProfilePicture
         ? "bg-[var(--bgColor)]"

@@ -73,7 +73,7 @@ export default function PostItem({ post }: PostItemProps) {
   };
 
   return (
-    <div className="rounded-2xl bg-[var(--wrapperColor)] py-5 px-1 sm:px-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className=" py-5 sm:px-4 duration-300">
       {/* --- Header --- */}
       <div className="flex items-center justify-between px-4 mb-4">
         <div className="flex items-center gap-3">
@@ -82,13 +82,13 @@ export default function PostItem({ post }: PostItemProps) {
               <img
                 src={post.user.profilePicture ?? ""}
                 alt="avatar"
-                className="w-11 h-11 border border-[var(--borderColor)]/50 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
+                className="w-11 h-11 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
               />
             ) : (
               <img
                 src={`https://api.dicebear.com/9.x/avataaars/svg?seed=b`}
                 alt="avatar"
-                className="w-11 h-11 border border-[var(--borderColor)]/50 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
+                className="w-11 h-11  rounded-full object-cover cursor-pointer hover:opacity-90 transition"
               />
             )}
           </Link>
@@ -135,7 +135,7 @@ export default function PostItem({ post }: PostItemProps) {
           )}
 
           {post?.mediaUrls && post.mediaUrls.length > 0 && (
-            <div className=" rounded-xl mb-3">
+            <div className=" mb-3">
               <PostMedia urls={post.mediaUrls} />
             </div>
           )}
@@ -147,11 +147,7 @@ export default function PostItem({ post }: PostItemProps) {
       {/* --- Footer Actions --- */}
 
       <div
-        className={`rounded-full px-4 py-3 grid grid-cols-3 justify-items-center mt-3 text-sm shadow-lg transition-all duration-300 ${
-          isDark
-            ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-200/90"
-            : "bg-gradient-to-br from-white via-gray-50 to-white text-gray-800/90"
-        }`}
+        className={`rounded-full px-4 py-3 grid grid-cols-3 justify-items-center mt-3 text-sm transition-all duration-300`}
       >
         {/* Like Button */}
         <button

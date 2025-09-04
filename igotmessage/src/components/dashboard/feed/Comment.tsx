@@ -36,6 +36,7 @@ export default function Comment({ postId }: { postId: string }) {
   const userId = useAppSelector((state) => state.auth.user._id);
   const isGuest = useAppSelector((state) => state.auth.user.isGuest);
   const [showGuestError, setShowGuestError] = useState(false);
+  const profilePicture = useAppSelector(state => state.auth.user.profilePicture)
 
   const url =
     process.env.NODE_ENV === "production"
@@ -71,7 +72,7 @@ export default function Comment({ postId }: { postId: string }) {
   const handleAddReply = async (userId: string, commentId: string) => {
     try {
       console.log(replyingTo);
-      
+
       const res = await axios.post(
         `${url}/api/comment/add-reply`,
         { userId, commentId, text: input },
@@ -84,7 +85,7 @@ export default function Comment({ postId }: { postId: string }) {
             comment._id === commentId
               ? {
                   ...comment,
-                  replies: [res.data.reply, ...(comment.replies ?? []) ],
+                  replies: [res.data.reply, ...(comment.replies ?? [])],
                 }
               : comment
           )
@@ -98,6 +99,8 @@ export default function Comment({ postId }: { postId: string }) {
   const handleSend = async function () {
     if (isGuest) {
       setShowGuestError(true);
+      return;
+    } else if (input === "") {
       return;
     } else {
       setShowGuestError(false);
@@ -142,7 +145,7 @@ export default function Comment({ postId }: { postId: string }) {
   }, [postId]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-5 px-2 sm:px-4  backdrop-blur-lg rounded-2xl shadow-lg space-y-4">
+    <div className="w-full max-w-2xl mx-auto sm:py-5 py-0 px-2 sm:px-4  backdrop-blur-lg rounded-2xl shadow-lg space-y-4">
       {/* Comments list */}
       <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400/40">
         {comments.map((c) => (
@@ -153,7 +156,7 @@ export default function Comment({ postId }: { postId: string }) {
                 <img
                   src={c.user.profilePicture}
                   alt={c.user.userName}
-                  className="w-9 h-9 rounded-full object-cover ring-1 ring-gray-200"
+                  className="w-9 h-9 rounded-full object-cover"
                 />
               ) : (
                 <div className=" rounded-full p-1 bg-[var(--bgColor)] text-[var(--textColor)]">
@@ -232,7 +235,7 @@ export default function Comment({ postId }: { postId: string }) {
                       <img
                         src={r.user.profilePicture}
                         alt={r.user.userName}
-                        className="w-7 h-7 border border-gray-400 rounded-full object-cover"
+                        className="w-7 h-7 rounded-full object-cover"
                       />
                     ) : (
                       <div className=" rounded-full p-1 bg-[var(--bgColor)] text-[var(--textColor)]">
@@ -248,9 +251,12 @@ export default function Comment({ postId }: { postId: string }) {
                           {r.user.userName}
                         </span>
                         <span className="text-[10px] sm:text-sm text-[var(--textColor)]/60">
-                          {formatDistanceToNowStrict(new Date(r?.updatedAt ?? ""), {
-                            addSuffix: true,
-                          })}
+                          {formatDistanceToNowStrict(
+                            new Date(r?.updatedAt ?? ""),
+                            {
+                              addSuffix: true,
+                            }
+                          )}
                         </span>
                       </div>
                       <p className="text-xs text-[var(--textColor)]">
@@ -283,11 +289,25 @@ export default function Comment({ postId }: { postId: string }) {
           </div>
         )}
 
-        <div className="flex items-center gap-3 border rounded-full px-4 py-2 bg-[var(--wrapperColor)] shadow-sm">
-          <Smile className="w-6 h-6 text-[var(--textColor)] cursor-pointer hover:scale-110 transition" />
+        <div className="flex items-center gap-3 px-4 py-0">
+          {profilePicture ? (
+                      <img
+                        src={profilePicture}
+                        alt={"user"}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className=" rounded-full p-1 bg-[var(--bgColor)] border border-gray-400/50 text-[var(--textColor)]">
+                        <UserIcon
+                          strokeWidth={2}
+                          className="w-4 h-4 sm:w-5 sm:h-5"
+                        />
+                      </div>
+                    )}
           <input
             type="text"
-            placeholder={replyingTo ? "Write a reply..." : "Write a comment..."}
+            autoFocus
+            placeholder={replyingTo ? "Add a reply..." : "Add a comment..."}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
@@ -295,9 +315,9 @@ export default function Comment({ postId }: { postId: string }) {
           />
           <button
             onClick={handleSend}
-            className="p-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:scale-105 transition text-white"
+            className="py-2 px-4 active:scale-90 active:opacity-35 hover:scale-105 transition duration-100 text-[var(--textColor)] text-lg font-semibold "
           >
-            <Send className="w-5 h-5" />
+            {/* <Send className="w-5 h-5" /> */} Add
           </button>
         </div>
       </div>

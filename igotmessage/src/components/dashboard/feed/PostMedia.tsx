@@ -22,7 +22,7 @@ export default function PostMedia({ urls }: PostMediaProps) {
   // Single media
   if (urls.length === 1) {
     return (
-      <div className="relative rounded-xl overflow-hidden">
+      <div className="relative  overflow-hidden">
         <MediaItem url={urls[0]} totalMediaCount={1} mediaIndex={1} />
       </div>
     );
@@ -30,11 +30,9 @@ export default function PostMedia({ urls }: PostMediaProps) {
 
   // Multiple media with Swiper
   return (
-    <div className="h-fit  rounded-xl overflow-hidden">
+    <div className="h-fit   overflow-hidden">
       <Swiper
-      modules={[Navigation, Pagination]}
-      pagination={{ clickable: true }}
-      className="w-full max-w-[600px] -z-20  rounded-xl overflow-hidden"
+      className="w-full max-w-[600px] -z-20   overflow-hidden"
     >
       {urls.map((url, i) => (
         <SwiperSlide key={i}>
@@ -104,9 +102,9 @@ function MediaItem({
   // --- VIDEO ---
   if (isVideo) {
     return (
-      <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 rounded-xl z-0 overflow-hidden">
+      <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 z-0 max-h-[600px] overflow-hidden">
         {!loaded && (
-          <div className="w-full h-[400px] flex items-center justify-center text-gray-400 z-10">
+          <div className="w-full h-[800px] flex items-center justify-center text-gray-400 z-10">
           </div>
         )}
 
@@ -116,7 +114,7 @@ function MediaItem({
           playsInline
           loop
           onClick={togglePlay}
-          className="w-full z-0 max-h-[500px] max-w-full object-contain"
+          className="w-full z-0 max-w-full object-contain"
           onLoadedData={() => setLoaded(true)}
         />
 
@@ -131,7 +129,7 @@ function MediaItem({
         )}
 
         {totalMediaCount && totalMediaCount > 1 && (
-          <div className="absolute top-2 right-2 font-medium text-sm bg-white/80 text-black px-2 py-1 rounded-xl z-30">
+          <div className="absolute rounded-xl top-2 right-2 font-medium text-sm bg-white/80 text-black px-2 py-1  z-30">
             {mediaIndex}/{totalMediaCount}
           </div>
         )}
@@ -141,7 +139,7 @@ function MediaItem({
 
   // --- IMAGE ---
   return (
-    <div className="relative bg-[var(--bgColor)]/50 rounded-xl overflow-hidden">
+    <div className="relative bg-[var(--bgColor)]/50 overflow-hidden">
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center text-gray-400">
           <ImageIcon className="w-8 h-8 animate-pulse" />
@@ -156,13 +154,13 @@ function MediaItem({
           src={url}
           alt="post media"
           loading="lazy"
-          className="w-full max-h-[500px] object-contain"
+          className="w-full max-h-[800px] object-contain"
           onLoad={() => setLoaded(true)}
         />
       </button>
 
       {totalMediaCount && totalMediaCount > 1 && (
-        <div className="absolute top-2 right-2 font-medium text-sm bg-white/80 text-black px-2 py-1 rounded-xl z-30">
+        <div className="absolute rounded-xl top-2 right-2 font-medium text-sm bg-white/80 text-black px-2 py-1  z-30">
           {mediaIndex}/{totalMediaCount}
         </div>
       )}
