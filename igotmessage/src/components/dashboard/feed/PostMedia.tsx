@@ -176,7 +176,7 @@ function MediaItem({
             onClick={() => setShowFullScreenImage(false)}
             type="button"
           >
-            <XIcon size={30} />
+            <XIcon color="white" size={30} />
           </button>
           <img
             src={url}

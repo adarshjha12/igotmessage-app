@@ -1,17 +1,13 @@
 "use client";
 
 import {
+  ImagePlus,
+  LayoutDashboard,
+  Camera,
+  Music2,
   ChevronDown,
-  DownloadIcon,
-  EyeClosed,
-  ImagePlusIcon,
-  Info,
-  LayoutDashboardIcon,
-  Music2Icon,
-  PenBoxIcon,
-  Sparkle,
+  PenBox,
   Sparkles,
-  XIcon,
 } from "lucide-react";
 
 import html2canvas from "html2canvas";
@@ -166,7 +162,6 @@ function CreateStoryPageComponent() {
           action=""
           className="flex w-full items-center px-2 pb-2 justify-between gap-3"
         >
-          {/* Image Button */}
           {storyImageChosen === "" ? (
             <button
               onClick={() => {
@@ -181,7 +176,8 @@ function CreateStoryPageComponent() {
                   : ""
               }`}
             >
-              <ImagePlusIcon
+              <ImagePlus
+                strokeWidth={1.5}
                 className={`w-7 h-7 sm:w-5 sm:h-5 ${
                   selectImageClicked
                     ? "text-[var(--bgColor)]"
@@ -209,7 +205,10 @@ function CreateStoryPageComponent() {
                   type="button"
                   className="relative flex items-center flex-col justify-center px-2 sm:px-1 active:scale-90"
                 >
-                  <ImagePlusIcon className="w-6 h-6 sm:w-5 sm:h-5" />
+                  <ImagePlus
+                    strokeWidth={1.5}
+                    className="w-6 h-6 sm:w-5 sm:h-5"
+                  />
                   <input
                     type="file"
                     onChange={handleImageChange}
@@ -228,13 +227,15 @@ function CreateStoryPageComponent() {
                   type="button"
                   className="flex flex-col justify-center items-center px-2 sm:px-1 active:scale-90"
                 >
-                  <LayoutDashboardIcon className="w-6 h-6 sm:w-5 sm:h-5" />
+                  <LayoutDashboard
+                    strokeWidth={1.5}
+                    className="w-6 h-6 sm:w-5 sm:h-5"
+                  />
                 </button>
               </div>
             </div>
           )}
 
-          {/* Camera */}
           <button
             onClick={() => {
               setCameraOpen((prev) => !prev);
@@ -243,7 +244,10 @@ function CreateStoryPageComponent() {
             type="button"
             className="cursor-pointer active:scale-90"
           >
-            <CameraIcon className="w-7 h-7 sm:w-5 sm:h-5 text-[var(--textColor)]" />
+            <Camera
+              strokeWidth={1.5}
+              className="w-7 h-7 sm:w-5 sm:h-5 text-[var(--textColor)]"
+            />
           </button>
 
           {/* Music */}
@@ -260,7 +264,8 @@ function CreateStoryPageComponent() {
                 : ""
             } ${selectMusicDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            <Music2Icon
+            <Music2
+              strokeWidth={1.5}
               className={`w-7 h-7 sm:w-5 sm:h-5 ${
                 selectMusicClicked
                   ? "text-[var(--bgColor)]"
@@ -268,6 +273,7 @@ function CreateStoryPageComponent() {
               }`}
             />
             <ChevronDown
+              strokeWidth={1.5}
               className={`w-5 h-5 sm:w-4 sm:h-4 transition-transform ${
                 chevronActive ? "rotate-180" : ""
               } ${
@@ -299,7 +305,8 @@ function CreateStoryPageComponent() {
                 : ""
             }`}
           >
-            <PenBoxIcon
+            <PenBox
+              strokeWidth={1.5}
               className={`w-7 h-7 sm:w-5 sm:h-5 ${
                 selectWriteClicked
                   ? "text-[var(--bgColor)]"
@@ -325,7 +332,10 @@ function CreateStoryPageComponent() {
                 : "text-[var(--textColor)]"
             }`}
           >
-            <Sparkles className="w-7 h-7 sm:w-5 sm:h-5 rotate-6" />
+            <Sparkles
+              strokeWidth={1.5}
+              className="w-7 h-7 sm:w-5 sm:h-5 rotate-6"
+            />
           </button>
         </form>
         {(storyImageChosen !== "" || selectWriteClicked) && (
@@ -383,7 +393,7 @@ function CreateStoryPageComponent() {
               <button
                 onClick={handleCreateStory}
                 type="button"
-                className="text-sm sm:text-xs flex justify-center items-center gap-1 sm:gap-0.5 bg-[var(--textColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6 sm:py-1.5 sm:px-4"
+                className="text-sm sm:text-xs flex justify-center items-center gap-1 sm:gap-0.5 bg-[var(--btnColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6 sm:py-2 sm:px-4"
               >
                 <PlusSquareIcon className="w-5 h-5 sm:w-4 sm:h-4" />
                 Add Story

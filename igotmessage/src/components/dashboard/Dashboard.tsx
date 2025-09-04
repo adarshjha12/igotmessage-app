@@ -127,6 +127,15 @@ function Dashboard({ children }: { children: ReactNode }) {
     }
   }, [updateProfileStatus, uploadStoryStatus, uploadPostStatus, dispatch]);
 
+  useEffect(() => {
+  if (showMoreModal) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}, [showMoreModal]);
+
+
   return (
     <div
       className={`w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}
@@ -251,7 +260,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   fill={isDark ? "white" : "black"}
                 />
               </button>
-              {showMoreModal && <MainModal closeModal={setShowMoreModal} />}
+             
               {showMoreModal && (
                 <button
                   type="button"
@@ -720,6 +729,7 @@ function Dashboard({ children }: { children: ReactNode }) {
       {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}
       {showStoryUploadModal && <UploadModal />}
       {showProfileUpdateModal && <ProfileUpdateModal />}
+       {showMoreModal && <MainModal closeModal={setShowMoreModal} />}
     </div>
   );
 }
