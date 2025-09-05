@@ -529,7 +529,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* nav for mobile starts here */}
 
-          <BottomNav pathname={pathname} avatar={profilePicture as string} />
+          <BottomNav pathname={pathname}  />
 
           {/* nav for mobile ends here */}
 
