@@ -42,6 +42,9 @@ export default function Comment({ postId }: { postId: string }) {
   const profilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
   );
+  const avatar = useAppSelector(
+    (state) => state.auth.user.avatar
+  );
   const [loading, setLoading] = useState(false);
 
   const url =
@@ -313,9 +316,11 @@ export default function Comment({ postId }: { postId: string }) {
               className="w-8 h-8 rounded-full object-cover"
             />
           ) : (
-            <div className=" rounded-full p-1 bg-[var(--bgColor)] border border-gray-400/50 text-[var(--textColor)]">
-              <UserIcon strokeWidth={2} className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
+            <img
+              src={avatar!}
+              alt={"user"}
+              className="w-8 h-8 rounded-full object-cover"
+            />
           )}
           <input
             type="text"

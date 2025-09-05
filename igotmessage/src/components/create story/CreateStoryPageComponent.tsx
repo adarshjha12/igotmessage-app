@@ -393,7 +393,7 @@ function CreateStoryPageComponent() {
               <button
                 onClick={handleCreateStory}
                 type="button"
-                className="text-sm sm:text-xs flex justify-center items-center gap-1 sm:gap-0.5 bg-[var(--btnColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6 sm:py-2 sm:px-4"
+                className="text-sm sm:text-xs flex justify-center items-center gap-1 sm:gap-0.5 bg-[var(--textColor)] text-[var(--bgColor)] rounded-full font-semibold active:scale-90 cursor-pointer py-2 px-6 sm:py-2 sm:px-4"
               >
                 <PlusSquareIcon className="w-5 h-5 sm:w-4 sm:h-4" />
                 Add Story

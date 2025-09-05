@@ -28,6 +28,7 @@ interface StoryType {
     _id: string;
     userName: string;
     profilePicture: string;
+    avatar: string;
     isGuest: boolean;
   };
   musicData?: {
@@ -247,9 +248,14 @@ export default function StoryViewerPage() {
                         className="w-10 h-10 rounded-full object-cover border-2 border-white/30"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center">
-                        <User size={26} className="text-gray-300" />
-                      </div>
+                      <img
+                        src={
+                          storiesByUsers[currentUserIndex][activeStoryIndex]
+                            .user.avatar
+                        }
+                        alt="profile"
+                        className="w-10 h-10 rounded-full object-cover border-2 border-white/30"
+                      />
                     )}
                     <div className="flex flex-col">
                       <p className="font-semibold text-sm">

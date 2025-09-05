@@ -86,7 +86,7 @@ export default function PostItem({ post }: PostItemProps) {
               />
             ) : (
               <img
-                src={`https://api.dicebear.com/9.x/avataaars/svg?seed=b`}
+                src={post.user.avatar}
                 alt="avatar"
                 className="w-11 h-11  rounded-full object-cover cursor-pointer hover:opacity-90 transition"
               />
