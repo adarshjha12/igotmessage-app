@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAppSelector } from "@/store/hooks";
 import PopupWithLink from "@/components/popups/PopupWithLink";
 import { formatDistanceToNowStrict } from "date-fns";
+import NewLoader from "@/components/NewLoader";
 
 interface ReplyType {
   _id: string;
@@ -12,6 +13,7 @@ interface ReplyType {
     _id: string;
     userName: string;
     profilePicture: string;
+    avatar: string;
   };
   text: string;
   updatedAt: string;
@@ -23,6 +25,7 @@ interface CommentType {
     _id: string;
     userName: string;
     profilePicture: string;
+    avatar: string;
   };
   text: string;
   postId: string;
@@ -36,7 +39,10 @@ export default function Comment({ postId }: { postId: string }) {
   const userId = useAppSelector((state) => state.auth.user._id);
   const isGuest = useAppSelector((state) => state.auth.user.isGuest);
   const [showGuestError, setShowGuestError] = useState(false);
-  const profilePicture = useAppSelector(state => state.auth.user.profilePicture)
+  const profilePicture = useAppSelector(
+    (state) => state.auth.user.profilePicture
+  );
+  const [loading, setLoading] = useState(false);
 
   const url =
     process.env.NODE_ENV === "production"
@@ -63,9 +69,11 @@ export default function Comment({ postId }: { postId: string }) {
       );
       if (res.data) {
         setComments((prev) => [res.data.comment, ...prev]);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -90,9 +98,11 @@ export default function Comment({ postId }: { postId: string }) {
               : comment
           )
         );
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -104,6 +114,7 @@ export default function Comment({ postId }: { postId: string }) {
       return;
     } else {
       setShowGuestError(false);
+      setLoading(true);
 
       if (replyingTo) {
         handleAddReply(replyingTo.replierId, replyingTo.commentId);
@@ -145,9 +156,16 @@ export default function Comment({ postId }: { postId: string }) {
   }, [postId]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto sm:py-5 py-0 px-2 sm:px-4  backdrop-blur-lg rounded-2xl shadow-lg space-y-4">
+    <div className="w-full max-w-2xl mx-auto sm:py-5 py-0 px-2 sm:px-4  backdrop-blur-lg rounded-2xl space-y-4">
       {/* Comments list */}
       <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400/40">
+        {/* loader */}
+        {loading && (
+          <div className="flex items-center justify-center h-[50px] w-full bg-[var(--bgColor)]">
+            <NewLoader color="[var(--textColor)]" />
+          </div>
+        )}
+
         {comments.map((c) => (
           <div key={c._id} className="space-y-1">
             {/* Main Comment */}
@@ -159,12 +177,11 @@ export default function Comment({ postId }: { postId: string }) {
                   className="w-9 h-9 rounded-full object-cover"
                 />
               ) : (
-                <div className=" rounded-full p-1 bg-[var(--bgColor)] text-[var(--textColor)]">
-                  <UserIcon
-                    strokeWidth={1.5}
-                    className="w-9 h-9 sm:w-7 sm:h-7"
-                  />
-                </div>
+                <img
+                  src={c.user.avatar}
+                  alt={c.user.userName}
+                  className="w-9 h-9 rounded-full object-cover"
+                />
               )}
               <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -193,7 +210,7 @@ export default function Comment({ postId }: { postId: string }) {
                             }
                       )
                     }
-                    className="text-md sm:text-sm text-pink-600 font-semibold hover:underline"
+                    className="text-md sm:text-sm text-[#ff2525] font-semibold hover:underline"
                   >
                     Reply
                   </button>
@@ -238,12 +255,11 @@ export default function Comment({ postId }: { postId: string }) {
                         className="w-7 h-7 rounded-full object-cover"
                       />
                     ) : (
-                      <div className=" rounded-full p-1 bg-[var(--bgColor)] text-[var(--textColor)]">
-                        <UserIcon
-                          strokeWidth={2}
-                          className="w-6 h-6 sm:w-5 sm:h-5"
-                        />
-                      </div>
+                       <img
+                        src={r.user.avatar}
+                        alt={r.user.userName}
+                        className="w-7 h-7 rounded-full object-cover"
+                      />
                     )}
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
@@ -291,19 +307,16 @@ export default function Comment({ postId }: { postId: string }) {
 
         <div className="flex items-center gap-3 px-4 py-0">
           {profilePicture ? (
-                      <img
-                        src={profilePicture}
-                        alt={"user"}
-                        className="w-8 h-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className=" rounded-full p-1 bg-[var(--bgColor)] border border-gray-400/50 text-[var(--textColor)]">
-                        <UserIcon
-                          strokeWidth={2}
-                          className="w-4 h-4 sm:w-5 sm:h-5"
-                        />
-                      </div>
-                    )}
+            <img
+              src={profilePicture}
+              alt={"user"}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+          ) : (
+            <div className=" rounded-full p-1 bg-[var(--bgColor)] border border-gray-400/50 text-[var(--textColor)]">
+              <UserIcon strokeWidth={2} className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+          )}
           <input
             type="text"
             autoFocus

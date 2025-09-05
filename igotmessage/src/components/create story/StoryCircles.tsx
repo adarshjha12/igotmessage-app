@@ -10,8 +10,9 @@ import {
   setOtherFetchedStories,
 } from "@/features/storySlice";
 
-
 function Story() {
+    const avatar = useAppSelector((state) => state.auth.user.avatar);
+
   const dispatch = useAppDispatch();
   const myId = useAppSelector((state) => state.auth.user._id);
   const userId = myId;
@@ -22,7 +23,7 @@ function Story() {
   const myProfilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
   );
-
+  
   const myStories = useAppSelector((state) => state.story.myFetchedStories);
   const otherStories = useAppSelector(
     (state) => state.story.otherFetchedStories
@@ -38,7 +39,6 @@ function Story() {
     if (otherStoriesFromApi?.data?.otherStories) {
       dispatch(setOtherFetchedStories(otherStoriesFromApi.data.otherStories));
     }
-    
   }
 
   const uniqueUsers = Array.from(
@@ -53,7 +53,6 @@ function Story() {
     getStories();
   }, [storyUploadStatus]);
 
-
   return (
     <div className="w-full py-4 px-4 h-fit z-0 flex overflow-x-auto whitespace-nowrap justify-start gap-2 scroll-smooth hide-scrollbar">
       {/* add story button */}
@@ -61,11 +60,7 @@ function Story() {
         <Link
           href="/create-story"
           className={`relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] flex items-center justify-center p-[2px] rounded-full shadow-md hover:scale-105 mr-2 transition-transform duration-300 ease-out group
-    ${
-      myProfilePicture
-        ? "bg-[var(--bgColor)]"
-        : "bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400"
-    }`}
+   bg-[var(--textColor)]/50`}
         >
           {myProfilePicture ? (
             <img
@@ -74,15 +69,19 @@ function Story() {
               alt="Profile"
             />
           ) : (
-            <UserIcon
-              size={40}
-              strokeWidth={1.2}
-              className="text-white group-hover:scale-110 transition-transform duration-300"
+             <img
+              className="w-full h-full rounded-full object-contain"
+              src={avatar!}
+              alt="Profile"
             />
           )}
 
-          <div className="absolute bottom-0.5 -right-1 bg-[var(--textColor)]  rounded-full p-0.5 shadow-sm">
-            <PlusIcon className="text-[var(--bgColor)]" strokeWidth={2.5} size={22} />
+          <div className="absolute bottom-0.5 -right-1 bg-green-700  rounded-full p-0.5 shadow-sm">
+            <PlusIcon
+              className="text-white"
+              strokeWidth={2.5}
+              size={22}
+            />
           </div>
         </Link>
 
@@ -112,10 +111,10 @@ function Story() {
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  <UserIcon
-                    size={40}
-                    strokeWidth={1.2}
-                    className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
+                  <img
+                    src={avatar!}
+                    alt="Profile"
+                    className="w-full h-full object-contain"
                   />
                 )}
               </div>
@@ -154,10 +153,10 @@ function Story() {
                         className="w-full h-full object-contain"
                       />
                     ) : (
-                      <UserIcon
-                        size={36}
-                        strokeWidth={1.5}
-                        className="text-[var(--textColor)] group-hover:scale-110 transition-transform duration-300"
+                       <img
+                        src={user.avatar}
+                        alt="Profile"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </div>

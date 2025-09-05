@@ -4,14 +4,12 @@ import { getOtpEmailHtml } from "../utils/loadTemplate";
 import { User } from "../models/userModel";
 import client from "../services/redisClient";
 import apiInstance from "../services/brevoClient";
-import { generateRandomString } from "../utils/apis";
-
 
 const generateOTP = (): string =>
   Math.floor(1000 + Math.random() * 9000).toString();
 
 const randomNumber = Math.floor(Math.random() * 100000 + 1);
-const randomAvatarStrings = generateRandomString();
+const randomAvatarNums = Math.floor(Math.random() * 1000 + 1);
 
 export const sendOtp = async (req: Request, res: Response): Promise<any> => {
   const { email } = req.body;
@@ -74,7 +72,7 @@ export const verifyOtp = async (req: Request, res: Response): Promise<any> => {
       email,
       verified: true,
       title: "",
-      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=${randomAvatarStrings}`,
+      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`,
       followers: [],
       following: [],
       fullName: "",

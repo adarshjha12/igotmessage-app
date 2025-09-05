@@ -20,6 +20,7 @@ export interface Post {
     profilePicture: string;
     userName: string;
     _id: string;
+    avatar: string;
   };
   mediaUrls?: string[];
   templateImage?: string;

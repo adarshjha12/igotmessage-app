@@ -73,7 +73,7 @@ export default function PostItem({ post }: PostItemProps) {
   };
 
   return (
-    <div className=" py-5 sm:px-4 duration-300">
+    <div className=" pt-2 pb-5 border-[var(--borderColor)]/50 border-t-1 duration-300">
       {/* --- Header --- */}
       <div className="flex items-center justify-between px-4 mb-4">
         <div className="flex items-center gap-3">

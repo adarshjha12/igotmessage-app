@@ -44,7 +44,7 @@ const getMyStoryController = async (
     const myStories = await Story.find({ user: userId })
       .populate({
         path: "user",
-        select: "userName profilePicture isGuest",
+        select: "userName profilePicture isGuest avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
       })
       .sort({ createdAt: -1 });
@@ -71,7 +71,7 @@ const getOtherStoryController = async (
   const otherStories = await Story.find()
     .populate({
       path: "user",
-      select: "userName profilePicture isGuest",
+      select: "userName profilePicture isGuest avatar",
       match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
     })
     .sort({ createdAt: -1 });
@@ -100,7 +100,7 @@ const getStoryByIdController = async (
         .json({ message: "no userId provided", success: false });
     const stories = await Story.find({ user: userId }).populate(
       "user",
-      "userName profilePicture"
+      "userName profilePicture avatar"
     );
     if (!stories || stories.length === 0)
       return res

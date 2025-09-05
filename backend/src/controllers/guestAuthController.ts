@@ -4,18 +4,20 @@ import jwt from "jsonwebtoken";
 import { generateRandomString } from "../utils/apis";
 
 let randomNumber: number;
+let randomAvatarNums: number;
+
 const interval = setInterval(() => {
   randomNumber = Math.floor(Math.random() * 100000 + 1);
+  randomAvatarNums = Math.floor(Math.random() * 1000 + 1);
 }, 3000);
 
-const randomAvatarStrings = generateRandomString();
 
 async function handleGuestAuth(req: Request, res: Response): Promise<void> {
   try {
     const user = await new User({
       userName: "guest" + randomNumber,
       isGuest: true,
-      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=${randomAvatarStrings}`,
+      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`,
     });
     user.save();
     const payload = { id: user._id.toString(), username: user.userName };

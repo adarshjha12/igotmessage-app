@@ -66,7 +66,7 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
       .limit(limit)
       .populate({
         path: "user",
-        select: "userName profilePicture isGuest",
+        select: "userName profilePicture isGuest avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
       });
 

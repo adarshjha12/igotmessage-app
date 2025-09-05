@@ -21,7 +21,7 @@ export const addComment = async (req: Request, res: Response): Promise<any> => {
 
     const savedComment = await comment.populate(
       "user",
-      "userName profilePicture"
+      "userName profilePicture avatar"
     );
 
     return res
@@ -40,7 +40,7 @@ export const addReply = async (req: Request, res: Response): Promise<any> => {
       commentId,
       { $push: { replies: { user: userId, text } } },
       { new: true }
-    ).populate("replies.user", "userName profilePicture");
+    ).populate("replies.user", "userName profilePicture avatar");
 
     const newReply = updatedComment?.replies[updatedComment.replies.length - 1];
 
@@ -62,13 +62,13 @@ export const getCommentAndReplies = async (
     const comments = await Comment.find({ post: postId })
       .populate({
         path: "user",
-        select: "userName profilePicture",
+        select: "userName profilePicture avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
         strictPopulate: true,
       })
       .populate({
         path: "replies.user",
-        select: "userName profilePicture",
+        select: "userName profilePicture avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
         strictPopulate: true,
       })

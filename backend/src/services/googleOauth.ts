@@ -12,7 +12,7 @@ const callbackURL =
     ? "https://igotmessage-app-backend.onrender.com/api/google/auth/callback/redirect"
     : "http://localhost:5000/api/google/auth/callback/redirect";
 
-const randomAvatarStrings = generateRandomString();
+const randomAvatarNums = Math.floor(Math.random() * 1000 + 1);
 
 passport.use(
   new GoogleStrategy(
@@ -37,7 +37,7 @@ passport.use(
 
         if (existingUser) {
           existingUser.googleId = profile.id;
-          existingUser.avatar = `https://api.dicebear.com/9.x/avataaars/svg?seed=${randomAvatarStrings}`;
+          existingUser.avatar = `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`;
           existingUser.title = profile.displayName;
           await existingUser.save();
           return done(null, existingUser);
@@ -48,7 +48,7 @@ passport.use(
           googleId: profile.id,
           email: email || "",
           title: profile.displayName,
-          avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=${randomAvatarStrings}`,
+          avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`,
           fullName: "",
           userName: "user" + randomNumber,
           profilePicture: "",

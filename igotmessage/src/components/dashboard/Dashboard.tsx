@@ -48,7 +48,6 @@ import { setUploadPostStatus } from "@/features/postSlice";
 import BottomNav from "./BottomNav";
 
 function Dashboard({ children }: { children: ReactNode }) {
-
   const uploadStoryStatus = useAppSelector(
     (state) => state.story.uploadStoryStatus
   );
@@ -69,9 +68,9 @@ function Dashboard({ children }: { children: ReactNode }) {
   );
 
   const isGuest = useAppSelector((state: RootState) => state.auth.user.isGuest);
-  const profilePicture = useAppSelector((state: RootState) => state.auth.user.profilePicture);
-
-
+  const profilePicture = useAppSelector(
+    (state: RootState) => state.auth.user.profilePicture
+  );
 
   const panelOpen = useAppSelector(
     (state: RootState) => state.activity.panelOpen
@@ -133,13 +132,12 @@ function Dashboard({ children }: { children: ReactNode }) {
   }, [updateProfileStatus, uploadStoryStatus, uploadPostStatus, dispatch]);
 
   useEffect(() => {
-  if (showMoreModal) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
-}, [showMoreModal]);
-
+    if (showMoreModal && pathname !== "/login") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [showMoreModal]);
 
   return (
     <div
@@ -162,23 +160,37 @@ function Dashboard({ children }: { children: ReactNode }) {
   `}
         >
           {/* header starts here */}
-          <header className=" md:hidden bg-[var(--bgColor)] down-slide sticky z-10 top-0 w-full md:border-none flex justify-between py-2 px-2 items-center ">
-            <div className="flex items-center gap-3 pl-4">
+          <header
+            className={`
+    md:hidden sticky top-0 z-20
+    w-full flex items-center justify-between
+    px-3 py-2
+    bg-[var(--bgColor)]/80 backdrop-blur-lg
+    
+    shadow-sm
+    duration-300
+  `}
+          >
+            {/* Left section: back button + title */}
+            <div className="flex items-center gap-3 pl-2">
               {pathname !== "/dash/feed" && (
                 <button
                   type="button"
-                  className="cursor-pointer"
+                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
                   onClick={() => router.back()}
                 >
-                  <ArrowLeftIcon size={25} strokeWidth={1} />
+                  <ArrowLeftIcon size={22} strokeWidth={1.5} />
                 </button>
               )}
               <p
-                className={`md:hidden ${
-                  pathname === "/dash/feed" ? "font-montez  text-4xl" : ""
-                } text-2xl active:bg-[var(--wrapperColor)] transition-all  duration-100 rounded-full active:scale-75 ${
-                  isDark ? "font-[500]" : "font-[600]"
-                } cursor-pointer ease-in `}
+                className={`cursor-pointer font-medium select-none transition-all duration-200 ease-in 
+        ${
+          pathname === "/dash/feed"
+            ? "font-montez text-3xl"
+            : "text-xl font-semibold"
+        }
+        ${isDark ? "text-white" : "text-black"}
+      `}
               >
                 {pathname === "/dash/feed"
                   ? "IGotMessage"
@@ -193,88 +205,86 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/notifications"
                   ? "Notifications"
                   : pathname === "/dash/profile"
-                  ? `${userName ? userName : `NewUser${RandomNumber}`}`
+                  ? userName || `NewUser${RandomNumber}`
                   : ""}
               </p>
             </div>
-            {/* <Brand scalemd={true} /> */}
-            <div className="flex items-center justify-center">
-              <button
-                onClick={() => {
-                  setCameraClick((prev) => !prev);
-                }}
-                className={`cursor-pointer ${
-                  pathname !== "/dash/feed" && "hidden"
-                } active:bg-[var(--wrapperColor)] px-2 rounded-full active:scale-125`}
-                type="button"
-              >
-                <div>
-                  <CameraIcon size={33} className="" strokeWidth={1.5} />
-                </div>
-              </button>
-              <button
-                onClick={() => {
-                  handleNavClick("/dash/notifications");
-                }}
-                className={`cursor-pointer px-2 active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
-                  pathname !== "/dash/feed" && "hidden"
-                }`}
-                type="button"
-              >
-                <div>
+
+            {/* Right section: action icons */}
+            <div className="flex items-center gap-2">
+              {/* Camera (only on feed) */}
+              {pathname === "/dash/feed" && (
+                <button
+                  onClick={() => setCameraClick((prev) => !prev)}
+                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  type="button"
+                >
+                  <CameraIcon size={28} strokeWidth={1.5} />
+                </button>
+              )}
+
+              {/* Search (only on feed) */}
+              {pathname === "/dash/feed" && (
+                <button
+                  onClick={() => handleNavClick("/dash/notifications")}
+                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  type="button"
+                >
                   <MagnifyingGlassIcon
-                    size={33}
-                    className=""
+                    size={28}
                     strokeWidth={1.5}
                     weight={
-                      pathname === "/dash/notifications" ? "fill" : "regular"
+                      (pathname as string) === "/dash/notifications"
+                        ? "fill"
+                        : "regular"
                     }
                   />
-                </div>
-              </button>
+                </button>
+              )}
 
-              <button
-                onClick={() => {
-                  handleNavClick("/dash/notifications");
-                }}
-                className={`cursor-pointer px-2 active:bg-[var(--wrapperColor)] rounded-full active:scale-125 ${
-                  pathname !== "/dash/feed" && "hidden"
-                }`}
-                type="button"
-              >
-                <div>
+              {/* Heart (only on feed) */}
+              {pathname === "/dash/feed" && (
+                <button
+                  onClick={() => handleNavClick("/dash/notifications")}
+                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  type="button"
+                >
                   <HeartIcon
-                    size={33}
-                    className=""
+                    size={28}
                     strokeWidth={1.5}
                     weight={
-                      pathname === "/dash/notifications" ? "fill" : "regular"
+                      (pathname as string) === "/dash/notifications"
+                        ? "fill"
+                        : "regular"
                     }
                   />
-                </div>
-              </button>
+                </button>
+              )}
 
+              {/* More menu */}
               <button
                 type="button"
-                className="cursor-pointer pr-1 active:bg-[var(--wrapperColor)] rounded-full active:scale-75"
+                className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
                 onClick={() => setShowMoreModal((prev) => !prev)}
               >
                 <MoreVertical
-                  size={30}
-                  strokeWidth={1}
-                  fill={isDark ? "white" : "black"}
+                  size={26}
+                  strokeWidth={1.5}
+                  className={isDark ? "text-white" : "text-black"}
                 />
               </button>
-             
-              {showMoreModal && (
-                <button
-                  type="button"
-                  onClick={() => setShowMoreModal(false)}
-                  className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-                ></button>
-              )}
             </div>
+
+            {/* Overlay for modal */}
+            {showMoreModal && (
+              <button
+                type="button"
+                onClick={() => setShowMoreModal(false)}
+                className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              />
+            )}
           </header>
+
           {/* header ends here */}
 
           {/* nav for desktop starts here (1st column for desktop) */}
@@ -519,7 +529,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* nav for mobile starts here */}
 
-                <BottomNav pathname={pathname} avatar={profilePicture as string} />
+          <BottomNav pathname={pathname} avatar={profilePicture as string} />
 
           {/* nav for mobile ends here */}
 
@@ -601,7 +611,7 @@ function Dashboard({ children }: { children: ReactNode }) {
       {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}
       {showStoryUploadModal && <UploadModal />}
       {showProfileUpdateModal && <ProfileUpdateModal />}
-       {showMoreModal && <MainModal closeModal={setShowMoreModal} />}
+      {showMoreModal && <MainModal closeModal={setShowMoreModal} />}
     </div>
   );
 }

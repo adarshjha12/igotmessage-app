@@ -9,14 +9,9 @@ import {
   Video,
   User,
 } from "lucide-react";
+import { useAppSelector } from "@/store/hooks";
 
-export default function BottomNav({
-  pathname,
-  avatar,
-}: {
-  pathname: string;
-  avatar?: string;
-}) {
+export default function BottomNav({ pathname }: { pathname: string }) {
   const navItems = [
     { href: "/dash/feed", icon: House },
     { href: "/dash/chats", icon: MessageCircle },
@@ -26,8 +21,13 @@ export default function BottomNav({
     { href: "/dash/profile", icon: User },
   ];
 
+  const avatar = useAppSelector((state) => state.auth.user.avatar);
+  const profilePicture = useAppSelector(
+    (state) => state.auth.user.profilePicture
+  );
+
   return (
-    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-2xl bg-[var(--bgColor)]/80 backdrop-blur-lg border border-[var(--shadowBorder)] px-3 py-2 shadow-lg z-50 md:hidden">
+    <nav className="fixed bottom-0 left-0 w-full flex items-center justify-between bg-[var(--bgColor)]/80 backdrop-blur-lg border border-[var(--shadowBorder)] px-3 py-2 shadow-lg z-20 md:hidden">
       <ul className="flex items-center justify-between w-full">
         {navItems.map(({ href, icon: Icon }) => {
           const isActive = pathname === href;
@@ -41,13 +41,17 @@ export default function BottomNav({
                 <div
                   className={`p-3 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     isActive
-                      ? "bg-gradient-to-br text-white from-green-500 via-blue-700  to-blue-400 scale-110 shadow-md"
+                      ? "bg-gradient-to-br text-[var(--bgColor)] bg-[var(--textColor)]/70 scale-110 shadow-md"
                       : "group-hover:bg-[var(--wrapperColor)]"
                   }`}
                 >
                   {href === "/dash/profile" && avatar ? (
                     <img
-                      src={avatar}
+                      src={
+                        profilePicture && profilePicture.trim() !== ""
+                          ? profilePicture
+                          : avatar
+                      }
                       alt="avatar"
                       className="w-7 h-7 rounded-full object-cover"
                     />
