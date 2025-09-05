@@ -41,7 +41,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                 <div
                   className={`p-3 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     isActive
-                      ? "bg-gradient-to-br text-[var(--bgColor)] bg-[var(--textColor)]/70 scale-110 shadow-md"
+                      ? "bg-gradient-to-br text-[var(--bgColor)] from-green-500 via-blue-700  to-blue-400 scale-110 shadow-md"
                       : "group-hover:bg-[var(--wrapperColor)]"
                   }`}
                 >

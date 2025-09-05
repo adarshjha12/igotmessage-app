@@ -68,9 +68,11 @@ export default function ProfileComponent() {
               className="w-24 h-24 rounded-full bg-gray-300 border-4 border-[var(--bgColor)] object-cover"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full border-4 border-[var(--bgColor)] bg-gray-300 flex items-center justify-center">
-              <User size={40} className="text-gray-500" />
-            </div>
+           <img
+              src={user.avatar!}
+              alt="Profile"
+              className="w-24 h-24 rounded-full bg-gray-300 border-4 border-[var(--bgColor)] object-cover"
+            />
           )}
         </div>
       </div>

@@ -179,14 +179,14 @@ function Dashboard({ children }: { children: ReactNode }) {
                   className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
                   onClick={() => router.back()}
                 >
-                  <ArrowLeftIcon size={22} strokeWidth={1.5} />
+                  <ArrowLeftIcon size={26} strokeWidth={2} />
                 </button>
               )}
               <p
                 className={`cursor-pointer font-medium select-none transition-all duration-200 ease-in 
         ${
           pathname === "/dash/feed"
-            ? "font-montez text-3xl"
+            ? "font-montez font-semibold text-4xl"
             : "text-xl font-semibold"
         }
         ${isDark ? "text-white" : "text-black"}
