@@ -49,7 +49,7 @@ export default function PostItem({ post }: PostItemProps) {
   const handleLike = async () => {
     if (isGuest) {
       setShowGuestError(true);
-      return
+      return;
     }
     try {
       setLikeClicked((prev) => {
@@ -73,11 +73,11 @@ export default function PostItem({ post }: PostItemProps) {
   };
 
   return (
-    <div className=" pt-2 pb-5 border-[var(--borderColor)]/50 border-t-1 duration-300">
+    <div className=" pt-2 pb-5 border-[var(--borderColor)]/50  duration-300">
       {/* --- Header --- */}
-      <div className="flex items-center justify-between px-4 mb-4">
+      <div className="flex items-center justify-between px-4 mb-2">
         <div className="flex items-center gap-3">
-          <Link href="#">
+          <Link href={`/public-profile/${post?.user?._id}`}>
             {post.user?.profilePicture ? (
               <img
                 src={post.user.profilePicture ?? ""}
@@ -94,13 +94,13 @@ export default function PostItem({ post }: PostItemProps) {
           </Link>
 
           <div className="flex flex-col">
-            <Link href="#" className="flex items-center gap-2">
+            <Link href={`/public-profile/${post?.user?._id}`} className="flex items-center gap-2">
               <span className="font-semibold text-xl sm:text-base text-[var(--textColor)] hover:underline cursor-pointer">
                 {post?.user?.userName}
               </span>
               <div className="w-4 h-4 flex items-center justify-center rounded-full bg-blue-500">
-              <Check size={14} className="text-white" strokeWidth={3} />
-            </div>
+                <Check size={14} className="text-white" strokeWidth={3} />
+              </div>
             </Link>
             <div className="flex items-center gap-2">
               {post?.privacy === "public" ? (
@@ -116,7 +116,6 @@ export default function PostItem({ post }: PostItemProps) {
               </span>
             </div>
           </div>
-
         </div>
 
         {/* Three dots menu */}
@@ -129,7 +128,7 @@ export default function PostItem({ post }: PostItemProps) {
       {post?.postType === "normal" ? (
         <>
           {post?.text && (
-            <p className="mb-3 px-4 text-lg sm:text-sm font-medium text-[var(--textColor)] leading-relaxed">
+            <p className="mb-3 mt-5 px-4 text-md sm:text-sm font-medium text-[var(--textColor)] leading-relaxed">
               {post.text}
             </p>
           )}
@@ -225,11 +224,20 @@ export default function PostItem({ post }: PostItemProps) {
 
       {/* --- Comments Section --- */}
       {commentOpen && (
-        <div className="mt-4 px-1">
+        <div className="mt-0 px-1">
           <Comment postId={post._id} />
         </div>
       )}
-        {showGuestError && <PopupWithLink linkHref="/login" linkText="signup" type="error" message="Sorry, Guest users can't like" show={showGuestError} onClose={() => setShowGuestError(false)} />}
+      {showGuestError && (
+        <PopupWithLink
+          linkHref="/login"
+          linkText="signup"
+          type="error"
+          message="Sorry, Guest users can't like"
+          show={showGuestError}
+          onClose={() => setShowGuestError(false)}
+        />
+      )}
     </div>
   );
 }

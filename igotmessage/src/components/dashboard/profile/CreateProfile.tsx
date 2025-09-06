@@ -28,8 +28,8 @@ import {
   setShowProfileUpdateModal,
 } from "@/features/authSlice";
 import { useRouter } from "next/navigation";
-import NewLoader from "../NewLoader";
-import ImageCropper from "../ImageCropper";
+import NewLoader from "../../NewLoader";
+import ImageCropper from "../../ImageCropper";
 
 interface CreateProfileModalProps {
   newUser?: boolean;
@@ -253,9 +253,11 @@ export default function CreateProfileModal({
                       className="object-cover w-full h-full"
                     />
                   ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <User className="w-10 h-10 text-gray-400" />
-                    </div>
+                    <img
+                      src={oldUserData.avatar!}
+                      alt="Profile"
+                      className="object-cover w-full h-full"
+                    />
                   )}
                 </label>
                 <div className="p-2 absolute bottom-2 right-2 rounded-full bg-[var(--wrapperColor)]">

@@ -4,7 +4,6 @@ import {
   HouseIcon,
   MagnifyingGlassIcon,
   PlusSquareIcon,
-  PlayIcon,
   VideoCameraIcon,
   UserCircleIcon,
   XIcon,
@@ -35,11 +34,12 @@ import {
   SearchIcon,
   SidebarCloseIcon,
   SidebarIcon,
+  PlaySquare,
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
-import CreateProfileModal from "../create profile/CreateProfile";
+import CreateProfileModal from "./profile/CreateProfile";
 import UploadModal from "../modals/UploadStory";
 import ProfileUpdateModal from "../modals/UpdateProfileModal";
 import { setProfileUpdateStatus } from "@/features/authSlice";
@@ -153,7 +153,7 @@ function Dashboard({ children }: { children: ReactNode }) {
     items-center sm:items-start
     ${
       sidebarOpen
-        ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1fr]"
+        ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1.2fr]"
         : "md:[grid-template-columns:0.2fr_2fr] lg:[grid-template-columns:0.5fr_4fr_2fr]"
     }
     transition-all duration-200 ease-in
@@ -409,7 +409,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : ""
               }`}
             >
-              <PlayIcon strokeWidth={1.5} size={22} />
+              <PlaySquare strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Reels</p>
             </Link>
 
@@ -454,7 +454,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : ""
               }`}
             >
-              <div className=" flex items-center justify-center rounded-full bg-gradient-to-br text-[var(--textColor)]  hover:scale-105 transition-transform duration-300 ease-out">
+              <div className=" flex items-center justify-center rounded-full bg-gradient-to-br   hover:scale-105 transition-transform duration-300 ease-out">
                 {avatar ? (
                   <img
                     src={avatar}
@@ -466,7 +466,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                     <UserIcon
                       size={22}
                       strokeWidth={1.2}
-                      className="text-[var(textColor)] group-hover:scale-110 transition-transform duration-300"
+                      className=" group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>
                 )}
@@ -520,7 +520,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* main starts here (2nd column for desktop) */}
           <main
             className={`pb-10 ${
-              !sidebarOpen ? "w-full" : "sm:max-w-[600px] xl:max-w-[700px]"
+              !sidebarOpen ? "w-full sm:max-w-[700px] xl:max-w-[800px]" : "sm:max-w-[550px] xl:max-w-[700px]"
             } sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
           >
             {children}
@@ -529,7 +529,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* nav for mobile starts here */}
 
-          <BottomNav pathname={pathname}  />
+          <BottomNav pathname={pathname} />
 
           {/* nav for mobile ends here */}
 

@@ -1,5 +1,5 @@
 
-import ProfilePageComponent from '@/components/dashboard/profile/ProfilePageComponent'
+import ProfilePageComponent from '@/components/dashboard/profile/OwnViewProfile'
 import React from 'react'
 
 function Page() {

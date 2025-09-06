@@ -63,14 +63,14 @@ const ImageSection: React.FC<SectionProps> = ({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-4 px-2"
+            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-2"
           >
             {images
               .sort((a, b) => a.url.localeCompare(b.url))
               .map((image, index) => (
                 <div
                   key={index}
-                  className="relative group aspect-square w-28 sm:w-20 rounded-xl sm:rounded-lg overflow-hidden shadow-md"
+                  className="relative group aspect-square w-22 sm:w-20 rounded-xl sm:rounded-lg overflow-hidden shadow-md"
                 >
                   <Image
                     src={image.url}

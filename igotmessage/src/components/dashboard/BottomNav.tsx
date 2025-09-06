@@ -8,6 +8,7 @@ import {
   Play,
   Video,
   User,
+  PlaySquare,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 
@@ -16,7 +17,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
     { href: "/dash/feed", icon: House },
     { href: "/dash/chats", icon: MessageCircle },
     { href: "/dash/create", icon: PlusSquare }, // FAB but same style now
-    { href: "/reels", icon: Play },
+    { href: "/reels", icon: PlaySquare },
     { href: "/dash/calls", icon: Video },
     { href: "/dash/profile", icon: User },
   ];
@@ -41,7 +42,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                 <div
                   className={`p-3 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     isActive
-                      ? "bg-gradient-to-br text-[var(--bgColor)] from-green-500 via-blue-700  to-blue-400 scale-110 shadow-md"
+                      ? "bg-gradient-to-br text-white from-green-500 via-blue-700  to-blue-400 scale-110 shadow-md"
                       : "group-hover:bg-[var(--wrapperColor)]"
                   }`}
                 >

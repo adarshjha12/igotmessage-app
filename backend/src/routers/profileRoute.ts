@@ -1,5 +1,5 @@
 import express from "express";
-import profileUpdateController from "../controllers/profileUpdateController";
+import profileUpdateController, { getProfile } from "../controllers/profileUpdateController";
 import upload from "../middlewares/multer";
 
 const profileRouter = express.Router();
@@ -12,5 +12,7 @@ profileRouter.post(
   ]),
   profileUpdateController
 );
+
+profileRouter.get("/get-profile", getProfile);
 
 export default profileRouter

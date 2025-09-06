@@ -33,15 +33,14 @@ export interface PostPayload {
 }
 
 interface PostState {
-  posts: PostPayload[];
   uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadPostError: string | null;
   showPostUploadModal: boolean;
   postId?: string;
+  userIdInPost?: string;
 }
 
 const initialState: PostState = {
-  posts: [],
   uploadPostStatus: "idle",
   uploadPostError: null,
   showPostUploadModal: false,
@@ -113,6 +112,7 @@ const postSlice = createSlice({
     builder.addCase(uploadPost.fulfilled, (state, action) => {
       state.uploadPostStatus = "succeeded";
       state.postId = action.payload.post._id;
+      state.userIdInPost = action.payload.post.user;
     });
 
     builder.addCase(uploadPost.rejected, (state, action) => {

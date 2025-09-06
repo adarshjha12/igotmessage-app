@@ -25,13 +25,12 @@ export interface Post {
   mediaUrls?: string[];
   templateImage?: string;
   text?: string;
-  postType?: "normal" | string;
+  postType?: "normal" | "poll";
   privacy?: "public" | "private";
   poll?: {
     question: string;
-    options: { text: string; votes?: string[] }[];
+    options: { _id: string; text: string; votes?: string[] }[];
   };
-  pollVotes?: string[];
   musicData?: MusicData;
   likes?: string[];
   shares?: string[];
@@ -56,7 +55,7 @@ export default function Posts() {
 
     const parsedPosts =
       typeof data.posts === "string" ? JSON.parse(data.posts) : data.posts;
-      
+
     setPosts((prev) => {
       const merged = [...prev, ...parsedPosts];
       const uniquePosts = Array.from(
@@ -78,11 +77,10 @@ export default function Posts() {
       next={() => setPage((p) => p + 1)}
       hasMore={hasMore}
       loader={
-        <div className="w-full h-[100px] flex justify-center items-center">
-          {hasMore ? "loading..." : "No more posts"}
+        <div className="w-full h-[100px] justify-center items-start">
+          {hasMore ? <NewLoader color="[var(--textColor)]" /> : "No more posts"}
         </div>
       }
-      // loader={<div className="w-full h-[100px] justify-center items-start"><NewLoader color="[var(--textColor)]"/></div>}
     >
       <div className="flex flex-col gap-6">
         {posts.map((post: Post) => (

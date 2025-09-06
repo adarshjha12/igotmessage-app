@@ -57,3 +57,19 @@ const profileUpdateController = async (
 };
 
 export default profileUpdateController;
+
+const getProfile = async (req: Request, res: Response): Promise<any> => {
+  const userId = req.query.userId;
+  try {
+    const profile = await User.findById(userId);
+    if (!profile) {
+      return res.status(404).json({ success: false, message: "Profile not found" });
+    }
+    return res.status(200).json({ success: true, message: "Profile found", profile });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { getProfile }

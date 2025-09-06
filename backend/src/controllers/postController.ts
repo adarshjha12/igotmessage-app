@@ -95,7 +95,9 @@ export const toggleLike = async (req: Request, res: Response): Promise<any> => {
     const post = await Post.findById(postId);
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    const isLiked = post.likes.some(id => id.toString() === userId.toString());
+    const isLiked = post.likes.some(
+      (id) => id.toString() === userId.toString()
+    );
 
     let updatedPost;
 
@@ -103,7 +105,7 @@ export const toggleLike = async (req: Request, res: Response): Promise<any> => {
       updatedPost = await Post.findByIdAndUpdate(
         postId,
         { $pull: { likes: userId } },
-        { new: true } 
+        { new: true }
       );
       return res.json({
         message: "Unliked",
@@ -127,3 +129,61 @@ export const toggleLike = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+export const handleVotes = async function (
+  req: Request,
+  res: Response
+): Promise<any> {
+  try {
+    const { postId, userId, optId } = req.body;
+
+    if (!postId || !userId || !optId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields" });
+    }
+
+    const vote = await Post.findByIdAndUpdate(
+      postId,
+      { $addToSet: { "poll.options.$[opt].votes": userId } },
+      {
+        arrayFilters: [{ "opt._id": optId }],
+        new: true,
+      }
+    ).populate("poll.options.votes", "_id username");
+
+    if (!vote) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Vote recorded",
+      vote,
+    });
+  } catch (error) {
+    console.error("Vote error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getPostsByUserId = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const userId = req.query.userId;
+
+    const posts = await Post.find({ user: userId }).populate(
+      "user",
+      "userName profilePicture isGuest avatar"
+    );
+    return res
+      .status(200)
+      .json({ success: true, message: "Posts found", posts });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};

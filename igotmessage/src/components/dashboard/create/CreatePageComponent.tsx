@@ -47,6 +47,7 @@ export default function CreatePost() {
   const dispatch = useAppDispatch();
   const postingStatus = useAppSelector((state) => state.post.uploadPostStatus);
   const postId = useAppSelector((state) => state.post.postId);
+  const userIdInPost = useAppSelector((state) => state.post.userIdInPost);
   const showPostUploadModal = useAppSelector(
     (state) => state.post.showPostUploadModal
   );
@@ -257,7 +258,7 @@ export default function CreatePost() {
 
   useEffect(() => {
     if (postingStatus === "succeeded") {
-      dispatch(setPostId( postId ?? ""))
+      dispatch(setPostId(postId ?? ""));
       dispatch(setShowPostUploadModal(false));
       console.log("post id", postId);
       setPosting(false);
@@ -286,9 +287,9 @@ export default function CreatePost() {
   }, [musicData.url]);
 
   return (
-    <div className="relative min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
+    <div className="relative w-full min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
       {/* Card */}
-      <div className=" h-full sm:min-h-[600px] w-full px-4 rounded-2xl border border-[var(--textColor)]/30 bg-[var(--wrapperColor)]/50 overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6 scroll-smooth">
+      <div className=" h-full sm:min-h-[700px] w-full px-4 rounded-2xl border border-[var(--textColor)]/30 bg-[var(--wrapperColor)]/50 overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6 scroll-smooth">
         {/* User header + Privacy */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -299,12 +300,14 @@ export default function CreatePost() {
                 className="h-10 w-10 rounded-full object-cover border border-[var(--textColor)]/30"
               />
             ) : (
-              <div className="h-10 w-10 rounded-full bg-[var(--textColor)]/20 flex items-center justify-center">
-                <UserIcon className="w-5 h-5 text-[var(--textColor)]" />
-              </div>
+              <img
+                src={currentUser.avatar!}
+                alt={currentUser.fullName || "User"}
+                className="h-10 w-10 rounded-full object-cover border border-[var(--textColor)]/30"
+              />
             )}
             <p className="font-semibold text-[var(--textColor)]">
-              {currentUser?.fullName || "You"}
+              {currentUser?.userName || "You"}
             </p>
           </div>
 
@@ -337,12 +340,10 @@ export default function CreatePost() {
           <>
             {!musicClicked && !libraryClicked && (
               <>
-                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-1 rounded-2xl bg-gradient-to-r from-red-600 to-black/50 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center w-full my-4 justify-between gap-3 px-2 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-indigo-800 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-white animate-pulse" />
-                    <p className="text-sm font-medium text-white">
-                      AI Text
-                    </p>
+                    <p className="text-sm font-medium text-white">AI Text</p>
                   </div>
                   <button
                     type="button"
@@ -592,26 +593,29 @@ export default function CreatePost() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="p-4 w-full border border-gray-700 rounded-xl bg-black text-white mb-4"
+              className="p-5 w-full border border-gray-700/50 rounded-2xl bg-[var(--bgColor)] text-[var(--textColor)] shadow-md backdrop-blur-sm mb-4"
             >
+              {/* Go Back */}
               <button
                 onClick={() => {
                   setShowPoll(false);
                   setPostType("normal");
                 }}
-                className="flex items-center gap-2 mb-4 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+                className="flex items-center gap-2 mb-4 text-sm px-4 py-2 rounded-xl bg-gradient-to-r from-rose-800 to-rose-500 text-white font-medium shadow hover:scale-[1.02] hover:shadow-lg transition-all"
               >
-                <ArrowLeft className="w-4 h-4" /> Go Back
+                <X className="w-4 h-4" /> Cancel
               </button>
 
+              {/* Poll Question */}
               <textarea
                 value={pollQuestion}
                 onChange={(e) => setPollQuestion(e.target.value)}
-                placeholder="Poll Question"
-                className="w-full min-h-[150px] p-2 rounded-md border border-gray-700 bg-gray-900  text-white mb-3 focus:outline-none"
+                placeholder="Ask your question..."
+                className="w-full min-h-[140px] p-3 rounded-xl border border-gray-700/50 bg-[var(--wrapperColor)] text-[var(--textColor)] placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               />
 
-              <div className="space-y-2">
+              {/* Poll Options */}
+              <div className="space-y-3 mt-4">
                 {pollOptions.map((option, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <input
@@ -619,12 +623,12 @@ export default function CreatePost() {
                       value={option}
                       onChange={(e) => handleOptionChange(idx, e.target.value)}
                       placeholder={`Option ${idx + 1}`}
-                      className="flex-1 p-2 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none"
+                      className="flex-1 p-3 rounded-xl border border-gray-500/50  text-[var(--textColor)] placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                     />
                     {pollOptions.length > 2 && (
                       <button
                         onClick={() => handleRemoveOption(idx)}
-                        className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                        className="p-2 rounded-xl bg-red-600/80 text-white hover:bg-red-500 transition-all shadow-sm"
                       >
                         <Trash className="w-4 h-4" />
                       </button>
@@ -633,10 +637,11 @@ export default function CreatePost() {
                 ))}
               </div>
 
+              {/* Add Option */}
               {pollOptions.length < 4 && (
                 <button
                   onClick={handleAddOption}
-                  className="flex items-center gap-2 mt-3 text-sm px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+                  className="flex items-center gap-2 mt-4 text-sm px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium shadow hover:scale-[1.02] hover:shadow-lg transition-all"
                 >
                   <Plus className="w-4 h-4" /> Add Option
                 </button>
@@ -725,7 +730,7 @@ export default function CreatePost() {
       {showPostUploadModal && <UploadPostModal />}
       {showSuccessPopup && (
         <PopupWithLink
-          linkHref={`/post/${postId}`}
+          linkHref={`/post/${postId}/user/${userIdInPost}`}
           linkText="View Post"
           show={showSuccessPopup}
           type="success"

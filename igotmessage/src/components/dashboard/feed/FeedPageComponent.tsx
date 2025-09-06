@@ -12,13 +12,13 @@ import Skeleton from "react-loading-skeleton";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import dynamic from "next/dynamic";
-import CreateProfile from "@/components/create profile/CreateProfile";
+import CreateProfile from "@/components/dashboard/profile/CreateProfile";
 import { InfoIcon } from "lucide-react";
 import { logOut } from "@/features/authSlice";
 import { useRouter } from "next/navigation";
 // import { useRouter, useSearchParams } from 'next/navigation'
 
-const Posts = dynamic(() => import("@/components/dashboard/feed/Posts"), {
+const Posts = dynamic(() => import("@/components/post/Posts"), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-[200px] w-full">
