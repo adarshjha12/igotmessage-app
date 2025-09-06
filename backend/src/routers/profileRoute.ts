@@ -6,10 +6,7 @@ const profileRouter = express.Router();
 
 profileRouter.post(
   "/update",
-  upload.fields([
-    { name: "profilePic", maxCount: 1 },
-    { name: "coverPic", maxCount: 1 },
-  ]),
+  upload.single("profilePic"),
   profileUpdateController
 );
 

@@ -107,70 +107,75 @@ export default function ProfileComponent() {
 
   return (
     <div className="w-screen min-h-screen sm:py-4 pb-6 sm:rounded-2xl overflow-hidden bg-[var(--bgColor)] shadow-lg">
-      {/* Cover Photo */}
-      <div className="relative h-42 bg-gradient-to-br from-gray-800 to-blue-600">
-        {user?.coverPhoto ? (
-          <img
-            src={user.coverPhoto}
-            alt="Cover"
-            className="w-full h-full object-cover"
-          />
-        ) : null}
+      {/* Profile Header */}
+      <div className="px-6 pt-6">
+        {/* Top Row: Profile Pic + Name + Buttons */}
+        <div className="flex items-start gap-6">
+          {/* Profile Photo */}
+          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--bgColor)] shadow-md">
+            <img
+              src={
+                user?.profilePicture || user?.avatar || "/default-avatar.png"
+              }
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-        {/* Profile Photo */}
-        <div className="absolute left-6 bottom-[-40px]">
-          <img
-            src={user?.profilePicture || user?.avatar || "/default-avatar.png"}
-            alt="Profile"
-            className="w-24 h-24 rounded-full bg-gray-200 border-4 border-[var(--bgColor)] object-cover shadow-md"
-          />
+          {/* Right Section */}
+          <div className="flex-1">
+            {/* Name */}
+            <h2 className="text-base font-semibold text-[var(--textColor)]">
+              {user?.fullName || "Full Name"}
+            </h2>
+            <p className="text-sm text-gray-400">
+              @{user?.userName || "username123"}
+            </p>
+            <p className="mt-1 text-sm text-[var(--textColor)]/80 max-w-md">
+              {user?.bio || "This is a short bio about the user."}
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-3 flex flex-col sm:flex-row gap-2">
+              <button
+                type="button"
+                onClick={() => setEditProfileClick(true)}
+                className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-md bg-[var(--bgSecondary)] text-[var(--textColor)] font-medium border shadow-sm hover:scale-[1.01] transition"
+              >
+                <Pencil size={16} />
+                Edit Profile
+              </button>
+
+              <Link href={"/create-story"} className="flex-1">
+                <button className="w-full flex items-center justify-center gap-1 px-3 py-2 rounded-md bg-gradient-to-r from-blue-500 to-blue-800 text-white font-medium shadow-sm hover:scale-[1.01] transition">
+                  <PlusCircle size={16} />
+                  Add Story
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Profile Info */}
-      <div className="pt-14 px-6 text-[var(--textColor)]">
-        <h2 className="text-xl sm:text-lg font-semibold">
-          {user?.fullName || "Full Name"}
-        </h2>
-        <p className="text-sm text-gray-400">
-          @{user?.userName || "username123"}
-        </p>
-        <p className="mt-2 text-sm">
-          {user?.bio || "This is a short bio about the user."}
-        </p>
-
-        {/* Stats */}
-        <div className="flex justify-between text-center mt-6">
+        {/* Stats Row */}
+        <div className="flex justify-around text-center mt-6">
           <div>
-            <p className="text-base font-bold">{user.posts?.length}</p>
+            <p className="text-lg font-bold text-[var(--textColor)]">
+              {user.posts?.length}
+            </p>
             <p className="text-xs text-gray-400">Posts</p>
           </div>
           <div>
-            <p className="text-base font-bold">{user.followers?.length}</p>
+            <p className="text-lg font-bold text-[var(--textColor)]">
+              {user.followers?.length}
+            </p>
             <p className="text-xs text-gray-400">Followers</p>
           </div>
           <div>
-            <p className="text-base font-bold">{user.following?.length}</p>
+            <p className="text-lg font-bold text-[var(--textColor)]">
+              {user.following?.length}
+            </p>
             <p className="text-xs text-gray-400">Following</p>
           </div>
-        </div>
-
-        {/* Buttons */}
-        <div className="mt-5 flex gap-3">
-          <button
-            type="button"
-            onClick={() => setEditProfileClick(true)}
-            className="flex-1 flex items-center justify-center gap-1 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-800 text-white font-medium shadow-sm hover:scale-[1.02] transition"
-          >
-            <Pencil size={18} />
-            Edit Profile
-          </button>
-          <Link href={"/create-story"} className="flex-1">
-            <button className="w-full flex items-center justify-center gap-1 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-800  text-white font-medium shadow-sm hover:scale-[1.02] transition">
-              <PlusCircle size={18} />
-              Add Story
-            </button>
-          </Link>
         </div>
       </div>
 
@@ -193,7 +198,6 @@ export default function ProfileComponent() {
           >
             {tab.icon}
             {tab.label}
-            
           </button>
         ))}
       </div>

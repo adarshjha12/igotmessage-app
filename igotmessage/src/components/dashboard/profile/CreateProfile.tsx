@@ -53,15 +53,11 @@ export default function CreateProfileModal({
   const [temporaryProfileImage, setTemporaryProfileImage] =
     useState<any>(undefined);
 
-  const [coverImage, setCoverImage] = useState<File | undefined>(undefined);
   const [profileImagePreview, setProfileImagePreview] = useState<
     string | undefined
   >(oldUserData?.profilePicture ?? undefined);
   const [startConversion, setStartConversion] = useState(false);
 
-  const [coverImagePreview, setCoverImagePreview] = useState<
-    string | undefined
-  >(oldUserData?.coverPhoto ?? undefined);
   const [fullName, setFullName] = useState(oldUserData.fullName ?? "");
   const [username, setUsername] = useState(oldUserData.userName ?? "");
   const [bio, setBio] = useState(oldUserData.bio ?? "");
@@ -123,13 +119,6 @@ export default function CreateProfileModal({
     }
   };
 
-  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setCoverImage(e.target.files[0]);
-      setCoverImagePreview(URL.createObjectURL(e.target.files[0]));
-    }
-  };
-
   const handleCreateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (username && bio && fullName && !acceptedTerms) {
@@ -144,7 +133,6 @@ export default function CreateProfileModal({
           fullName: fullName,
           bio,
           profilePic: profileImage ?? undefined,
-          coverPic: coverImage ?? undefined,
         })
       );
     }
@@ -195,44 +183,12 @@ export default function CreateProfileModal({
             />
             {newUser ? "Hey, create your profile" : "Update your profile"}
           </DialogTitle>
-          <p className="text-sm text-[var(--textColor)] text-center">
-            It takes just one minute.
-          </p>
+         
           <form onSubmit={handleCreateProfile}>
-            {/* Cover photo */}
-            <div className="relative">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleCoverChange}
-                className="hidden"
-                id="coverInput"
-                name="coverInput"
-              />
-              <label
-                htmlFor="coverInput"
-                className="block w-full h-40 bg-[var(--wrapperColor)] rounded-xl cursor-pointer overflow-hidden relative"
-              >
-                {coverImagePreview ? (
-                  <img
-                    src={coverImagePreview}
-                    alt="Cover"
-                    className="object-contain w-full h-full"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <ImagePlus
-                      size={50}
-                      strokeWidth={1}
-                      className=" text-gray-400"
-                    />
-                  </div>
-                )}
-              </label>
-            </div>
+           
 
             {/* Profile photo */}
-            <div className="flex justify-center -mt-16">
+            <div className="flex justify-center">
               <div className="relative">
                 <input
                   type="file"

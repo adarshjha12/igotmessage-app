@@ -340,7 +340,7 @@ export default function CreatePost() {
           <>
             {!musicClicked && !libraryClicked && (
               <>
-                <div className="flex items-center w-full my-4 justify-between gap-3 px-2 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-indigo-800 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-indigo-800 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-white animate-pulse" />
                     <p className="text-sm font-medium text-white">AI Text</p>

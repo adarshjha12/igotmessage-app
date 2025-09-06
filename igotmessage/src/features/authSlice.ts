@@ -56,7 +56,6 @@ interface Res {
 
 interface UploadArgs {
   userId: string;
-  coverPic?: File;
   profilePic?: File;
   fullName?: string;
   userName?: string;
@@ -97,14 +96,13 @@ const initialState: UserAuthInterface = {
 
 export const handleProfileUpdate = createAsyncThunk<Res, UploadArgs>(
   "profile/profileUpdate",
-  async ({ userId, fullName, userName, bio, profilePic, coverPic }) => {
+  async ({ userId, fullName, userName, bio, profilePic }) => {
     const formData = new FormData();
     formData.append("userId", userId);
     if (fullName) formData.append("fullName", fullName);
     if (userName) formData.append("userName", userName);
     if (bio) formData.append("bio", bio);
     if (profilePic) formData.append("profilePic", profilePic);
-    if (coverPic) formData.append("coverPic", coverPic);
 
     const response = await axios.post<Res>(
       `${url}/api/profile/update`,

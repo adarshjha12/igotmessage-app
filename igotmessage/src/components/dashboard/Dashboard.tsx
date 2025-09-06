@@ -36,6 +36,7 @@ import {
   SidebarIcon,
   PlaySquare,
   UserIcon,
+  ChevronLeftIcon,
 } from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
@@ -172,14 +173,14 @@ function Dashboard({ children }: { children: ReactNode }) {
   `}
           >
             {/* Left section: back button + title */}
-            <div className="flex items-center gap-3 pl-2">
+            <div className="flex items-center gap-3">
               {pathname !== "/dash/feed" && (
                 <button
                   type="button"
                   className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
                   onClick={() => router.back()}
                 >
-                  <ArrowLeftIcon size={26} strokeWidth={2} />
+                  <ChevronLeftIcon size={34} strokeWidth={2} />
                 </button>
               )}
               <p

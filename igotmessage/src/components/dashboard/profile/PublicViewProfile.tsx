@@ -3,7 +3,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { Grid, PlaySquare, Text, Phone, Video, UserPlus, MessageSquare } from "lucide-react";
+import {
+  Grid,
+  PlaySquare,
+  Text,
+  Phone,
+  Video,
+  UserPlus,
+  MessageSquare,
+  ChevronLeftIcon,
+} from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { Post } from "../../post/Posts";
 import PostItem from "../../post/PostItem";
@@ -21,6 +30,7 @@ export default function PublicProfileComponent({
     "posts"
   );
   const pathname = usePathname();
+  const [showMore, setShowMore] = useState(false);
 
   const [normalPosts, setNormalPosts] = useState<Post[]>([]);
   const [textAndPollPosts, setTextAndPollPosts] = useState<Post[]>([]);
@@ -96,117 +106,131 @@ export default function PublicProfileComponent({
   };
 
   useEffect(() => {
-  if (!myUserId || !profileUserId) return;
+    if (!myUserId || !profileUserId) return;
 
-  if (myUserId === profileUserId && pathname !== "/dash/profile") {
-    router.replace("/dash/profile"); 
-  }
-}, [myUserId, profileUserId, pathname, router]);
+    if (myUserId === profileUserId && pathname !== "/dash/profile") {
+      router.replace("/dash/profile");
+    }
+  }, [myUserId, profileUserId, pathname, router]);
 
   if (!profileUser)
     return <p className="text-center text-gray-400">Loading profile...</p>;
 
   return (
     <div className="w-screen min-h-screen py-8 sm:rounded-2xl overflow-hidden bg-[var(--bgColor)] shadow-lg">
-      <button type="button" onClick={() => router.back()} className="p-2 fixed top-0 left-0 flex items-center gap-4 w-full text-[var(--textColor)] z-40 bg-[var(--bgColor)] backdrop-blur-lg">
-        <ArrowLeftIcon size={30}/>
-        <p className="text-lg font-semibold">{normalPosts[0]?.user?.userName}</p>
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="p-2 fixed top-0 left-0 flex items-center gap-4 w-full text-[var(--textColor)] z-40 bg-[var(--bgColor)] backdrop-blur-lg"
+      >
+        <ChevronLeftIcon size={34} strokeWidth={2} />
+        <p className="text-lg font-semibold">
+          {normalPosts[0]?.user?.userName}
+        </p>
       </button>
-      {/* Cover */}
-      <div className="relative h-48 bg-gradient-to-br from-blue-400 via-green-600 to-indigo-700">
-        {profileUser?.coverPhoto && (
-          <img
-            src={profileUser.coverPhoto}
-            alt="Cover"
-            className="w-full h-full object-cover"
-          />
-        )}
-        {/* Profile Pic */}
-        <div className="absolute left-6 bottom-[-40px]">
-          <img
-            src={
-              profileUser?.profilePicture ||
-              profileUser?.avatar ||
-              "/default-avatar.png"
-            }
-            alt="Profile"
-            className="w-24 h-24 rounded-full bg-gray-200 border-4 border-[var(--bgColor)] object-cover shadow-md"
-          />
+      {/* Public Profile Header */}
+      <div className="px-6 pt-6">
+        {/* Top Row: Profile Pic + Info */}
+        <div className="flex items-start gap-6">
+          {/* Profile Photo */}
+          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--bgColor)] shadow-md">
+            <img
+              src={
+                profileUser?.profilePicture ||
+                profileUser?.avatar ||
+                "/default-avatar.png"
+              }
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Right Section */}
+          <div className="flex-1">
+            {/* Name & Bio */}
+            <h2 className="text-base font-semibold text-[var(--textColor)]">
+              {profileUser?.fullName || "Full Name"}
+            </h2>
+            <p className="text-sm text-gray-400">
+              @{profileUser?.userName || "username123"}
+            </p>
+            <p className="mt-1 text-sm text-[var(--textColor)]/80 max-w-md">
+              {profileUser?.bio || "This is a short bio about the user."}
+            </p>
+
+            {/* Action Buttons */}
+            <div className="mt-3 flex flex-col sm:flex-row gap-2">
+              {/* Follow */}
+              <button
+                onClick={handleFollow}
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all hover:shadow-sm hover:scale-[1.01] ${
+                  isFollowing
+                    ? "bg-gray-100 text-gray-800"
+                    : "bg-gradient-to-r from-blue-500 to-blue-800 text-white"
+                }`}
+              >
+                <UserPlus size={16} />
+                {isFollowing ? "Following" : "Follow"}
+              </button>
+
+              {/* Message */}
+              <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-[var(--bgSecondary)] text-[var(--textColor)] border hover:shadow-sm hover:scale-[1.01] transition">
+                <MessageSquare size={16} />
+                Message
+              </button>
+
+              {/* More (overflow menu) */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowMore(!showMore)}
+                  className="flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium bg-[var(--bgSecondary)] text-[var(--textColor)] border hover:shadow-sm hover:scale-[1.01] transition"
+                >
+                  ⋯
+                </button>
+
+                {showMore && (
+                  <div className="absolute right-0 mt-2 w-32 bg-[var(--wrapperColor)] rounded-lg shadow-lg overflow-hidden border">
+                    <button
+                      onClick={handleAudioCall}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--textColor)] transition"
+                    >
+                      <Phone size={14} />
+                      Audio Call
+                    </button>
+                    <button
+                      onClick={handleVideoCall}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--textColor)] transition"
+                    >
+                      <Video size={14} />
+                      Video Call
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Profile Info */}
-      <div className="pt-14 px-6 text-[var(--textColor)]">
-        <h2 className="text-xl sm:text-lg font-semibold">
-          {profileUser?.fullName || "Full Name"}
-        </h2>
-        <p className="text-sm text-[var(--textColor)]/80">
-          @{profileUser?.userName || "username123"}
-        </p>
-        <p className="mt-2 text-sm">
-          {profileUser?.bio || "This is a short bio about the user."}
-        </p>
-
-        {/* Stats */}
-        <div className="flex justify-between text-center mt-6">
+        {/* Stats Row */}
+        <div className="flex justify-around text-center mt-6">
           <div>
-            <p className="text-base font-bold">
+            <p className="text-lg font-bold text-[var(--textColor)]">
               {profileUser.posts?.length || 0}
             </p>
             <p className="text-xs text-gray-400">Posts</p>
           </div>
           <div>
-            <p className="text-base font-bold">
+            <p className="text-lg font-bold text-[var(--textColor)]">
               {profileUser.followers?.length || 0}
             </p>
             <p className="text-xs text-gray-400">Followers</p>
           </div>
           <div>
-            <p className="text-base font-bold">
+            <p className="text-lg font-bold text-[var(--textColor)]">
               {profileUser.following?.length || 0}
             </p>
             <p className="text-xs text-gray-400">Following</p>
           </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="mt-6 flex flex-wrap gap-3">
-          {/* Follow */}
-          <button
-            onClick={handleFollow}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all hover:shadow-sm hover:scale-[1.02] ${
-              isFollowing
-                ? "bg-gray-100 text-gray-800"
-                : "bg-gradient-to-r from-blue-500 to-blue-800 text-white border-transparent"
-            }`}
-          >
-            <UserPlus size={16} />
-            {isFollowing ? "Following" : "Follow"}
-          </button>
-
-          {/* Message */}
-          <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg  text-sm font-medium bg-gradient-to-r from-blue-500 to-blue-800 text-white transition-all hover:shadow-sm hover:scale-[1.02]">
-            <MessageSquare size={16} />
-            Message
-          </button>
-
-          {/* Audio Call */}
-          <button
-            onClick={handleAudioCall}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg  text-sm font-medium bg-gradient-to-r from-blue-500 to-blue-800 text-white transition-all hover:shadow-sm hover:scale-[1.02]"
-          >
-            <Phone size={16} />
-            Audio
-          </button>
-
-          {/* Video Call */}
-          <button
-            onClick={handleVideoCall}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg  text-sm font-medium bg-gradient-to-r from-blue-500 to-blue-800 text-white transition-all hover:shadow-sm hover:scale-[1.02]"
-          >
-            <Video size={16} />
-            Video
-          </button>
         </div>
       </div>
 

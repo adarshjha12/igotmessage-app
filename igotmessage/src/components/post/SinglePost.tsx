@@ -3,7 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { Post } from "./Posts";
 import PostItem from "./PostItem";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronLeftIcon } from "lucide-react";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 
 export default function UserPostPage() {
@@ -45,7 +45,7 @@ export default function UserPostPage() {
       className="w-screen pt-12 max-w-[600px] min-h-screen overflow-y-auto text-[var(--textColor)] bg-[var(--bgColor)]"
     > 
      <button type="button" onClick={() => router.back()} className="p-2 fixed top-0 left-0 flex items-center gap-4 w-full text-[var(--textColor)] z-40 bg-[var(--bgColor)] backdrop-blur-lg">
-        <ArrowLeftIcon size={30}/>
+        <ChevronLeftIcon size={34} strokeWidth={2}/>
         <span className="text-lg font-semibold">Back</span>
       </button>
 

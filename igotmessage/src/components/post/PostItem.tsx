@@ -19,12 +19,14 @@ import axios from "axios";
 import Comment from "./Comment";
 import { generateRandomString } from "@/utils/api";
 import PopupWithLink from "@/components/popups/PopupWithLink";
+import { ArrowRightIcon, BoxArrowUpIcon } from "@phosphor-icons/react";
 
 export interface PostItemProps {
   post: Post;
 }
 
 export default function PostItem({ post }: PostItemProps) {
+  const [showMore, setShowMore] = useState(false);
   const isDark = useAppSelector((state) => state.activity.isDark);
   const isGuest = useAppSelector((state) => state.auth.user.isGuest);
   const [likeClicked, setLikeClicked] = useState(false);
@@ -94,7 +96,10 @@ export default function PostItem({ post }: PostItemProps) {
           </Link>
 
           <div className="flex flex-col">
-            <Link href={`/public-profile/${post?.user?._id}`} className="flex items-center gap-2">
+            <Link
+              href={`/public-profile/${post?.user?._id}`}
+              className="flex items-center gap-2"
+            >
               <span className="font-semibold text-xl sm:text-base text-[var(--textColor)] hover:underline cursor-pointer">
                 {post?.user?.userName}
               </span>
@@ -119,9 +124,26 @@ export default function PostItem({ post }: PostItemProps) {
         </div>
 
         {/* Three dots menu */}
-        <button className="p-2 rounded-full hover:bg-[var(--borderColor)]/20 transition">
-          <MoreVertical className="text-[var(--textColor)]" size={20} />
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowMore(!showMore)}
+            className="p-2 rounded-full hover:bg-[var(--borderColor)]/20 transition"
+          >
+            <MoreVertical className="text-[var(--textColor)]" size={20} />
+          </button>
+          {showMore && (
+            <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-[var(--wrapperColor)] rounded-lg shadow-lg overflow-hidden ">
+              <Link
+                href={`/public-profile/${post.user._id}`}
+                className="w-full flex items-center gap-2 px-3 py-2 text-md font-semibold text-[var(--textColor)] text-nowrap transition"
+              >
+                <ArrowRightIcon className="-rotate-45" size={24} />
+                View Profile
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* --- Text / Media / Poll --- */}

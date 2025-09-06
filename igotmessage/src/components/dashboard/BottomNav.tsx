@@ -2,24 +2,26 @@
 
 import Link from "next/link";
 import {
-  House,
-  PlusSquare,
-  MessageCircle,
-  Play,
-  Video,
-  User,
-  PlaySquare,
-} from "lucide-react";
+  HouseIcon,
+  ChatCircleIcon,
+  PlusSquareIcon,
+  PlayCircleIcon,
+  VideoCameraIcon,
+  UserIcon,
+  ChatCircleTextIcon,
+  ChatsTeardropIcon,
+  ChatsCircleIcon,
+} from "@phosphor-icons/react";
 import { useAppSelector } from "@/store/hooks";
 
 export default function BottomNav({ pathname }: { pathname: string }) {
   const navItems = [
-    { href: "/dash/feed", icon: House },
-    { href: "/dash/chats", icon: MessageCircle },
-    { href: "/dash/create", icon: PlusSquare }, // FAB but same style now
-    { href: "/reels", icon: PlaySquare },
-    { href: "/dash/calls", icon: Video },
-    { href: "/dash/profile", icon: User },
+    { href: "/dash/feed", icon: HouseIcon },
+    { href: "/dash/chats", icon: ChatsCircleIcon },
+    { href: "/dash/create", icon: PlusSquareIcon },
+    { href: "/reels", icon: PlayCircleIcon },
+    { href: "/dash/calls", icon: VideoCameraIcon },
+    { href: "/dash/profile", icon: UserIcon },
   ];
 
   const avatar = useAppSelector((state) => state.auth.user.avatar);
@@ -28,7 +30,9 @@ export default function BottomNav({ pathname }: { pathname: string }) {
   );
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full flex items-center justify-between bg-[var(--bgColor)]/80 backdrop-blur-lg border border-[var(--shadowBorder)] px-3 py-2 shadow-lg z-20 md:hidden">
+    <nav className="fixed bottom-0 left-0 w-full flex items-center justify-between 
+      bg-[var(--bgColor)]/80 backdrop-blur-xl border-t border-[var(--shadowBorder)] 
+      px-4 py-0 z-20 md:hidden">
       <ul className="flex items-center justify-between w-full">
         {navItems.map(({ href, icon: Icon }) => {
           const isActive = pathname === href;
@@ -36,34 +40,36 @@ export default function BottomNav({ pathname }: { pathname: string }) {
             <li key={href}>
               <Link
                 href={href}
-                className="flex items-center justify-center group"
+                className="flex items-center justify-center"
                 aria-label={href}
               >
                 <div
-                  className={`p-3 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                  className={`p-3 rounded-xl flex items-center justify-center transition-colors duration-200 ${
                     isActive
-                      ? "bg-gradient-to-br text-white from-green-500 via-blue-700  to-blue-400 scale-110 shadow-md"
-                      : "group-hover:bg-[var(--wrapperColor)]"
+                      ? "text-[var(--accentColor)]"
+                      : "text-[var(--textColor)]"
                   }`}
                 >
                   {href === "/dash/profile" && avatar ? (
-                    <img
-                      src={
-                        profilePicture && profilePicture.trim() !== ""
-                          ? profilePicture
-                          : avatar
-                      }
-                      alt="avatar"
-                      className="w-7 h-7 rounded-full object-cover"
-                    />
-                  ) : (
-                    <Icon
-                      size={26}
-                      strokeWidth={isActive ? 2.5 : 1.8}
-                      className={`transition-transform ${
-                        isActive ? "scale-110" : "group-hover:scale-105"
+                    <div
+                      className={`w-8 h-8 rounded-full overflow-hidden flex items-center justify-center ring-2 transition-all duration-200 ${
+                        isActive
+                          ? "ring-[var(--accentColor)]"
+                          : "ring-transparent"
                       }`}
-                    />
+                    >
+                      <img
+                        src={
+                          profilePicture && profilePicture.trim() !== ""
+                            ? profilePicture
+                            : avatar
+                        }
+                        alt="avatar"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <Icon size={26} weight={isActive ? "fill" : "regular"} />
                   )}
                 </div>
               </Link>
