@@ -11,7 +11,7 @@ import {
 } from "@/features/storySlice";
 
 function Story() {
-    const avatar = useAppSelector((state) => state.auth.user.avatar);
+  const avatar = useAppSelector((state) => state.auth.user.avatar);
 
   const dispatch = useAppDispatch();
   const myId = useAppSelector((state) => state.auth.user._id);
@@ -23,7 +23,7 @@ function Story() {
   const myProfilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
   );
-  
+
   const myStories = useAppSelector((state) => state.story.myFetchedStories);
   const otherStories = useAppSelector(
     (state) => state.story.otherFetchedStories
@@ -69,7 +69,7 @@ function Story() {
               alt="Profile"
             />
           ) : (
-             <img
+            <img
               className="w-full h-full rounded-full object-contain"
               src={avatar!}
               alt="Profile"
@@ -77,11 +77,7 @@ function Story() {
           )}
 
           <div className="absolute bottom-0.5 -right-1 bg-green-700  rounded-full p-0.5 shadow-sm">
-            <PlusIcon
-              className="text-white"
-              strokeWidth={2.5}
-              size={22}
-            />
+            <PlusIcon className="text-white" strokeWidth={2.5} size={22} />
           </div>
         </Link>
 
@@ -153,7 +149,7 @@ function Story() {
                         className="w-full h-full object-contain"
                       />
                     ) : (
-                       <img
+                      <img
                         src={user.avatar}
                         alt="Profile"
                         className="w-full h-full object-contain"
