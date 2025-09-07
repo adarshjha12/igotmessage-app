@@ -1,15 +1,16 @@
 "use client";
 
 import React from "react";
+import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 
-// Skeleton for Instagram-style profile
+// Reusable Instagram-style profile skeleton
 const ProfileSkeleton = () => (
-  <div className="flex flex-col bg-[var(--bgColor)] min-h-screen gap-6  py-6">
+  <div className="flex bg-[var(--bgColor] min-h-screen flex-col gap-6  py-6">
     {/* Header section */}
     <div className="flex items-center gap-6">
       {/* Profile image */}
@@ -41,14 +42,22 @@ const ProfileSkeleton = () => (
   </div>
 );
 
-// Dynamically import OwnViewProfile with skeleton fallback
-const OwnViewProfile = dynamic(
-  () => import("@/components/dashboard/profile/OwnViewProfile"),
+const PublicProfile = dynamic(
+  () => import("@/components/dashboard/profile/PublicViewProfile"),
   {
     ssr: false,
     loading: () => <ProfileSkeletonWrapper />,
   }
 );
+
+const Page = () => {
+  const param = useParams();
+  const profileId = param.profileId as string;
+
+  return (
+      <PublicProfile profileUserId={profileId} />
+  );
+};
 
 function ProfileSkeletonWrapper() {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
@@ -61,10 +70,6 @@ function ProfileSkeletonWrapper() {
       <ProfileSkeleton />
     </SkeletonTheme>
   );
-}
-
-function Page() {
-  return <OwnViewProfile />;
 }
 
 export default Page;

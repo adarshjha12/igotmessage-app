@@ -15,7 +15,7 @@ export default function ImageCropper({
   startConverting,
 }: Props) {
   const editorRef = useRef<AvatarEditor | null>(null);
-  const [scale, setScale] = useState(0.5);
+  const [scale, setScale] = useState(0.8);
 
   const handleSave = () => {
     if (editorRef.current) {
@@ -46,10 +46,10 @@ export default function ImageCropper({
               height={250}
               border={20}
               borderRadius={125}
-              color={[255, 255, 255, 0.6]}
+              color={[255, 255, 255, 0.4]}
               scale={scale}
               rotate={0}
-              className="rounded-xl shadow-md"
+              className="rounded-xl bg-[var(--textColor)] shadow-md"
             />
 
             {/* Zoom Slider */}

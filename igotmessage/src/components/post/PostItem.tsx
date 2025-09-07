@@ -79,7 +79,7 @@ export default function PostItem({ post }: PostItemProps) {
       {/* --- Header --- */}
       <div className="flex items-center justify-between px-4 mb-2">
         <div className="flex items-center gap-3">
-          <Link href={`/public-profile/${post?.user?._id}`}>
+          <Link href={`/public-profile/${post?.user?._id}/myId/${userId}`}>
             {post.user?.profilePicture ? (
               <img
                 src={post.user.profilePicture ?? ""}
@@ -97,7 +97,7 @@ export default function PostItem({ post }: PostItemProps) {
 
           <div className="flex flex-col">
             <Link
-              href={`/public-profile/${post?.user?._id}`}
+              href={`/public-profile/${post?.user?._id}/myId/${userId}`}
               className="flex items-center gap-2"
             >
               <span className="font-semibold text-xl sm:text-base text-[var(--textColor)] hover:underline cursor-pointer">
@@ -135,7 +135,7 @@ export default function PostItem({ post }: PostItemProps) {
           {showMore && (
             <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-[var(--wrapperColor)] rounded-lg shadow-lg overflow-hidden ">
               <Link
-                href={`/public-profile/${post.user._id}`}
+                href={`/public-profile/${post?.user?._id}/myId/${userId}`}
                 className="w-full flex items-center gap-2 px-3 py-2 text-md font-semibold text-[var(--textColor)] text-nowrap transition"
               >
                 <ArrowRightIcon className="-rotate-45" size={24} />
@@ -168,80 +168,67 @@ export default function PostItem({ post }: PostItemProps) {
       {/* --- Footer Actions --- */}
 
       <div
-        className={`rounded-full px-4 py-3 grid grid-cols-3 justify-items-center mt-3 text-sm transition-all duration-300`}
+        className={`rounded-full  w-fit px-4 py-3 flex flex-col justify-items-center gap-2 mt-3 text-sm transition-all duration-300`}
       >
-        {/* Like Button */}
-        <button
-          type="button"
-          onClick={handleLike}
-          className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
-        >
-          <Heart
-            strokeWidth={likeClicked ? 0 : 2}
-            fill={likeClicked ? "#ff2525" : "none"}
-            className={`w-7 h-7 sm:w-6 sm:h-6 transition-transform duration-300 ${
-              likeClicked
-                ? "scale-110 text-blue-500"
-                : "scale-100 group-hover:scale-110"
-            }`}
-          />
-          <span
-            className={`text-base sm:text-sm font-medium transition-colors ${
-              isDark ? "group-hover:text-red-400" : "group-hover:text-red-500"
-            }`}
+        <div className="flex items-center gap-6">
+          {/* Like Button */}
+          <button
+            type="button"
+            onClick={handleLike}
+            className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
           >
-            {likeCount} {likeCount === 1 ? "Like" : "Likes"}
-          </span>
-        </button>
+            <Heart
+              strokeWidth={likeClicked ? 0 : 2}
+              fill={likeClicked ? "#ff2525" : "none"}
+              className={`w-7 h-7 sm:w-6 sm:h-6 transition-transform duration-300 ${
+                likeClicked
+                  ? "scale-110 text-blue-500"
+                  : "scale-100 group-hover:scale-110"
+              }`}
+            />
+          </button>
+          {/* Comment Button */}
+          <button
+            type="button"
+            onClick={() => setCommentOpen((prev) => !prev)}
+            className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
+          >
+            <MessageCircle
+              className={`w-7 h-7 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:scale-110 ${
+                isDark
+                  ? "group-hover:text-blue-400"
+                  : "group-hover:text-blue-500"
+              }`}
+            />
+          </button>
+        </div>
+        <div className="flex items-start justify-start ">
+          {likeCount > 0 && (
+            <span
+              className={`text-base ${
+                post.comments?.length! > 0 && "border-r-2"
+              } flex items-center pr-4 border-[var(--borderColor)] sm:text-sm font-medium transition-colors ${
+                isDark ? "group-hover:text-red-400" : "group-hover:text-red-500"
+              }`}
+            >
+              <p className="mr-1">{likeCount}</p>{" "}
+              {likeCount === 1 ? "Like" : "Likes"}
+            </span>
+          )}
 
-        {/* Comment Button */}
-        <button
-          type="button"
-          onClick={() => setCommentOpen((prev) => !prev)}
-          className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
-        >
-          <MessageCircle
-            className={`w-6 h-6 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110 ${
-              isDark ? "group-hover:text-blue-400" : "group-hover:text-blue-500"
-            }`}
-          />
           {post.comments?.length! > 0 && (
             <span
-              className={`text-base sm:text-sm font-medium transition-colors ${
+              className={`text-base flex items-center pl-4 sm:text-sm font-medium transition-colors ${
                 isDark
                   ? "group-hover:text-blue-400"
                   : "group-hover:text-blue-500"
               }`}
             >
-              {post.comments?.length}
+              <p className="mr-1 flex items-center">{post.comments?.length} </p>
+              {post.comments?.length === 1 ? " Comment" : " Comments"}
             </span>
           )}
-        </button>
-
-        {/* Share Button */}
-        <button
-          type="button"
-          className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
-        >
-          <Send
-            className={`w-6 h-6 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110 ${
-              isDark
-                ? "group-hover:text-green-400"
-                : "group-hover:text-green-500"
-            }`}
-          />
-          {post.shares?.length! > 0 && (
-            <span
-              className={`text-base sm:text-sm font-medium transition-colors ${
-                isDark
-                  ? "group-hover:text-green-400"
-                  : "group-hover:text-green-500"
-              }`}
-            >
-              {post?.shares?.length}
-            </span>
-          )}
-        </button>
+        </div>
       </div>
 
       {/* --- Comments Section --- */}

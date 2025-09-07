@@ -100,7 +100,7 @@ function Story() {
         <div className="flex flex-col items-center justify-center gap-2">
           <Link
             href={`/stories/${myStories[0].user._id}`}
-            className="relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+            className="relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[4px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
           >
             <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
               <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] rounded-full overflow-hidden">
@@ -142,7 +142,7 @@ function Story() {
             >
               <Link
                 href={`/stories/${user._id}`}
-                className="relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[3px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
+                className="relative w-[75px] h-[75px] sm:w-[65px] sm:h-[65px] rounded-full bg-gradient-to-tr from-green-500 via-blue-700  to-blue-400 p-[4px] hover:scale-105 transition-transform duration-300 ease-out group shadow-[0_0_10px_rgba(255,0,150,0.4)] animate-pulse-ring flex items-center justify-center"
               >
                 <div className="flex items-center justify-center w-full h-full bg-[var(--bgColor)] p-[3px] rounded-full overflow-hidden">
                   <div className="flex items-center justify-center w-full h-full rounded-full overflow-hidden bg-[var(--bgColor)]">

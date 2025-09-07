@@ -14,7 +14,9 @@ const UserPost = dynamic(() => import("@/components/post/SinglePost"), {
 });
 
 function page() {
-  return <UserPost />;
+  return <div className="w-full items-start flex justify-center min-h-screen bg-[var(--bgColor)]">
+    <div className=""><UserPost /></div>
+  </div>
 }
 
 export default page;

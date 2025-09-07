@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import imagekit from "../utils/imagekitConfig";
 import { User } from "../models/userModel";
+import mongoose from "mongoose";
 
 const profileUpdateController = async (
   req: Request,
@@ -49,7 +50,7 @@ const profileUpdateController = async (
 
 export default profileUpdateController;
 
-const getProfile = async (req: Request, res: Response): Promise<any> => {
+export const getProfile = async (req: Request, res: Response): Promise<any> => {
   const userId = req.query.userId;
   try {
     const profile = await User.findById(userId);
@@ -67,4 +68,55 @@ const getProfile = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export { getProfile };
+export const toggleFollow = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { currentUserId, targetUserId } = req.body;
+
+  console.log("currentUserId", currentUserId, "targetUserId", targetUserId);
+
+  // Prevent self-follow
+  if (currentUserId === targetUserId) {
+    return res
+      .status(400)
+      .json({ success: false, message: "You cannot follow yourself" });
+  }
+
+  try {
+    const [currentUser, targetUser] = await Promise.all([
+      User.findById(currentUserId),
+      User.findById(targetUserId),
+    ]);
+
+    if (!currentUser || !targetUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const isFollowing = currentUser.following.includes(targetUser._id);
+
+    if (isFollowing) {
+      currentUser.following = currentUser.following.filter(
+        (id) => id.toString() !== targetUserId
+      );
+      targetUser.followers = targetUser.followers.filter(
+        (id) => id.toString() !== currentUserId
+      );
+    } else {
+      currentUser.following.push(targetUser._id);
+      targetUser.followers.push(currentUser._id);
+    }
+
+    await Promise.all([currentUser.save(), targetUser.save()]);
+
+    res.json({
+      success: true,
+      message: isFollowing ? "Unfollowed" : "Followed",
+      isFollowing: !isFollowing,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error", error });
+  }
+};

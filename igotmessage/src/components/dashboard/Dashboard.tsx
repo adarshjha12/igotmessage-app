@@ -187,7 +187,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 className={`cursor-pointer font-medium select-none transition-all duration-200 ease-in 
         ${
           pathname === "/dash/feed"
-            ? "font-montez font-semibold text-4xl"
+            ? "font-montez font-medium text-3xl"
             : "text-xl font-semibold"
         }
         ${isDark ? "text-white" : "text-black"}
@@ -205,6 +205,10 @@ function Dashboard({ children }: { children: ReactNode }) {
                   ? "Calls"
                   : pathname === "/dash/notifications"
                   ? "Notifications"
+                  : pathname.includes("/dash/profile/followers")
+                  ? "Followers"
+                  : pathname.includes("/dash/profile/following")
+                  ? "Following"
                   : pathname === "/dash/profile"
                   ? userName || `NewUser${RandomNumber}`
                   : ""}
@@ -520,9 +524,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* main starts here (2nd column for desktop) */}
           <main
-            className={`pb-10 ${
-              !sidebarOpen ? "w-full sm:max-w-[700px] xl:max-w-[800px]" : "sm:max-w-[550px] xl:max-w-[700px]"
-            } sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
+            className={`pb-10 w-full sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
           >
             {children}
           </main>

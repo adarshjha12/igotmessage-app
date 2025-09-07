@@ -12,6 +12,7 @@ import {
   Play,
   Text,
   PlaySquare,
+  XIcon,
 } from "lucide-react";
 import CreateProfileModal from "@/components/dashboard/profile/CreateProfile";
 import PopupMessages from "@/components/popups/PopupMessages";
@@ -36,6 +37,8 @@ export default function ProfileComponent() {
 
   const [normalPosts, setNormalPosts] = useState<Post[]>([]);
   const [textAndPollPosts, setTextAndPollPosts] = useState<Post[]>([]);
+  const [showFullScreenProfilePic, setShowFullScreenProfilePic] =
+    useState(false);
 
   const onClose = () => setShowPopup(false);
 
@@ -57,8 +60,6 @@ export default function ProfileComponent() {
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/get-posts`;
 
   useEffect(() => {
-    console.log("getting post");
-
     const getMyPosts = async function (userId: string) {
       try {
         const res = await axios.get(`${url}?userId=${userId}`);
@@ -89,7 +90,6 @@ export default function ProfileComponent() {
 
             return unique;
           });
-          console.log(res.data);
         }
       } catch (error) {
         console.log(error);
@@ -100,23 +100,21 @@ export default function ProfileComponent() {
     return () => {};
   }, []);
 
-  useEffect(() => {
-    console.log("+++++++++++++++++++//", normalPosts, textAndPollPosts);
-    return () => {};
-  }, [normalPosts]);
-
   return (
-    <div className="w-screen min-h-screen sm:py-4 pb-6 sm:rounded-2xl overflow-hidden bg-[var(--bgColor)] shadow-lg">
+    <div className="w-full min-h-screen sm:py-4 pb-6 sm:rounded-2xl overflow-hidden bg-[var(--bgColor)] shadow-lg">
       {/* Profile Header */}
       <div className="px-6 pt-6">
         {/* Top Row: Profile Pic + Name + Buttons */}
         <div className="flex items-start gap-6">
           {/* Profile Photo */}
-          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--bgColor)] shadow-md">
+          <div
+            onClick={() =>
+              setShowFullScreenProfilePic(!showFullScreenProfilePic)
+            }
+            className="w-24 h-24 rounded-full overflow-hidden border-2 border-[var(--bgColor)] shadow-md"
+          >
             <img
-              src={
-                user?.profilePicture || user?.avatar || "/default-avatar.png"
-              }
+              src={user?.profilePicture || user?.avatar!}
               alt="Profile"
               className="w-full h-full object-cover"
             />
@@ -164,18 +162,18 @@ export default function ProfileComponent() {
             </p>
             <p className="text-xs text-gray-400">Posts</p>
           </div>
-          <div>
+          <Link href={`/dash/profile/followers/${user._id}`}>
             <p className="text-lg font-bold text-[var(--textColor)]">
               {user.followers?.length}
             </p>
             <p className="text-xs text-gray-400">Followers</p>
-          </div>
-          <div>
+          </Link>
+          <Link href={`/dash/profile/following/${user._id}`}>
             <p className="text-lg font-bold text-[var(--textColor)]">
               {user.following?.length}
             </p>
             <p className="text-xs text-gray-400">Following</p>
-          </div>
+          </Link>
         </div>
       </div>
 
@@ -273,6 +271,24 @@ export default function ProfileComponent() {
           type={"success"}
           onClose={onClose}
         />
+      )}
+
+      {showFullScreenProfilePic && (
+        <div className="fixed backdrop-blur-lg inset-0 z-[100] flex items-center justify-center bg-black/75">
+          <button
+            aria-label="Close full screen image"
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10"
+            onClick={() => setShowFullScreenProfilePic(false)}
+            type="button"
+          >
+            <XIcon color="white" size={30} />
+          </button>
+          <img
+            src={user?.profilePicture || user?.avatar!}
+            alt="post media"
+            className="max-w-full max-h-[90vh] object-contain"
+          />
+        </div>
       )}
     </div>
   );

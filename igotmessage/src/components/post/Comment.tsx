@@ -1,11 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Send, Smile, ChevronDown, ChevronUp, X, UserIcon } from "lucide-react";
+import {
+  Send,
+  Smile,
+  ChevronDown,
+  ChevronUp,
+  X,
+  UserIcon,
+  Loader2,
+} from "lucide-react";
 import axios from "axios";
 import { useAppSelector } from "@/store/hooks";
 import PopupWithLink from "@/components/popups/PopupWithLink";
 import { formatDistanceToNowStrict } from "date-fns";
 import NewLoader from "@/components/NewLoader";
+import Skeleton from "react-loading-skeleton";
+import Link from "next/link";
 
 interface ReplyType {
   _id: string;
@@ -42,9 +52,7 @@ export default function Comment({ postId }: { postId: string }) {
   const profilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
   );
-  const avatar = useAppSelector(
-    (state) => state.auth.user.avatar
-  );
+  const avatar = useAppSelector((state) => state.auth.user.avatar);
   const [loading, setLoading] = useState(false);
 
   const url =
@@ -164,8 +172,14 @@ export default function Comment({ postId }: { postId: string }) {
       <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400/40">
         {/* loader */}
         {loading && (
-          <div className="flex items-center justify-center h-[50px] w-full bg-[var(--bgColor)]">
-            <NewLoader color="[var(--textColor)]" />
+          <div className=" rounded-xl items-start gap-2 justify-start flex ">
+            <div className="flex ml-1 items-start justify-start h-[40px] w-[40px] bg-[var(--textColor)]/30 rounded-full"></div>
+            <div className="flex flex-col gap-2 items-start justify-center ">
+              <span className="w-[150px] h-4 rounded-full bg-[var(--textColor)]/30"></span>
+              <span className="w-[50px] h-2 rounded-full bg-[var(--textColor)]/30"></span>
+              <span className="w-[50px] h-2 rounded-full bg-[var(--textColor)]/30"></span>
+            </div>
+            <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         )}
 
@@ -173,24 +187,29 @@ export default function Comment({ postId }: { postId: string }) {
           <div key={c._id} className="space-y-1">
             {/* Main Comment */}
             <div className="flex gap-3 items-start group hover:bg-[var(--wrapperColor)]/50 rounded-xl p-2 transition">
-              {c.user.profilePicture ? (
-                <img
-                  src={c.user.profilePicture}
-                  alt={c.user.userName}
-                  className="w-9 h-9 rounded-full object-cover"
-                />
-              ) : (
-                <img
-                  src={c.user.avatar}
-                  alt={c.user.userName}
-                  className="w-9 h-9 rounded-full object-cover"
-                />
-              )}
+              <Link href={`/public-profile/${c?.user?._id}/myId/${userId}`}>
+                {c.user.profilePicture ? (
+                  <img
+                    src={c.user.profilePicture}
+                    alt={c.user.userName}
+                    className="w-9 h-9 rounded-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={c.user.avatar}
+                    alt={c.user.userName}
+                    className="w-9 h-9 rounded-full object-cover"
+                  />
+                )}
+              </Link>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-md sm:text-sm text-[var(--textColor)]">
+                  <Link
+                    href={`/public-profile/${c?.user?._id}/myId/${userId}`}
+                    className="font-semibold text-md sm:text-sm text-[var(--textColor)]"
+                  >
                     {c.user.userName}
-                  </span>
+                  </Link>
                   <span className="text-xs sm:text-sm text-[var(--textColor)]/60">
                     {formatDistanceToNowStrict(new Date(c?.updatedAt ?? ""), {
                       addSuffix: true,
@@ -251,24 +270,31 @@ export default function Comment({ postId }: { postId: string }) {
                     key={r._id}
                     className="flex gap-2 items-start bg-[var(--wrapperColor)]/40 rounded-xl p-2"
                   >
-                    {r.user.profilePicture ? (
-                      <img
-                        src={r.user.profilePicture}
-                        alt={r.user.userName}
-                        className="w-7 h-7 rounded-full object-cover"
-                      />
-                    ) : (
-                       <img
-                        src={r.user.avatar}
-                        alt={r.user.userName}
-                        className="w-7 h-7 rounded-full object-cover"
-                      />
-                    )}
+                    <Link
+                      href={`/public-profile/${r?.user?._id}/myId/${userId}`}
+                    >
+                      {r.user.profilePicture ? (
+                        <img
+                          src={r.user.profilePicture}
+                          alt={r.user.userName}
+                          className="w-7 h-7 rounded-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={r.user.avatar}
+                          alt={r.user.userName}
+                          className="w-7 h-7 rounded-full object-cover"
+                        />
+                      )}
+                    </Link>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm sm:text-sm text-[var(--textColor)]">
+                        <Link
+                          href={`/public-profile/${r?.user?._id}/myId/${userId}`}
+                          className="font-semibold text-sm sm:text-sm text-[var(--textColor)]"
+                        >
                           {r.user.userName}
-                        </span>
+                        </Link>
                         <span className="text-[10px] sm:text-sm text-[var(--textColor)]/60">
                           {formatDistanceToNowStrict(
                             new Date(r?.updatedAt ?? ""),
@@ -309,19 +335,21 @@ export default function Comment({ postId }: { postId: string }) {
         )}
 
         <div className="flex items-center gap-3 px-4 py-0">
-          {profilePicture ? (
-            <img
-              src={profilePicture}
-              alt={"user"}
-              className="w-8 h-8 rounded-full object-cover"
-            />
-          ) : (
-            <img
-              src={avatar!}
-              alt={"user"}
-              className="w-8 h-8 rounded-full object-cover"
-            />
-          )}
+          <Link href={`/dash/profile`}>
+            {profilePicture ? (
+              <img
+                src={profilePicture}
+                alt={"user"}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <img
+                src={avatar!}
+                alt={"user"}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            )}
+          </Link>
           <input
             type="text"
             autoFocus

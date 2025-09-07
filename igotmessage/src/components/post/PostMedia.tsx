@@ -104,7 +104,7 @@ function MediaItem({
     return (
       <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 z-0 max-h-[600px] overflow-hidden">
         {!loaded && (
-          <div className="w-full h-[800px] flex items-center justify-center text-gray-400 z-10">
+          <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
           </div>
         )}
 
@@ -141,7 +141,7 @@ function MediaItem({
   return (
     <div className="relative bg-[var(--bgColor)]/50 overflow-hidden">
       {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+        <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
           <ImageIcon className="w-8 h-8 animate-pulse" />
         </div>
       )}
@@ -152,7 +152,6 @@ function MediaItem({
       >
         <img
           src={url}
-          alt="post media"
           loading="lazy"
           className="w-full max-h-[800px] object-contain"
           onLoad={() => setLoaded(true)}
