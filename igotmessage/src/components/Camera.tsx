@@ -12,6 +12,8 @@ import {
 import { PlusSquareIcon } from "@phosphor-icons/react";
 import { useAppDispatch } from "@/store/hooks";
 import { setStoryImage, setStoryTextBg } from "@/features/storySlice";
+import { setGlobalPostImage } from "@/features/postSlice";
+import Link from "next/link";
 
 interface Props {
   setCameraOpen?: (value: boolean) => void;
@@ -106,7 +108,9 @@ export default function CameraCapture({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 w-full h-full object-cover"
+            className={`absolute inset-0 ${
+          facingMode === "user" ? "-scale-x-100" : ""
+        } w-full h-full object-cover`}
           />
         )}
       </AnimatePresence>
@@ -149,25 +153,31 @@ export default function CameraCapture({
             </motion.button>
 
             <div className="flex gap-4">
-              {clickedFromStory && (
-                <button
+              <Link
+                href={"/create-story"}
+                onClick={() => {
+                  setCameraOpen?.(false);
+                  dispatch(setStoryImage(photo));
+                  dispatch(setStoryTextBg(photo));
+                }}
+                className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-black font-semibold shadow-lg hover:scale-95 transition"
+              >
+                <PlusSquareIcon weight="light" size={26} />
+                Add to Story
+              </Link>
+
+              {clickedFromHome && (
+                <Link
+                  href={"/dash/create"}
                   onClick={() => {
                     setCameraOpen?.(false);
-                    dispatch(setStoryImage(photo));
-                    dispatch(setStoryTextBg(photo));
-                    router.push("/create-story");
+                    dispatch(setGlobalPostImage(photo));
                   }}
                   className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-black font-semibold shadow-lg hover:scale-95 transition"
                 >
-                  <PlusSquareIcon weight="light" size={26} />
-                  Add to Story
-                </button>
-              )}
-              {clickedFromHome && (
-                <button className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-black font-semibold shadow-lg hover:scale-95 transition">
                   <PlusIcon strokeWidth={1} size={26} />
                   Add Post
-                </button>
+                </Link>
               )}
             </div>
           </div>

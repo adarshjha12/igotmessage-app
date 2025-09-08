@@ -38,6 +38,7 @@ interface PostState {
   showPostUploadModal: boolean;
   postId?: string;
   userIdInPost?: string;
+  globalPostImage?: string
 }
 
 const initialState: PostState = {
@@ -104,6 +105,10 @@ const postSlice = createSlice({
       state.showPostUploadModal = action.payload;
     },
 
+    setGlobalPostImage: (state, action: PayloadAction<string>) => {
+      state.globalPostImage = action.payload;
+    },
+
     setUploadPostStatus: (state, action) => {
       state.uploadPostStatus = action.payload;
     },
@@ -127,6 +132,6 @@ const postSlice = createSlice({
   },
 });
 
-export const { setShowPostUploadModal, setUploadPostStatus } = postSlice.actions;
+export const { setShowPostUploadModal, setGlobalPostImage, setUploadPostStatus } = postSlice.actions;
 
 export default postSlice.reducer;

@@ -59,6 +59,7 @@ export default function CreatePost() {
   const [text, setText] = useState("");
   const [inputText, setInputText] = useState("");
   const [displayedText, setDisplayedText] = useState("");
+  const globalPostImage = useAppSelector((state) => state.post.globalPostImage);
 
   const [files, setFiles] = useState<File[]>([]);
   const [posting, setPosting] = useState(false);
@@ -286,6 +287,25 @@ export default function CreatePost() {
     }, 5000);
   }, [musicData.url]);
 
+  useEffect(() => {
+    if (globalPostImage) {
+      async function convertAndSetFile() {
+        const blob = await fetch(globalPostImage as string).then((res) =>
+          res.blob()
+        );
+        const file = new File([blob], "story.png", { type: "image/png" });
+
+        setFiles((prev) => {
+          const all = [...prev, file];
+          return all.slice(0, 1);
+        });
+      }
+
+      convertAndSetFile();
+    }
+    return () => {};
+  }, [globalPostImage]);
+
   return (
     <div className="relative w-full min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
       {/* Card */}
@@ -340,7 +360,7 @@ export default function CreatePost() {
           <>
             {!musicClicked && !libraryClicked && (
               <>
-                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-indigo-800 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-2 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-900 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-white animate-pulse" />
                     <p className="text-sm font-medium text-white">AI Text</p>

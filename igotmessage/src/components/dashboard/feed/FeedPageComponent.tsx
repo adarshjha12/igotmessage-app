@@ -15,8 +15,8 @@ function StorySkeleton() {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
 
   return (
-    <div className="flex gap-4 overflow-x-auto py-3">
-      {[...Array(6)].map((_, i) => (
+    <div className="flex gap-4 overflow-x-auto px-4 py-3">
+      {[...Array(4)].map((_, i) => (
         <div key={i} className="flex flex-col items-center">
           <Skeleton
             baseColor={isDark ? "#2e302e" : "#ececec"}

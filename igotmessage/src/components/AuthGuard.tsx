@@ -39,9 +39,9 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div>
-        <div className="flex ml-[300px] bg-[var(--bgColor)] gap-4 overflow-x-auto py-3">
-             {[...Array(6)].map((_, i) => (
+      <div className=" w-full flex min-h-screen items-start justify-center bg-[var(--bgColor)]">
+        <div className=" hidden sm:flex max-w-[500px] justify-center bg-[var(--bgColor)] gap-4 overflow-x-auto py-3">
+             {[...Array(5)].map((_, i) => (
                <div key={i} className="flex flex-col items-center">
                  <Skeleton
                    baseColor={isDark ? "#2e302e" : "#ececec"}

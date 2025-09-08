@@ -139,6 +139,7 @@ export default function Comment({ postId }: { postId: string }) {
 
   useEffect(() => {
     async function getComments(postId: string) {
+      setLoading(true);
       try {
         const res = await axios.post(
           `${url}/api/comment/get-comments`,
@@ -153,11 +154,14 @@ export default function Comment({ postId }: { postId: string }) {
                 combined.map((comment) => [comment._id, comment])
               ).values()
             );
+            setLoading(false);
+
             return unique;
           });
         }
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     }
     if (postId) {
@@ -168,6 +172,58 @@ export default function Comment({ postId }: { postId: string }) {
 
   return (
     <div className="w-full max-w-2xl mx-auto sm:py-5 py-0 px-2 sm:px-4  backdrop-blur-lg rounded-2xl space-y-4">
+      {/* Shared Input Box */}
+      <div className="space-y-2">
+        {replyingTo && (
+          <div className="flex items-center justify-between text-lg sm:text-sm text-white bg-blue-500 px-3 py-1 rounded-md">
+            Replying to{" "}
+            <span className="font-semibold">{replyingTo.userName}</span>
+            <button
+              onClick={() => {
+                setReplyingTo(null);
+                setInput("");
+              }}
+              className="text-white hover:text-red-500"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        )}
+
+        <div className="flex items-center gap-3 px-4 py-0">
+          <Link href={`/dash/profile`}>
+            {profilePicture ? (
+              <img
+                src={profilePicture}
+                alt={"user"}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <img
+                src={avatar!}
+                alt={"user"}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            )}
+          </Link>
+          <input
+            type="text"
+            autoFocus
+            placeholder={replyingTo ? "Add a reply..." : "Add a comment..."}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            className="flex-1 bg-transparent outline-none text-base text-[var(--textColor)] placeholder:text-[var(--textColor)]/60"
+          />
+          <button
+            onClick={handleSend}
+            className="py-2 px-4 active:scale-90 active:opacity-35 hover:scale-105 transition duration-100 text-[var(--textColor)] text-lg font-semibold "
+          >
+            {/* <Send className="w-5 h-5" /> */} Add
+          </button>
+        </div>
+      </div>
+
       {/* Comments list */}
       <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400/40">
         {/* loader */}
@@ -316,57 +372,6 @@ export default function Comment({ postId }: { postId: string }) {
         ))}
       </div>
 
-      {/* Shared Input Box */}
-      <div className="space-y-2">
-        {replyingTo && (
-          <div className="flex items-center justify-between text-lg sm:text-sm text-white bg-blue-500 px-3 py-1 rounded-md">
-            Replying to{" "}
-            <span className="font-semibold">{replyingTo.userName}</span>
-            <button
-              onClick={() => {
-                setReplyingTo(null);
-                setInput("");
-              }}
-              className="text-white hover:text-red-500"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-        )}
-
-        <div className="flex items-center gap-3 px-4 py-0">
-          <Link href={`/dash/profile`}>
-            {profilePicture ? (
-              <img
-                src={profilePicture}
-                alt={"user"}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            ) : (
-              <img
-                src={avatar!}
-                alt={"user"}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            )}
-          </Link>
-          <input
-            type="text"
-            autoFocus
-            placeholder={replyingTo ? "Add a reply..." : "Add a comment..."}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            className="flex-1 bg-transparent outline-none text-base text-[var(--textColor)] placeholder:text-[var(--textColor)]/60"
-          />
-          <button
-            onClick={handleSend}
-            className="py-2 px-4 active:scale-90 active:opacity-35 hover:scale-105 transition duration-100 text-[var(--textColor)] text-lg font-semibold "
-          >
-            {/* <Send className="w-5 h-5" /> */} Add
-          </button>
-        </div>
-      </div>
       {showGuestError && (
         <PopupWithLink
           linkHref="/login"

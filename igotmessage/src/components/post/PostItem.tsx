@@ -133,10 +133,10 @@ export default function PostItem({ post }: PostItemProps) {
             <MoreVertical className="text-[var(--textColor)]" size={20} />
           </button>
           {showMore && (
-            <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-[var(--wrapperColor)] rounded-lg shadow-lg overflow-hidden ">
+            <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-blue-600 rounded-lg shadow-lg overflow-hidden ">
               <Link
                 href={`/public-profile/${post?.user?._id}/myId/${userId}`}
-                className="w-full flex items-center gap-2 px-3 py-2 text-md font-semibold text-[var(--textColor)] text-nowrap transition"
+                className="w-full flex items-center gap-2 px-3 py-2 text-md font-semibold text-white text-nowrap transition"
               >
                 <ArrowRightIcon className="-rotate-45" size={24} />
                 View Profile
