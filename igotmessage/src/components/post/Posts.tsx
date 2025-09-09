@@ -77,8 +77,37 @@ export default function Posts() {
       next={() => setPage((p) => p + 1)}
       hasMore={hasMore}
       loader={
-        <div className="w-full h-[100px] justify-center items-start">
-          {hasMore ? <NewLoader color="[var(--textColor)]" /> : "No more posts"}
+        <div className="w-full px-4 justify-center items-start">
+          {hasMore ? (
+            <div className="w-full animate-pulse">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-10 w-10 rounded-full bg-[var(--wrapperColor)]" />
+                <div className="flex-1">
+                  <div className="h-4 w-1/3 bg-[var(--wrapperColor)] rounded mb-1" />
+                  <div className="h-3 w-1/4 bg-[var(--wrapperColor)] rounded" />
+                </div>
+              </div>
+
+              {/* Post image/video */}
+              <div className="w-full h-[300px] bg-[var(--wrapperColor)] rounded" />
+
+              {/* Actions */}
+              <div className="flex gap-4 mt-3">
+                <div className="h-6 w-6 bg-[var(--wrapperColor)] rounded" />
+                <div className="h-6 w-6 bg-[var(--wrapperColor)] rounded" />
+                <div className="h-6 w-6 bg-[var(--wrapperColor)] rounded" />
+              </div>
+
+              {/* Caption */}
+              <div className="mt-2 space-y-2">
+                <div className="h-3 w-2/3 bg-[var(--wrapperColor)] rounded" />
+                <div className="h-3 w-1/2 bg-[var(--wrapperColor)] rounded" />
+              </div>
+            </div>
+          ) : (
+            "No more posts"
+          )}
         </div>
       }
     >

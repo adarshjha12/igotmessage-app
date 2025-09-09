@@ -22,6 +22,7 @@ import guestRouter from "./routers/guestRoute";
 import profileRouter from "./routers/profileRoute";
 import logOutRouter from "./routers/logOutRoute";
 import aiTextGenRouter from "./routers/aiTextGenRoute";
+import searchRouter from "./routers/searchRoute";
 // import webhookRouter from "./routers/webhookRoute";
 
 const PORT = process.env.PORT;
@@ -72,6 +73,7 @@ app.use("/api/guest", guestRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/logout", logOutRouter);
 app.use("/api/text/ai", aiTextGenRouter);
+app.use("/api/search", searchRouter);
 
 app.get("/", (req, res) => {
   res.json({ mesage: "welcome to igotmessage" });

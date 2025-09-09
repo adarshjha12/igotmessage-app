@@ -98,12 +98,6 @@ function Dashboard({ children }: { children: ReactNode }) {
     return Math.floor(Math.random() * 10000 + 1);
   }, []);
 
-  function handleNavClick(path: string) {
-    if (pathname !== path) {
-      router.push(path);
-    }
-  }
-
   useEffect(() => {
     if (!userName && !isGuest) {
       setShowCreateProfileModal(true);
@@ -149,7 +143,7 @@ function Dashboard({ children }: { children: ReactNode }) {
       >
         <div
           className={`
-    w-full grid grid-cols-1 gap-2 
+    w-full grid grid-cols-1 sm:gap-2 
     justify-items-stretch sm:justify-items-center
     items-center sm:items-start
     ${
@@ -177,7 +171,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname !== "/dash/feed" && (
                 <button
                   type="button"
-                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
+                  className="px-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
                   onClick={() => router.back()}
                 >
                   <ChevronLeftIcon size={34} strokeWidth={2} />
@@ -205,6 +199,8 @@ function Dashboard({ children }: { children: ReactNode }) {
                   ? "Calls"
                   : pathname === "/dash/notifications"
                   ? "Notifications"
+                  : pathname === "/dash/search"
+                  ? "All users"
                   : pathname.includes("/dash/profile/followers")
                   ? "Followers"
                   : pathname.includes("/dash/profile/following")
@@ -230,8 +226,8 @@ function Dashboard({ children }: { children: ReactNode }) {
 
               {/* Search (only on feed) */}
               {pathname === "/dash/feed" && (
-                <button
-                  onClick={() => handleNavClick("/dash/notifications")}
+                <Link
+                  href={"/dash/search"}
                   className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
                   type="button"
                 >
@@ -244,13 +240,13 @@ function Dashboard({ children }: { children: ReactNode }) {
                         : "regular"
                     }
                   />
-                </button>
+                </Link>
               )}
 
               {/* Heart (only on feed) */}
               {pathname === "/dash/feed" && (
-                <button
-                  onClick={() => handleNavClick("/dash/notifications")}
+                <Link
+                  href={"/dash/notifications"}
                   className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
                   type="button"
                 >
@@ -263,7 +259,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                         : "regular"
                     }
                   />
-                </button>
+                </Link>
               )}
 
               {/* More menu */}
@@ -363,7 +359,8 @@ function Dashboard({ children }: { children: ReactNode }) {
             </button>
 
             {/* search */}
-            <button
+            <Link
+              href={"/dash/search"}
               className={` ${
                 sidebarOpen ? "w-full" : "w-fit"
               } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] hidden md:flex lg:hidden ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
@@ -371,7 +368,7 @@ function Dashboard({ children }: { children: ReactNode }) {
             >
               <SearchIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Search</p>
-            </button>
+            </Link>
 
             {/* CREATE */}
             <Link

@@ -47,18 +47,21 @@ function PostsSkeleton() {
       {[...Array(3)].map((_, i) => (
         <div key={i} className="rounded-2xl overflow-hidden p-4">
           <Skeleton
+            borderRadius={10}
             baseColor={isDark ? "#2e302e" : "#ececec"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             height={20}
             width={120}
           />
           <Skeleton
+            borderRadius={10}
             baseColor={isDark ? "#2e302e" : "#ececec"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             height={250}
             className="mt-2 rounded-xl"
           />
           <Skeleton
+            borderRadius={10}
             baseColor={isDark ? "#2e302e" : "#ececec"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             height={20}
