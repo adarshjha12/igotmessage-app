@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Schema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     googleId: {
       type: String,
@@ -38,5 +38,8 @@ const Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("User", Schema);
+UserSchema.index({ userName: 1 }); 
+UserSchema.index({ fullName: "text"});
+
+const User = mongoose.model("User", UserSchema);
 export { User };

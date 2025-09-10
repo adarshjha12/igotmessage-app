@@ -217,7 +217,9 @@ export default function PostItem({ post }: PostItemProps) {
           )}
 
           {post.comments?.length! > 0 && (
-            <span
+            <button
+            type="button"
+            onClick={() => setCommentOpen((prev) => !prev)}
               className={`text-base flex items-center pl-4 sm:text-sm font-medium transition-colors ${
                 isDark
                   ? "group-hover:text-blue-400"
@@ -226,7 +228,7 @@ export default function PostItem({ post }: PostItemProps) {
             >
               <p className="mr-1 flex items-center">{post.comments?.length} </p>
               {post.comments?.length === 1 ? " Comment" : " Comments"}
-            </span>
+            </button>
           )}
         </div>
       </div>

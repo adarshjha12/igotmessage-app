@@ -8,6 +8,7 @@ import { useAppSelector } from "@/store/hooks";
 type User = {
   _id: string;
   userName: string;
+  fullName: string;
   profilePicture?: string;
   avatar: string;
 };
@@ -17,39 +18,79 @@ interface FollowersListProps {
   type: "followers" | "following" | "people";
 }
 
+interface UsersListProps {
+  users: User[];
+  myId: string;
+  isFollowing?: boolean;
+}
+
+const UsersList = ({ users, myId }: UsersListProps) => (
+  <div className="flex flex-col gap-3">
+    {users.map((user) => (
+      <Link
+        key={user._id}
+        href={`/public-profile/${user._id}/myId/${myId}`}
+        className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-transparent hover:border-[var(--borderColor)]/75 hover:bg-[var(--bgColor)]/60 transition-all duration-200 group"
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0">
+            <img
+              src={user.profilePicture?.trim() || user.avatar}
+              alt={user.userName}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="flex flex-col min-w-0">
+            <span className="text-[var(--textColor)] font-semibold text-sm truncate">
+              @{user.userName}
+            </span>
+            <span className="text-xs text-gray-400 truncate">
+              {user.fullName || "Active user"}
+            </span>
+          </div>
+        </div>
+
+        <button
+          className="flex items-center justify-center gap-2 px-5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all hover:shadow-md active:scale-[0.97] bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:opacity-90"
+        >
+          <UserPlus size={16} />
+          Follow
+        </button>
+      </Link>
+    ))}
+  </div>
+);
+
 export default function FollowersList({ userId, type }: FollowersListProps) {
   const myId = useAppSelector((state) => state.auth.user._id);
   const [users, setUsers] = useState<User[]>([]);
+  const [searchResults, setSearchResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
-  const [isFollowing, setIsFollowing] = useState(false);
 
   const url =
     process.env.NODE_ENV === "production"
       ? process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL
       : process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL;
 
+  // Fetch initial users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
+
         if (type === "followers" || type === "following") {
-          setLoading(true);
           const res = await axios.get(
             `${url}/api/profile/get-followers?userId=${userId}&type=${type}`,
             { withCredentials: true }
           );
-
-          if (res.data) {
-            setUsers(res.data.total);
-          }
+          if (res.data) setUsers(res.data.total);
         } else {
           const res = await axios.get(`${url}/api/search/get-all-people`, {
             withCredentials: true,
           });
-
-          if (res.data) {
-            setUsers(res.data.users);
-          }
+          if (res.data) setUsers(res.data.users);
         }
       } catch (err) {
         console.error(err);
@@ -60,42 +101,36 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
     fetchUsers();
   }, [userId, type]);
 
-  if (loading) {
-    return (
-      <div className="w-full overflow-hidden h-screen bg-[var(--bgColor)] px-4 pt-4 animate-pulse">
-        {[...Array(12)].map((_, i) => (
-          <div key={i} className="flex items-center justify-between gap-3 p-3 rounded-lg mb-2 ">
-            {/* Profile Pic */}
-           <div  className="flex items-center gap-3 p-3 rounded-lg mb-2 ">
-             <div className="h-10 w-10 rounded-full bg-[var(--wrapperColor)]" />
+  // Search effect
+  useEffect(() => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
 
-            {/* Username */}
-            <div className="flex-1">
-              <div className="h-4 w-1/3 bg-[var(--wrapperColor)] rounded" />
-            </div>
-           </div>
-            {/* button */}
-            <div className="flex-1">
-              <div className="h-4 w-1/3 bg-[var(--wrapperColor)] rounded" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
+    const timeout = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const res = await axios.post(
+          `${url}/api/search/${type}?q=${query}`,
+          { userId: myId, type },
+          { withCredentials: true }
+        );
+        setSearchResults(res.data.users);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }, 400);
 
-  if (users?.length === 0) {
-    return (
-      <p className="text-center min-h-screen text-lg text-gray-500 py-6">
-        No {type} yet.
-      </p>
-    );
-  }
+    return () => clearTimeout(timeout);
+  }, [query]);
 
   return (
     <div className="flex w-full px-4 flex-col min-h-screen py-4 shadow-sm overflow-hidden">
       {/* 🔍 Search Bar */}
-      <div className="flex items-center gap-2 py-3 px-2 sm:px-4 rounded-xl  bg-[var(--wrapperColor)]">
+      <div className="flex items-center gap-2 py-3 px-2 sm:px-4 rounded-xl bg-[var(--wrapperColor)]">
         <Search size={18} className="text-gray-400" />
         <input
           type="text"
@@ -106,45 +141,25 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
         />
       </div>
 
-      {/* Users List */}
-      <div className="flex flex-col gap-2">
-        {users?.map((user) => (
-          <Link
-            key={user._id}
-            href={`/public-profile/${user._id}/myId/${myId}`}
-            className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-[var(--bgColor)]/60 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              {/* Avatar */}
-              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                <img
-                  src={user.profilePicture?.trim() || user.avatar}
-                  alt={user.userName}
-                  className="w-full bg-gray-500 h-full object-cover"
-                />
-              </div>
-
-              {/* Username */}
-              <span className="text-[var(--textColor)] font-medium text-sm truncate">
-                @{user.userName}
-              </span>
-            </div>
-
-            <button
-              // onClick={handleFollow}
-              className={` flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-all hover:shadow-sm hover:scale-[1.01]
-                     ${
-                       isFollowing
-                         ? "bg-gray-100 text-gray-800"
-                         : "bg-gradient-to-r from-blue-500 to-blue-800 text-white"
-                     }
-                  `}
-            >
-              {isFollowing ? <UserCheck size={16} /> : <UserPlus size={16} />}
-              {isFollowing ? "Following" : "Follow"}
-            </button>
-          </Link>
-        ))}
+      {/* Content Area */}
+      <div className="flex-1 mt-4">
+        {loading ? (
+          <div className="animate-pulse space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-14 bg-[var(--wrapperColor)] rounded-xl" />
+            ))}
+          </div>
+        ) : query.length > 0 ? (
+          searchResults.length ? (
+            <UsersList users={searchResults} myId={myId} />
+          ) : (
+            <p className="text-center text-gray-500 py-6">No results found</p>
+          )
+        ) : users.length ? (
+          <UsersList users={users} myId={myId} />
+        ) : (
+          <p className="text-center text-gray-500 py-6">No {type} yet.</p>
+        )}
       </div>
     </div>
   );
