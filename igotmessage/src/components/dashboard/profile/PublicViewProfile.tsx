@@ -133,7 +133,12 @@ export default function PublicProfileComponent({
 
   return (
     <div className="w-full min-h-screen flex justify-center items-start py-8 overflow-hidden bg-[var(--bgColor)] shadow-lg">
-      <div className="max-w-[700px]">
+      <div
+        className={`w-full ${
+          activeTab === "textPolls" ? "max-w-[700px]" : "max-w-[700px]"
+        }`}
+      >
+        {" "}
         <button
           type="button"
           onClick={() => router.back()}
@@ -253,7 +258,6 @@ export default function PublicProfileComponent({
             </Link>
           </div>
         </div>
-
         {/* Tabs */}
         <div className="flex justify-around mt-6 border-t border-gray-700">
           {[
@@ -279,12 +283,11 @@ export default function PublicProfileComponent({
             </button>
           ))}
         </div>
-
         {/* Content */}
         <div
           className={`${
             activeTab === "textPolls"
-              ? "flex flex-col gap-4 sm:px-4"
+              ? "flex w-full flex-col gap-4 sm:px-4"
               : "grid grid-cols-3 gap-[1px]"
           } mt-2`}
         >

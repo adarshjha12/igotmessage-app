@@ -222,7 +222,7 @@ export default function StoryViewerPage() {
                       h-1 rounded-full transition-all duration-500
                       ${
                         idx === activeStoryIndex
-                          ? "bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-progress"
+                          ? "bg-gradient-to-r from-green-500 via-blue-700  to-blue-400 animate-progress"
                           : idx < activeStoryIndex
                           ? "bg-white w-full"
                           : "bg-white w-0"

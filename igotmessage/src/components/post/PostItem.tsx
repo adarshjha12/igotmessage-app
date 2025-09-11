@@ -10,6 +10,7 @@ import {
   Globe,
   Lock,
   Check,
+  Bookmark,
 } from "lucide-react";
 import { Post } from "./Posts";
 import Link from "next/link";
@@ -19,7 +20,20 @@ import axios from "axios";
 import Comment from "./Comment";
 import { generateRandomString } from "@/utils/api";
 import PopupWithLink from "@/components/popups/PopupWithLink";
-import { ArrowRightIcon, BoxArrowUpIcon } from "@phosphor-icons/react";
+import {
+  ArrowRightIcon,
+  BoxArrowUpIcon,
+  HeartIcon,
+  ChatCircleIcon,
+  PaperPlaneTiltIcon,
+  BookmarkSimpleIcon,
+  StarIcon,
+  ChatsTeardropIcon,
+  ArrowBendUpRightIcon,
+  PushPinIcon,
+  FireIcon,
+  ChatTeardropIcon,
+} from "@phosphor-icons/react";
 
 export interface PostItemProps {
   post: Post;
@@ -167,67 +181,77 @@ export default function PostItem({ post }: PostItemProps) {
 
       {/* --- Footer Actions --- */}
 
-      <div
-        className={`rounded-full  w-fit px-4 py-3 flex flex-col justify-items-center gap-2 mt-3 text-sm transition-all duration-300`}
-      >
+      <div className="w-full mt-3 px-4 text-sm">
+        {/* Icons Row */}
         <div className="flex items-center gap-6">
-          {/* Like Button */}
+          {/* Like (as Star) */}
           <button
             type="button"
             onClick={handleLike}
-            className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
+            className="transition-transform duration-200 hover:scale-110"
           >
-            <Heart
-              strokeWidth={likeClicked ? 0 : 2}
-              fill={likeClicked ? "#ff2525" : "none"}
-              className={`w-7 h-7 sm:w-6 sm:h-6 transition-transform duration-300 ${
-                likeClicked
-                  ? "scale-110 text-blue-500"
-                  : "scale-100 group-hover:scale-110"
-              }`}
-            />
+            <div className="w-8 h-8 flex items-center justify-center">
+              {likeClicked ? (
+                <span className="text-2xl scale-125">🔥</span>
+              ) : (
+                <FireIcon
+                  size={32}
+                  weight="regular"
+                  className="text-[var(--textColor)]"
+                />
+              )}
+            </div>
           </button>
-          {/* Comment Button */}
+
+          {/* Comment (rounded bubble) */}
           <button
             type="button"
             onClick={() => setCommentOpen((prev) => !prev)}
-            className="flex items-center gap-2 group transition-all duration-300 ease-in-out"
+            className="transition-transform duration-200 hover:scale-110"
           >
-            <MessageCircle
-              className={`w-7 h-7 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:scale-110 ${
-                isDark
-                  ? "group-hover:text-blue-400"
-                  : "group-hover:text-blue-500"
-              }`}
+            <ChatTeardropIcon
+              size={28}
+              weight="regular"
+              className="text-[var(--textColor)]"
             />
           </button>
+
+          {/* Share (arrow bend) */}
+          <button className="transition-transform duration-200 hover:scale-110">
+            <ArrowBendUpRightIcon
+              size={26}
+              weight="regular"
+              className="text-[var(--textColor)]"
+            />
+          </button>
+
+          {/* Save (pin) */}
+          <div className="ml-auto">
+            <button className="transition-transform duration-200 hover:scale-110">
+              <PushPinIcon
+                size={26}
+                weight="regular"
+                className="text-[var(--textColor)]"
+              />
+            </button>
+          </div>
         </div>
-        <div className="flex items-start justify-start ">
+
+        {/* Stats Row */}
+        <div className="mt-2 flex flex-col gap-1 text-[var(--textColor)]">
           {likeCount > 0 && (
-            <span
-              className={`text-base ${
-                post.comments?.length! > 0 && "border-r-2"
-              } flex items-center pr-4 border-[var(--borderColor)] sm:text-sm font-medium transition-colors ${
-                isDark ? "group-hover:text-red-400" : "group-hover:text-red-500"
-              }`}
-            >
-              <p className="mr-1">{likeCount}</p>{" "}
-              {likeCount === 1 ? "Like" : "Likes"}
+            <span className="font-medium">
+              {likeCount} {likeCount === 1 ? "fire" : "fires"}
             </span>
           )}
-
           {post.comments?.length! > 0 && (
             <button
-            type="button"
-            onClick={() => setCommentOpen((prev) => !prev)}
-              className={`text-base flex items-center pl-4 sm:text-sm font-medium transition-colors ${
-                isDark
-                  ? "group-hover:text-blue-400"
-                  : "group-hover:text-blue-500"
-              }`}
+              type="button"
+              onClick={() => setCommentOpen((prev) => !prev)}
+              className="hover:underline w-fit"
             >
-              <p className="mr-1 flex items-center">{post.comments?.length} </p>
-              {post.comments?.length === 1 ? " Comment" : " Comments"}
+              View all {post.comments?.length}{" "}
+              {post.comments?.length === 1 ? "comment" : "comments"}
             </button>
           )}
         </div>
