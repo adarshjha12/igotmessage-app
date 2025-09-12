@@ -32,13 +32,21 @@ export interface PostPayload {
   musicData?: MusicData;
 }
 
+type RepostPayload = {
+  isReposted: boolean
+  postId: string;
+  userId: string
+  caption?: string;
+  postType: "public" | "private"
+};
+
 interface PostState {
   uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadPostError: string | null;
   showPostUploadModal: boolean;
   postId?: string;
   userIdInPost?: string;
-  globalPostImage?: string
+  globalPostImage?: string;
 }
 
 const initialState: PostState = {
@@ -97,6 +105,19 @@ export const uploadPost = createAsyncThunk(
   }
 );
 
+export const repost = createAsyncThunk(
+  "post/repost",
+  async (payload: RepostPayload) => {
+    const { isReposted, userId, postId,  caption, postType } = payload;
+    const res = await axios.post(
+      `${backendUrl}/api/post/create-repost`,
+      { isReposted, postId, userId,  caption, postType },
+      { withCredentials: true }
+    );
+    return res.data;
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -129,9 +150,30 @@ const postSlice = createSlice({
       state.uploadPostStatus = "loading";
       state.uploadPostError = null;
     });
+
+    // for repost
+    builder.addCase(repost.fulfilled, (state, action) => {
+      state.uploadPostStatus = "succeeded";
+      state.postId = action.payload.post._id;
+      state.userIdInPost = action.payload.post.user;
+    });
+
+    builder.addCase(repost.rejected, (state, action) => {
+      state.uploadPostStatus = "failed";
+      state.uploadPostError = action.error.message ?? null;
+    });
+
+    builder.addCase(repost.pending, (state) => {
+      state.uploadPostStatus = "loading";
+      state.uploadPostError = null;
+    });
   },
 });
 
-export const { setShowPostUploadModal, setGlobalPostImage, setUploadPostStatus } = postSlice.actions;
+export const {
+  setShowPostUploadModal,
+  setGlobalPostImage,
+  setUploadPostStatus,
+} = postSlice.actions;
 
 export default postSlice.reducer;

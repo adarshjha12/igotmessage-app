@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BarChart3, Check } from "lucide-react";
 import axios from "axios";
 import { useAppSelector } from "@/store/hooks";
@@ -57,6 +57,18 @@ export default function Poll({ postId, pollData }: PollProps) {
     (sum, o) => sum + (o.votes?.length || 0),
     0
   );
+
+  useEffect(() => {
+    if (pollData) {
+      const checkVoted = pollData.options.some((o) =>
+        o.votes?.includes(userId)
+      );
+      if (checkVoted) {
+        setVoted((prev) => ({ ...prev, [postId]: userId }));
+      }
+    }
+    return () => {};
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 px-4 py-5 bg-[var(--wrapperColor)] shadow-lg  border-[var(--borderColor)]/40">

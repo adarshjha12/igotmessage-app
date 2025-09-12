@@ -142,7 +142,7 @@ function MediaItem({
     <div className="relative bg-[var(--bgColor)]/50 overflow-hidden">
       {!loaded && (
         <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
-          <ImageIcon className="w-8 h-8 animate-pulse" />
+          <ImageIcon strokeWidth={0.5} size={100} className=" animate-pulse" />
         </div>
       )}
       <button

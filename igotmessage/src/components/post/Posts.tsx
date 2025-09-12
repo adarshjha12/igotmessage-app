@@ -22,6 +22,9 @@ export interface Post {
     _id: string;
     avatar: string;
   };
+  isReposted: boolean,
+  repostedPostId: string,
+  repostCaption: string,
   mediaUrls?: string[];
   templateImage?: string;
   text?: string;

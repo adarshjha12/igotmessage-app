@@ -51,6 +51,56 @@ export const createPost = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+export const createRepost = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { isReposted, userId, repostedPostId, postId, repostCaption, privacy } =
+    req.body;
+
+  if (!isReposted || !repostedPostId || !postId || !privacy) {
+    return res.status(400).json({
+      success: false,
+      message: "required data not provided as payload",
+    });
+  }
+  const existingPost = await Post.findById(postId);
+
+  if (!existingPost) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Post id not exists" });
+  }
+
+  try {
+    const newPost = new Post({
+      isReposted,
+      whoReposted: userId,
+      repostCaption: repostCaption ?? "",
+      user: existingPost?.user,
+      mediaUrls: existingPost.mediaUrls || [],
+      templateImage: existingPost.templateImage || "",
+      poll: existingPost.poll || {},
+      postType: existingPost.postType || "normal",
+      text: existingPost.text || "",
+      musicData: existingPost.musicData || {},
+      privacy: privacy || "public",
+    });
+
+    await newPost.save();
+
+    await User.findByIdAndUpdate(userId, { $push: { posts: newPost._id } });
+    return res
+      .status(201)
+      .json({ success: true, message: "repost created", post: newPost });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "IGotMessage Server error" });
+  }
+};
+
 export const getPosts = async (req: Request, res: Response): Promise<any> => {
   try {
     let { page } = req.query;
@@ -149,7 +199,7 @@ export const handleVotes = async function (
         arrayFilters: [{ "opt._id": optId }],
         new: true,
       }
-    ).populate("poll.options.votes", "_id username");
+    ).populate("poll.options.votes", "_id userName");
 
     if (!vote) {
       return res

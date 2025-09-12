@@ -18,6 +18,7 @@ import {
   ChatCircleDotsIcon,
   ListIcon,
   ChatTeardropDotsIcon,
+  BookmarkSimpleIcon,
 } from "@phosphor-icons/react";
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
@@ -37,6 +38,7 @@ import {
   PlaySquare,
   UserIcon,
   ChevronLeftIcon,
+  LucideSettings,
 } from "lucide-react";
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
@@ -47,6 +49,7 @@ import { setProfileUpdateStatus } from "@/features/authSlice";
 import { setUploadStoryStatus } from "@/features/storySlice";
 import { setUploadPostStatus } from "@/features/postSlice";
 import BottomNav from "./BottomNav";
+import FollowersList from "./profile/FollowersList";
 
 function Dashboard({ children }: { children: ReactNode }) {
   const uploadStoryStatus = useAppSelector(
@@ -60,6 +63,8 @@ function Dashboard({ children }: { children: ReactNode }) {
     (state) => state.auth.user.updateProfileStatus
   );
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
+
+  const userId = useAppSelector((state: RootState) => state.auth.user._id);
 
   const userName = useAppSelector(
     (state: RootState) => state.auth.user.userName
@@ -148,7 +153,7 @@ function Dashboard({ children }: { children: ReactNode }) {
     items-center sm:items-start
     ${
       sidebarOpen
-        ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1.2fr]"
+        ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1.5fr]"
         : "md:[grid-template-columns:0.2fr_2fr] lg:[grid-template-columns:0.5fr_4fr_2fr]"
     }
     transition-all duration-200 ease-in
@@ -201,6 +206,8 @@ function Dashboard({ children }: { children: ReactNode }) {
                   ? "Notifications"
                   : pathname === "/dash/search"
                   ? "All users"
+                  : pathname === "/dash/profile/settings"
+                  ? "Settings & More"
                   : pathname.includes("/dash/profile/followers")
                   ? "Followers"
                   : pathname.includes("/dash/profile/following")
@@ -242,6 +249,32 @@ function Dashboard({ children }: { children: ReactNode }) {
                   />
                 </Link>
               )}
+              {pathname === "/dash/profile" && (
+                <Link
+                  href={"/dash/profile/bookmarks"}
+                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  type="button"
+                >
+                  <BookmarkSimpleIcon
+                    size={26}
+                    strokeWidth={1.5}
+                    weight={
+                      (pathname as string) === "/dash/notifications"
+                        ? "fill"
+                        : "regular"
+                    }
+                  />
+                </Link>
+              )}
+              {pathname === "/dash/profile" && (
+                <Link
+                  href={"/dash/profile/settings"}
+                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  type="button"
+                >
+                  <LucideSettings size={26} strokeWidth={1.5} />
+                </Link>
+              )}
 
               {/* Heart (only on feed) */}
               {pathname === "/dash/feed" && (
@@ -263,7 +296,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               )}
 
               {/* More menu */}
-              <button
+              {/* <button
                 type="button"
                 className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
                 onClick={() => setShowMoreModal((prev) => !prev)}
@@ -273,7 +306,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   strokeWidth={1.5}
                   className={isDark ? "text-white" : "text-black"}
                 />
-              </button>
+              </button> */}
             </div>
 
             {/* Overlay for modal */}
@@ -521,7 +554,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* main starts here (2nd column for desktop) */}
           <main
-            className={`pb-10 w-full sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
+            className={`pb-10 w-full lg:pt-2 sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
           >
             {children}
           </main>
@@ -534,39 +567,9 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for mobile ends here */}
 
           {/* third column for desktop starts here */}
-          <div className="col-span-1 hidden sticky top-3 lg:block my-2 mx-2 ">
-            <div className="relative w-full ">
-              <div
-                className={`flex items-center bg-[var(--wrapperColor)] transition-all ease-in-out duration-300 px-3 border-1 border-[var(--borderColor)] rounded-full 
-                    ${
-                      searchInputClick
-                        ? "opacity-100 w-full"
-                        : "opacity-0 w-20 sm:opacity-100 sm:w-full"
-                    } 
-                  `}
-              >
-                <MagnifyingGlassIcon className="w-5 h-5 text-[var(--textColor)]" />
-
-                <input
-                  value={searchInput}
-                  onClick={() => setSearchInputClick((prev) => !prev)}
-                  onBlur={() => {
-                    setSearchInputClick((prev) => !prev);
-                    setSearchInput("");
-                  }}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  type="search"
-                  placeholder="Search"
-                  className="ml-2 w-full h-10 px-4 py-2 bg-transparent text-[var(--textColor)] placeholder:text-gray-500 text-base sm:text-sm rounded-full outline-none border-none"
-                />
-              </div>
-
-              <MagnifyingGlassIcon
-                size={30}
-                className={`absolute top-1 right-2 p-1 text-[var(--textColor)] rounded-full transition-all duration-300 pointer-events-none 
-                      ${searchInputClick ? "opacity-0" : "sm:opacity-0"}
-                    `}
-              />
+          <div className="col-span-1 hidden w-full sticky top-2 lg:block my-2 mx-2">
+            <div className="overflow-y-auto max-h-[90vh]">
+              <FollowersList userId={userId} type="people" />
             </div>
           </div>
         </div>

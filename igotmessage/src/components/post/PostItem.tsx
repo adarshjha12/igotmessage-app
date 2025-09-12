@@ -11,6 +11,7 @@ import {
   Lock,
   Check,
   Bookmark,
+  Repeat2Icon,
 } from "lucide-react";
 import { Post } from "./Posts";
 import Link from "next/link";
@@ -33,17 +34,29 @@ import {
   PushPinIcon,
   FireIcon,
   ChatTeardropIcon,
+  BookmarkIcon,
+  RepeatIcon,
 } from "@phosphor-icons/react";
+import HighlightHashtags from "./PostText";
+import RepostModal from "./RepostModal";
 
 export interface PostItemProps {
   post: Post;
 }
 
-export default function PostItem({ post }: PostItemProps) {
+export default function PostItem({
+  post,
+  hideFooter,
+}: {
+  post: Post;
+  hideFooter?: boolean;
+}) {
+  const [isRepostOpen, setRepostOpen] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const isDark = useAppSelector((state) => state.activity.isDark);
   const isGuest = useAppSelector((state) => state.auth.user.isGuest);
   const [likeClicked, setLikeClicked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
   const [commentOpen, setCommentOpen] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likes?.length ?? 0);
   const userId = useAppSelector((state) => state.auth.user._id);
@@ -86,6 +99,10 @@ export default function PostItem({ post }: PostItemProps) {
       console.error("toggle like error", error);
       setLikeClicked((prev) => !prev);
     }
+  };
+
+  const handleBookmark = () => {
+    setBookmarked((prev) => !prev);
   };
 
   return (
@@ -164,9 +181,9 @@ export default function PostItem({ post }: PostItemProps) {
       {post?.postType === "normal" ? (
         <>
           {post?.text && (
-            <p className="mb-3 mt-5 px-4 text-md sm:text-sm font-medium text-[var(--textColor)] leading-relaxed">
-              {post.text}
-            </p>
+            <div className=" px-4">
+              <HighlightHashtags text={post.text} />
+            </div>
           )}
 
           {post?.mediaUrls && post.mediaUrls.length > 0 && (
@@ -181,81 +198,96 @@ export default function PostItem({ post }: PostItemProps) {
 
       {/* --- Footer Actions --- */}
 
-      <div className="w-full mt-3 px-4 text-sm">
-        {/* Icons Row */}
-        <div className="flex items-center gap-6">
-          {/* Like (as Star) */}
-          <button
-            type="button"
-            onClick={handleLike}
-            className="transition-transform duration-200 hover:scale-110"
-          >
-            <div className="w-8 h-8 flex items-center justify-center">
-              {likeClicked ? (
-                <span className="text-2xl scale-125">🔥</span>
-              ) : (
-                <FireIcon
-                  size={32}
-                  weight="regular"
-                  className="text-[var(--textColor)]"
-                />
-              )}
-            </div>
-          </button>
+      {!hideFooter && (
+        <div className="w-full mt-3 px-4 text-sm">
+          {/* Icons Row */}
+          <div className="flex items-center">
+            {/* Like (as Star) */}
+            <button
+              type="button"
+              onClick={handleLike}
+              className="transition-transform p-2 duration-200 hover:scale-110"
+            >
+              <div className="w-8 h-8 flex items-center justify-center">
+                {likeClicked ? (
+                  <span className="text-2xl scale-125">🔥</span>
+                ) : (
+                  <FireIcon
+                    size={36}
+                    weight="regular"
+                    className="text-[var(--textColor)] scale-110"
+                  />
+                )}
+              </div>
+            </button>
 
-          {/* Comment (rounded bubble) */}
-          <button
-            type="button"
-            onClick={() => setCommentOpen((prev) => !prev)}
-            className="transition-transform duration-200 hover:scale-110"
-          >
-            <ChatTeardropIcon
-              size={28}
-              weight="regular"
-              className="text-[var(--textColor)]"
-            />
-          </button>
-
-          {/* Share (arrow bend) */}
-          <button className="transition-transform duration-200 hover:scale-110">
-            <ArrowBendUpRightIcon
-              size={26}
-              weight="regular"
-              className="text-[var(--textColor)]"
-            />
-          </button>
-
-          {/* Save (pin) */}
-          <div className="ml-auto">
-            <button className="transition-transform duration-200 hover:scale-110">
-              <PushPinIcon
-                size={26}
+            {/* Comment (rounded bubble) */}
+            <button
+              type="button"
+              onClick={() => setCommentOpen((prev) => !prev)}
+              className="transition-transform p-2 duration-200 hover:scale-110"
+            >
+              <ChatTeardropIcon
+                size={34}
                 weight="regular"
                 className="text-[var(--textColor)]"
               />
             </button>
+
+            {/* Share (arrow bend) */}
+            <button
+              onClick={() => setRepostOpen(true)}
+              className="transition-transform p-2 duration-200 hover:scale-110"
+            >
+              <RepeatIcon
+                size={34}
+                // weight="regular"
+                className="text-[var(--textColor)]"
+              />
+            </button>
+            <RepostModal
+              isOpen={isRepostOpen}
+              onClose={() => setRepostOpen(false)}
+              post={post}
+            />
+
+            {/* bookmark */}
+            <div className="ml-auto">
+              <button
+                onClick={handleBookmark}
+                className="transition-transform p-2 duration-200 hover:scale-110"
+              >
+                <BookmarkSimpleIcon
+                  size={32}
+                  weight={bookmarked ? "fill" : "regular"}
+                  className={
+                    bookmarked ? "text-rose-600" : "text-[var(--textColor)]"
+                  }
+                />
+              </button>
+            </div>
+          </div>
+
+          {/* Stats Row */}
+          <div className=" px-2 flex flex-col gap-1 text-[var(--textColor)]">
+            {likeCount > 0 && (
+              <span className="font-medium">
+                {likeCount} {likeCount === 1 ? "fire" : "fires"}
+              </span>
+            )}
+            {post.comments?.length! > 0 && (
+              <button
+                type="button"
+                onClick={() => setCommentOpen((prev) => !prev)}
+                className="hover:underline w-fit"
+              >
+                View all {post.comments?.length}{" "}
+                {post.comments?.length === 1 ? "comment" : "comments"}
+              </button>
+            )}
           </div>
         </div>
-
-        {/* Stats Row */}
-        <div className="mt-2 flex flex-col gap-1 text-[var(--textColor)]">
-          {likeCount > 0 && (
-            <span className="font-medium">
-              {likeCount} {likeCount === 1 ? "fire" : "fires"}
-            </span>
-          )}
-          {post.comments?.length! > 0 && (
-            <button
-              type="button"
-              onClick={() => setCommentOpen((prev) => !prev)}
-              className="hover:underline w-fit"
-            >
-              View all {post.comments?.length}{" "}
-              {post.comments?.length === 1 ? "comment" : "comments"}
-            </button>
-          )}
-        </div>
-      </div>
+      )}
 
       {/* --- Comments Section --- */}
       {commentOpen && (

@@ -244,18 +244,18 @@ export default function PublicProfileComponent({
               </p>
               <p className="text-xs text-gray-400">Posts</p>
             </div>
-            <Link href={`/dash/profile/followers/${profileUserId}`}>
+            <span>
               <p className="text-lg font-bold text-[var(--textColor)]">
                 {profileUser.followers?.length || 0}
               </p>
               <p className="text-xs text-gray-400">Followers</p>
-            </Link>
-            <Link href={`/dash/profile/following/${profileUserId}`}>
+            </span>
+            <span>
               <p className="text-lg font-bold text-[var(--textColor)]">
                 {profileUser.following?.length || 0}
               </p>
               <p className="text-xs text-gray-400">Following</p>
-            </Link>
+            </span>
           </div>
         </div>
         {/* Tabs */}

@@ -23,6 +23,7 @@ import profileRouter from "./routers/profileRoute";
 import logOutRouter from "./routers/logOutRoute";
 import aiTextGenRouter from "./routers/aiTextGenRoute";
 import searchRouter from "./routers/searchRoute";
+import { User } from "./models/userModel";
 // import webhookRouter from "./routers/webhookRoute";
 
 const PORT = process.env.PORT;
@@ -55,6 +56,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 app.use(cookieParser());
 app.use(express.json());

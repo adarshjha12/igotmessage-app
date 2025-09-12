@@ -25,14 +25,14 @@ interface UsersListProps {
 }
 
 const UsersList = ({ users, myId }: UsersListProps) => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col w-full">
     {users.map((user) => (
       <Link
         key={user._id}
         href={`/public-profile/${user._id}/myId/${myId}`}
-        className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-transparent hover:border-[var(--borderColor)]/75 hover:bg-[var(--bgColor)]/60 transition-all duration-200 group"
+        className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-transparent hover:border-[var(--borderColor)]/75 hover:bg-[var(--bgColor)]/60 transition-all duration-200 group w-full"
       >
-        <div className="flex items-center gap-3 min-w-0">
+        <div className="flex items-center gap-3 min-w-0 w-full">
           <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0">
             <img
               src={user.profilePicture?.trim() || user.avatar}
@@ -41,7 +41,7 @@ const UsersList = ({ users, myId }: UsersListProps) => (
             />
           </div>
 
-          <div className="flex flex-col min-w-0">
+          <div className="flex flex-col min-w-0 w-full">
             <span className="text-[var(--textColor)] font-semibold text-sm truncate">
               @{user.userName}
             </span>
@@ -51,9 +51,7 @@ const UsersList = ({ users, myId }: UsersListProps) => (
           </div>
         </div>
 
-        <button
-          className="flex items-center justify-center gap-2 px-5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all hover:shadow-md active:scale-[0.97] bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:opacity-90"
-        >
+        <button className="flex items-center justify-center gap-2 px-5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all hover:shadow-md active:scale-[0.97] bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:opacity-90 flex-shrink-0">
           <UserPlus size={16} />
           Follow
         </button>
@@ -128,25 +126,28 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
   }, [query]);
 
   return (
-    <div className="flex w-full px-4 flex-col min-h-screen py-4 shadow-sm overflow-hidden">
-      {/* 🔍 Search Bar */}
-      <div className="flex items-center gap-2 py-3 px-2 sm:px-4 rounded-xl bg-[var(--wrapperColor)]">
-        <Search size={18} className="text-gray-400" />
+    <div className="flex flex-col w-full h-screen px-4 py-4 shadow-sm">
+      {/* 🔍 Search Bar (sticky at top) */}
+      <div className="flex items-center gap-2 py-3 px-2 sm:px-4 rounded-xl bg-[var(--wrapperColor)] sticky top-4 z-10">
+        <Search size={18} className="text-gray-400 flex-shrink-0" />
         <input
           type="text"
           placeholder={`Search ${type}...`}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full bg-transparent outline-none text-sm text-[var(--textColor)] placeholder-gray-400"
+          className="flex-1 bg-transparent outline-none text-sm text-[var(--textColor)] placeholder-gray-400"
         />
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 mt-4">
+      {/* Scrollable User List */}
+      <div className="flex-1 mt-4 overflow-y-auto">
         {loading ? (
-          <div className="animate-pulse space-y-3">
+          <div className="animate-pulse w-full space-y-3">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-14 bg-[var(--wrapperColor)] rounded-xl" />
+              <div
+                key={i}
+                className="h-14 bg-[var(--wrapperColor)] rounded-xl"
+              />
             ))}
           </div>
         ) : query.length > 0 ? (

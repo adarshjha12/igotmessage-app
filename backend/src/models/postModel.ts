@@ -7,12 +7,15 @@ const PostSchema = new mongoose.Schema(
     mediaUrls: { type: [String] },
     templateImage: { type: String },
     text: { type: String },
+    isReposted: { type: Boolean },
+    whoReposted: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    repostCaption: { type: String },
     postType: { type: String, default: "normal" },
     privacy: { type: String, default: "public" },
     poll: {
       question: { type: String },
       options: [
-        {
+        {  
           text: { type: String },
           votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
         },

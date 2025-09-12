@@ -29,6 +29,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-loading-skeleton": "^3.5.0",
     "react-redux": "^9.2.0",
+    "react-string-replace": "^1.1.1",
     "react-textarea-autosize": "^8.5.9",
     "swiper": "^11.2.6",
     "tailwind-merge": "^3.3.0",
