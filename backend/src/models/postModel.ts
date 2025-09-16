@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ref } from "process";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -9,7 +8,6 @@ const PostSchema = new mongoose.Schema(
     text: { type: String },
     isReposted: { type: Boolean },
     whoReposted: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    repostCaption: { type: String },
     postType: { type: String, default: "normal" },
     privacy: { type: String, default: "public" },
     poll: {

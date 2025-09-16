@@ -22,9 +22,14 @@ export interface Post {
     _id: string;
     avatar: string;
   };
-  isReposted: boolean,
-  repostedPostId: string,
-  repostCaption: string,
+  whoReposted?: {
+    profilePicture: string;
+    userName: string;
+    _id: string;
+    avatar: string;
+  };
+  isReposted: boolean;
+  repostCaption: string;
   mediaUrls?: string[];
   templateImage?: string;
   text?: string;

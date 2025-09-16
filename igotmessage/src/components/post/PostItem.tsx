@@ -106,8 +106,27 @@ export default function PostItem({
   };
 
   return (
-    <div className=" pt-2 pb-5 border-[var(--borderColor)]/50  duration-300">
-      {/* --- Header --- */}
+    <div className="pt-2 pb-5 border-[var(--borderColor)]/50 duration-300">
+      {/* --- Repost Header (only if reposted) --- */}
+      {post.isReposted && post.whoReposted && (
+        <div className="flex items-center gap-2 px-4 mb-2 text-[var(--textColor)]/70 text-sm">
+          <RepeatIcon className="w-4 h-4 text-[var(--textColor)]/60" />
+          <Link
+            href={`/public-profile/${post.whoReposted._id}/myId/${userId}`}
+            className="flex items-center gap-2 hover:underline"
+          >
+            <img
+              src={post.whoReposted.profilePicture || post.whoReposted.avatar}
+              alt="reposter"
+              className="w-6 h-6 rounded-full object-cover"
+            />
+            <span className="font-medium">{post.whoReposted.userName}</span>
+          </Link>
+          <span className="text-xs">reposted</span>
+        </div>
+      )}
+
+      {/* --- Header (original post user) --- */}
       <div className="flex items-center justify-between px-4 mb-2">
         <div className="flex items-center gap-3">
           <Link href={`/public-profile/${post?.user?._id}/myId/${userId}`}>
@@ -121,7 +140,7 @@ export default function PostItem({
               <img
                 src={post.user.avatar}
                 alt="avatar"
-                className="w-11 h-11  rounded-full object-cover cursor-pointer hover:opacity-90 transition"
+                className="w-11 h-11 rounded-full object-cover cursor-pointer hover:opacity-90 transition"
               />
             )}
           </Link>
@@ -164,7 +183,7 @@ export default function PostItem({
             <MoreVertical className="text-[var(--textColor)]" size={20} />
           </button>
           {showMore && (
-            <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-blue-600 rounded-lg shadow-lg overflow-hidden ">
+            <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-blue-600 rounded-lg shadow-lg overflow-hidden">
               <Link
                 href={`/public-profile/${post?.user?._id}/myId/${userId}`}
                 className="w-full flex items-center gap-2 px-3 py-2 text-md font-semibold text-white text-nowrap transition"
@@ -181,13 +200,13 @@ export default function PostItem({
       {post?.postType === "normal" ? (
         <>
           {post?.text && (
-            <div className=" px-4">
+            <div className="px-4 pb-2">
               <HighlightHashtags text={post.text} />
             </div>
           )}
 
           {post?.mediaUrls && post.mediaUrls.length > 0 && (
-            <div className=" mb-3">
+            <div className="mb-3">
               <PostMedia urls={post.mediaUrls} />
             </div>
           )}
@@ -197,12 +216,11 @@ export default function PostItem({
       )}
 
       {/* --- Footer Actions --- */}
-
       {!hideFooter && (
         <div className="w-full mt-3 px-4 text-sm">
           {/* Icons Row */}
           <div className="flex items-center">
-            {/* Like (as Star) */}
+            {/* Like (as Fire) */}
             <button
               type="button"
               onClick={handleLike}
@@ -221,7 +239,7 @@ export default function PostItem({
               </div>
             </button>
 
-            {/* Comment (rounded bubble) */}
+            {/* Comment */}
             <button
               type="button"
               onClick={() => setCommentOpen((prev) => !prev)}
@@ -234,24 +252,24 @@ export default function PostItem({
               />
             </button>
 
-            {/* Share (arrow bend) */}
-            <button
-              onClick={() => setRepostOpen(true)}
-              className="transition-transform p-2 duration-200 hover:scale-110"
-            >
-              <RepeatIcon
-                size={34}
-                // weight="regular"
-                className="text-[var(--textColor)]"
-              />
-            </button>
-            <RepostModal
-              isOpen={isRepostOpen}
-              onClose={() => setRepostOpen(false)}
-              post={post}
-            />
+            {/* Repost */}
+            {!post.isReposted && (
+              <div>
+                <button
+                  onClick={() => setRepostOpen(true)}
+                  className="transition-transform p-2 duration-200 hover:scale-110"
+                >
+                  <RepeatIcon size={34} className="text-[var(--textColor)]" />
+                </button>
+                <RepostModal
+                  isOpen={isRepostOpen}
+                  onClose={() => setRepostOpen(false)}
+                  post={post}
+                />
+              </div>
+            )}
 
-            {/* bookmark */}
+            {/* Bookmark */}
             <div className="ml-auto">
               <button
                 onClick={handleBookmark}
@@ -269,7 +287,7 @@ export default function PostItem({
           </div>
 
           {/* Stats Row */}
-          <div className=" px-2 flex flex-col gap-1 text-[var(--textColor)]">
+          <div className="px-2 flex flex-col gap-1 text-[var(--textColor)]">
             {likeCount > 0 && (
               <span className="font-medium">
                 {likeCount} {likeCount === 1 ? "fire" : "fires"}
@@ -295,6 +313,7 @@ export default function PostItem({
           <Comment postId={post._id} />
         </div>
       )}
+
       {showGuestError && (
         <PopupWithLink
           linkHref="/login"

@@ -37,7 +37,7 @@ passport.use(
 
         if (existingUser) {
           existingUser.googleId = profile.id;
-          existingUser.avatar = `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`;
+          existingUser.avatar = `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}&mouth=smile&eyes=happy`;
           existingUser.title = profile.displayName;
           await existingUser.save();
           return done(null, existingUser);
@@ -48,7 +48,7 @@ passport.use(
           googleId: profile.id,
           email: email || "",
           title: profile.displayName,
-          avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`,
+          avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}&mouth=smile&eyes=happy`,
           fullName: "",
           userName: "user" + randomNumber,
           profilePicture: "",

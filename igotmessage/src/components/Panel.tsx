@@ -11,6 +11,7 @@ import {
   ArrowDownUp,
   ArrowRightIcon,
   LogOutIcon,
+  ChevronLeftIcon,
 } from "lucide-react";
 import React, { useState } from "react";
 import Toggle from "./Toggle";
@@ -71,7 +72,7 @@ function Panel() {
             onClick={() => dispatch(setPanelOpen(false))}
             className="m-3 p-2 rounded-full hover:bg-[var(--wrapperColor)] transition"
           >
-            <ArrowLeftIcon size={34} className="text-[var(--iconColor)]" />
+            <ChevronLeftIcon size={34} className="text-[var(--iconColor)]" />
           </button>
 
           {/* Content */}

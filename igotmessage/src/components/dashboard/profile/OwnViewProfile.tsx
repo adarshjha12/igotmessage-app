@@ -56,8 +56,8 @@ export default function ProfileComponent() {
 
   const url =
     process.env.NODE_ENV === "production"
-      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/post/get-posts`
-      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/get-posts`;
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/post/get-single-user-post`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/get-single-user-post`;
 
   useEffect(() => {
     const getMyPosts = async function (userId: string) {

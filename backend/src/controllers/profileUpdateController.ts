@@ -25,7 +25,7 @@ const profileUpdateController = async (
     const profile = await User.findByIdAndUpdate(
       userId,
       {
-        ...(userName && { userName }),
+        ...(userName && { userName: userName.toLowerCase() }),
         ...(fullName && { fullName }),
         ...(bio && { bio }),
         ...(profilePic && { profilePicture: profilePicUrl }),

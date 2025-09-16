@@ -72,7 +72,7 @@ export const verifyOtp = async (req: Request, res: Response): Promise<any> => {
       email,
       verified: true,
       title: "",
-      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`,
+      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}&mouth=smile&eyes=happy`,
       followers: [],
       following: [],
       fullName: "",

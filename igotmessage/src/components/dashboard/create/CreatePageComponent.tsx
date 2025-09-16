@@ -747,7 +747,6 @@ export default function CreatePost() {
           />
         </div>
       )}
-      {showPostUploadModal && <UploadPostModal />}
       {showSuccessPopup && (
         <PopupWithLink
           linkHref={`/post/${postId}/user/${userIdInPost}`}

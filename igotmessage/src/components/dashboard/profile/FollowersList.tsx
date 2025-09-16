@@ -51,7 +51,7 @@ const UsersList = ({ users, myId }: UsersListProps) => (
           </div>
         </div>
 
-        <button className="flex items-center justify-center gap-2 px-5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all hover:shadow-md active:scale-[0.97] bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:opacity-90 flex-shrink-0">
+        <button className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all hover:shadow-md active:scale-[0.97] bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:opacity-90 flex-shrink-0">
           <UserPlus size={16} />
           Follow
         </button>
@@ -119,7 +119,7 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
         console.error(err);
       } finally {
         setLoading(false);
-      }
+        }
     }, 400);
 
     return () => clearTimeout(timeout);

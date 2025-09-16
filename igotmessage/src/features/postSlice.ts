@@ -36,13 +36,13 @@ type RepostPayload = {
   isReposted: boolean
   postId: string;
   userId: string
-  caption?: string;
-  postType: "public" | "private"
+  privacy: "public" | "private"
 };
 
 interface PostState {
   uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadPostError: string | null;
+  isReposted?: boolean
   showPostUploadModal: boolean;
   postId?: string;
   userIdInPost?: string;
@@ -108,10 +108,10 @@ export const uploadPost = createAsyncThunk(
 export const repost = createAsyncThunk(
   "post/repost",
   async (payload: RepostPayload) => {
-    const { isReposted, userId, postId,  caption, postType } = payload;
+    const { isReposted, userId, postId, privacy } = payload;
     const res = await axios.post(
       `${backendUrl}/api/post/create-repost`,
-      { isReposted, postId, userId,  caption, postType },
+      { isReposted, postId, userId,  privacy },
       { withCredentials: true }
     );
     return res.data;
@@ -150,11 +150,12 @@ const postSlice = createSlice({
       state.uploadPostStatus = "loading";
       state.uploadPostError = null;
     });
-
+  
     // for repost
     builder.addCase(repost.fulfilled, (state, action) => {
       state.uploadPostStatus = "succeeded";
       state.postId = action.payload.post._id;
+      state.isReposted = action.payload.post.isReposted
       state.userIdInPost = action.payload.post.user;
     });
 

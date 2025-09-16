@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { User } from "../models/userModel";
 
-export async function getAllPeople(
-  req: Request,
-  res: Response
-): Promise<any> {
+export async function getAllPeople(req: Request, res: Response): Promise<any> {
   try {
-    const user = await User.find();
+    const user = (await User.find()).filter(
+      (user) => user.isGuest === false || !("isGuest" in user)
+    );
     if (!user) {
       return res
         .status(404)
@@ -26,7 +25,7 @@ export async function searchAllPeople(
   res: Response
 ): Promise<any> {
   const { q } = req.query;
-  const {type, userId} = req.body
+  const { type, userId } = req.body;
 
   try {
     const qStr = String(q || "");
@@ -35,7 +34,7 @@ export async function searchAllPeople(
     const prefixRegex = new RegExp("^" + escaped, "i");
 
     let users = await User.find({ userName: prefixRegex })
-      .select("userName _id profilePicture avatar")
+      .select("userName _id profilePicture avatar fullName")
       .limit(10)
       .lean();
 
@@ -47,7 +46,7 @@ export async function searchAllPeople(
         { score: { $meta: "textScore" } } // include score
       )
         .sort({ score: { $meta: "textScore" } })
-        .select("userName _id profilePicture avatar")
+        .select("userName _id profilePicture avatar fullName")
         .limit(remaining)
         .lean();
 
@@ -60,6 +59,8 @@ export async function searchAllPeople(
         }
       }
     }
+    console.log(users);
+    
     return res
       .status(200)
       .json({ success: true, message: "Users found", users });
@@ -76,47 +77,120 @@ export async function searchFollowers(
   res: Response
 ): Promise<any> {
   const { q } = req.query;
-  const {type, userId} = req.body
+  const { userId } = req.body;
 
   try {
     const qStr = String(q || "");
-
     const escaped = qStr.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const prefixRegex = new RegExp("^" + escaped, "i");
 
-    let users = await User.find({ userName: prefixRegex })
-      .select("userName _id profilePicture avatar")
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid userId" });
+    }
+
+    // main search (prefix match within followers)
+    let users = await User.find({
+      _id: { $in: user.followers },
+      userName: prefixRegex,
+    })
+      .select("userName _id profilePicture avatar fullName")
       .limit(10)
       .lean();
 
-    if (users.length < 10) {
+    // fallback (text search if less than 10 results)
+    if (users.length < 10 && qStr) {
       const remaining = 10 - users.length;
 
       const fallback = await User.find(
-        { $text: { $search: qStr } },
-        { score: { $meta: "textScore" } } // include score
+        {
+          _id: { $in: user.followers },
+          $text: { $search: qStr },
+        },
+        { score: { $meta: "textScore" } }
       )
         .sort({ score: { $meta: "textScore" } })
-        .select("userName _id profilePicture avatar")
+        .select("userName _id profilePicture avatar fullName")
         .limit(remaining)
         .lean();
 
-      // merge while removing duplicates
+      // merge without duplicates
       const ids = new Set(users.map((u) => String(u._id)));
       for (const f of fallback) {
         if (!ids.has(String(f._id))) {
           users.push(f);
-          ids.add(String(f._id));
         }
       }
     }
+
     return res
       .status(200)
       .json({ success: true, message: "Users found", users });
   } catch (err) {
     console.error("Search error:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+}
+export async function searchFollowing(
+  req: Request,
+  res: Response
+): Promise<any> {
+  const { q } = req.query;
+  const { userId } = req.body;
+
+  try {
+    const qStr = String(q || "");
+    const escaped = qStr.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const prefixRegex = new RegExp("^" + escaped, "i");
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid userId" });
+    }
+
+    // main search (prefix match within following)
+    let users = await User.find({
+      _id: { $in: user.following },
+      userName: prefixRegex,
+    })
+      .select("userName _id profilePicture avatar fullName")
+      .limit(10)
+      .lean();
+
+    // fallback (text search if less than 10 results)
+    if (users.length < 10 && qStr) {
+      const remaining = 10 - users.length;
+
+      const fallback = await User.find(
+        {
+          _id: { $in: user.following },
+          $text: { $search: qStr },
+        },
+        { score: { $meta: "textScore" } }
+      )
+        .sort({ score: { $meta: "textScore" } })
+        .select("userName _id profilePicture avatar fullName")
+        .limit(remaining)
+        .lean();
+
+      // merge without duplicates
+      const ids = new Set(users.map((u) => String(u._id)));
+      for (const f of fallback) {
+        if (!ids.has(String(f._id))) {
+          users.push(f);
+        }
+      }
+    }
+
     return res
-      .status(500)
-      .json({ success: true, message: "IGotMessage server error" });
+      .status(200)
+      .json({ success: true, message: "Users found", users });
+  } catch (err) {
+    console.error("Search error:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 }

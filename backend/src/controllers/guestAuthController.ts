@@ -17,7 +17,7 @@ async function handleGuestAuth(req: Request, res: Response): Promise<void> {
     const user = await new User({
       userName: "guest" + randomNumber,
       isGuest: true,
-      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}`,
+      avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=boy${randomAvatarNums}&mouth=smile&eyes=happy`,
     });
     user.save();
     const payload = { id: user._id.toString(), username: user.userName };

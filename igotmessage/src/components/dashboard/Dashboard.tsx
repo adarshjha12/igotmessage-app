@@ -43,13 +43,18 @@ import {
 import Link from "next/link";
 import MainModal from "../modals/MainModal";
 import CreateProfileModal from "./profile/CreateProfile";
-import UploadModal from "../modals/UploadStory";
+import UploadStory from "../modals/UploadStory";
 import ProfileUpdateModal from "../modals/UpdateProfileModal";
-import { setProfileUpdateStatus } from "@/features/authSlice";
+import { setPostId, setProfileUpdateStatus } from "@/features/authSlice";
 import { setUploadStoryStatus } from "@/features/storySlice";
-import { setUploadPostStatus } from "@/features/postSlice";
+import {
+  setShowPostUploadModal,
+  setUploadPostStatus,
+} from "@/features/postSlice";
 import BottomNav from "./BottomNav";
 import FollowersList from "./profile/FollowersList";
+import UploadPostModal from "../modals/UploadPostModal";
+import PopupWithLink from "../popups/PopupWithLink";
 
 function Dashboard({ children }: { children: ReactNode }) {
   const uploadStoryStatus = useAppSelector(
@@ -58,6 +63,10 @@ function Dashboard({ children }: { children: ReactNode }) {
   const uploadPostStatus = useAppSelector(
     (state) => state.post.uploadPostStatus
   );
+  const postingStatus = useAppSelector((state) => state.post.uploadPostStatus);
+  const isReposted = useAppSelector((state) => state.post.isReposted);
+  const postId = useAppSelector((state) => state.post.postId);
+  const userIdInPost = useAppSelector((state) => state.post.userIdInPost);
 
   const updateProfileStatus = useAppSelector(
     (state) => state.auth.user.updateProfileStatus
@@ -84,6 +93,10 @@ function Dashboard({ children }: { children: ReactNode }) {
   const showStoryUploadModal = useAppSelector(
     (state: RootState) => state.story.showStoryUploadModal
   );
+
+  const showPostUploadMooal = useAppSelector(
+    (state: RootState) => state.post.showPostUploadModal
+  );
   const showProfileUpdateModal = useAppSelector(
     (state: RootState) => state.auth.user.showProfileUpdateModal
   );
@@ -96,6 +109,8 @@ function Dashboard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector((state) => state.auth.user.profilePicture);
+  const [showPostUploadSuccessPopup, setShowPostUploadSuccessPopup] =
+    useState(false);
 
   const [showCreateProfileModal, setShowCreateProfileModal] = useState(false);
 
@@ -138,6 +153,15 @@ function Dashboard({ children }: { children: ReactNode }) {
       document.body.style.overflow = "";
     }
   }, [showMoreModal]);
+
+  useEffect(() => {
+    if ((postingStatus === "succeeded" && isReposted)) {
+      dispatch(setPostId(postId ?? ""));
+      dispatch(setShowPostUploadModal(false));
+      console.log("post id", postId);
+      setShowPostUploadSuccessPopup(true);
+    }
+  }, [postingStatus, postId, dispatch]);
 
   return (
     <div
@@ -612,9 +636,19 @@ function Dashboard({ children }: { children: ReactNode }) {
 
       {/* modal for story upload  */}
       {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}
-      {showStoryUploadModal && <UploadModal />}
+      {showStoryUploadModal && <UploadStory />}
       {showProfileUpdateModal && <ProfileUpdateModal />}
-      {showMoreModal && <MainModal closeModal={setShowMoreModal} />}
+      {showPostUploadMooal && <UploadPostModal />}
+      {showPostUploadSuccessPopup && (
+        <PopupWithLink
+          linkHref={`/post/${postId}/user/${userIdInPost}`}
+          linkText="View Post"
+          show={showPostUploadSuccessPopup}
+          type="success"
+          message="Reposted Successfully"
+          onClose={() => setShowPostUploadSuccessPopup(false)}
+        />
+      )}
     </div>
   );
 }

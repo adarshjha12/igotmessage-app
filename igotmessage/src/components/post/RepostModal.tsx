@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Globe, Lock, X } from "lucide-react";
 import Posts, { Post } from "./Posts";
 import PostItem from "./PostItem";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import axios from "axios";
+import { repost, setShowPostUploadModal } from "@/features/postSlice";
+import { setPostId } from "@/features/authSlice";
+import PopupWithLink from "../popups/PopupWithLink";
 
 type RepostProps = {
   isOpen: boolean;
@@ -14,27 +17,36 @@ type RepostProps = {
 };
 
 export default function RepostModal({ isOpen, onClose, post }: RepostProps) {
-  const [caption, setCaption] = useState("");
   const user = useAppSelector((state) => state.auth.user);
   const [privacy, setPrivacy] = useState<"public" | "private">("public");
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const isReposted = true;
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  if (!isOpen) return null;
-
-   const url =
+  const url =
     process.env.NODE_ENV === "production"
       ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
   const handleRepost = async () => {
-   
-
+    dispatch(
+      repost({
+        isReposted,
+        userId: user._id,
+        postId: post._id,
+        privacy,
+      })
+    );
+    dispatch(setShowPostUploadModal(true));
+    onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/80 backdrop-blur-md">
       <div
-        className="w-full max-w-lg rounded-2xl shadow-lg relative p-4 pb-8 mt-10 mb-10 
+        className="w-full max-w-lg rounded-2xl shadow-lg relative p-4 pb-8 mt-5 mb-10 
                     bg-[var(--wrapperColor)]/50 
                     max-h-[90vh] overflow-y-auto"
       >
@@ -83,7 +95,7 @@ export default function RepostModal({ isOpen, onClose, post }: RepostProps) {
         </div>
 
         {/* Input box */}
-        <textarea
+        {/* <textarea
           autoFocus
           value={caption}
           spellCheck={false}
@@ -94,11 +106,11 @@ export default function RepostModal({ isOpen, onClose, post }: RepostProps) {
                   bg-[var(--wrapperColor)] 
                    text-[var(--textColor)] 
                    outline-none"
-        />
+        /> */}
 
         {/* Original Post Preview */}
         <div
-          className=" max-h-[550px] rounded-b-xl -mt-4 overflow-hidden px-2 pb-2 pt-6 text-sm mb-4 
+          className=" max-h-[550px] rounded-xl  overflow-hidden px-2 pb-2 pt-3 text-sm mb-4 
                    
                    bg-[var(--wrapperColor)] text-[var(--textColor)]"
         >

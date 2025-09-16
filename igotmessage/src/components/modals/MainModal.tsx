@@ -62,14 +62,6 @@ function MainModal({ closeModal }: Props) {
     >
       <div className="px-6 py-8 space-y-4">
         {/* Settings Header */}
-        <div className="flex bg-[var(--wrapperColor)] px-4 py-2 rounded-xl gap-3 items-center text-2xl font-semibold">
-          <Settings2Icon
-            className="text-[var(--iconColor)]"
-            size={34}
-            strokeWidth={1.5}
-          />
-          <p>Preferences</p>
-        </div>
 
         {/* Dark Mode Toggle */}
         <div className="flex justify-between items-center rounded-xl px-4 py-2  hover:shadow-md transition">
@@ -99,13 +91,6 @@ function MainModal({ closeModal }: Props) {
 
         {/* Visit Links */}
         <div className=" mt-8">
-          <div className="flex gap-3 items-center bg-[var(--wrapperColor)] px-4 py-2 rounded-xl text-2xl font-semibold mb-4">
-            <ArrowRightIcon
-              className="text-[var(--iconColor)] -rotate-45"
-              size={30}
-            />
-            <p>Visit</p>
-          </div>
           <div className="space-y-3">
             <Link
               href="/about-dev"

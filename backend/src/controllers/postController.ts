@@ -55,10 +55,11 @@ export const createRepost = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { isReposted, userId, repostedPostId, postId, repostCaption, privacy } =
-    req.body;
+  const { isReposted, userId, postId, privacy } = req.body;
 
-  if (!isReposted || !repostedPostId || !postId || !privacy) {
+  if (!isReposted || !postId || !privacy) {
+    console.log("required data not provided as payload");
+
     return res.status(400).json({
       success: false,
       message: "required data not provided as payload",
@@ -66,7 +67,15 @@ export const createRepost = async (
   }
   const existingPost = await Post.findById(postId);
 
+  if (existingPost?.isReposted) {
+    return res
+      .status(400)
+      .json({ success: false, message: "You can't repost a reposted post" });
+  }
+
   if (!existingPost) {
+    console.log("Post id not exists");
+
     return res
       .status(400)
       .json({ success: false, message: "Post id not exists" });
@@ -76,7 +85,6 @@ export const createRepost = async (
     const newPost = new Post({
       isReposted,
       whoReposted: userId,
-      repostCaption: repostCaption ?? "",
       user: existingPost?.user,
       mediaUrls: existingPost.mediaUrls || [],
       templateImage: existingPost.templateImage || "",
@@ -118,8 +126,12 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
         path: "user",
         select: "userName profilePicture isGuest avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      })
+      .populate({
+        path: "whoReposted",
+        select: "userName profilePicture isGuest avatar",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
       });
-
     const filteredPosts = posts.filter((post) => post.user);
 
     const total = await Post.countDocuments();
@@ -225,13 +237,19 @@ export const getPostsByUserId = async (
   try {
     const userId = req.query.userId;
 
-    const posts = await Post.find({ user: userId }).populate(
-      "user",
-      "userName profilePicture isGuest avatar"
-    );
+    const posts = await Post.find({ user: userId })
+      .populate("user", "userName profilePicture isGuest avatar")
+      .populate({
+        path: "whoReposted",
+        select: "userName profilePicture isGuest avatar",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      });
+
+    const filteredPosts = posts.filter((post) => post.user);
+
     return res
       .status(200)
-      .json({ success: true, message: "Posts found", posts });
+      .json({ success: true, message: "Posts found", posts: filteredPosts });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: "Server error" });
