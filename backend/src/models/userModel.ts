@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     userName: { type: String, unique: true, sparse: true },
     fullName: { type: String },
     profilePicture: { type: String },

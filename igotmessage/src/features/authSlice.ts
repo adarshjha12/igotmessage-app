@@ -19,6 +19,7 @@ interface UserAuthInterface {
     bio?: string | null;
     followers?: string[];
     following?: string[];
+    bookmarks?: string[];
     posts?: string[];
     createdAt?: string;
     updatedAt?: string;

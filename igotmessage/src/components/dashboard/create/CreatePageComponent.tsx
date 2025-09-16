@@ -18,6 +18,8 @@ import {
   ArrowLeft,
   Sparkles,
   SendHorizontalIcon,
+  ImagePlusIcon,
+  PlusIcon,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Textarea } from "@headlessui/react";
@@ -60,6 +62,8 @@ export default function CreatePost() {
   const [inputText, setInputText] = useState("");
   const [displayedText, setDisplayedText] = useState("");
   const globalPostImage = useAppSelector((state) => state.post.globalPostImage);
+  const [createReelClicked, setCreateReelClicked] = useState(false);
+  const [createPostClicked, setCreatePostClicked] = useState(false);
 
   const [files, setFiles] = useState<File[]>([]);
   const [posting, setPosting] = useState(false);
@@ -307,9 +311,37 @@ export default function CreatePost() {
   }, [globalPostImage]);
 
   return (
-    <div className="relative w-full min-h-screen h-full flex items-start justify-center mb-12 bg-[var(--bgColor)]/5  py-2 text-lg">
+    <div className="relative w-full min-h-screen h-full flex flex-col items-center justify-start mb-12 bg-[var(--bgColor)]/5  py-2 sm:text-sm text-lg">
+      {/* Header */}
+      <div className="flex w-full mt-2 justify-between items-center gap-4 mb-2">
+        <button
+          onClick={() => {
+            setCreatePostClicked(true);
+            setCreateReelClicked(false);
+          }}
+          type="button"
+          className={`font-semibold pb-2 flex justify-center w-full items-center gap-1 text-[var(--textColor)] ${
+            createPostClicked && "border-b-4 border-blue-500"
+          }`}
+        >
+          <PlusIcon size={30} strokeWidth={1.5}/> Post
+        </button>
+        <button
+          onClick={() => {
+            setCreateReelClicked(true);
+            setCreatePostClicked(false);
+          }}
+          type="button"
+          className={`font-semibold pb-2 flex justify-center w-full items-center gap-1 text-[var(--textColor)] ${
+            createReelClicked && "border-b-4 border-blue-500"
+          }`}
+        >
+          <PlusIcon size={30} strokeWidth={1.5}/>
+          Reel
+        </button>
+      </div>
       {/* Card */}
-      <div className=" h-full sm:min-h-[700px] w-full px-4 rounded-2xl border border-[var(--textColor)]/30 bg-[var(--wrapperColor)]/50 overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6 scroll-smooth">
+      <div className=" h-full sm:min-h-[700px] w-full px-4 rounded-2xl  bg-[var(--wrapperColor)]/50 overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6 scroll-smooth">
         {/* User header + Privacy */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -360,10 +392,12 @@ export default function CreatePost() {
           <>
             {!musicClicked && !libraryClicked && (
               <>
-                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-2 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-900 border border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center w-fit my-4 justify-between gap-3 px-2 py-2 sm:py-1.5 rounded-full  bg-[var(--textColor)]/80 border-white/30 shadow-md hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-white animate-pulse" />
-                    <p className="text-sm font-medium text-white">AI Text</p>
+                    <Sparkles className="w-5 h-5 text-[var(--bgColor)] animate-pulse" />
+                    <p className="text-lg sm:text-sm font-medium text-[var(--bgColor)]">
+                      AI Text
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -386,7 +420,7 @@ export default function CreatePost() {
                     onChange={handleTextAreaChange}
                     maxLength={maxChars}
                     placeholder={"What's happening?"}
-                    className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10 text-[var(--textColor)] focus:outline-none focus:ring-2 focus:ring-[var(--textColor)]/50 resize-none mb-2 placeholder:text-[var(--textColor)]/80 text-lg placeholder:text-xl overflow-hidden"
+                    className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--textColor)]/50 outline-none bg-[var(--bgColor)]/10 text-[var(--textColor)] resize-none mb-2 placeholder:text-[var(--textColor)]/80 text-lg sm:text-sm placeholder:text-xl sm:placeholder:text-sm overflow-hidden"
                   />
                 ) : (
                   <div className="w-full flex flex-col justify-center mb-10 items-center">

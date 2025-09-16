@@ -61,13 +61,14 @@ export default function PostItem({
   const [likeCount, setLikeCount] = useState(post?.likes?.length ?? 0);
   const userId = useAppSelector((state) => state.auth.user._id);
   const [showGuestError, setShowGuestError] = useState(false);
+  const bookmarks = useAppSelector((state) => state.auth.user.bookmarks);
 
   const randomAvatarNames = generateRandomString();
 
   const url =
     process.env.NODE_ENV === "production"
-      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/post/toggle-like`
-      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/post/toggle-like`;
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
   useEffect(() => {
     if (!isGuest && post.likes?.includes(userId)) {
@@ -87,7 +88,7 @@ export default function PostItem({
       });
 
       const res = await axios.post(
-        url,
+        `${url}/api/post/toggle-like`,
         { userId, postId: post._id },
         { withCredentials: true }
       );
@@ -101,9 +102,28 @@ export default function PostItem({
     }
   };
 
-  const handleBookmark = () => {
-    setBookmarked((prev) => !prev);
+  const handleBookmark = async () => {
+    setBookmarked((prev) => {
+      return !prev;
+    });
+    try {
+      await axios.post(
+        `${url}/api/post/toggle-bookmark`,
+        { userId, postId: post._id },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error);
+      setBookmarked((prev) => !prev);
+    }
   };
+
+  useEffect(() => {
+    if (bookmarks?.includes(post._id)) {
+      setBookmarked(true);
+    }
+    return () => {};
+  }, [bookmarks]);
 
   return (
     <div className="pt-2 pb-5 border-[var(--borderColor)]/50 duration-300">

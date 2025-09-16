@@ -11,6 +11,8 @@ type User = {
   fullName: string;
   profilePicture?: string;
   avatar: string;
+  followers: string[];
+  following: string[];
 };
 
 interface FollowersListProps {
@@ -24,41 +26,106 @@ interface UsersListProps {
   isFollowing?: boolean;
 }
 
-const UsersList = ({ users, myId }: UsersListProps) => (
-  <div className="flex flex-col w-full">
-    {users.map((user) => (
-      <Link
-        key={user._id}
-        href={`/public-profile/${user._id}/myId/${myId}`}
-        className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-transparent hover:border-[var(--borderColor)]/75 hover:bg-[var(--bgColor)]/60 transition-all duration-200 group w-full"
-      >
-        <div className="flex items-center gap-3 min-w-0 w-full">
-          <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0">
-            <img
-              src={user.profilePicture?.trim() || user.avatar}
-              alt={user.userName}
-              className="w-full h-full object-cover"
-            />
-          </div>
+const UsersList = ({ users, myId }: UsersListProps) => {
+  const [isFollowing, setIsFollowing] = useState<Record<string, boolean>>({});
 
-          <div className="flex flex-col min-w-0 w-full">
-            <span className="text-[var(--textColor)] font-semibold text-sm truncate">
-              @{user.userName}
-            </span>
-            <span className="text-xs text-gray-400 truncate">
-              {user.fullName || "Active user"}
-            </span>
-          </div>
+  const url =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL
+      : process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL;
+
+  const handleFollow = async (targetUserId: string) => {
+    try {
+      if (myId && targetUserId) {
+        if (isFollowing[targetUserId]) {
+          await axios.post(
+            `${url}/api/profile/follow-toggle`,
+            {
+              currentUserId: myId,
+              targetUserId: targetUserId,
+            },
+            { withCredentials: true }
+          );
+
+          setIsFollowing((prev) => ({ ...prev, [targetUserId]: false }));
+        } else {
+          await axios.post(
+            `${url}/api/profile/follow-toggle`,
+            {
+              currentUserId: myId,
+              targetUserId,
+            },
+            { withCredentials: true }
+          );
+          setIsFollowing((prev) => ({ ...prev, [targetUserId]: true }));
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (users.some((user) => user.followers.includes(myId))) {
+      users.forEach((user) => {
+        user.followers.includes(myId) &&
+          setIsFollowing((prev) => ({ ...prev, [user._id]: true }));
+      });
+    }
+    return () => {};
+  }, []);
+
+  return (
+    <div className="flex flex-col w-full">
+      {users.map((user) => (
+        <div
+          key={user._id}
+          className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl hover:bg-[var(--bgColor)]/60 transition-all duration-200 group w-full"
+        >
+          {/* Wrap only avatar + name in Link */}
+          <Link
+            href={`/public-profile/${user._id}/myId/${myId}`}
+            className="flex items-center gap-3 min-w-0 w-full"
+          >
+            <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0">
+              <img
+                src={user.profilePicture?.trim() || user.avatar}
+                alt={user.userName}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="flex flex-col min-w-0 w-full">
+              <span className="text-[var(--textColor)] font-semibold text-sm truncate">
+                @{user.userName}
+              </span>
+              <span className="text-xs text-gray-400 truncate">
+                {user.fullName || "Active user"}
+              </span>
+            </div>
+          </Link>
+
+          {/* Follow button stays outside */}
+          <button
+            onClick={() => handleFollow(user._id)}
+            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all hover:shadow-sm hover:scale-[1.01] ${
+              isFollowing[user._id]
+                ? "bg-gray-100 text-gray-800"
+                : "bg-gradient-to-r from-blue-500 to-blue-800 text-white"
+            }`}
+          >
+            {isFollowing[user._id] ? (
+              <UserCheck size={16} />
+            ) : (
+              <UserPlus size={16} />
+            )}
+            {isFollowing[user._id] ? "Following" : "Follow"}
+          </button>
         </div>
-
-        <button className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all hover:shadow-md active:scale-[0.97] bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:opacity-90 flex-shrink-0">
-          <UserPlus size={16} />
-          Follow
-        </button>
-      </Link>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 export default function FollowersList({ userId, type }: FollowersListProps) {
   const myId = useAppSelector((state) => state.auth.user._id);
@@ -66,6 +133,7 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const url =
     process.env.NODE_ENV === "production"
@@ -85,9 +153,12 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
           );
           if (res.data) setUsers(res.data.total);
         } else {
-          const res = await axios.get(`${url}/api/search/get-all-people`, {
-            withCredentials: true,
-          });
+          const res = await axios.get(
+            `${url}/api/search/get-all-people?userId=${userId}`,
+            {
+              withCredentials: true,
+            }
+          );
           if (res.data) setUsers(res.data.users);
         }
       } catch (err) {
@@ -119,7 +190,7 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
         console.error(err);
       } finally {
         setLoading(false);
-        }
+      }
     }, 400);
 
     return () => clearTimeout(timeout);

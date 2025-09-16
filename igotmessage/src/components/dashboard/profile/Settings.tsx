@@ -13,21 +13,21 @@ import {
   LogOutIcon,
 } from "lucide-react";
 import React, { useState } from "react";
-import Toggle from "../Toggle";
+import Toggle from "@/components/Toggle";
 import { RootState } from "@/store/store";
 import { setDarkMode } from "@/features/activitySlice";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { logOut } from "@/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import NewLoader from "../NewLoader";
+import NewLoader from "@/components/NewLoader";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   closeModal?: (value: boolean) => void;
 }
 
-function MainModal({ closeModal }: Props) {
+function Settings({ closeModal }: Props) {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const [dataSaver, setDataSaver] = useState(false);
   const dispatch = useAppDispatch();
@@ -147,4 +147,4 @@ function MainModal({ closeModal }: Props) {
   );
 }
 
-export default MainModal;
+export default Settings;

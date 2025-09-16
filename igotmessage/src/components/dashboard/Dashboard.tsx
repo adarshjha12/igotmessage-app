@@ -41,7 +41,6 @@ import {
   LucideSettings,
 } from "lucide-react";
 import Link from "next/link";
-import MainModal from "../modals/MainModal";
 import CreateProfileModal from "./profile/CreateProfile";
 import UploadStory from "../modals/UploadStory";
 import ProfileUpdateModal from "../modals/UpdateProfileModal";
@@ -108,7 +107,8 @@ function Dashboard({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const avatar = useAppSelector((state) => state.auth.user.profilePicture);
+  const profilePic = useAppSelector((state) => state.auth.user.profilePicture);
+  const avatar = useAppSelector((state) => state.auth.user.avatar);
   const [showPostUploadSuccessPopup, setShowPostUploadSuccessPopup] =
     useState(false);
 
@@ -155,7 +155,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   }, [showMoreModal]);
 
   useEffect(() => {
-    if ((postingStatus === "succeeded" && isReposted)) {
+    if (postingStatus === "succeeded" && isReposted) {
       dispatch(setPostId(postId ?? ""));
       dispatch(setShowPostUploadModal(false));
       console.log("post id", postId);
@@ -232,6 +232,8 @@ function Dashboard({ children }: { children: ReactNode }) {
                   ? "All users"
                   : pathname === "/dash/profile/settings"
                   ? "Settings & More"
+                  : pathname === "/dash/profile/bookmarks"
+                  ? "Bookmarks"
                   : pathname.includes("/dash/profile/followers")
                   ? "Followers"
                   : pathname.includes("/dash/profile/following")
@@ -514,20 +516,18 @@ function Dashboard({ children }: { children: ReactNode }) {
               }`}
             >
               <div className=" flex items-center justify-center rounded-full bg-gradient-to-br   hover:scale-105 transition-transform duration-300 ease-out">
-                {avatar ? (
+                {profilePic ? (
                   <img
-                    src={avatar}
-                    alt="avatar"
+                    src={profilePic}
+                    alt="profilePic"
                     className="w-6 h-6 rounded-xl"
                   />
                 ) : (
-                  <div className=" flex items-center justify-center rounded-full transition-transform duration-300 ease-out">
-                    <UserIcon
-                      size={22}
-                      strokeWidth={1.2}
-                      className=" group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
+                  <img
+                    src={avatar!}
+                    alt="avatar"
+                    className="w-6 h-6 rounded-xl"
+                  />
                 )}
               </div>
               <p

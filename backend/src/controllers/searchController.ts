@@ -2,18 +2,22 @@ import { Request, Response } from "express";
 import { User } from "../models/userModel";
 
 export async function getAllPeople(req: Request, res: Response): Promise<any> {
+  const userId = req.query.userId;
   try {
-    const user = (await User.find()).filter(
-      (user) => user.isGuest === false || !("isGuest" in user)
-    );
-    if (!user) {
+    const users = await User.find({
+      _id: { $ne: userId }, // exclude self
+      $or: [{ isGuest: false }, { isGuest: { $exists: false } }],
+    });
+
+    if (!users) {
       return res
         .status(404)
         .json({ success: false, message: "No users found" });
     }
+
     return res
       .status(200)
-      .json({ success: true, message: "Users found", users: user });
+      .json({ success: true, message: "Users found", users: users });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: "Server error" });
@@ -34,7 +38,7 @@ export async function searchAllPeople(
     const prefixRegex = new RegExp("^" + escaped, "i");
 
     let users = await User.find({ userName: prefixRegex })
-      .select("userName _id profilePicture avatar fullName")
+      .select("userName _id profilePicture avatar fullName followers following")
       .limit(10)
       .lean();
 
@@ -46,7 +50,7 @@ export async function searchAllPeople(
         { score: { $meta: "textScore" } } // include score
       )
         .sort({ score: { $meta: "textScore" } })
-        .select("userName _id profilePicture avatar fullName")
+        .select("userName _id profilePicture avatar fullName followers following")
         .limit(remaining)
         .lean();
 
@@ -59,11 +63,11 @@ export async function searchAllPeople(
         }
       }
     }
-    console.log(users);
-    
+    const filterMyself = users.filter((user) => user._id !== userId);
+
     return res
       .status(200)
-      .json({ success: true, message: "Users found", users });
+      .json({ success: true, message: "Users found", users: filterMyself });
   } catch (err) {
     console.error("Search error:", err);
     return res
@@ -96,7 +100,7 @@ export async function searchFollowers(
       _id: { $in: user.followers },
       userName: prefixRegex,
     })
-      .select("userName _id profilePicture avatar fullName")
+      .select("userName _id profilePicture avatar fullName followers following")
       .limit(10)
       .lean();
 
@@ -112,7 +116,7 @@ export async function searchFollowers(
         { score: { $meta: "textScore" } }
       )
         .sort({ score: { $meta: "textScore" } })
-        .select("userName _id profilePicture avatar fullName")
+        .select("userName _id profilePicture avatar fullName followers following")
         .limit(remaining)
         .lean();
 
@@ -157,7 +161,7 @@ export async function searchFollowing(
       _id: { $in: user.following },
       userName: prefixRegex,
     })
-      .select("userName _id profilePicture avatar fullName")
+      .select("userName _id profilePicture avatar fullName followers following")
       .limit(10)
       .lean();
 
@@ -173,7 +177,7 @@ export async function searchFollowing(
         { score: { $meta: "textScore" } }
       )
         .sort({ score: { $meta: "textScore" } })
-        .select("userName _id profilePicture avatar fullName")
+        .select("userName _id profilePicture avatar fullName followers following")
         .limit(remaining)
         .lean();
 

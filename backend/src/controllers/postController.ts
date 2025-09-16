@@ -255,3 +255,71 @@ export const getPostsByUserId = async (
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const toggleBookmark = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { userId, postId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "user not found" });
+
+    if (!postId)
+      return res
+        .status(404)
+        .json({ success: false, message: "postId not found" });
+
+    const isBookmarked = user.bookmarks.some(
+      (id) => id.toString() === postId.toString()
+    );
+
+    if (isBookmarked) {
+      await user.updateOne({ $pull: { bookmarks: postId } });
+    } else {
+      await user.updateOne({ $addToSet: { bookmarks: postId } });
+    }
+
+    return res.status(200).json({ success: true, message: "Bookmark updated" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: err });
+  }
+};
+
+export const getBookmarkedPosts = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const userId = req.query.userId;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "user not found" });
+
+    const posts = await Post.find({ _id: { $in: user.bookmarks } })
+      .populate("user", "userName profilePicture isGuest avatar")
+      .populate({
+        path: "whoReposted",
+        select: "userName profilePicture isGuest avatar",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      });
+
+    const filteredPosts = posts.filter((post) => post.user);
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Posts found", posts: filteredPosts });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};

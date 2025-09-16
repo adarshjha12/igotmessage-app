@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import NewLoader from "@/components/NewLoader";
 
 const SettingComponent = dynamic(
-  () => import("@/components/modals/MainModal"),
+  () => import("@/components/dashboard/profile/Settings"),
   {
     ssr: false,
     loading: () => (
