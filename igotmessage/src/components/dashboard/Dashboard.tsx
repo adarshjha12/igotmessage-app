@@ -211,7 +211,7 @@ function Dashboard({ children }: { children: ReactNode }) {
         ${
           pathname === "/dash/feed"
             ? "font-montez font-medium text-3xl"
-            : "text-xl font-semibold"
+            : "text-3xl font-semibold"
         }
         ${isDark ? "text-white" : "text-black"}
       `}

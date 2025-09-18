@@ -66,9 +66,9 @@ const UsersList = ({ users, myId }: UsersListProps) => {
   };
 
   useEffect(() => {
-    if (users.some((user) => user.followers.includes(myId))) {
+    if (users.some((user) => user.followers?.includes(myId))) {
       users.forEach((user) => {
-        user.followers.includes(myId) &&
+        user.followers?.includes(myId) &&
           setIsFollowing((prev) => ({ ...prev, [user._id]: true }));
       });
     }

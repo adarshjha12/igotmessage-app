@@ -54,7 +54,7 @@ function Story() {
   }, [storyUploadStatus]);
 
   return (
-    <div className="w-full py-4 px-4 h-fit z-0 flex overflow-x-auto whitespace-nowrap justify-start gap-2 scroll-smooth hide-scrollbar">
+    <div className="w-full py-4 px-4 h-fit z-0 flex overflow-x-auto whitespace-nowrap justify-start gap-2 scroll-smooth scroll-hidden">
       {/* add story button */}
       <div className="flex flex-col items-center justify-center gap-2">
         <Link
@@ -77,7 +77,10 @@ function Story() {
           )}
 
           <div className="absolute bottom-0.5 -right-1 bg-blue-600  rounded-full p-0.5 shadow-sm">
-            <PlusIcon className="text-white" strokeWidth={2.5} size={22} />
+            <PlusIcon
+              className="text-white w-8 h-8 sm:w-6 sm:h-6"
+              strokeWidth={2.5}
+            />
           </div>
         </Link>
 

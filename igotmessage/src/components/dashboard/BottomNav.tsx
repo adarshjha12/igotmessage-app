@@ -30,9 +30,9 @@ export default function BottomNav({ pathname }: { pathname: string }) {
   );
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full flex items-center justify-between 
+    <nav className="fixed -bottom-1 left-0 w-full flex items-center justify-between pb-3
       bg-[var(--bgColor)]/80 backdrop-blur-xl border-t border-[var(--shadowBorder)] 
-      px-4 py-0 z-20 md:hidden">
+      px-4 z-20 md:hidden">
       <ul className="flex items-center justify-between w-full">
         {navItems.map(({ href, icon: Icon }) => {
           const isActive = pathname === href;
@@ -69,7 +69,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
                       />
                     </div>
                   ) : (
-                    <Icon size={26} weight={isActive ? "fill" : "regular"} />
+                    <Icon size={32} weight={isActive ? "fill" : "regular"} />
                   )}
                 </div>
               </Link>

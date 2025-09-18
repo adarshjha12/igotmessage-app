@@ -13,6 +13,7 @@ import {
   MessageSquare,
   ChevronLeftIcon,
   UserCheck,
+  Images,
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { Post } from "../../post/Posts";
@@ -296,7 +297,7 @@ export default function PublicProfileComponent({
         {/* Tabs */}
         <div className="flex justify-around mt-6 border-t border-gray-700">
           {[
-            { id: "posts", icon: <Grid size={20} />, label: "Posts" },
+            { id: "posts", icon: <Images size={20} />, label: "Visuals" },
             { id: "reels", icon: <PlaySquare size={20} />, label: "Reels" },
             {
               id: "textPolls",
