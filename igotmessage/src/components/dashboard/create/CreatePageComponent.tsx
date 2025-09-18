@@ -56,7 +56,7 @@ export default function CreatePost() {
       </div>
 
       {/* Content */}
-      <div className="h-full sm:min-h-[700px] w-full px-4 bg-[var(--wrapperColor)]/50 overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6 scroll-smooth">
+      <div className="h-full sm:min-h-[700px] w-full px-4  overflow-y-scroll backdrop-blur-md mb-12 shadow-lg py-6 scroll-smooth">
         {activeTab === "post" ? <PostUpload /> : <ReelUpload />}
       </div>
     </div>

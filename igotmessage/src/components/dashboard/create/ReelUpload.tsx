@@ -231,7 +231,7 @@ export default function ReelUpload() {
           ref={videoInputRef}
           className="hidden"
           type="file"
-          accept="video/*"
+          accept="video/mp4,video/webm,video/quicktime"
           onChange={(e) => onVideoSelected(e.target.files)}
         />
       </div>

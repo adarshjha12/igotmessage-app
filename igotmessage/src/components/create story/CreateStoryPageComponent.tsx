@@ -8,6 +8,7 @@ import {
   ChevronDown,
   PenBox,
   Sparkles,
+  X,
 } from "lucide-react";
 
 import html2canvas from "html2canvas";
@@ -371,9 +372,9 @@ function CreateStoryPageComponent() {
                 </div>
               )}
             <div className="flex w-full justify-evenly gap-6 items-center">
+              {/* Discard Button */}
               <button
                 type="button"
-                className="text-md sm:text-xs flex justify-center items-center border-2 border-red-600 text-red-600 rounded-full font-medium active:scale-90 cursor-pointer py-2 px-4 sm:py-2.5 sm:px-4"
                 onClick={() => {
                   dispatch(setStoryImage(""));
                   dispatch(setMusicData({}));
@@ -386,16 +387,23 @@ function CreateStoryPageComponent() {
                     audioRef.current.currentTime = 0;
                   }
                 }}
+                className="px-6 py-1.5 rounded-2xl bg-gradient-to-r from-rose-400 to-rose-800 text-white font-medium shadow-md hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
               >
+                <div className="flex items-center gap-1 p-2 rounded-full bg-black/20">
+                <X className="w-5 h-5" />
+              </div>
                 Discard
               </button>
 
+              {/* Add Story Button */}
               <button
                 onClick={handleCreateStory}
                 type="button"
-                className="text-sm sm:text-xs flex justify-center items-center gap-1 sm:gap-0.5 bg-gradient-to-r from-blue-500 to-blue-800 text-white rounded-full font-semibold active:scale-90 cursor-pointer py-3 px-6  sm:px-4"
+                className="px-6 py-1.5 rounded-2xl bg-gradient-to-r from-green-400 to-green-800 text-white font-medium shadow-md hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
               >
-                <PlusSquareIcon className="w-5 h-5 sm:w-4 sm:h-4" />
+                <div className="flex items-center gap-1 p-2 rounded-full bg-black/20">
+                <PlusSquareIcon className="w-5 h-5" />
+              </div>
                 Add Story
               </button>
             </div>
