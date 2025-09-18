@@ -13,6 +13,7 @@ import {
   Text,
   PlaySquare,
   XIcon,
+  Images,
 } from "lucide-react";
 import CreateProfileModal from "@/components/dashboard/profile/CreateProfile";
 import PopupMessages from "@/components/popups/PopupMessages";
@@ -181,7 +182,7 @@ export default function ProfileComponent() {
       {/* Tabs */}
       <div className="flex justify-around mt-6 border-t border-gray-700">
         {[
-          { id: "posts", icon: <Grid size={20} />, label: "Posts" },
+          { id: "posts", icon: <Images size={20} />, label: "Visuals" },
           { id: "reels", icon: <PlaySquare size={20} />, label: "Reels" },
           { id: "textPolls", icon: <Text size={20} />, label: "Text & Polls" },
         ].map((tab) => (
