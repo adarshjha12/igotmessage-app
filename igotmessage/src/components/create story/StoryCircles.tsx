@@ -76,9 +76,9 @@ function Story() {
             />
           )}
 
-          <div className="absolute bottom-0.5 -right-1 bg-yellow-400  rounded-full p-0.5 shadow-sm">
+          <div className="absolute bottom-0.5 -right-1 bg-green-600  rounded-full p-0.5 shadow-sm">
             <PlusIcon
-              className="text-black w-8 h-8 sm:w-6 sm:h-6"
+              className="text-white w-8 h-8 sm:w-6 sm:h-6"
               strokeWidth={1.5}
             />
           </div>

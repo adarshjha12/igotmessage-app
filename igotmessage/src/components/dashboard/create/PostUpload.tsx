@@ -17,6 +17,7 @@ import {
   BoomBox,
   Trash2,
   PlusIcon,
+  Music,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import StoryTemplates from "@/components/create story/StoryTemplates";
@@ -341,13 +342,13 @@ export default function PostUpload() {
   // autoshow template/music popup briefly
   useEffect(() => {
     setShowTemplateSelectedPopup(true);
-    const t = setTimeout(() => setShowTemplateSelectedPopup(false), 2500);
+    const t = setTimeout(() => setShowTemplateSelectedPopup(false), 7000);
     return () => clearTimeout(t);
   }, [templateImage]);
 
   useEffect(() => {
     setShowMusicSelectedPopup(true);
-    const t = setTimeout(() => setShowMusicSelectedPopup(false), 2500);
+    const t = setTimeout(() => setShowMusicSelectedPopup(false), 7000);
     return () => clearTimeout(t);
   }, [musicData.url]);
 
@@ -361,6 +362,21 @@ export default function PostUpload() {
     next[index] = value;
     setPollOptions(next);
   };
+
+  useEffect(() => {
+    let element;
+    if (musicClicked) {
+      element = document.getElementById(`music`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } else if (libraryClicked) {
+      element = document.getElementById(`library`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [musicClicked, libraryClicked]);
 
   return (
     <div className="relative w-full flex flex-col">
@@ -550,9 +566,11 @@ export default function PostUpload() {
           {/* music chip */}
           {musicData.url && (
             <div className="flex px-2 py-1 w-fit my-4 rounded-xl gap-2 items-center border">
-              <Image className="w-4 h-4" />
+              <Music className="w-4 h-4" />
               <div className="overflow-hidden">
-                <p className="text-sm">{musicData.title.slice(0, 20)}</p>
+                <p className="text-sm translate-animation">
+                  {musicData.title.slice(0, 20)}
+                </p>
               </div>
               <button
                 onClick={() =>
@@ -714,7 +732,10 @@ export default function PostUpload() {
 
       {/* overlays */}
       {libraryClicked && (
-        <div className=" w-full backdrop-blur-lg mt-4 rounded-2xl py-2 flex items-center justify-center ">
+        <div
+          id="library"
+          className=" w-full backdrop-blur-lg mt-4 rounded-2xl py-2 flex items-center justify-center "
+        >
           <button
             onClick={() => setLibraryClicked(false)}
             className="fixed top-4 left-2 p-2"
@@ -726,10 +747,13 @@ export default function PostUpload() {
       )}
 
       {musicClicked && (
-        <div className=" w-full backdrop-blur-lg mt-4 rounded-2xl py-2 flex items-center justify-center ">
+        <div
+          id="music"
+          className=" w-full backdrop-blur-lg mt-4 rounded-2xl py-2 flex items-center justify-center "
+        >
           <button
             onClick={() => setMusicClicked(false)}
-            className="fixed top-4 left-2 p-2"
+            className="fixed z-20 top-4 left-2 p-2"
           >
             <X className="w-8 h-8" />
           </button>

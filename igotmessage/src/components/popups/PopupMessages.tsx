@@ -1,22 +1,25 @@
-import { CheckCircle, XCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { XCircle } from "lucide-react";
 
-interface PopupMessageProps {
+type MessagePopupProps = {
   show: boolean;
-  type: "success" | "error";
   message: string;
+  type: "success" | "error";
   onClose: () => void;
-}
+};
 
-export default function PopupMessage({
-  show,
-  type,
-  message,
-  onClose,
-}: PopupMessageProps) {
-  const Icon = type === "success" ? CheckCircle : XCircle;
+export default function MessagePopup({ show, message, type, onClose }: MessagePopupProps) {
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null; // avoid SSR errors
+
+  return createPortal(
     <AnimatePresence>
       {show && (
         <motion.div
@@ -24,7 +27,7 @@ export default function PopupMessage({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="fixed w-[90%] flex justify-center top-6 left-1/2 -translate-x-1/2 z-50"
+          className="fixed w-[90%] flex justify-center top-6 left-1/2 -translate-x-1/2 z-[9999]"
         >
           <div
             className="flex w-fit justify-center items-center gap-3 px-5 py-4 rounded-2xl border bg-[var(--wrapperColor)]/50 backdrop-blur-md border-[var(--borderColor)]/30"
@@ -34,11 +37,13 @@ export default function PopupMessage({
                 "0 10px 25px rgba(0,0,0,0.4), 0 5px 15px rgba(0,0,0,0.2)",
             }}
           >
-            <Icon
-              className={`w-6 self-end h-6 flex-shrink-0 ${
+            {/* icon */}
+            <XCircle
+              className={`w-6 h-6 flex-shrink-0 ${
                 type === "success" ? "text-green-400" : "text-red-400"
               }`}
             />
+
             <span className="font-medium">{message}</span>
 
             {/* Close Button */}
@@ -51,6 +56,7 @@ export default function PopupMessage({
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

@@ -11,6 +11,8 @@ import {
   ChatCircleTextIcon,
   ChatsTeardropIcon,
   ChatsCircleIcon,
+  PhoneCallIcon,
+  PhoneIcon,
 } from "@phosphor-icons/react";
 import { useAppSelector } from "@/store/hooks";
 
@@ -20,7 +22,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
     { href: "/dash/chats", icon: ChatsCircleIcon },
     { href: "/dash/create", icon: PlusSquareIcon },
     { href: "/reels", icon: PlayCircleIcon },
-    { href: "/dash/calls", icon: VideoCameraIcon },
+    { href: "/dash/calls", icon: PhoneIcon },
     { href: "/dash/profile", icon: UserIcon },
   ];
 
@@ -32,7 +34,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
   return (
     <nav className="fixed -bottom-1 left-0 w-full flex items-center justify-between pb-3
       bg-[var(--bgColor)]/80 backdrop-blur-xl border-t border-[var(--shadowBorder)] 
-      px-4 z-20 md:hidden">
+      px-2 z-20 md:hidden">
       <ul className="flex items-center justify-between w-full">
         {navItems.map(({ href, icon: Icon }) => {
           const isActive = pathname === href;

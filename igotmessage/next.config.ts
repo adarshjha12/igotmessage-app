@@ -30,6 +30,16 @@ const nextConfig: NextConfig = {
         hostname: 'ik.imagekit.io',
         pathname: '/**'
       },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.giphy.com',
+        pathname: '/**'
+      },
     ],
   },
 }

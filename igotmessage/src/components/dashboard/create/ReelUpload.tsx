@@ -114,8 +114,6 @@ export default function ReelUpload() {
   const tryDispatchUploadPost = async (payload: any) => {
     try {
       // try redux thunk
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       await dispatch(uploadPost(payload));
     } catch (e) {
       // fallback to axios FormData
