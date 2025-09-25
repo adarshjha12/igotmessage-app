@@ -578,7 +578,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* main starts here (2nd column for desktop) */}
           <main
-            className={`pb-10 w-full lg:pt-2 sm:px-4 px-0 flex flex-col justify-center items-center col-span-1`}
+            className={`pb-10 w-full lg:pt-2 sm:px-4 px-0 flex flex-col overflow-x-hidden justify-center items-center col-span-1`}
           >
             {children}
           </main>
