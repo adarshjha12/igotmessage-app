@@ -18,6 +18,7 @@ import {
   Trash2,
   PlusIcon,
   Music,
+  ArrowUp,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import StoryTemplates from "@/components/create story/StoryTemplates";
@@ -96,6 +97,8 @@ export default function PostUpload() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const remaining = MAX_CHARS - text.length;
+  const [showVideoSizeError, setShowVideoSizeError] = useState(false);
+  const [showInvalidFileError, setShowInvalidFileError] = useState(false);
 
   const canPost =
     (text.trim().length > 0 ||
@@ -114,7 +117,7 @@ export default function PostUpload() {
     };
   }, []); // eslint-disable-line
 
-  // If a global image is set (from story), convert & add
+  // If a global image is set (from camera), convert & add
   useEffect(() => {
     if (!globalPostImage) return;
     let cancelled = false;
@@ -140,35 +143,44 @@ export default function PostUpload() {
   }, [globalPostImage]);
 
   // file -> FilePreview promise
-  const processFile = (file: File): Promise<FilePreview | null> =>
+  type FileProcessResult =
+    | FilePreview
+    | { error: "tooLarge" | "tooLong" | "invalid" };
+
+  const MAX_VIDEO_SIZE = 25 * 1024 * 1024; // 15 MB
+
+  const processFile = (file: File): Promise<FileProcessResult> =>
     new Promise((resolve) => {
       const isVideo = file.type.startsWith("video/");
       const url = URL.createObjectURL(file);
+
+      // Size check first
+      if (isVideo && file.size > MAX_VIDEO_SIZE) {
+        URL.revokeObjectURL(url);
+        resolve({ error: "tooLarge" });
+        return;
+      }
 
       if (!isVideo) {
         resolve({ id: genId(), file, url, isVideo: false });
         return;
       }
 
-      // for video: read metadata
+      // Check video duration
       const videoEl = document.createElement("video");
       videoEl.preload = "metadata";
       videoEl.onloadedmetadata = () => {
         const duration = videoEl.duration || 0;
-        // revoke the metadata url created by videoEl
-        // (we revoke the file url only when removing preview)
         if (duration > MAX_POST_VIDEO_SECONDS) {
-          // too long
           URL.revokeObjectURL(url);
-          resolve(null);
+          resolve({ error: "tooLong" });
         } else {
           resolve({ id: genId(), file, url, isVideo: true, duration });
         }
       };
       videoEl.onerror = () => {
-        // treat as invalid
         URL.revokeObjectURL(url);
-        resolve(null);
+        resolve({ error: "invalid" });
       };
       videoEl.src = url;
     });
@@ -178,19 +190,28 @@ export default function PostUpload() {
       if (!list) return;
       const arr = Array.from(list);
       const processed: FilePreview[] = [];
+
       for (const f of arr) {
-        const item = await processFile(f);
-        if (!item) {
-          setShowVideoDurationError(true);
+        const result = await processFile(f);
+
+        if ("error" in result) {
+          if (result.error === "tooLarge") {
+            setShowVideoSizeError(true); // ⬅️ you define this state
+          } else if (result.error === "tooLong") {
+            setShowVideoDurationError(true);
+          } else {
+            setShowInvalidFileError(true);
+          }
           continue;
         }
-        processed.push(item);
+
+        processed.push(result);
         if (processed.length + previews.length >= MAX_POST_FILES) break;
       }
+
       if (processed.length === 0) return;
       setPreviews((prev) => {
         const next = [...prev, ...processed];
-        // trim to MAX_POST_FILES
         return next.slice(0, MAX_POST_FILES);
       });
     },
@@ -250,8 +271,6 @@ export default function PostUpload() {
   const tryDispatchUploadPost = async (payload: any) => {
     try {
       // try existing thunk first
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore runtime call - allow both styles
       const r = await dispatch(uploadPost(payload));
       // if the thunk returned rejected action, it'll generally throw when using unwrap, but not always.
       return r;
@@ -464,22 +483,22 @@ export default function PostUpload() {
                     <span className="whitespace-pre-wrap">{displayedText}</span>
                   </div>
                 )}
-                <div className="w-full flex gap-3 justify-center items-center px-4 py-2 rounded-2xl border border-[var(--textColor)]/50 bg-[var(--bgColor)]/10">
+                <div className="w-full flex gap-3 justify-center items-center px-4 py-2 rounded-2xl border border-[var(--textColor)]/50 mb-4 bg-[var(--bgColor)]/10">
                   <input
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Enter prompt"
-                    className="w-full border-none outline-none"
+                    className="w-full min-h-[50px] border-none outline-none"
                   />
                   <button
                     disabled={!inputText || aiTextLoading}
                     onClick={handleAiTextGeneration}
-                    className="rounded-full p-1 px-3 text-[var(--bgColor)] bg-[var(--textColor)]"
+                    className="rounded-2xl p-2  text-[var(--bgColor)] bg-[var(--textColor)]"
                   >
                     {aiTextLoading ? (
                       <NewLoader />
                     ) : (
-                      <SendHorizontalIcon strokeWidth={1.5} size={28} />
+                      <ArrowUp strokeWidth={2.5} size={28} />
                     )}
                   </button>
                 </div>
@@ -768,6 +787,14 @@ export default function PostUpload() {
           type="error"
           message={`Video must be less than ${MAX_POST_VIDEO_SECONDS} seconds`}
           onClose={() => setShowVideoDurationError(false)}
+        />
+      )}
+      {showVideoSizeError && (
+        <PopupMessage
+          show={showVideoSizeError}
+          type="error"
+          message={`Video must be under 25mb`}
+          onClose={() => setShowVideoSizeError(false)}
         />
       )}
 
