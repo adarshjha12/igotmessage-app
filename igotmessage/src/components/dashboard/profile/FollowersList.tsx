@@ -38,7 +38,7 @@ const UsersList = ({ users, myId }: UsersListProps) => {
     try {
       if (myId && targetUserId) {
         if (isFollowing[targetUserId]) {
-          await axios.post(
+          const res = await axios.post(
             `${url}/api/profile/follow-toggle`,
             {
               currentUserId: myId,
@@ -47,9 +47,11 @@ const UsersList = ({ users, myId }: UsersListProps) => {
             { withCredentials: true }
           );
 
+          if (res.status === 200) console.log(res.data);
+
           setIsFollowing((prev) => ({ ...prev, [targetUserId]: false }));
         } else {
-          await axios.post(
+          const res = await axios.post(
             `${url}/api/profile/follow-toggle`,
             {
               currentUserId: myId,
@@ -57,6 +59,9 @@ const UsersList = ({ users, myId }: UsersListProps) => {
             },
             { withCredentials: true }
           );
+
+          if (res.status === 200) console.log(res.data);
+
           setIsFollowing((prev) => ({ ...prev, [targetUserId]: true }));
         }
       }
@@ -67,17 +72,17 @@ const UsersList = ({ users, myId }: UsersListProps) => {
 
   useEffect(() => {
     if (users.some((user) => user.followers?.includes(myId))) {
-      users.forEach((user) => {
+      users?.forEach((user) => {
         user.followers?.includes(myId) &&
           setIsFollowing((prev) => ({ ...prev, [user._id]: true }));
       });
     }
     return () => {};
-  }, []);
+  }, [users, myId]);
 
   return (
     <div className="flex flex-col w-full">
-      {users.map((user) => (
+      {users?.map((user) => (
         <div
           key={user._id}
           className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl hover:bg-[var(--bgColor)]/60 transition-all duration-200 group w-full"
@@ -227,7 +232,7 @@ export default function FollowersList({ userId, type }: FollowersListProps) {
           ) : (
             <p className="text-center text-gray-500 py-6">No results found</p>
           )
-        ) : users.length ? (
+        ) : users?.length ? (
           <UsersList users={users} myId={myId} />
         ) : (
           <p className="text-center text-gray-500 py-6">No {type} yet.</p>

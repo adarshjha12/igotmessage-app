@@ -52,6 +52,29 @@ function MusicComponent({
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isActuallyPlaying, setIsActuallyPlaying] = useState(false);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handlePlaying = () => setIsActuallyPlaying(true);
+    const handleWaiting = () => setIsActuallyPlaying(false);
+    const handlePause = () => setIsActuallyPlaying(false);
+    const handleEnded = () => setIsActuallyPlaying(false);
+
+    audio.addEventListener("playing", handlePlaying);
+    audio.addEventListener("waiting", handleWaiting);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("playing", handlePlaying);
+      audio.removeEventListener("waiting", handleWaiting);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, []);
 
   useEffect(() => {
     if (musicSource && audioRef.current) {
@@ -163,11 +186,7 @@ function MusicComponent({
             className="flex flex-col items-center gap-1 sm:gap-0.5 px-3 py-2 sm:px-2 sm:py-1 rounded-xl hover:bg-[var(--borderColor)]/10 transition"
           >
             <div className="flex items-center gap-2 sm:gap-1">
-              <FilterIcon
-                size={22}
-                strokeWidth={1.5}
-                className="sm:size-4"
-              />
+              <FilterIcon size={22} strokeWidth={1.5} className="sm:size-4" />
               <p className="text-lg sm:text-xs font-medium">Filter</p>
             </div>
             <p className="px-2 text-xs sm:text-[10px] border rounded-md border-[var(--borderColor)]">
@@ -275,9 +294,9 @@ function MusicComponent({
                     <Play size={22} className="sm:size-4" />
                   )}
                 </button>
-                {musicSource.index === index && musicSource.playing && (
-                  <AudioBars />
-                )}
+                {musicSource.index === index &&
+                  musicSource.playing &&
+                  (isActuallyPlaying ? <AudioBars /> : <NewLoader color="[var(--textColor)]"/>)}
               </div>
 
               {/* Middle: Song Name */}

@@ -6,11 +6,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {
-  Play,
-  Image as ImageIcon,
-  XIcon,
-} from "lucide-react";
+import { Play, Image as ImageIcon, XIcon } from "lucide-react";
 
 interface PostMediaProps {
   urls: string[];
@@ -31,19 +27,17 @@ export default function PostMedia({ urls }: PostMediaProps) {
   // Multiple media with Swiper
   return (
     <div className="h-fit   overflow-hidden">
-      <Swiper
-      className="w-full max-w-[600px] -z-20   overflow-hidden"
-    >
-      {urls.map((url, i) => (
-        <SwiperSlide key={i}>
-          <MediaItem
-            totalMediaCount={urls.length}
-            mediaIndex={i + 1}
-            url={url}
-          />
-         </SwiperSlide>
-      ))}
-     </Swiper>
+      <Swiper className="w-full max-w-[600px] -z-20   overflow-hidden">
+        {urls.map((url, i) => (
+          <SwiperSlide key={i}>
+            <MediaItem
+              totalMediaCount={urls.length}
+              mediaIndex={i + 1}
+              url={url}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }
@@ -102,34 +96,41 @@ function MediaItem({
   // --- VIDEO ---
   if (isVideo) {
     return (
-      <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 z-0 max-h-[600px] overflow-hidden">
+      <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 max-h-[600px] w-full overflow-hidden">
+        {/* Placeholder while loading */}
         {!loaded && (
           <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
+            Loading...
           </div>
         )}
 
+        {/* Video */}
         <video
           ref={videoRef}
           src={url}
           playsInline
           loop
           onClick={togglePlay}
-          className="w-full z-0 max-w-full object-contain"
+          className={`w-full max-w-full object-contain transition-opacity duration-300 ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
           onLoadedData={() => setLoaded(true)}
         />
 
-        {!playing && (
+        {/* Play button overlay */}
+        {!playing && loaded && (
           <button
             type="button"
             onClick={togglePlay}
-            className="absolute z-20"
+            className="absolute z-10 flex items-center justify-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           >
             <Play className="w-12 h-12 bg-black/30 text-white rounded-full p-2" />
           </button>
         )}
 
+        {/* Media counter */}
         {totalMediaCount && totalMediaCount > 1 && (
-          <div className="absolute rounded-xl top-2 right-2 font-medium text-sm bg-white/80 text-black px-2 py-1  z-30">
+          <div className="absolute top-2 right-2 z-30 rounded-xl bg-white/80 px-2 py-1 font-medium text-sm text-black">
             {mediaIndex}/{totalMediaCount}
           </div>
         )}

@@ -33,8 +33,8 @@ export default function ProfileComponent() {
   const [editProfileClick, setEditProfileClick] = React.useState(false);
   const [showPopup, setShowPopup] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState<
-    "posts" | "reels" | "textPolls"
-  >("posts");
+    "visuals" | "reels" | "textPolls"
+  >("visuals");
 
   const [normalPosts, setNormalPosts] = useState<Post[]>([]);
   const [textAndPollPosts, setTextAndPollPosts] = useState<Post[]>([]);
@@ -179,10 +179,9 @@ export default function ProfileComponent() {
       </div>
 
       {/* Tabs */}
-      {/* Tabs */}
       <div className="flex justify-around mt-6 border-t border-gray-700">
         {[
-          { id: "posts", icon: <Images size={20} />, label: "Visuals" },
+          { id: "visuals", icon: <Images size={20} />, label: "Visuals" },
           { id: "reels", icon: <PlaySquare size={20} />, label: "Reels" },
           { id: "textPolls", icon: <Text size={20} />, label: "Text & Polls" },
         ].map((tab) => (
@@ -209,10 +208,17 @@ export default function ProfileComponent() {
             : "grid grid-cols-3 gap-[1px]"
         } mt-2`}
       >
-        {/* Posts tab → show media posts */}
-        {activeTab === "posts" &&
+        {/* Visuals tab → images only */}
+        {activeTab === "visuals" &&
           normalPosts
-            .filter((p) => p.mediaUrls?.length! > 0) // only media
+            .filter(
+              (p) =>
+                p.mediaUrls?.length! > 0 &&
+                !(
+                  p.mediaUrls?.[0].endsWith(".mp4") ||
+                  p.mediaUrls?.[0].endsWith(".webm")
+                )
+            )
             .map((post) => (
               <Link
                 key={post._id}
@@ -227,10 +233,15 @@ export default function ProfileComponent() {
               </Link>
             ))}
 
-        {/* Reels tab → placeholder for now */}
+        {/* Reels tab → videos only */}
         {activeTab === "reels" &&
           normalPosts
-            .filter((p) => p.mediaUrls?.length! > 0) // later: filter for video type
+            .filter(
+              (p) =>
+                p.mediaUrls?.length! > 0 &&
+                (p.mediaUrls?.[0].endsWith(".mp4") ||
+                  p.mediaUrls?.[0].endsWith(".webm"))
+            )
             .map((post) => (
               <Link
                 key={post._id}

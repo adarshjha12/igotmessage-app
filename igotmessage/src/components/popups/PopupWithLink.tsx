@@ -6,6 +6,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { logOut } from "@/features/authSlice";
 import { useAppDispatch } from "@/store/hooks";
+import { createPortal } from "react-dom";
 
 interface PopupMessageProps {
   message: string;
@@ -28,7 +29,7 @@ const PopupWithLink: React.FC<PopupMessageProps> = ({
   duration = 10000,
   type = "success",
 }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (show && autoClose) {
       const timer = setTimeout(onClose, duration);
@@ -42,7 +43,7 @@ const PopupWithLink: React.FC<PopupMessageProps> = ({
     info: "bg-blue-500/90 text-white",
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {show && (
         <motion.div
@@ -50,7 +51,7 @@ const PopupWithLink: React.FC<PopupMessageProps> = ({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 50, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed top-6 left-1/2 -translate-x-1/2 z-[1000] w-[90%] sm:w-auto"
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-[1000] w-[90%] "
         >
           <div
             className={`flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg ${colors[type]} backdrop-blur-md`}
@@ -58,11 +59,12 @@ const PopupWithLink: React.FC<PopupMessageProps> = ({
             <p className="flex-1 font-medium">{message}</p>
 
             {linkHref && linkText && (
-              <Link onClick={() => {
-                if (linkText === "signup") {
-                  dispatch(logOut())
-                }
-              }}
+              <Link
+                onClick={() => {
+                  if (linkText === "signup") {
+                    dispatch(logOut());
+                  }
+                }}
                 href={linkHref}
                 className="px-3 py-1 rounded-lg bg-white/20 text-white font-medium hover:bg-white/30 transition"
               >
@@ -76,7 +78,8 @@ const PopupWithLink: React.FC<PopupMessageProps> = ({
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
