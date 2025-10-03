@@ -248,9 +248,13 @@ export default function PostItem({
             >
               <div className="w-8 h-8 flex items-center justify-center">
                 {likeClicked ? (
-                  <span className="text-2xl scale-125">🔥</span>
+                  <HeartIcon
+                    size={36}
+                    weight="fill"
+                    className="text-sky-500 scale-125"
+                  />
                 ) : (
-                  <FireIcon
+                  <HeartIcon
                     size={36}
                     weight="regular"
                     className="text-[var(--textColor)] scale-110"
@@ -310,7 +314,7 @@ export default function PostItem({
           <div className="px-2 flex flex-col gap-1 text-[var(--textColor)]">
             {likeCount > 0 && (
               <span className="font-medium">
-                {likeCount} {likeCount === 1 ? "fire" : "fires"}
+                {likeCount} {likeCount === 1 ? "like" : "likes"}
               </span>
             )}
             {post.comments?.length! > 0 && (

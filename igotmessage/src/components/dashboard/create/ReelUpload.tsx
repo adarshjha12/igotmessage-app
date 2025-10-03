@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   X,
   Video,
-  Image,
   Loader2,
   Globe,
   Lock,
@@ -27,7 +26,7 @@ interface MusicData {
   image?: string;
 }
 
-const MAX_REEL_SECONDS = 60;
+const MAX_REEL_SECONDS = 30;
 const MAX_CAPTION = 1000;
 
 export default function ReelUpload() {
@@ -54,17 +53,15 @@ export default function ReelUpload() {
 
   const [posting, setPosting] = useState(false);
   const [videoDurationError, setVideoDurationError] = useState(false);
-  const [libraryClicked, setLibraryClicked] = useState(false);
-  const [musicClicked, setMusicClicked] = useState(false);
+  const [showVideoSizeError, setShowVideoSizeError] = useState(false);
+
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const videoInputRef = useRef<HTMLInputElement | null>(null);
-  const coverInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     return () => {
       if (videoPreview) URL.revokeObjectURL(videoPreview);
-      if (coverPreview) URL.revokeObjectURL(coverPreview);
     };
   }, [videoPreview, coverPreview]);
 
@@ -72,6 +69,10 @@ export default function ReelUpload() {
     if (!list || !list[0]) return;
     const file = list[0];
     if (!file.type.startsWith("video/")) return;
+    if (file.size > 25 * 1024 * 1024) {
+      setShowVideoSizeError(true);
+      return;
+    }
     const url = URL.createObjectURL(file);
 
     const videoEl = document.createElement("video");
@@ -93,16 +94,6 @@ export default function ReelUpload() {
       setVideoDurationError(true);
     };
     videoEl.src = url;
-  };
-
-  const onCoverSelected = (list: FileList | null) => {
-    if (!list || !list[0]) return;
-    const file = list[0];
-    if (!file.type.startsWith("image/")) return;
-    if (coverPreview) URL.revokeObjectURL(coverPreview);
-    const url = URL.createObjectURL(file);
-    setCoverFile(file);
-    setCoverPreview(url);
   };
 
   useEffect(() => {
@@ -269,6 +260,15 @@ export default function ReelUpload() {
           type="error"
           message={`Video must be ${MAX_REEL_SECONDS} seconds or less`}
           onClose={() => setVideoDurationError(false)}
+        />
+      )}
+
+      {showVideoSizeError && (
+        <PopupMessage
+          show={showVideoSizeError}
+          type="error"
+          message={`Video must be under 25mb`}
+          onClose={() => setShowVideoSizeError(false)}
         />
       )}
 

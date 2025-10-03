@@ -64,7 +64,7 @@ function AboutDevPageComponent() {
               Adarsh Kumar Jha
             </p>
             <p className="text-lg sm:text-sm text-muted-foreground">
-              Full Stack Web & React Native Developer
+              Full Stack Developer
             </p>
           </div>
         </div>
