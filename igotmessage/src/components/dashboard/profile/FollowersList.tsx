@@ -35,40 +35,45 @@ const UsersList = ({ users, myId }: UsersListProps) => {
       : process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL;
 
   const handleFollow = async (targetUserId: string) => {
-    try {
-      if (myId && targetUserId) {
-        if (isFollowing[targetUserId]) {
-          const res = await axios.post(
-            `${url}/api/profile/follow-toggle`,
-            {
-              currentUserId: myId,
-              targetUserId: targetUserId,
-            },
-            { withCredentials: true }
-          );
+  if (!myId || !targetUserId) return;
 
-          if (res.status === 200) console.log(res.data);
+  // Save previous state to rollback if needed
+  const prevFollowing = isFollowing[targetUserId];
 
-          setIsFollowing((prev) => ({ ...prev, [targetUserId]: false }));
-        } else {
-          const res = await axios.post(
-            `${url}/api/profile/follow-toggle`,
-            {
-              currentUserId: myId,
-              targetUserId,
-            },
-            { withCredentials: true }
-          );
+  // Optimistically update UI
+  setIsFollowing((prev) => ({
+    ...prev,
+    [targetUserId]: !prevFollowing,
+  }));
 
-          if (res.status === 200) console.log(res.data);
+  try {
+    const res = await axios.post(
+      `${url}/api/profile/follow-toggle`,
+      {
+        currentUserId: myId,
+        targetUserId,
+      },
+      { withCredentials: true }
+    );
 
-          setIsFollowing((prev) => ({ ...prev, [targetUserId]: true }));
-        }
-      }
-    } catch (err) {
-      console.log(err);
+    // Optional: rollback if server response is not OK
+    if (res.status !== 200) {
+      setIsFollowing((prev) => ({
+        ...prev,
+        [targetUserId]: prevFollowing,
+      }));
+      console.error('Follow toggle failed on server:', res.data);
     }
-  };
+  } catch (err) {
+    // Rollback UI on network/error
+    setIsFollowing((prev) => ({
+      ...prev,
+      [targetUserId]: prevFollowing,
+    }));
+    console.error('Error toggling follow:', err);
+  }
+};
+
 
   useEffect(() => {
     if (users.some((user) => user.followers?.includes(myId))) {

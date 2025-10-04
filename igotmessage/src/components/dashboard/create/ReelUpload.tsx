@@ -10,8 +10,6 @@ import {
   UploadIcon,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import StoryTemplates from "@/components/create story/StoryTemplates";
-import MusicComponent from "@/components/create story/MusicComponent";
 import PopupMessage from "@/components/popups/PopupMessages";
 import PopupWithLink from "@/components/popups/PopupWithLink";
 import axios from "axios";
