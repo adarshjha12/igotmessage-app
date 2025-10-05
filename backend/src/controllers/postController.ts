@@ -6,47 +6,62 @@ import { Request, Response } from "express";
 
 export const createPost = async (req: Request, res: Response): Promise<any> => {
   try {
+    console.log("Request body:", req.body);
+    console.log("Files received:", req.files);
+
     const { userId, text, musicData, templateImage, poll, postType, privacy } =
       req.body;
 
     const files = (req.files as Express.Multer.File[]) || [];
+    console.log("Number of uploaded files:", files.length);
 
     const mediaUrls: string[] = [];
 
     if (files.length > 0) {
       for (const file of files) {
-        console.log("Uploading:", file.originalname);
+        console.log("Uploading file:", file.originalname, "size:", file.size);
         const uploadImage = await imagekit.upload({
           file: file.buffer,
           fileName: file.originalname,
         });
+        console.log("Uploaded URL:", uploadImage.url);
         mediaUrls.push(uploadImage.url);
       }
     }
 
     if (templateImage) {
+      console.log("Using template image:", templateImage);
       mediaUrls.push(templateImage);
     }
+
+    console.log("Final media URLs:", mediaUrls);
 
     const post = new Post({
       user: userId,
       mediaUrls: mediaUrls || [],
       templateImage: templateImage || "",
       postType,
-      poll: poll && JSON.parse(poll),
+      poll: poll && poll !== "undefined" ? JSON.parse(poll) : undefined,
       text: text || "",
-      musicData: musicData && JSON.parse(musicData),
+      musicData:
+        musicData && musicData !== "undefined"
+          ? JSON.parse(musicData)
+          : undefined,
       privacy: privacy || "public",
     });
 
+    console.log("Saving post for user:", userId);
     await post.save();
+    console.log("Post saved:", post._id);
 
     await User.findByIdAndUpdate(userId, { $push: { posts: post._id } });
+    console.log("User updated with new post:", userId);
 
     return res
       .status(201)
       .json({ success: true, message: "Post created", post });
   } catch (err) {
+    console.error("Error creating post:", err);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };

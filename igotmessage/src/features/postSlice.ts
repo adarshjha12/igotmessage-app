@@ -94,6 +94,8 @@ export const uploadPost = createAsyncThunk(
       formData.append("poll", JSON.stringify(poll));
     }
 
+    console.log("formData", formData);
+    
     const response = await axios.post(
       `${backendUrl}/api/post/create-post`,
       formData,

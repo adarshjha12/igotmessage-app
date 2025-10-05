@@ -6,7 +6,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Play, Image as ImageIcon, XIcon } from "lucide-react";
+import { Play, Image as ImageIcon, XIcon, Video } from "lucide-react";
 
 interface PostMediaProps {
   urls: string[];
@@ -100,22 +100,21 @@ function MediaItem({
         {/* Placeholder while loading */}
         {!loaded && (
           <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
-            Loading...
+            <Video strokeWidth={1} className="w-18 h-18" />
           </div>
         )}
 
         {/* Video */}
-        <video
-          ref={videoRef}
-          src={url}
-          playsInline
-          loop
-          onClick={togglePlay}
-          className={`w-full max-w-full object-contain transition-opacity duration-300 ${
-            loaded ? "opacity-100" : "opacity-0"
-          }`}
-          onLoadedData={() => setLoaded(true)}
-        />
+        {loaded && (
+          <video
+            ref={videoRef}
+            src={url}
+            playsInline
+            loop
+            onClick={togglePlay}
+            className="w-full max-w-full object-contain transition-opacity duration-300 opacity-100"
+          />
+        )}
 
         {/* Play button overlay */}
         {!playing && loaded && (
@@ -133,6 +132,15 @@ function MediaItem({
           <div className="absolute top-2 right-2 z-30 rounded-xl bg-white/80 px-2 py-1 font-medium text-sm text-black">
             {mediaIndex}/{totalMediaCount}
           </div>
+        )}
+
+        {/* Hidden video loader */}
+        {!loaded && (
+          <video
+            src={url}
+            onLoadedData={() => setLoaded(true)}
+            className="hidden"
+          />
         )}
       </div>
     );

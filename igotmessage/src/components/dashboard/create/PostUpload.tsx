@@ -270,9 +270,7 @@ export default function PostUpload() {
   // dispatch uploadPost with fallback to FormData/axios
   const tryDispatchUploadPost = async (payload: any) => {
     try {
-      // try existing thunk first
       const r = await dispatch(uploadPost(payload));
-      // if the thunk returned rejected action, it'll generally throw when using unwrap, but not always.
       return r;
     } catch (e) {
       // fallback to axios + FormData

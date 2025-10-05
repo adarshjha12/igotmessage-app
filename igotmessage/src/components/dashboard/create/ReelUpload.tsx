@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import {
-  X,
-  Video,
-  Loader2,
-  Globe,
-  Lock,
-  UploadIcon,
-} from "lucide-react";
+import { X, Video, Loader2, Globe, Lock, UploadIcon } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import PopupMessage from "@/components/popups/PopupMessages";
 import PopupWithLink from "@/components/popups/PopupWithLink";
@@ -25,7 +18,6 @@ interface MusicData {
 }
 
 const MAX_REEL_SECONDS = 30;
-const MAX_CAPTION = 1000;
 
 export default function ReelUpload() {
   const dispatch = useAppDispatch();
@@ -37,31 +29,21 @@ export default function ReelUpload() {
 
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
-  const [caption, setCaption] = useState("");
   const [privacy, setPrivacy] = useState<"public" | "private">("public");
-  const [musicData, setMusicData] = useState<MusicData>({
-    title: "",
-    artist: "",
-    genre: "",
-    url: "",
-    image: "",
-  });
+  const [postType, setPostType] = useState<"normal" | "poll">("normal");
 
   const [posting, setPosting] = useState(false);
   const [videoDurationError, setVideoDurationError] = useState(false);
   const [showVideoSizeError, setShowVideoSizeError] = useState(false);
 
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-
   const videoInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     return () => {
       if (videoPreview) URL.revokeObjectURL(videoPreview);
     };
-  }, [videoPreview, coverPreview]);
+  }, [videoPreview]);
 
   const onVideoSelected = (list: FileList | null) => {
     if (!list || !list[0]) return;
@@ -105,20 +87,7 @@ export default function ReelUpload() {
       // try redux thunk
       await dispatch(uploadPost(payload));
     } catch (e) {
-      // fallback to axios FormData
-      const fd = new FormData();
-      if (payload.userId) fd.append("userId", payload.userId);
-      if (payload.text) fd.append("text", payload.text);
-      if (payload.privacy) fd.append("privacy", payload.privacy);
-      fd.append("isReel", "true");
-      if (payload.files && Array.isArray(payload.files)) {
-        payload.files.forEach((f: File) => fd.append("files", f, f.name));
-      }
-      const url =
-        process.env.NODE_ENV === "production"
-          ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/posts`
-          : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/posts`;
-      await axios.post(url, fd);
+      console.log(e);
     }
   };
 
@@ -129,27 +98,20 @@ export default function ReelUpload() {
 
     const payload = {
       userId,
-      text: caption.trim(),
-      files: coverFile ? [videoFile, coverFile] : [videoFile],
+      files: [videoFile],
+      postType,
       privacy,
-      isReel: true,
-      musicData,
     };
 
     try {
+      console.log("payload", payload);
+      
       await tryDispatchUploadPost(payload);
-      setCaption("");
       setVideoFile(null);
       if (videoPreview) {
         URL.revokeObjectURL(videoPreview);
         setVideoPreview(null);
       }
-      setCoverFile(null);
-      if (coverPreview) {
-        URL.revokeObjectURL(coverPreview);
-        setCoverPreview(null);
-      }
-      setMusicData({ title: "", artist: "", genre: "", url: "", image: "" });
     } catch (err) {
       console.error("reel upload fail", err);
       dispatch(setShowPostUploadModal(false));
@@ -164,7 +126,6 @@ export default function ReelUpload() {
       dispatch(setShowPostUploadModal(false));
       setShowSuccessPopup(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postingStatus, postId]);
 
   return (
