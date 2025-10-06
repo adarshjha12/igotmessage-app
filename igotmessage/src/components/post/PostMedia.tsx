@@ -100,9 +100,11 @@ function MediaItem({
         {/* Placeholder while loading */}
         {!loaded && (
           <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
-            <Video strokeWidth={1} className="w-18 h-18" />
+            <div className="flex items-center animate-pulse px-4 border-2 border-[var(--borderColor)] rounded-2xl">
+              <Play strokeWidth={1} className="w-18 h-18" />
+            </div>
           </div>
-        )}
+        )} 
 
         {/* Video */}
         {loaded && (

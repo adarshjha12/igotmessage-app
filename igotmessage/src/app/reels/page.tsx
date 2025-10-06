@@ -1,9 +1,19 @@
+"use client"
+import React from "react";
+import dynamic from "next/dynamic";
+import NewLoader from "@/components/NewLoader";
 
-import ReelsPageComponent from '@/components/reels/ReelsPageComponent'
-import React from 'react'
+const Reels = dynamic(() => import("@/components/reels/ReelsPageComponent"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-screen w-full bg-[var(--bgColor)]">
+      <NewLoader color="[var(--textColor)]" />
+    </div>
+  ),
+});
 
 function Page() {
-  return <ReelsPageComponent/>
+  return <Reels />;
 }
 
-export default Page
+export default Page;

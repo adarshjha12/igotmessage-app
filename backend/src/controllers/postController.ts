@@ -165,6 +165,37 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+export const getReels = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const reels = await Post.find()
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "userName profilePicture isGuest avatar",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      })
+      .populate({
+        path: "whoReposted",
+        select: "userName profilePicture isGuest avatar",
+        match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
+      });
+    const filteredReels = reels.filter(
+      (reel) =>
+        reel.user &&
+        reel.mediaUrls.some((url: string) => url.endsWith(".mp4"))
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Reels found",
+      reels: filteredReels,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 export const toggleLike = async (req: Request, res: Response): Promise<any> => {
   try {
     const { userId, postId } = req.body;

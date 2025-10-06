@@ -305,10 +305,10 @@ body {
 
 @keyframes pulseRing {
   0% {
-    box-shadow: 0 0 8px rgba(0, 157, 255, 0.4);
+    box-shadow: 0 0 8px rgba(0, 157, 255, 0.876);
   }
   50% {
-    box-shadow: 0 0 14px rgba(0, 170, 255, 0.6);
+    box-shadow: 0 0 14px rgba(0, 170, 255, 0.781);
   }
   100% {
     box-shadow: 0 0 8px rgba(0, 136, 255, 0.4);

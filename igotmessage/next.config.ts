@@ -40,6 +40,11 @@ const nextConfig: NextConfig = {
         hostname: 'media.giphy.com',
         pathname: '/**'
       },
+      {
+        protocol: 'https',
+        hostname: 'api.dicebear.com',
+        pathname: '/**'
+      },
     ],
   },
 }
