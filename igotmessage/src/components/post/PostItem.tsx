@@ -12,6 +12,8 @@ import {
   Check,
   Bookmark,
   Repeat2Icon,
+  Download,
+  X,
 } from "lucide-react";
 import { Post } from "./Posts";
 import Link from "next/link";
@@ -36,6 +38,8 @@ import {
   ChatTeardropIcon,
   BookmarkIcon,
   RepeatIcon,
+  ArrowSquareUpRightIcon,
+  ArrowSquareRightIcon,
 } from "@phosphor-icons/react";
 import HighlightHashtags from "./PostText";
 import RepostModal from "./RepostModal";
@@ -62,6 +66,7 @@ export default function PostItem({
   const userId = useAppSelector((state) => state.auth.user._id);
   const [showGuestError, setShowGuestError] = useState(false);
   const bookmarks = useAppSelector((state) => state.auth.user.bookmarks);
+  const [showDownloadPopup, setShowDownloadPopup] = useState(false);
 
   const randomAvatarNames = generateRandomString();
 
@@ -203,14 +208,29 @@ export default function PostItem({
             <MoreVertical className="text-[var(--textColor)]" size={20} />
           </button>
           {showMore && (
-            <div className="absolute z-30 right-0 mt-2 py-4 w-fit bg-blue-600 rounded-lg shadow-lg overflow-hidden">
+            <div className="absolute z-30 right-0 mt-3 w-48 bg-gradient-to-br from-blue-600/90 to-blue-800/90 backdrop-blur-lg border border-white/10 rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
+              {/* Profile Link */}
               <Link
                 href={`/public-profile/${post?.user?._id}/myId/${userId}`}
-                className="w-full flex items-center gap-2 px-3 py-2 text-md font-semibold text-white text-nowrap transition"
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all"
               >
-                <ArrowRightIcon className="-rotate-45" size={24} />
+                <ArrowSquareUpRightIcon className=" w-5 h-5 text-white/80" />
                 View Profile
               </Link>
+
+              {/* Divider */}
+              <div className="h-px bg-white/10 mx-2" />
+
+              {/* Save / Download */}
+              {post.mediaUrls?.[0] && (
+                <button
+                  onClick={() => setShowDownloadPopup(true)}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all"
+                >
+                  <Download className=" w-5 h-5" strokeWidth={1.5} />
+                  Save this media
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -240,7 +260,7 @@ export default function PostItem({
         <div className="w-full mt-3 px-4 text-sm">
           {/* Icons Row */}
           <div className="flex items-center">
-            {/* Like (as Fire) */}
+            {/* Like */}
             <button
               type="button"
               onClick={handleLike}
@@ -323,7 +343,8 @@ export default function PostItem({
                 onClick={() => setCommentOpen((prev) => !prev)}
                 className="hover:underline w-fit"
               >
-                View all {post.comments?.length}{" "}
+                View {post?.comments?.length! > 1 ? "All" : ""}{" "}
+                {post.comments?.length}{" "}
                 {post.comments?.length === 1 ? "comment" : "comments"}
               </button>
             )}
@@ -347,6 +368,45 @@ export default function PostItem({
           show={showGuestError}
           onClose={() => setShowGuestError(false)}
         />
+      )}
+
+      {showDownloadPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-[90%] max-w-md bg-gradient-to-br from-[var(--wrapperColor)]/90 to-gray-800/80 rounded-2xl shadow-2xl border border-white/10 p-6 text-center animate-scaleIn">
+            {/* Title */}
+            <h2 className="text-white text-lg font-semibold mb-2">
+              Download this video?
+            </h2>
+            <p className="text-gray-300 text-sm mb-6">
+              Do you want to save this video to your device?
+            </p>
+
+            {/* Buttons */}
+            <div className="flex justify-center gap-8">
+              <button
+                onClick={() => setShowDownloadPopup(false)}
+                className="px-4 py-1 flex items-center rounded-xl bg-gradient-to-r from-red-400 to-red-800 hover:bg-red-600 transition text-white gap-2 font-semibold shadow-md"
+              >
+                <div className="p-2 rounded-full bg-black/10 flex items-center justify-center">
+                  <X />
+                </div>
+                <span>Cancel</span>
+              </button>
+
+              <a
+                href={post.mediaUrls?.[0]} // <-- your file URL here
+                download
+                onClick={() => setShowDownloadPopup(false)}
+                className="px-4 py-1 flex items-center rounded-xl bg-gradient-to-r from-green-400 to-green-800 hover:bg-green-600 transition text-white gap-2 font-semibold shadow-md"
+              >
+                <div className="p-2 rounded-full bg-black/10 flex items-center justify-center">
+                  <Download />
+                </div>
+                <span>Download</span>
+              </a>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

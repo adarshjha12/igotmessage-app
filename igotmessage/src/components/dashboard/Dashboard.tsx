@@ -72,7 +72,7 @@ function Dashboard({ children }: { children: ReactNode }) {
   );
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
 
-  const userId = useAppSelector((state: RootState) => state.auth.user._id);
+  const myId = useAppSelector((state: RootState) => state.auth.user._id);
 
   const userName = useAppSelector(
     (state: RootState) => state.auth.user.userName
@@ -461,7 +461,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
             {/* REELS */}
             <Link
-              href={`/reels?userId=${userId}`}
+              href={`/reels?myId=${myId}&myPic=${profilePicture || avatar}`}
               className={`font-medium ${
                 sidebarOpen ? "w-full" : "w-fit"
               } gap-2 justify-start px-3 text-xl sm:text-sm py-1 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
@@ -593,7 +593,7 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* third column for desktop starts here */}
           <div className="col-span-1 hidden w-full sticky top-2 lg:block my-2 mx-2">
             <div className="overflow-y-auto max-h-[90vh]">
-              <FollowersList userId={userId} type="people" />
+              <FollowersList userId={myId} type="people" />
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ import { useAppSelector } from "@/store/hooks";
 export default function BottomNav({ pathname }: { pathname: string }) {
 
    const avatar = useAppSelector((state) => state.auth.user.avatar);
-  const userId = useAppSelector((state) => state.auth.user._id);
+  const myId = useAppSelector((state) => state.auth.user._id);
   const profilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
   );
@@ -28,7 +28,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
     { href: "/dash/feed", icon: HouseIcon },
     { href: "/dash/chats", icon: ChatsCircleIcon },
     { href: "/dash/create", icon: PlusSquareIcon },
-    { href: `/reels?userId=${userId}`, icon: PlayCircleIcon },
+    { href: `/reels?myId=${myId}&myPic=${profilePicture || avatar}`, icon: PlayCircleIcon },
     { href: "/dash/calls", icon: PhoneIcon },
     { href: "/dash/profile", icon: UserIcon },
   ];

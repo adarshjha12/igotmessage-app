@@ -45,7 +45,7 @@ interface CommentType {
   replies?: ReplyType[];
 }
 
-export default function Comment({ postId }: { postId: string }) {
+export default function Comment({ postId, myPic }: { postId: string, myPic?: string }) {
   const userId = useAppSelector((state) => state.auth.user._id);
   const isGuest = useAppSelector((state) => state.auth.user.isGuest);
   const [showGuestError, setShowGuestError] = useState(false);
@@ -167,6 +167,8 @@ export default function Comment({ postId }: { postId: string }) {
     if (postId) {
       getComments(postId);
     }
+    console.log("myPic", myPic);
+    
     return () => {};
   }, [postId]);
 
@@ -200,7 +202,7 @@ export default function Comment({ postId }: { postId: string }) {
               />
             ) : (
               <img
-                src={avatar!}
+                src={avatar! || myPic}
                 alt={"user"}
                 className="w-8 h-8 rounded-full object-cover"
               />
