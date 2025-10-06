@@ -461,7 +461,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
             {/* REELS */}
             <Link
-              href="/reels"
+              href={`/reels?userId=${userId}`}
               className={`font-medium ${
                 sidebarOpen ? "w-full" : "w-fit"
               } gap-2 justify-start px-3 text-xl sm:text-sm py-1 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${

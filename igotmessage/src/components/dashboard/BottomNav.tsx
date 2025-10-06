@@ -17,19 +17,23 @@ import {
 import { useAppSelector } from "@/store/hooks";
 
 export default function BottomNav({ pathname }: { pathname: string }) {
+
+   const avatar = useAppSelector((state) => state.auth.user.avatar);
+  const userId = useAppSelector((state) => state.auth.user._id);
+  const profilePicture = useAppSelector(
+    (state) => state.auth.user.profilePicture
+  );
+
   const navItems = [
     { href: "/dash/feed", icon: HouseIcon },
     { href: "/dash/chats", icon: ChatsCircleIcon },
     { href: "/dash/create", icon: PlusSquareIcon },
-    { href: "/reels", icon: PlayCircleIcon },
+    { href: `/reels?userId=${userId}`, icon: PlayCircleIcon },
     { href: "/dash/calls", icon: PhoneIcon },
     { href: "/dash/profile", icon: UserIcon },
   ];
 
-  const avatar = useAppSelector((state) => state.auth.user.avatar);
-  const profilePicture = useAppSelector(
-    (state) => state.auth.user.profilePicture
-  );
+ 
 
   return (
     <nav className="fixed -bottom-1 left-0 w-full flex items-center justify-between pb-3
