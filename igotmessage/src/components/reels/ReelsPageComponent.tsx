@@ -50,7 +50,7 @@ export default function Reels() {
   }, [reels]);
 
   return (
-    <div className="h-screen w-full flex justify-center bg-black/80">
+    <div className="h-[100dvh] w-full flex justify-center bg-black/80">
       <div className="h-full relative w-full sm:w-[80%] md:w-[70%] lg:w-[50%]">
         <button
           type="button"
