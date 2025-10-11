@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { MessageSquare, CheckCheck } from "lucide-react";
+import Link from "next/link";
 
 export default function ChatList() {
   const chats = [
@@ -44,7 +45,8 @@ export default function ChatList() {
       {/* Chat list */}
       <div className="flex flex-col gap-3">
         {chats.map((chat) => (
-          <div
+          <Link
+          href={`/dash/chats/${chat.id}`}
             key={chat.id}
             className="flex items-center justify-between p-3 rounded-2xl bg-white/5 backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
           >
@@ -81,7 +83,7 @@ export default function ChatList() {
                 <CheckCheck className="w-4 h-4 text-gray-400" />
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

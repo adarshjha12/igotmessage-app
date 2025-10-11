@@ -152,7 +152,7 @@ export default function PostItem({
       )}
 
       {/* --- Header (original post user) --- */}
-      <div className="flex items-center justify-between px-4 mb-2">
+      <div className="flex items-center  justify-between px-4 mb-2">
         <div className="flex items-center gap-3">
           <Link href={`/public-profile/${post?.user?._id}/myId/${userId}`}>
             {post.user?.profilePicture ? (

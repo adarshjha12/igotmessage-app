@@ -192,7 +192,11 @@ function Dashboard({ children }: { children: ReactNode }) {
     bg-[var(--bgColor)]/80 backdrop-blur-lg
     
     shadow-sm
-    duration-300
+    duration-300 ${
+      pathname.includes("/dash/chats") || pathname.includes("/dash/calls")
+        ? "hidden"
+        : ""
+    }
   `}
           >
             {/* Left section: back button + title */}
@@ -221,7 +225,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/create"
                   ? "Create"
                   : pathname === "/dash/chats"
-                  ? "Messages"
+                  ? "Chats"
                   : pathname === "/reels"
                   ? "Reels"
                   : pathname === "/dash/calls"

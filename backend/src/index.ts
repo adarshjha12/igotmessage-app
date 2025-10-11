@@ -24,10 +24,14 @@ import logOutRouter from "./routers/logOutRoute";
 import aiTextGenRouter from "./routers/aiTextGenRoute";
 import searchRouter from "./routers/searchRoute";
 import { User } from "./models/userModel";
+import InitSocket from "./services/socket";
+import http from "http";
 // import webhookRouter from "./routers/webhookRoute";
 
 const PORT = process.env.PORT;
 const app = express();
+const server = http.createServer(app)
+const socketService = new InitSocket();
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -77,6 +81,8 @@ app.use("/api/logout", logOutRouter);
 app.use("/api/text/ai", aiTextGenRouter);
 app.use("/api/search", searchRouter);
 
+socketService.io.attach(server)
+
 app.get("/", (req, res) => {
   res.json({ mesage: "welcome to igotmessage" });
 });
@@ -91,6 +97,6 @@ setInterval(async () => {
   console.log("Redis pinged to keep alive");
 }, 1000 * 60 * 60 * 24 * 3);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`running on ${PORT}`);
 });
