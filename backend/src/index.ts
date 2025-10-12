@@ -30,7 +30,7 @@ import http from "http";
 
 const PORT = process.env.PORT;
 const app = express();
-const server = http.createServer(app)
+const server = http.createServer(app);
 const socketService = new InitSocket();
 
 const allowedOrigins = [
@@ -61,7 +61,6 @@ app.use(
   })
 );
 
-
 app.use(cookieParser());
 app.use(express.json());
 
@@ -81,7 +80,9 @@ app.use("/api/logout", logOutRouter);
 app.use("/api/text/ai", aiTextGenRouter);
 app.use("/api/search", searchRouter);
 
-socketService.io.attach(server)
+socketService.io.attach(server, {
+  cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
+});
 socketService.initListners();
 
 app.get("/", (req, res) => {

@@ -31,6 +31,7 @@
     "react-redux": "^9.2.0",
     "react-string-replace": "^1.1.1",
     "react-textarea-autosize": "^8.5.9",
+    "socket.io-client": "^4.8.1",
     "swiper": "^11.2.6",
     "tailwind-merge": "^3.3.0",
     "tailwind-scrollbar": "^4.0.2",

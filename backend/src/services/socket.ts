@@ -15,7 +15,7 @@ class InitSocket {
   public initListners() {
     const io = this.io;
     io.on("connect", (socket) => {
-      console.log("socket connected");
+      console.log("socket connected", socket.id);
 
       socket.on("event:message", async ({ message }: { message: string }) => {
         console.log(`new message recieved: ${message}`);
