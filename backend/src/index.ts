@@ -82,6 +82,7 @@ app.use("/api/text/ai", aiTextGenRouter);
 app.use("/api/search", searchRouter);
 
 socketService.io.attach(server)
+socketService.initListners();
 
 app.get("/", (req, res) => {
   res.json({ mesage: "welcome to igotmessage" });
