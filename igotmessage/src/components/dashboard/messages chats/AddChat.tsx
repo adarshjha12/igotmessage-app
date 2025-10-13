@@ -7,12 +7,12 @@ export default function FloatingAddChat({ onClick }: { onClick: () => void }) {
       className="
         fixed bottom-20 right-6
         w-14 h-14
-        bg-green-500
+        bg-blue-500
         text-white
         rounded-2xl
         shadow-lg
         flex items-center justify-center
-        hover:bg-green-600
+        hover:bg-blue-600
         active:scale-95
         transition
         duration-200

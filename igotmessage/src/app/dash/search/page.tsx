@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useAppSelector } from "@/store/hooks";
 
 const PeopleList = dynamic(
-  () => import("@/components/dashboard/profile/FollowersList"),
+  () => import("@/components/dashboard/profile/AllUsers"),
   {
     ssr: false,
     loading: () => (

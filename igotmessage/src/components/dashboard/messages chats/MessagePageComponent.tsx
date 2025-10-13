@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { MessageSquare, CheckCheck } from "lucide-react";
+import { MessageSquare, CheckCheck, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import axios from "axios";
 import NoChats from "./NoChats";
 import AddChatButton from "./AddChat";
 import AnimatedChatTabs from "./ChatTabs";
+import FollowersList from "../profile/AllUsers";
 
 interface Chat {
   _id: string;
@@ -33,6 +34,7 @@ interface Chat {
 
 export default function ChatList() {
   const myId = useAppSelector((state) => state.auth.user._id);
+  const [addChatClicked, setAddChatClicked] = useState(false);
 
   const url =
     process.env.NODE_ENV === "production"
@@ -40,7 +42,11 @@ export default function ChatList() {
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
   const [chats, setChats] = useState<Chat[] | null>(null);
+  const [groups, setGroups] = useState<[] | null>(null);
+  const [calls, setCalls] = useState<[] | null>(null);
+
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("chats");
 
   useEffect(() => {
     const socket = io(url);
@@ -61,9 +67,9 @@ export default function ChatList() {
 
   return (
     <div className="w-full h-screen bg-[var(--bgColor)] text-[var(--textColor)] py-2">
-      <AnimatedChatTabs/>
+      <AnimatedChatTabs setTab={setActiveTab} />
       {loading && <div>Loading...</div>}
-      {chats !== null  ? (
+      {chats !== null && (
         <div>
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
@@ -118,13 +124,28 @@ export default function ChatList() {
             ))}
           </div>
         </div>
-      ) : (
-        <NoChats/>
       )}
 
+      {/* No chats, groups, calls available */}
+
+      {(!chats || !groups || !calls) && <NoChats tabName={activeTab} />}
+
       <div>
-        <AddChatButton onClick={() => {}} />
+        <AddChatButton onClick={() => setAddChatClicked(!addChatClicked)} />
       </div>
+      {addChatClicked && (
+        <div className="fixed top-0 left-0 w-full h-full bg-[var(--bgColor)] z-50 flex flex-col items-center justify-center">
+          <button
+            onClick={() => setAddChatClicked(false)}
+            type="button"
+           className=" pt-4 active:scale-90 transition pl-3 w-full flex items-center justify-start">
+            {/* Back button */}
+            <ChevronLeft/>
+            Go Back
+          </button>
+          <FollowersList userId={myId} type="chats"/>
+        </div>
+      )}
     </div>
   );
 }

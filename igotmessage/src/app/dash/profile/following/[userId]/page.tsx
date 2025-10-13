@@ -5,7 +5,7 @@ import NewLoader from "@/components/NewLoader";
 import { useParams } from "next/navigation";
 
 const FollowingsList = dynamic(
-  () => import("@/components/dashboard/profile/FollowersList"),
+  () => import("@/components/dashboard/profile/AllUsers"),
   {
     ssr: false,
     loading: () => (

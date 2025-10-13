@@ -51,7 +51,7 @@ import {
   setUploadPostStatus,
 } from "@/features/postSlice";
 import BottomNav from "./BottomNav";
-import FollowersList from "./profile/FollowersList";
+import FollowersList from "./profile/AllUsers";
 import UploadPostModal from "../modals/UploadPostModal";
 import PopupWithLink from "../popups/PopupWithLink";
 
