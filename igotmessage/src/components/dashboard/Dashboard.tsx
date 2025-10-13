@@ -165,14 +165,14 @@ function Dashboard({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`w-full z-20 h-full bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}
+      className={`w-full z-20 min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}
     >
       <div
-        className={` w-full flex items-start justify-center transition-colors duration-200 relative `}
+        className={` w-full h-full flex items-start justify-center transition-colors duration-200 relative `}
       >
         <div
           className={`
-    w-full grid grid-cols-1 sm:gap-2 
+    w-full min-h-screen grid grid-cols-1 sm:gap-2 
     justify-items-stretch sm:justify-items-center
     items-center sm:items-start
     ${
@@ -582,7 +582,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* main starts here (2nd column for desktop) */}
           <main
-            className={`pb-10 w-full lg:pt-2 sm:px-4 px-0 flex flex-col overflow-x-hidden justify-center items-center col-span-1`}
+            className={` h-full w-full lg:pt-2 sm:px-4 px-0 flex flex-col overflow-x-hidden justify-start items-center col-span-1`}
           >
             {children}
           </main>

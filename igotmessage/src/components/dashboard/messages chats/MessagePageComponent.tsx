@@ -66,7 +66,7 @@ export default function ChatList() {
   }, []);
 
   return (
-    <div className="w-full h-screen bg-[var(--bgColor)] text-[var(--textColor)] py-2">
+    <div className="w-full h-full bg-[var(--bgColor)] text-[var(--textColor)] py-2">
       <AnimatedChatTabs setTab={setActiveTab} />
       {loading && <div>Loading...</div>}
       {chats !== null && (
