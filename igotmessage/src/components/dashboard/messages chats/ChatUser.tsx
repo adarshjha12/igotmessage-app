@@ -252,7 +252,7 @@ function ChatUser() {
           <button className="p-2 rounded-full hover:bg-white/10 transition">
             <Mic size={22} />
           </button>
-          <button className="p-3 bg-blue-600 text-white rounded-full hover:bg-green-600 transition">
+          <button className="p-3 bg-blue-600 text-white rounded-full hover:bg-green-600 transition-all ease-in duration-100 active:bg-amber-600 active:scale-90">
             <PaperPlaneRightIcon weight="fill" fill="#fff" size={18} />
           </button>
         </div>
