@@ -2,8 +2,8 @@ import { LucideMessageSquareWarning, MessageSquare, MessageSquareDashed } from "
 
 export default function NoChats({tabName}: {tabName: string}) {
   return (
-    <div className="flex flex-col items-center justify-center h-[80vh] text-[var(--textColor)] p-2 ">
-      <div className=" rounded-4xl py-4 px-8  mb-4  bg-[var(--wrapperColor)]">
+    <div className="flex flex-col items-center justify-start h-[80vh] text-[var(--textColor)] p-2 ">
+      <div className=" rounded-4xl py-4 px-8 mt-12 mb-4  bg-[var(--wrapperColor)]">
         <LucideMessageSquareWarning strokeWidth={1} className="w-38 h-38 text-[var(--textColor)]/60" />
       </div>
       <div className="text-center text-xl font-semibold">

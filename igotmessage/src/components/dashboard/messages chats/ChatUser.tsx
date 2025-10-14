@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Send,
   Paperclip,
   Smile,
   Phone,
@@ -13,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
+import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
 
 function ChatUser() {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
@@ -130,7 +130,7 @@ function ChatUser() {
               addReply("It’s going amazing! I just added stories 🎉")
             }
           >
-            <div className="chat-tail-left max-w-xs md:max-w-sm px-4 text-white py-2 rounded-2xl backdrop-blur-xl bg-green-700 shadow-md relative">
+            <div className="chat-tail-left max-w-xs md:max-w-sm px-4 text-white py-2 rounded-2xl backdrop-blur-xl bg-blue-600 shadow-md relative">
               <p>It’s going amazing! I just added stories 🎉</p>
               <span className="text-[10px] opacity-60 block text-right mt-1">
                 10:21 AM <span className="ml-1">✔✔</span>
@@ -149,9 +149,7 @@ function ChatUser() {
                 ))}
               </div>
             </div>
-          </div>
-
-         
+          </div>         
 
           {/* Typing Indicator */}
           {typing && (
@@ -219,10 +217,10 @@ function ChatUser() {
       </div>
 
       {/* Input Box */}
-      <div className="border-t border-white/10 backdrop-blur-lg bg-white/5 sticky bottom-[56px]  z-10 py-4 px-3">
+      <div className="border-t border-white/10 backdrop-blur-lg bg-[var(--borderColor)]/10 fixed w-full left-0 md:sticky bottom-[56px]  z-10 pb-5 pt-3 px-3">
         <div className="flex items-center gap-2">
           {/* Hidden file input */}
-          <label className="p-2 rounded-full hover:bg-white/10 transition cursor-pointer">
+          <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/10 transition cursor-pointer">
             <Paperclip size={22} />
             <input
               type="file"
@@ -243,15 +241,15 @@ function ChatUser() {
                 160
               )}px`; // 160px = max-h-40
             }}
-            className="flex-1 scroll-hidden px-4 py-2 min-h-[44px] max-h-40 resize-none rounded-2xl outline-none bg-[var(--wrapperColor)] border border-[var(--borderColor)]/30 backdrop-blur-lg placeholder-[var(--textColor)]/60 text-lg placeholder:text-lg overflow-y-auto"
+            className="flex-1 scroll-hidden px-4 py-2 min-h-[44px] max-h-40 resize-none rounded-2xl outline-none bg-[var(--bgColor)] border border-[var(--borderColor)]/30 backdrop-blur-lg placeholder-[var(--textColor)]/60 text-lg placeholder:text-lg overflow-y-auto"
           ></textarea>
 
           {/* Mic or Send button */}
           <button className="p-2 rounded-full hover:bg-white/10 transition">
             <Mic size={22} />
           </button>
-          <button className="p-2 rounded-full hover:bg-white/10 transition">
-            <Send size={22} />
+          <button className="p-3 bg-blue-600 text-white rounded-full hover:bg-green-600 transition">
+            <PaperPlaneRightIcon weight="fill" fill="#fff" size={18} />
           </button>
         </div>
       </div>
