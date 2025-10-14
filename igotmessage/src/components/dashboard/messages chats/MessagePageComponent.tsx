@@ -138,7 +138,7 @@ export default function ChatList() {
           <button
             onClick={() => setAddChatClicked(false)}
             type="button"
-           className=" pt-4 active:scale-90 transition pl-3 w-full flex items-center justify-start">
+           className=" pt-4 active:scale-90 transition-all ease-in-out duration-300 pl-3 w-full flex items-center text-red-500 hover:text-green-600 hover:scale-110 origin-left font-semibold justify-start text-xl">
             {/* Back button */}
             <ChevronLeft/>
             Go Back

@@ -13,8 +13,12 @@ import {
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
+import { useSearchParams } from "next/navigation";
 
 function ChatUser() {
+  const queryParam = useSearchParams()
+  const avatar = queryParam.get("avatar");
+  const userName = queryParam.get("userName");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const [typing, setTyping] = useState(true);
   const [preview, setPreview] = useState<{ url: string; type: string } | null>({
@@ -48,16 +52,16 @@ function ChatUser() {
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <button className="p-2 rounded-full hover:bg-white/10 transition">
+          <button onClick={() => window.history.back()} className="p-2 rounded-full hover:bg-white/10 transition">
             <ArrowLeft size={22} />
           </button>
           <img
-            src="https://via.placeholder.com/40"
+            src={avatar!}
             alt="user"
             className="w-10 h-10 rounded-full border border-white/20"
           />
           <div>
-            <h2 className="text-base font-semibold">John Doe</h2>
+            <h2 className="text-base font-semibold">{userName}</h2>
             <p className="text-xs opacity-70">
               {typing ? "typing..." : "online"}
             </p>
@@ -94,7 +98,7 @@ function ChatUser() {
             onDoubleClick={() => addReply("Hey! How’s your app going? 🚀")}
           >
             <img
-              src="https://via.placeholder.com/35"
+              src={avatar!}
               alt="avatar"
               className="w-8 h-8 rounded-full border border-white/20"
             />
@@ -155,7 +159,7 @@ function ChatUser() {
           {typing && (
             <div className="flex items-start gap-2">
               <img
-                src="https://via.placeholder.com/35"
+                src={avatar!}
                 alt="avatar"
                 className="w-8 h-8 rounded-full border border-white/20"
               />
