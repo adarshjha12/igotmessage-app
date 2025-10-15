@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Paperclip,
   Smile,
@@ -12,9 +12,8 @@ import {
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
-import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
+import {  PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
-import ChatInput from "./ChatInput";
 
 function ChatUser() {
   const queryParam = useSearchParams();
@@ -48,6 +47,10 @@ function ChatUser() {
   const cancelReply = () => setReplyTo(null);
 
   const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
+
+  useEffect(() => {
+   
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col ">
@@ -146,7 +149,7 @@ function ChatUser() {
               </span>
 
               {/* Reaction bar */}
-              <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+              {/* <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
                 {reactions.map((r, i) => (
                   <button
                     key={i}
@@ -156,12 +159,12 @@ function ChatUser() {
                     {r}
                   </button>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Typing Indicator */}
-          {typing && (
+          {/* {typing && (
             <div className="flex items-start gap-2">
               <img
                 src={avatar!}
@@ -174,10 +177,10 @@ function ChatUser() {
                 <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce delay-300"></span>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* File Preview */}
-          {preview && (
+          {/* {preview && (
             <div className="p-3 flex items-center gap-3 border-t border-white/10 backdrop-blur-lg bg-white/5">
               {preview.url !== "" && (
                 <div>
@@ -203,10 +206,10 @@ function ChatUser() {
                 <X size={20} />
               </button>
             </div>
-          )}
+          )} */}
 
           {/* Reply Preview */}
-          {replyTo && (
+          {/* {replyTo && (
             <div className="px-4 py-2 border-t border-white/10 backdrop-blur-lg bg-white/5 flex justify-between items-center">
               <div className="flex items-center gap-2 text-sm">
                 <Reply size={18} />
@@ -221,7 +224,7 @@ function ChatUser() {
                 <X size={18} />
               </button>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
@@ -239,7 +242,7 @@ function ChatUser() {
             />
           </label>
 
-          {/* <textarea
+          <textarea
             ref={textareaRef}
             rows={1}
             placeholder="Type a message..."
@@ -257,8 +260,7 @@ function ChatUser() {
               )}px`; // 160px = max-h-40
             }}
             className="flex-1 scroll-hidden px-4 py-2 min-h-[44px] max-h-40 resize-none rounded-2xl outline-none bg-[var(--bgColor)] border border-[var(--borderColor)]/30 backdrop-blur-lg placeholder-[var(--textColor)]/60 text-lg placeholder:text-lg overflow-y-auto"
-          ></textarea> */}
-          <ChatInput/>
+          ></textarea>
 
           {/* Mic or Send button */}
           <button className="p-2 rounded-full hover:bg-white/10 transition">

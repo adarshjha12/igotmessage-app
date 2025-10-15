@@ -1,5 +1,5 @@
 import express from 'express'
-import logOut from '../controllers/logOutController'
+import logOut from '../controllers/profile/logOutController'
 
 const logOutRouter = express.Router()
 

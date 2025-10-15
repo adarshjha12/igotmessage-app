@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import '../services/googleOauth';
+import '../../services/googleOauth';
 import { handleGoogleRedirect } from '../controllers/googleOauthController';
 
 const gAuthRouter = express.Router();

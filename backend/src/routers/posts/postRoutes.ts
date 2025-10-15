@@ -10,7 +10,7 @@ import {
   toggleBookmark,
   toggleLike,
 } from "../controllers/postController";
-import upload from "../middlewares/multer";
+import upload from "../../middlewares/multer";
 
 const postRouter = express.Router();
 

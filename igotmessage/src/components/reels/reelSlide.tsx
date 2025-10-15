@@ -182,27 +182,17 @@ export default function ReelSlide({ reel }: { reel: Post }) {
         onLoadedData={() => setLoaded(true)}
       />
 
-      <div
+      <button
+        type="button"
+        onClick={handlePlayPause}
         className="absolute inset-0 flex items-center justify-center"
-        onClick={(e) => {
-          // Avoid triggering if user dragged
-          if (e.detail === 1) handlePlayPause();
-        }}
-        onTouchStart={(e: React.TouchEvent<HTMLDivElement>) =>
-          (e.currentTarget.dataset.startTime = Date.now().toString())
-        }
-        onTouchEnd={(e) => {
-          const startTime = Number(e.currentTarget.dataset.startTime);
-          const duration = Date.now() - startTime;
-          if (duration < 150) handlePlayPause();
-        }}
       >
         {!isPlaying && loaded && (
-          <div className="flex items-center justify-center p-4 bg-black/30 rounded-full pointer-events-none">
+          <div className="flex items-center p-4 bg-black/30 rounded-full">
             <Play strokeWidth={1.5} className="w-12 text-white h-12" />
           </div>
         )}
-      </div>
+      </button>
 
       <Link
         href={`/public-profile/${reel?.user?._id}/myId/${myId}`}
@@ -359,6 +349,7 @@ export default function ReelSlide({ reel }: { reel: Post }) {
                 <span>Download</span>
               </a>
             </div>
+           
           </div>
         </div>
       )}
