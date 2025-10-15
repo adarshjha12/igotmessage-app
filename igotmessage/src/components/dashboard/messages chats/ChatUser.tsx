@@ -14,6 +14,7 @@ import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
+import ChatInput from "./ChatInput";
 
 function ChatUser() {
   const queryParam = useSearchParams();
@@ -226,7 +227,7 @@ function ChatUser() {
 
       {/* Input Box */}
       <div className="border-t border-white/10 backdrop-blur-lg bg-[var(--borderColor)]/10 fixed w-full left-0 md:sticky bottom-[56px]  z-10 pb-5 pt-3 px-3">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           {/* Hidden file input */}
           <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/10 transition cursor-pointer">
             <Paperclip size={22} />
@@ -238,7 +239,7 @@ function ChatUser() {
             />
           </label>
 
-          <textarea
+          {/* <textarea
             ref={textareaRef}
             rows={1}
             placeholder="Type a message..."
@@ -256,7 +257,8 @@ function ChatUser() {
               )}px`; // 160px = max-h-40
             }}
             className="flex-1 scroll-hidden px-4 py-2 min-h-[44px] max-h-40 resize-none rounded-2xl outline-none bg-[var(--bgColor)] border border-[var(--borderColor)]/30 backdrop-blur-lg placeholder-[var(--textColor)]/60 text-lg placeholder:text-lg overflow-y-auto"
-          ></textarea>
+          ></textarea> */}
+          <ChatInput/>
 
           {/* Mic or Send button */}
           <button className="p-2 rounded-full hover:bg-white/10 transition">
