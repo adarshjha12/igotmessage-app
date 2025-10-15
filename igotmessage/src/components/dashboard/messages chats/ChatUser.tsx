@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Paperclip,
   Smile,
@@ -16,7 +16,8 @@ import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 
 function ChatUser() {
-  const queryParam = useSearchParams()
+  const queryParam = useSearchParams();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
@@ -52,7 +53,10 @@ function ChatUser() {
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <button onClick={() => window.history.back()} className="p-2 rounded-full hover:bg-white/10 transition">
+          <button
+            onClick={() => window.history.back()}
+            className="p-2 rounded-full hover:bg-white/10 transition"
+          >
             <ArrowLeft size={22} />
           </button>
           <img
@@ -153,7 +157,7 @@ function ChatUser() {
                 ))}
               </div>
             </div>
-          </div>         
+          </div>
 
           {/* Typing Indicator */}
           {typing && (
@@ -235,9 +239,15 @@ function ChatUser() {
           </label>
 
           <textarea
-            // ref={textareaRef}
+            ref={textareaRef}
             rows={1}
             placeholder="Type a message..."
+            onFocus={(e) => {
+              textareaRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }}
             onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               e.target.style.height = "auto";
               e.target.style.height = `${Math.min(
