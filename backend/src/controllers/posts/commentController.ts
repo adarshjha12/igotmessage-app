@@ -1,8 +1,8 @@
 import path from "path";
-import { Comment } from "../models/commentModel";
-import { Post } from "../models/postModel";
+import { Comment } from "../../models/commentModel";
+import { Post } from "../../models/postModel";
 import { Request, Response } from "express";
-import { User } from "../models/userModel";
+import { User } from "../../models/userModel";
 
 export const addComment = async (req: Request, res: Response): Promise<any> => {
   try {

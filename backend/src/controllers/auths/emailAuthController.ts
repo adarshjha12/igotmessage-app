@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { getOtpEmailHtml } from "../utils/loadTemplate";
-import { User } from "../models/userModel";
-import client from "../services/redisClient";
-import apiInstance from "../services/brevoClient";
+import { getOtpEmailHtml } from "../../utils/loadTemplate";
+import { User } from "../../models/userModel";
+import client from "../../services/redisClient";
+import apiInstance from "../../services/brevoClient";
 
 const generateOTP = (): string =>
   Math.floor(1000 + Math.random() * 9000).toString();

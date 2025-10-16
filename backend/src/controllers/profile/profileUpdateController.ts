@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import imagekit from "../utils/imagekitConfig";
-import { User } from "../models/userModel";
+import imagekit from "../../utils/imagekitConfig";
+import { User } from "../../models/userModel";
 import mongoose from "mongoose";
 
 const profileUpdateController = async (

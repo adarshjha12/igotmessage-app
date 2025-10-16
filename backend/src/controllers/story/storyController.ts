@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { Story } from "../models/storyModel";
-import imagekit from "../utils/imagekitConfig";
+import { Story } from "../../models/storyModel";
+import imagekit from "../../utils/imagekitConfig";
 
 const storyUploadController = async (
   req: Request,

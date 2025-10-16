@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "../models/userModel";
+import { User } from "../../models/userModel";
 
 export async function getAllPeople(req: Request, res: Response): Promise<any> {
   const userId = req.query.userId;

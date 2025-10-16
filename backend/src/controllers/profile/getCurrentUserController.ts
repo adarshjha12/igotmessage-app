@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/userModel';
+import { User } from '../../models/userModel';
 
 interface UserPayload {
   id?: number;

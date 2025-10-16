@@ -1,5 +1,5 @@
 import express from 'express'
-import handleGuestAuth from '../controllers/guestAuthController'
+import handleGuestAuth from '../../controllers/auths/guestAuthController'
 
 const guestRouter = express.Router()
 

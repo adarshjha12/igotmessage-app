@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { sendOtp, verifyOtp, testRedis } from '../controllers/emailAuthController';
+import { sendOtp, verifyOtp, testRedis } from '../../controllers/auths/emailAuthController';
 
 const emailAuthRouter = Router();
 

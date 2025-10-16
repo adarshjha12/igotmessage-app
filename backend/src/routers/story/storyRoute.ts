@@ -1,5 +1,5 @@
 import express from 'express'
-import  {storyUploadController, getMyStoryController, getOtherStoryController, getStoryByIdController}  from '../../controllers/storyController'
+import  {storyUploadController, getMyStoryController, getOtherStoryController, getStoryByIdController}  from '../../controllers/story/storyController'
 import upload from "../../middlewares/multer";
 
 const storyRouter = express.Router()

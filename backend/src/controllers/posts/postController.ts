@@ -1,6 +1,6 @@
-import { User } from "../models/userModel";
-import { Post } from "../models/postModel";
-import imagekit from "../utils/imagekitConfig";
+import { User } from "../../models/userModel";
+import { Post } from "../../models/postModel";
+import imagekit from "../../utils/imagekitConfig";
 
 import { Request, Response } from "express";
 

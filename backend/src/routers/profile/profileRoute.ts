@@ -1,7 +1,7 @@
 import express from "express";
-import profileUpdateController, { getProfile, toggleFollow } from "../controllers/profileUpdateController";
+import profileUpdateController, { getProfile, toggleFollow } from "../../controllers/profile/profileUpdateController";
 import upload from "../../middlewares/multer";
-import followerController from "../controllers/followerController";
+import followerController from "../../controllers/profile/followerController";
 
 const profileRouter = express.Router();
 

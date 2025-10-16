@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import {User} from '../models/userModel';
+import { User } from '../../models/userModel';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const redirectUrl =

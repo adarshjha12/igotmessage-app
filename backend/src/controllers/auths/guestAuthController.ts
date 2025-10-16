@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { User } from "../models/userModel";
+import { User } from "../../models/userModel";
 import jwt from "jsonwebtoken";
-import { generateRandomString } from "../utils/apis";
 
 let randomNumber: number;
 let randomAvatarNums: number;

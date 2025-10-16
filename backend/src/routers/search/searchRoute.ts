@@ -1,5 +1,5 @@
 import express from "express";
-import {searchAllPeople, getAllPeople, searchFollowers, searchFollowing} from "../../controllers/searchController";
+import {searchAllPeople, getAllPeople, searchFollowers, searchFollowing} from "../../controllers/search/searchController";
 
 const searchRouter = express.Router();
 
