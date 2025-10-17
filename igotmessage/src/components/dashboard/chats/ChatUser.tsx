@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
-import {  PaperPlaneRightIcon } from "@phosphor-icons/react";
+import { PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 
 function ChatUser() {
@@ -48,9 +48,7 @@ function ChatUser() {
 
   const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
 
-  useEffect(() => {
-   
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="w-full h-full flex flex-col ">
@@ -228,12 +226,12 @@ function ChatUser() {
         </div>
       </div>
 
-      {/* Input Box */}
-      <div className="border-t border-white/10 backdrop-blur-lg bg-[var(--borderColor)]/10 fixed w-full left-0 md:sticky bottom-[56px]  z-10 pb-5 pt-3 px-3">
-        <div className="flex items-center justify-between gap-2">
-          {/* Hidden file input */}
-          <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/10 transition cursor-pointer">
-            <Paperclip size={22} />
+      {/* 💬 Chat Input */}
+      <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5  md:py-4">
+        <div className="max-w-3xl mx-auto flex items-end gap-3">
+          {/* 📎 File Upload */}
+          <label className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition cursor-pointer flex-shrink-0">
+            <Paperclip size={22} className="text-[var(--textColor)]/70" />
             <input
               type="file"
               accept="image/*,video/*"
@@ -242,33 +240,39 @@ function ChatUser() {
             />
           </label>
 
-          <textarea
-            ref={textareaRef}
-            rows={1}
-            placeholder="Type a message..."
-            onFocus={(e) => {
-              textareaRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
-            }}
-            onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              e.target.style.height = "auto";
-              e.target.style.height = `${Math.min(
-                e.target.scrollHeight,
-                160
-              )}px`; // 160px = max-h-40
-            }}
-            className="flex-1 scroll-hidden px-4 py-2 min-h-[44px] max-h-40 resize-none rounded-2xl outline-none bg-[var(--bgColor)] border border-[var(--borderColor)]/30 backdrop-blur-lg placeholder-[var(--textColor)]/60 text-lg placeholder:text-lg overflow-y-auto"
-          ></textarea>
+          {/* ✏️ Text Area */}
+          <div className="flex-1 flex items-center bg-[var(--wrapperColor)]/60 border border-[var(--borderColor)]/30 rounded-3xl px-4 py-2.5 shadow-sm backdrop-blur-lg">
+            <textarea
+              ref={textareaRef}
+              rows={1}
+              placeholder="Message..."
+              onFocus={() => {
+                textareaRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }}
+              onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${Math.min(
+                  e.target.scrollHeight,
+                  160
+                )}px`; // 160px = max-h-40
+              }}
+              className="flex-1 bg-transparent resize-none outline-none text-[var(--textColor)] text-[17px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
+            />
+          </div>
 
-          {/* Mic or Send button */}
-          <button className="p-2 rounded-full hover:bg-white/10 transition">
-            <Mic size={22} />
-          </button>
-          <button className="p-3 bg-blue-600 text-white rounded-full hover:bg-green-600 transition-all ease-in duration-100 active:bg-amber-600 active:scale-90">
-            <PaperPlaneRightIcon weight="fill" fill="#fff" size={18} />
-          </button>
+          {/* 🎙️ Mic / Send */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <button className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition">
+              <Mic size={22} className="text-[var(--textColor)]/70" />
+            </button>
+
+            <button className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform">
+              <PaperPlaneRightIcon weight="fill" fill="#fff" size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

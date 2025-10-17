@@ -60,27 +60,26 @@ function MediaItem({
 
   // Auto pause when out of view
   useEffect(() => {
-    if (!isVideo || !videoRef.current) return;
+  if (!isVideo || !loaded || !videoRef.current) return;
 
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (!videoRef.current) return;
-        if (!entry.isIntersecting && !videoRef.current.paused) {
-          videoRef.current.pause();
-          setPlaying(false);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, {
-      threshold: 0.6,
+  const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (!videoRef.current) return;
+      if (!entry.isIntersecting && !videoRef.current.paused) {
+        videoRef.current.pause();
+        setPlaying(false);
+      }
     });
+  };
 
-    observer.observe(videoRef.current);
-    return () => {
-      if (videoRef.current) observer.unobserve(videoRef.current);
-    };
-  }, [isVideo]);
+  const observer = new IntersectionObserver(handleIntersect, {
+    threshold: 0.6,
+  });
+
+  observer.observe(videoRef.current);
+  return () => observer.disconnect();
+}, [isVideo, loaded]);
+
 
   const togglePlay = () => {
     if (!videoRef.current) return;

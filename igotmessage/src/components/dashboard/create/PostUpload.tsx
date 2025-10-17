@@ -147,7 +147,7 @@ export default function PostUpload() {
     | FilePreview
     | { error: "tooLarge" | "tooLong" | "invalid" };
 
-  const MAX_VIDEO_SIZE = 25 * 1024 * 1024; // 15 MB
+  const MAX_VIDEO_SIZE = 25 * 1024 * 1024;
 
   const processFile = (file: File): Promise<FileProcessResult> =>
     new Promise((resolve) => {
