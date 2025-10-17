@@ -22,6 +22,7 @@ import { setProfileUpdateStatus } from "@/features/authSlice";
 import axios from "axios";
 import { Post } from "../../post/Posts";
 import PostItem from "../../post/PostItem";
+import NoVisualsMessage from "./error displayer/ErrorDisplay";
 
 export default function ProfileComponent() {
   const dispatch = useAppDispatch();
@@ -102,7 +103,7 @@ export default function ProfileComponent() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen sm:py-4 pb-6 sm:rounded-2xl overflow-hidden bg-[var(--bgColor)] shadow-lg">
+    <div className="w-full min-h-screen sm:py-4 pb-38 sm:rounded-2xl overflow-hidden bg-[var(--bgColor)] shadow-lg">
       {/* Profile Header */}
       <div className="px-6 pt-6">
         {/* Top Row: Profile Pic + Name + Buttons */}
@@ -163,13 +164,19 @@ export default function ProfileComponent() {
             </p>
             <p className="text-xs text-gray-400">Posts</p>
           </div>
-          <Link href={`/dash/profile/followers/${user._id}`}>
+          <Link
+            className="cursor-pointer"
+            href={`/dash/profile/followers/${user._id}?userName=${user.userName}`}
+          >
             <p className="text-lg font-bold text-[var(--textColor)]">
               {user.followers?.length}
             </p>
             <p className="text-xs text-gray-400">Followers</p>
           </Link>
-          <Link href={`/dash/profile/following/${user._id}`}>
+          <Link
+            className="cursor-pointer"
+            href={`/dash/profile/following/${user._id}?userName=${user.userName}`}
+          >
             <p className="text-lg font-bold text-[var(--textColor)]">
               {user.following?.length}
             </p>
@@ -233,6 +240,19 @@ export default function ProfileComponent() {
               </Link>
             ))}
 
+        {activeTab === "visuals" &&
+          normalPosts.every((p) => {
+            const urls = p.mediaUrls || [];
+            return (
+              urls.length === 0 ||
+              (!urls[0].endsWith(".jpg") &&
+                !urls[0].endsWith(".jpeg") &&
+                !urls[0].endsWith(".png") &&
+                !urls[0].endsWith(".gif") &&
+                !urls[0].endsWith(".webp"))
+            );
+          }) && <NoVisualsMessage type="visuals" />}
+
         {/* Reels tab → videos only */}
         {activeTab === "reels" &&
           normalPosts
@@ -257,6 +277,15 @@ export default function ProfileComponent() {
               </Link>
             ))}
 
+        {activeTab === "reels" &&
+          normalPosts.every((p) => {
+            const urls = p.mediaUrls || [];
+            return (
+              urls.length === 0 ||
+              (!urls[0].endsWith(".mp4") && !urls[0].endsWith(".webm"))
+            );
+          }) && <NoVisualsMessage type="reels" />}
+
         {/* Text & Polls tab → full-width feed */}
         {activeTab === "textPolls" &&
           textAndPollPosts.map((post) => (
@@ -267,6 +296,10 @@ export default function ProfileComponent() {
               <PostItem post={post} />
             </div>
           ))}
+
+        {activeTab === "textPolls" && textAndPollPosts.length === 0 && (
+          <NoVisualsMessage type="text and polls" />
+        )}
       </div>
 
       {/* Modals & Popups */}

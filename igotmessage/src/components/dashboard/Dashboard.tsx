@@ -22,7 +22,7 @@ import {
 } from "@phosphor-icons/react";
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Panel from "../Panel";
 import { setPanelOpen } from "@/features/activitySlice";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
@@ -56,6 +56,8 @@ import UploadPostModal from "../modals/UploadPostModal";
 import PopupWithLink from "../popups/PopupWithLink";
 
 function Dashboard({ children }: { children: ReactNode }) {
+  const searchParams = useSearchParams();
+  const userNameInUrl = searchParams.get("userName");
   const uploadStoryStatus = useAppSelector(
     (state) => state.story.uploadStoryStatus
   );
@@ -215,7 +217,7 @@ function Dashboard({ children }: { children: ReactNode }) {
         ${
           pathname === "/dash/feed"
             ? "font-montez font-medium text-3xl"
-            : "text-3xl font-semibold"
+            : "text-xl font-semibold"
         }
         ${isDark ? "text-white" : "text-black"}
       `}
@@ -239,9 +241,9 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : pathname === "/dash/profile/bookmarks"
                   ? "Bookmarks"
                   : pathname.includes("/dash/profile/followers")
-                  ? "Followers"
+                  ? `${userNameInUrl ? userNameInUrl : userName}'s Followers`
                   : pathname.includes("/dash/profile/following")
-                  ? "Following"
+                  ? `${userNameInUrl ? userNameInUrl : userName}'s Following`
                   : pathname === "/dash/profile"
                   ? userName || `NewUser${RandomNumber}`
                   : ""}

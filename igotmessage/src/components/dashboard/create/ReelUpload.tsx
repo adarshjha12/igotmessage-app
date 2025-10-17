@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { X, Video, Loader2, Globe, Lock, UploadIcon } from "lucide-react";
+import { X, Video, Loader2, Globe, Lock, UploadIcon, Info } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import PopupMessage from "@/components/popups/PopupMessages";
 import PopupWithLink from "@/components/popups/PopupWithLink";
@@ -105,7 +105,7 @@ export default function ReelUpload() {
 
     try {
       console.log("payload", payload);
-      
+
       await tryDispatchUploadPost(payload);
       setVideoFile(null);
       if (videoPreview) {
@@ -183,7 +183,10 @@ export default function ReelUpload() {
           onChange={(e) => onVideoSelected(e.target.files)}
         />
       </div>
-
+      <div className="flex items-center gap-2 pb-2 text-sm">
+        <Info className="text-green-600" size={16} />
+        <p>Max video size: 25MB</p>
+      </div>
       {/* preview */}
       <div className="mb-5">
         {videoPreview ? (

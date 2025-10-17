@@ -19,6 +19,7 @@ import { useAppSelector } from "@/store/hooks";
 import { Post } from "../../post/Posts";
 import PostItem from "../../post/PostItem";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import NoVisualsMessage from "./error displayer/ErrorDisplay";
 
 export default function PublicProfileComponent({
   profileUserId,
@@ -28,8 +29,8 @@ export default function PublicProfileComponent({
   const params = useParams();
 
   const myUserId = params.myId;
-  const [activeTab, setActiveTab] = useState<"posts" | "reels" | "textPolls">(
-    "posts"
+  const [activeTab, setActiveTab] = useState<"visuals" | "reels" | "textPolls">(
+    "visuals"
   );
   const pathname = usePathname();
   const [showMore, setShowMore] = useState(false);
@@ -131,7 +132,7 @@ export default function PublicProfileComponent({
 
   if (!profileUser)
     return (
-      <div className="flex w-full flex-col bg-[var(--bgColor)] min-h-screen gap-6 px-4 py-6">
+      <div className="flex w-full flex-col bg-[var(--bgColor)] min-h-screen gap-6 px-4 pt-6 pb-38">
         {/* Header section */}
         <div className="flex items-center gap-6">
           {/* Profile image */}
@@ -280,24 +281,30 @@ export default function PublicProfileComponent({
               </p>
               <p className="text-xs text-gray-400">Posts</p>
             </div>
-            <span>
+            <Link
+              className="cursor-pointer"
+              href={`/dash/profile/followers/${profileUser?._id}?userName=${profileUser?.userName}`}
+            >
               <p className="text-lg font-bold text-[var(--textColor)]">
                 {profileUser.followers?.length || 0}
               </p>
               <p className="text-xs text-gray-400">Followers</p>
-            </span>
-            <span>
+            </Link>
+            <Link
+              className="cursor-pointer"
+              href={`/dash/profile/following/${profileUser?._id}?userName=${profileUser?.userName}`}
+            >
               <p className="text-lg font-bold text-[var(--textColor)]">
                 {profileUser.following?.length || 0}
               </p>
               <p className="text-xs text-gray-400">Following</p>
-            </span>
+            </Link>
           </div>
         </div>
         {/* Tabs */}
         <div className="flex justify-around mt-6 border-t border-gray-700">
           {[
-            { id: "posts", icon: <Images size={20} />, label: "Visuals" },
+            { id: "visuals", icon: <Images size={20} />, label: "Visuals" },
             { id: "reels", icon: <PlaySquare size={20} />, label: "Reels" },
             {
               id: "textPolls",
@@ -327,36 +334,74 @@ export default function PublicProfileComponent({
               : "grid grid-cols-3 gap-[1px]"
           } mt-2`}
         >
-          {activeTab === "posts" &&
-            normalPosts.map((post) => (
-              <Link
-                key={post._id}
-                href={`/post/${post._id}/user/${post.user._id}`}
-                className="aspect-[3.5/5] bg-gray-200"
-              >
-                <img
-                  src={post.mediaUrls?.[0]}
-                  alt="Post"
-                  className="w-full h-full object-cover"
-                />
-              </Link>
-            ))}
+          {activeTab === "visuals" &&
+            normalPosts
+              .filter(
+                (p) =>
+                  p.mediaUrls?.length! > 0 &&
+                  !(
+                    p.mediaUrls?.[0].endsWith(".mp4") ||
+                    p.mediaUrls?.[0].endsWith(".webm")
+                  )
+              )
+              .map((post) => (
+                <Link
+                  key={post._id}
+                  href={`/post/${post._id}/user/${post.user._id}`}
+                  className="aspect-[3.5/5] bg-gray-200"
+                >
+                  <img
+                    src={post.mediaUrls?.[0]}
+                    alt="Post"
+                    className="w-full h-full object-cover"
+                  />
+                </Link>
+              ))}
+
+          {activeTab === "visuals" &&
+            normalPosts.every((p) => {
+              const urls = p.mediaUrls || [];
+              return (
+                urls.length === 0 ||
+                (!urls[0].endsWith(".jpg") &&
+                  !urls[0].endsWith(".jpeg") &&
+                  !urls[0].endsWith(".png") &&
+                  !urls[0].endsWith(".gif") &&
+                  !urls[0].endsWith(".webp"))
+              );
+            }) && <NoVisualsMessage type="visuals" />}
 
           {activeTab === "reels" &&
-            normalPosts.map((post) => (
-              <Link
-                key={post._id}
-                href={`/post/${post._id}/user/${post.user._id}`}
-                className="aspect-[3.5/5] bg-black"
-              >
-                <video
-                  className="w-full h-full object-cover"
-                  muted
-                  loop
-                  src={post.mediaUrls?.[0]}
-                />
-              </Link>
-            ))}
+            normalPosts
+              .filter(
+                (p) =>
+                  p.mediaUrls?.length! > 0 &&
+                  (p.mediaUrls?.[0].endsWith(".mp4") ||
+                    p.mediaUrls?.[0].endsWith(".webm"))
+              )
+              .map((post) => (
+                <Link
+                  key={post._id}
+                  href={`/post/${post._id}/user/${post.user._id}`}
+                  className="aspect-[3.5/5] bg-black"
+                >
+                  <video
+                    className="w-full h-full object-cover"
+                    muted
+                    loop
+                    src={post.mediaUrls?.[0]}
+                  />
+                </Link>
+              ))}
+
+          {activeTab === "reels" &&
+            normalPosts.every((p) => {
+              const urls = p.mediaUrls || [];
+              return (
+                urls.length === 0 ||
+                (!urls[0].endsWith(".mp4") && !urls[0].endsWith(".webm"))
+              );
+            }) && <NoVisualsMessage type="reels" />}
 
           {activeTab === "textPolls" &&
             textAndPollPosts.map((post) => (
@@ -367,6 +412,9 @@ export default function PublicProfileComponent({
                 <PostItem post={post} />
               </div>
             ))}
+
+            {activeTab === "textPolls" &&
+            textAndPollPosts.length === 0 && <NoVisualsMessage type="text and polls" />}
         </div>
       </div>
     </div>

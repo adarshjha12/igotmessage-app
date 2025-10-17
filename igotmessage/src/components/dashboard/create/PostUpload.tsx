@@ -19,6 +19,7 @@ import {
   PlusIcon,
   Music,
   ArrowUp,
+  Info,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import StoryTemplates from "@/components/create story/StoryTemplates";
@@ -443,7 +444,7 @@ export default function PostUpload() {
         <div>
           {/* AI / textarea */}
           <div className="mb-4">
-            <div className="flex items-center justify-between w-full mb-3 gap-3 px-2 py-2 rounded-2xl bg-gradient-to-r from-green-700 to-green-400 text-white shadow-md">
+            <div className="flex items-center justify-between w-full mb-3 gap-3 px-2 py-2 rounded-2xl  text-[var(--textColor)] bg-[var(--wrapperColor)]">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <div className="flex items-center gap-1 p-2 rounded-full bg-white/10">
@@ -503,7 +504,10 @@ export default function PostUpload() {
               </div>
             )}
           </div>
-
+          <div className="flex items-center gap-2 pb-2 text-sm">
+            <Info className="text-green-600" size={16} />
+            <p>Max video size: 25MB</p>
+          </div>
           {/* options row */}
           <div className="flex flex-wrap gap-3 mb-4">
             <button
