@@ -8,7 +8,11 @@ interface ChatInputProps {
   onSend?: (message: string) => void;
 }
 
-export default function ChatInput({ containerRef, onFileUpload, onSend }: ChatInputProps) {
+export default function ChatInput({
+  containerRef,
+  onFileUpload,
+  onSend,
+}: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-grow textarea
@@ -16,36 +20,6 @@ export default function ChatInput({ containerRef, onFileUpload, onSend }: ChatIn
     e.target.style.height = "auto";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`; // max 160px
   };
-
-  // Scroll to bottom
-  const scrollToBottom = () => {
-    const targetContainer = containerRef?.current || window;
-    const scrollHeight = containerRef?.current?.scrollHeight || document.body.scrollHeight;
-
-    if (targetContainer === window) {
-      window.scrollTo({
-        top: scrollHeight,
-        behavior: "smooth",
-      });
-    } else {
-      targetContainer.scrollTo({
-        top: scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  // Scroll on focus and on keyboard open (mobile)
-  useEffect(() => {
-    const handleResize = () => {
-      if (textareaRef.current) {
-        scrollToBottom();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
@@ -56,7 +30,9 @@ export default function ChatInput({ containerRef, onFileUpload, onSend }: ChatIn
             type="file"
             accept="image/*,video/*"
             className="hidden"
-            onChange={(e) => e.target.files && onFileUpload?.(e.target.files[0])}
+            onChange={(e) =>
+              e.target.files && onFileUpload?.(e.target.files[0])
+            }
           />
           <Paperclip className="w-5 h-5 text-[var(--textColor)]" />
         </label>
@@ -67,7 +43,31 @@ export default function ChatInput({ containerRef, onFileUpload, onSend }: ChatIn
             ref={textareaRef}
             rows={1}
             placeholder="Message..."
-            onFocus={() => setTimeout(scrollToBottom, 50)} // tiny delay for mobile keyboard
+            onFocus={() => {
+              const scrollToBottom = () => {
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: "smooth",
+                });
+              };
+
+              // Immediately scroll once
+              scrollToBottom();
+
+              // Listen to visual viewport changes (keyboard open)
+              if (window.visualViewport) {
+                const handler = () => {
+                  scrollToBottom();
+                };
+
+                window.visualViewport.addEventListener("resize", handler);
+
+                // Cleanup when keyboard closes / input blurs
+                textareaRef.current?.addEventListener("blur", () => {
+                  window.visualViewport?.removeEventListener("resize", handler);
+                });
+              }
+            }}
             onInput={handleInput}
             className="flex-1 bg-transparent resize-none outline-none text-[var(--textColor)] text-[17px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
           />
@@ -76,7 +76,7 @@ export default function ChatInput({ containerRef, onFileUpload, onSend }: ChatIn
         {/* 🎙️ Mic / Send */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <button className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition">
-          <Mic className="w-5 h-5 text-[var(--textColor)]" />
+            <Mic className="w-5 h-5 text-[var(--textColor)]" />
           </button>
           <button
             className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform"
@@ -85,11 +85,14 @@ export default function ChatInput({ containerRef, onFileUpload, onSend }: ChatIn
                 onSend?.(textareaRef.current.value.trim());
                 textareaRef.current.value = "";
                 handleInput({ target: textareaRef.current } as any);
-                scrollToBottom();
               }
             }}
           >
-            <PaperPlaneRightIcon weight="fill" fill="white" className="w-5 h-5" />
+            <PaperPlaneRightIcon
+              weight="fill"
+              fill="white"
+              className="w-5 h-5"
+            />
           </button>
         </div>
       </div>
