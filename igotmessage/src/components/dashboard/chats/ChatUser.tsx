@@ -18,6 +18,7 @@ import { useSearchParams } from "next/navigation";
 function ChatUser() {
   const queryParam = useSearchParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [inputFocus, setInputFocus] = useState(false);
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
@@ -48,7 +49,14 @@ function ChatUser() {
 
   const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (inputFocus) {
+      const element = document.getElementById("inputdiv");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [inputFocus]);
 
   return (
     <div className="w-full h-full flex flex-col ">
@@ -241,15 +249,32 @@ function ChatUser() {
           </label>
 
           {/* ✏️ Text Area */}
-          <div className="flex-1 flex items-center bg-[var(--wrapperColor)]/60 border border-[var(--borderColor)]/30 rounded-3xl px-4 py-2.5 shadow-sm backdrop-blur-lg">
+          <div
+            id="inputdiv"
+            className="flex-1 flex items-center bg-[var(--wrapperColor)]/60 border border-[var(--borderColor)]/30 rounded-3xl px-4 py-2.5 shadow-sm backdrop-blur-lg"
+          >
             <textarea
+              id="textarea"
               ref={textareaRef}
               rows={1}
               placeholder="Message..."
               onFocus={() => {
-                textareaRef.current?.scrollIntoView({
+                if (!textareaRef.current) return;
+
+                // Get the element's position relative to viewport
+                const rect = textareaRef.current.getBoundingClientRect();
+
+                // Calculate the scroll position so that textarea is centered (or slightly above center)
+                const scrollTop =
+                  window.scrollY +
+                  rect.top -
+                  window.innerHeight / 2 +
+                  rect.height / 2;
+
+                // Smooth scroll to that position
+                window.scrollTo({
+                  top: scrollTop,
                   behavior: "smooth",
-                  block: "center",
                 });
               }}
               onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
