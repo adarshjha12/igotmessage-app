@@ -259,23 +259,12 @@ function ChatUser() {
               rows={1}
               placeholder="Message..."
               onFocus={() => {
-                if (!textareaRef.current) return;
-
-                // Get the element's position relative to viewport
-                const rect = textareaRef.current.getBoundingClientRect();
-
-                // Calculate the scroll position so that textarea is centered (or slightly above center)
-                const scrollTop =
-                  window.scrollY +
-                  rect.top -
-                  window.innerHeight / 2 +
-                  rect.height / 2;
-
-                // Smooth scroll to that position
-                window.scrollTo({
-                  top: scrollTop,
-                  behavior: "smooth",
-                });
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }, 150);
               }}
               onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 e.target.style.height = "auto";
