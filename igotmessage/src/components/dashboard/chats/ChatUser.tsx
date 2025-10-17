@@ -14,6 +14,7 @@ import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
+import ChatInput from "./ChatInput";
 
 function ChatUser() {
   const queryParam = useSearchParams();
@@ -61,7 +62,7 @@ function ChatUser() {
   return (
     <div className="w-full h-full flex flex-col ">
       {/* Header */}
-      <div className="flex items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 sticky top-0 z-10">
+      <div className="flex w-full fixed md:sticky left-0 items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
         <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
@@ -104,8 +105,19 @@ function ChatUser() {
         className="flex-1 gap-2 "
       >
         <div
-          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15 p-4 w-full h-full items-start gap-6`}
+          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15 px-4 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
         >
+
+          {/* message timer */}
+          <div className="flex justify-center w-full text-[var(--textColor)]/80">
+            <p
+              className={` text-xs px-4 py-1 rounded-md ${
+                isDark ? "bg-gray-700" : "bg-white"
+              }`}
+            >
+              4: 45 pm
+            </p>
+          </div>
           {/* Received */}
           <div
             className="flex items-start gap-2 group relative"
@@ -235,60 +247,7 @@ function ChatUser() {
       </div>
 
       {/* 💬 Chat Input */}
-      <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5  md:py-4">
-        <div className="max-w-3xl mx-auto flex items-end gap-3">
-          {/* 📎 File Upload */}
-          <label className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition cursor-pointer flex-shrink-0">
-            <Paperclip size={22} className="text-[var(--textColor)]/70" />
-            <input
-              type="file"
-              accept="image/*,video/*"
-              className="hidden"
-              onChange={handleFileUpload}
-            />
-          </label>
-
-          {/* ✏️ Text Area */}
-          <div
-            id="inputdiv"
-            className="flex-1 flex items-center bg-[var(--wrapperColor)]/60 border border-[var(--borderColor)]/30 rounded-3xl px-4 py-2.5 shadow-sm backdrop-blur-lg"
-          >
-            <textarea
-              id="textarea"
-              ref={textareaRef}
-              rows={1}
-              placeholder="Message..."
-              onFocus={() => {
-                setTimeout(() => {
-                  window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: "smooth",
-                  });
-                }, 150);
-              }}
-              onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                e.target.style.height = "auto";
-                e.target.style.height = `${Math.min(
-                  e.target.scrollHeight,
-                  160
-                )}px`; // 160px = max-h-40
-              }}
-              className="flex-1 bg-transparent resize-none outline-none text-[var(--textColor)] text-[17px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
-            />
-          </div>
-
-          {/* 🎙️ Mic / Send */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition">
-              <Mic size={22} className="text-[var(--textColor)]/70" />
-            </button>
-
-            <button className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform">
-              <PaperPlaneRightIcon weight="fill" fill="#fff" size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
+      <ChatInput />
     </div>
   );
 }

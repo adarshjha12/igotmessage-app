@@ -93,10 +93,13 @@ app.get("/healthCheck", (req, res) => {
   res.status(200);
 });
 
-// keep redis alive
 setInterval(async () => {
-  await redisClient.set("keep_alive", Date.now().toString());
-  console.log("Redis pinged to keep alive");
+  try {
+    await redisClient.ping();
+    console.log("Redis pinged to keep alive");
+  } catch (err) {
+    console.error("Failed to ping Redis:", err);
+  }
 }, 1000 * 60 * 60 * 24 * 3);
 
 server.listen(PORT, () => {
