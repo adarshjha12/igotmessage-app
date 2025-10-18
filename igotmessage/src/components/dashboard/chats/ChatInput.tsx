@@ -6,12 +6,14 @@ interface ChatInputProps {
   containerRef?: React.RefObject<HTMLDivElement>; // optional scrollable chat container
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
+  setFocus?: (val: boolean) => void;
 }
 
 export default function ChatInput({
   containerRef,
   onFileUpload,
   onSend,
+  setFocus
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -44,29 +46,7 @@ export default function ChatInput({
             rows={1}
             placeholder="Message..."
             onFocus={() => {
-              const scrollToBottom = () => {
-                window.scrollTo({
-                  top: document.body.scrollHeight,
-                  behavior: "smooth",
-                });
-              };
-
-              // Immediately scroll once
-              scrollToBottom();
-
-              // Listen to visual viewport changes (keyboard open)
-              if (window.visualViewport) {
-                const handler = () => {
-                  scrollToBottom();
-                };
-
-                window.visualViewport.addEventListener("resize", handler);
-
-                // Cleanup when keyboard closes / input blurs
-                textareaRef.current?.addEventListener("blur", () => {
-                  window.visualViewport?.removeEventListener("resize", handler);
-                });
-              }
+              setFocus?.(true);
             }}
             onInput={handleInput}
             className="flex-1 bg-transparent resize-none outline-none text-[var(--textColor)] text-[17px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"

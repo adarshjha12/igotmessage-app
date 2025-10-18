@@ -52,9 +52,12 @@ function ChatUser() {
 
   useEffect(() => {
     if (inputFocus) {
-      const element = document.getElementById("inputdiv");
+      const element = document.getElementById("scrolldiv");
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          console.log("scrolling to bottom div", inputFocus);
+        }, 2000);
       }
     }
   }, [inputFocus]);
@@ -107,7 +110,6 @@ function ChatUser() {
         <div
           className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15 px-4 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
         >
-
           {/* message timer */}
           <div className="flex justify-center w-full text-[var(--textColor)]/80">
             <p
@@ -247,7 +249,8 @@ function ChatUser() {
       </div>
 
       {/* 💬 Chat Input */}
-      <ChatInput />
+      <ChatInput setFocus={setInputFocus} />
+      <div id="scrolldiv"></div>
     </div>
   );
 }
