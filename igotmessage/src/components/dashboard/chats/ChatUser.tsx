@@ -57,7 +57,7 @@ function ChatUser() {
         setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
           console.log("scrolling to bottom div", inputFocus);
-        }, 1000);
+        }, 100);
       }
     }
   }, [inputFocus]);
