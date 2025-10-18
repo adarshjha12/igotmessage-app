@@ -48,6 +48,10 @@ export default function ChatInput({
             onFocus={() => {
               setFocus?.(true);
             }}
+
+            onBlur={() => {
+              setFocus?.(false);
+            }}
             onInput={handleInput}
             className="flex-1 bg-transparent resize-none outline-none text-[var(--textColor)] text-[17px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
           />
