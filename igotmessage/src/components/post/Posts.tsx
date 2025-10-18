@@ -70,7 +70,7 @@ export default function Posts() {
         new Map(merged.map((post) => [post._id, post])).values()
       );
 
-      return uniquePosts;
+      return uniquePosts.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     });
     setHasMore(data.hasMore);
   };

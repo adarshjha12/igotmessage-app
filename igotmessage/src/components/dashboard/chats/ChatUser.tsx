@@ -108,7 +108,7 @@ function ChatUser() {
         className="flex-1 gap-2 "
       >
         <div
-          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15 px-4 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
+          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15 px-2 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
         >
           {/* message timer */}
           <div className="flex justify-center w-full text-[var(--textColor)]/80">
@@ -157,7 +157,7 @@ function ChatUser() {
 
           {/* Sent - Delivered */}
           <div
-            className="flex justify-end group relative"
+            className="flex pr-2 justify-end group relative"
             onDoubleClick={() =>
               addReply("It’s going amazing! I just added stories 🎉")
             }

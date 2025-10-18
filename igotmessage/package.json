@@ -17,6 +17,7 @@
     "axios": "^1.8.4",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "emoji-picker-react": "^4.14.1",
     "framer-motion": "^12.18.1",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.507.0",

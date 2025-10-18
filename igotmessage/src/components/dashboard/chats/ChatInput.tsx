@@ -1,6 +1,9 @@
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
-import { Mic, Paperclip } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Mic, Paperclip, Smile, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import EmojiPicker, { Theme } from "emoji-picker-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 interface ChatInputProps {
   containerRef?: React.RefObject<HTMLDivElement>; // optional scrollable chat container
@@ -13,57 +16,101 @@ export default function ChatInput({
   containerRef,
   onFileUpload,
   onSend,
-  setFocus
+  setFocus,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const [showSendButton, setShowSendButton] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [message, setMessage] = useState("");
+  const isDark = useSelector((state: RootState) => state.activity.isDark);
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker((prev) => !prev);
+  };
   // Auto-grow textarea
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setMessage(value);
+    if (value.length >= 1) {
+      setShowSendButton(true);
+    } else {
+      setShowSendButton(false);
+    }
     e.target.style.height = "auto";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`; // max 160px
   };
 
   return (
     <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
-      <div className="max-w-3xl mx-auto flex items-end gap-3">
-        {/* 📎 File Upload */}
-        <label className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition cursor-pointer flex-shrink-0">
-          <input
-            type="file"
-            accept="image/*,video/*"
-            className="hidden"
-            onChange={(e) =>
-              e.target.files && onFileUpload?.(e.target.files[0])
-            }
-          />
-          <Paperclip className="w-5 h-5 text-[var(--textColor)]" />
-        </label>
+      <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
+        {/* 🔲 Inner Wrapper: File + Input + Emoji */}
+        <div className="flex flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-[var(--borderColor)]/20 backdrop-blur-md shadow-sm">
+          {/* 📎 File Upload */}
+          <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
+            <input
+              type="file"
+              accept="image/*,video/*"
+              className="hidden"
+              onChange={(e) =>
+                e.target.files && onFileUpload?.(e.target.files[0])
+              }
+            />
+            <Paperclip className="w-5 h-5 text-[var(--textColor)] opacity-70 hover:opacity-100 transition" />
+          </label>
 
-        {/* ✏️ Text Area */}
-        <div className="flex-1 flex items-center bg-[var(--wrapperColor)]/60 border border-[var(--borderColor)]/30 rounded-3xl px-4 py-2.5 shadow-sm backdrop-blur-lg">
+          {/* 📝 Text Area */}
           <textarea
             ref={textareaRef}
+            value={message}
             rows={1}
-            placeholder="Message..."
-            onFocus={() => {
-              setFocus?.(true);
-            }}
-
-            onBlur={() => {
-              setFocus?.(false);
-            }}
+            placeholder="Message"
+            onFocus={() => setFocus?.(true)}
+            onBlur={() => setFocus?.(false)}
             onInput={handleInput}
-            className="flex-1 bg-transparent resize-none outline-none text-[var(--textColor)] text-[17px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
+            className="flex-1 bg-transparent resize-none border-none outline-none text-[var(--textColor)] text-[16.5px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
+            style={{ maxHeight: "150px" }}
           />
+
+          {/* 😄 Emoji Icon */}
+          <button
+            onClick={toggleEmojiPicker}
+            className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
+          >
+            <Smile className="w-5 h-5 text-[var(--textColor)] opacity-70 hover:opacity-100" />
+          </button>
+          {showEmojiPicker && (
+            <div className="absolute bottom-[60px] pl-4 left-1/2 -translate-x-1/2 z-20 w-[360px]">
+              <div className="overflow-hidden rounded-2xl shadow-2xl border border-[var(--borderColor)]/20 bg-rose-700 backdrop-blur-xl">
+                <EmojiPicker
+                  onEmojiClick={(emojiObject) =>
+                    setMessage((prev) => prev + emojiObject.emoji)
+                  }
+                  theme={isDark ? Theme.DARK : Theme.LIGHT}
+                  width="100%"
+                  height={400}
+                />
+
+                {/* Cancel Button */}
+                <button
+                  onClick={() => setShowEmojiPicker(false)}
+                  className="flex items-center justify-center gap-2 w-full py-3 border-t border-[var(--borderColor)]/20 text-[var(--textColor)] font-medium hover:bg-[var(--borderColor)]/10 active:scale-[0.98] transition-all"
+                >
+                  <X className="w-5 h-5 opacity-80" />
+                  <span>Cancel</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 🎙️ Mic / Send */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <button className="p-2.5 rounded-full hover:bg-[var(--borderColor)]/10 transition">
-            <Mic className="w-5 h-5 text-[var(--textColor)]" />
+        {!showSendButton ? (
+          <button className="p-3 rounded-full bg-rose-700 transition flex-shrink-0 shadow-sm ml-1">
+            <Mic className="w-5 h-5 text-white opacity-90" />
           </button>
+        ) : (
           <button
-            className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform"
+            className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
             onClick={() => {
               if (textareaRef.current?.value.trim()) {
                 onSend?.(textareaRef.current.value.trim());
@@ -78,7 +125,7 @@ export default function ChatInput({
               className="w-5 h-5"
             />
           </button>
-        </div>
+        )}
       </div>
     </div>
   );
