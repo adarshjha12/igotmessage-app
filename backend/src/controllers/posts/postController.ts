@@ -1,32 +1,28 @@
 import { User } from "../../models/userModel";
 import { Post } from "../../models/postModel";
-import imagekit from "../../utils/imagekitConfig";
 
 import { Request, Response } from "express";
 
 export const createPost = async (req: Request, res: Response): Promise<any> => {
   try {
     console.log("Request body:", req.body);
-    console.log("Files received:", req.files);
 
-    const { userId, text, musicData, templateImage, poll, postType, privacy } =
-      req.body;
-
-    const files = (req.files as Express.Multer.File[]) || [];
-    console.log("Number of uploaded files:", files.length);
+    const {
+      userId,
+      text,
+      musicData,
+      templateImage,
+      poll,
+      postType,
+      privacy,
+      files,
+    } = req.body;
 
     const mediaUrls: string[] = [];
 
-    if (files.length > 0) {
-      for (const file of files) {
-        console.log("Uploading file:", file.originalname, "size:", file.size);
-        const uploadImage = await imagekit.upload({
-          file: file.buffer,
-          fileName: file.originalname,
-        });
-        console.log("Uploaded URL:", uploadImage.url);
-        mediaUrls.push(uploadImage.url);
-      }
+    if (files?.length > 0) {
+      const urls = files.map((file: any) => file.url);
+      mediaUrls.push(...urls);
     }
 
     if (templateImage) {
@@ -41,11 +37,11 @@ export const createPost = async (req: Request, res: Response): Promise<any> => {
       mediaUrls: mediaUrls || [],
       templateImage: templateImage || "",
       postType,
-      poll: poll && poll !== "undefined" ? JSON.parse(poll) : undefined,
+      poll: poll && poll !== "undefined" ? poll : undefined,
       text: text || "",
       musicData:
         musicData && musicData !== "undefined"
-          ? JSON.parse(musicData)
+          ? musicData
           : undefined,
       privacy: privacy || "public",
     });
@@ -181,8 +177,7 @@ export const getReels = async (req: Request, res: Response): Promise<any> => {
       });
     const filteredReels = reels.filter(
       (reel) =>
-        reel.user &&
-        reel.mediaUrls.some((url: string) => url.endsWith(".mp4"))
+        reel.user && reel.mediaUrls.some((url: string) => url.endsWith(".mp4"))
     );
 
     return res.status(200).json({

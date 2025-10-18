@@ -44,7 +44,7 @@ export default function ChatInput({
     <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
       <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
         {/* 🔲 Inner Wrapper: File + Input + Emoji */}
-        <div className="flex flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-[var(--borderColor)]/20 backdrop-blur-md shadow-sm">
+        <div className="flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-[var(--borderColor)]/15 backdrop-blur-md shadow-sm">
           {/* 📎 File Upload */}
           <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
             <input
@@ -79,7 +79,7 @@ export default function ChatInput({
             <Smile className="w-5 h-5 text-[var(--textColor)] opacity-70 hover:opacity-100" />
           </button>
           {showEmojiPicker && (
-            <div className="absolute bottom-[60px] pl-4 left-1/2 -translate-x-1/2 z-20 w-[360px]">
+            <div className="absolute bottom-[60px] pl-6 left-1/2 -translate-x-1/2 z-20 w-[360px]">
               <div className="overflow-hidden rounded-2xl shadow-2xl border border-[var(--borderColor)]/20 bg-rose-700 backdrop-blur-xl">
                 <EmojiPicker
                   onEmojiClick={(emojiObject) =>
@@ -93,9 +93,11 @@ export default function ChatInput({
                 {/* Cancel Button */}
                 <button
                   onClick={() => setShowEmojiPicker(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 border-t border-[var(--borderColor)]/20 text-[var(--textColor)] font-medium hover:bg-[var(--borderColor)]/10 active:scale-[0.98] transition-all"
+                  className="flex items-center justify-center gap-2 w-full py-3 border-t border-[var(--borderColor)]/20 text-white font-medium hover:bg-[var(--borderColor)]/10 active:scale-[0.98] active:scale-90 transition-all"
                 >
-                  <X className="w-5 h-5 opacity-80" />
+                  <div className="rounded-full p-1 bg-white/30">
+                    <X className="w-5 h-5 opacity-80" />
+                  </div>
                   <span>Cancel</span>
                 </button>
               </div>

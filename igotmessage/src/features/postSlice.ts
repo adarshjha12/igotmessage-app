@@ -1,3 +1,4 @@
+import uploadMultiple from "@/utils/uploadFile";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -33,16 +34,16 @@ export interface PostPayload {
 }
 
 type RepostPayload = {
-  isReposted: boolean
+  isReposted: boolean;
   postId: string;
-  userId: string
-  privacy: "public" | "private"
+  userId: string;
+  privacy: "public" | "private";
 };
 
 interface PostState {
   uploadPostStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadPostError: string | null;
-  isReposted?: boolean
+  isReposted?: boolean;
   showPostUploadModal: boolean;
   postId?: string;
   userIdInPost?: string;
@@ -73,36 +74,39 @@ export const uploadPost = createAsyncThunk(
       musicData,
       templateImage,
     } = args;
-    const formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("privacy", privacy);
-    formData.append("postType", postType);
-    if (postType === "normal") {
-      if (files && files.length > 0) {
-        files.forEach((file) => {
-          formData.append("files", file);
-        });
+
+    const body: any = {
+      userId,
+      text,
+      privacy,
+      postType,
+      poll: postType === "poll" ? poll : undefined,
+      musicData,
+      templateImage,
+    };
+
+    if (postType === "normal" && files && files.length > 0) {
+      try {
+        const uploadedFiles = await uploadMultiple(files);
+        body.files = uploadedFiles.map((file) => ({ url: file.url }));
+      } catch (error) {
+        console.log("❌ File upload error:", error);
       }
-      if (text) {
-        formData.append("text", text);
-      }
-      if (templateImage) {
-        formData.append("templateImage", templateImage);
-      }
-      formData.append("musicData", JSON.stringify(musicData));
-    } else if (postType === "poll") {
-      formData.append("poll", JSON.stringify(poll));
     }
 
-    console.log("formData", formData);
-    
+    console.log("📤 Sending post data:", body);
+
     const response = await axios.post(
       `${backendUrl}/api/post/create-post`,
-      formData,
+      body,
       {
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
+
     return response.data;
   }
 );
@@ -113,7 +117,7 @@ export const repost = createAsyncThunk(
     const { isReposted, userId, postId, privacy } = payload;
     const res = await axios.post(
       `${backendUrl}/api/post/create-repost`,
-      { isReposted, postId, userId,  privacy },
+      { isReposted, postId, userId, privacy },
       { withCredentials: true }
     );
     return res.data;
@@ -152,12 +156,12 @@ const postSlice = createSlice({
       state.uploadPostStatus = "loading";
       state.uploadPostError = null;
     });
-  
+
     // for repost
     builder.addCase(repost.fulfilled, (state, action) => {
       state.uploadPostStatus = "succeeded";
       state.postId = action.payload.post._id;
-      state.isReposted = action.payload.post.isReposted
+      state.isReposted = action.payload.post.isReposted;
       state.userIdInPost = action.payload.post.user;
     });
 

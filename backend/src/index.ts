@@ -26,6 +26,7 @@ import searchRouter from "./routers/search/searchRoute";
 import { User } from "./models/userModel";
 import InitSocket from "./services/socket";
 import http from "http";
+import uploadAuth from "./routers/uploadAuth";
 // import webhookRouter from "./routers/webhookRoute";
 
 const PORT = process.env.PORT;
@@ -79,6 +80,7 @@ app.use("/api/profile", profileRouter);
 app.use("/api/logout", logOutRouter);
 app.use("/api/text/ai", aiTextGenRouter);
 app.use("/api/search", searchRouter);
+app.use("/api/upload", uploadAuth)
 
 socketService.io.attach(server, {
   cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
