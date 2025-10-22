@@ -504,7 +504,82 @@ export default function PostUpload() {
               </div>
             )}
           </div>
-          <div className="flex items-center gap-2 pb-2 text-sm">
+          {/* post button */}
+          <div className="flex items-center mb-8 justify-between">
+            <span
+              className={`text-sm ${
+                remaining < 0 ? "text-red-400" : "text-[var(--textColor)]"
+              }`}
+            >
+              {remaining} characters left
+            </span>
+            <button
+              onClick={handleSubmit}
+              disabled={!canPost || posting}
+              className="bg-[var(--textColor)] text-[var(--bgColor)] px-6 py-2 rounded-full flex items-center gap-2 disabled:opacity-50"
+            >
+              {posting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Post"}
+            </button>
+          </div>
+
+          {/* previews */}
+          <AnimatePresence>
+            {(previews.length > 0 || templateImage || musicData.url) && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4"
+              >
+                {previews.map((p) => (
+                  <div
+                    key={p.id}
+                    className="relative rounded-xl overflow-hidden border border-[var(--textColor)]/30"
+                  >
+                    {p.isVideo ? (
+                      <video
+                        src={p.url}
+                        className="w-full h-40 object-cover"
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={p.url}
+                        className="w-full h-40 object-cover"
+                        alt={p.file.name}
+                      />
+                    )}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removePreview(p.id);
+                      }}
+                      className="absolute top-1 right-1 bg-[var(--bgColor)]/50 rounded-full p-1"
+                    >
+                      <X className="w-4 h-4 text-[var(--textColor)]" />
+                    </button>
+                  </div>
+                ))}
+                {templateImage && (
+                  <div className="relative rounded-xl overflow-hidden border border-[var(--textColor)]/30">
+                    <img
+                      src={templateImage}
+                      alt="template"
+                      className="w-full h-40 object-cover"
+                    />
+                    <button
+                      onClick={() => setTemplateImage("")}
+                      className="absolute top-1 right-1 bg-[var(--bgColor)]/50 rounded-full p-1"
+                    >
+                      <X />
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="flex items-center gap-2 py-4 text-sm">
             <Info className="text-green-600" size={16} />
             <p>Max video size: 25MB</p>
           </div>
@@ -608,64 +683,6 @@ export default function PostUpload() {
               </button>
             </div>
           )}
-
-          {/* previews */}
-          <AnimatePresence>
-            {(previews.length > 0 || templateImage || musicData.url) && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4"
-              >
-                {previews.map((p) => (
-                  <div
-                    key={p.id}
-                    className="relative rounded-xl overflow-hidden border border-[var(--textColor)]/30"
-                  >
-                    {p.isVideo ? (
-                      <video
-                        src={p.url}
-                        className="w-full h-40 object-cover"
-                        muted
-                        playsInline
-                      />
-                    ) : (
-                      <img
-                        src={p.url}
-                        className="w-full h-40 object-cover"
-                        alt={p.file.name}
-                      />
-                    )}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removePreview(p.id);
-                      }}
-                      className="absolute top-1 right-1 bg-[var(--bgColor)]/50 rounded-full p-1"
-                    >
-                      <X className="w-4 h-4 text-[var(--textColor)]" />
-                    </button>
-                  </div>
-                ))}
-                {templateImage && (
-                  <div className="relative rounded-xl overflow-hidden border border-[var(--textColor)]/30">
-                    <img
-                      src={templateImage}
-                      alt="template"
-                      className="w-full h-40 object-cover"
-                    />
-                    <button
-                      onClick={() => setTemplateImage("")}
-                      className="absolute top-1 right-1 bg-[var(--bgColor)]/50 rounded-full p-1"
-                    >
-                      <X />
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       )}
 
@@ -732,24 +749,6 @@ export default function PostUpload() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* footer */}
-      <div className="flex items-center justify-between">
-        <span
-          className={`text-sm ${
-            remaining < 0 ? "text-red-400" : "text-[var(--textColor)]"
-          }`}
-        >
-          {remaining} characters left
-        </span>
-        <button
-          onClick={handleSubmit}
-          disabled={!canPost || posting}
-          className="bg-[var(--textColor)] text-[var(--bgColor)] px-6 py-2 rounded-full flex items-center gap-2 disabled:opacity-50"
-        >
-          {posting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Post"}
-        </button>
-      </div>
 
       {/* overlays */}
       {libraryClicked && (

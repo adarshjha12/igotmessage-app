@@ -1,22 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Paperclip,
-  Smile,
-  Phone,
-  Video,
-  MoreVertical,
-  ArrowLeft,
-  Mic,
-  X,
-  Reply,
-} from "lucide-react";
+import { Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
-import { PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 import ChatInput from "./ChatInput";
+import { io } from "socket.io-client";
 
-function ChatUser() {
+function ChatUser(socket: any) {
   const queryParam = useSearchParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [inputFocus, setInputFocus] = useState(false);
@@ -38,6 +28,11 @@ function ChatUser() {
   };
 
   const removePreview = () => setPreview(null);
+
+  const url =
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
   const bgUrl =
     "https://images.unsplash.com/photo-1518112166137-85f9979a43aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387";
@@ -61,6 +56,12 @@ function ChatUser() {
       }
     }
   }, [inputFocus]);
+
+  useEffect(() => {
+    const socket = io(url);
+
+    return () => {};
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col ">
