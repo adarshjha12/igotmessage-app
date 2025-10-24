@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 
 interface ChatInputProps {
-  socket?: any;
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
   setFocus?: (val: boolean) => void;
@@ -16,7 +15,6 @@ export default function ChatInput({
   onFileUpload,
   onSend,
   setFocus,
-  socket
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

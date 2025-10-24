@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import ChatInput from "./ChatInput";
 import { io } from "socket.io-client";
 
-function ChatUser(socket: any) {
+function ChatUser() {
   const queryParam = useSearchParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [inputFocus, setInputFocus] = useState(false);
