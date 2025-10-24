@@ -13,6 +13,7 @@ import {
   ChatsCircleIcon,
   PhoneCallIcon,
   PhoneIcon,
+  ChatTextIcon,
 } from "@phosphor-icons/react";
 import { useAppSelector } from "@/store/hooks";
 
@@ -26,7 +27,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
 
   const navItems = [
     { href: "/dash/feed", icon: HouseIcon },
-    { href: "/dash/chats", icon: ChatsCircleIcon },
+    { href: "/dash/chats", icon: ChatTextIcon  },
     { href: "/dash/create", icon: PlusSquareIcon },
     { href: `/reels?myId=${myId}&myPic=${profilePicture || avatar}`, icon: PlayCircleIcon },
     { href: "/dash/calls", icon: PhoneIcon },

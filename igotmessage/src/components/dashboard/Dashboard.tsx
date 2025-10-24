@@ -19,6 +19,7 @@ import {
   ListIcon,
   ChatTeardropDotsIcon,
   BookmarkSimpleIcon,
+  ChatTextIcon,
 } from "@phosphor-icons/react";
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
@@ -461,7 +462,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   : ""
               }`}
             >
-              <ChatsCircleIcon strokeWidth={1.5} size={22} />
+              <ChatTextIcon strokeWidth={1.5} size={22} />
               <p className={`${sidebarOpen ? "" : "hidden"}`}>Messages</p>
             </Link>
 

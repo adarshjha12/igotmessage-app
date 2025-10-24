@@ -35,7 +35,7 @@ function ChatUser(socket: any) {
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
   const bgUrl =
-    "https://images.unsplash.com/photo-1518112166137-85f9979a43aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387";
+    "https://images.unsplash.com/photo-1535868463750-c78d9543614f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=876";
 
   const lightBgUrl =
     "https://images.unsplash.com/photo-1639437038507-749a056cd07c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387";
@@ -105,11 +105,12 @@ function ChatUser(socket: any) {
           backgroundImage: `url(${isDark ? bgUrl : lightBgUrl})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
         }}
         className="flex-1 gap-2 "
       >
         <div
-          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15 px-2 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
+          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15  px-2 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
         >
           {/* message timer */}
           <div className="flex justify-center w-full text-[var(--textColor)]/80">
