@@ -22,6 +22,9 @@ export default function ChatInput({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [message, setMessage] = useState("");
   const isDark = useSelector((state: RootState) => state.activity.isDark);
+
+  const [myMessages, setMyMessages] = useState<{message: string, isMe: boolean}[]>([])
+
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prev) => !prev);
   };
@@ -37,6 +40,10 @@ export default function ChatInput({
     e.target.style.height = "auto";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`; // max 160px
   };
+
+  const handleSend = () => {
+    setMyMessages(prev => [...prev, {message, isMe: true}])
+  }
 
   return (
     <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
