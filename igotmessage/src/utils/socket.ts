@@ -5,6 +5,11 @@ const url =
       ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
+    let socket: Socket
+
 export const getSocket = function (){
-    const socket = io(url)
+    if(!socket){
+        socket = io(url)
+    }
+    return socket
 }

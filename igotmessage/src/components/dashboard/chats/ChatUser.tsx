@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
+import {
+  Phone,
+  Video,
+  MoreVertical,
+  ArrowLeft,
+  CheckCheck,
+} from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { useSearchParams } from "next/navigation";
@@ -8,7 +14,6 @@ import { io } from "socket.io-client";
 
 function ChatUser() {
   const queryParam = useSearchParams();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [inputFocus, setInputFocus] = useState(false);
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
@@ -19,6 +24,9 @@ function ChatUser() {
     type: "",
   });
   const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [myMessages, setMyMessages] = useState<
+    { message: string; date: string }[]
+  >([]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -64,9 +72,18 @@ function ChatUser() {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col ">
+    <div
+      style={{
+        backgroundImage: `url(${isDark ? bgUrl : lightBgUrl})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+      className="w-full h-full flex flex-col "
+    >
       {/* Header */}
-      <div className="flex w-full fixed md:sticky left-0 items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
+      <div className="flex w-full fixed left-0 items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
         <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
@@ -100,17 +117,9 @@ function ChatUser() {
       </div>
 
       {/* Chat Messages */}
-      <div
-        style={{
-          backgroundImage: `url(${isDark ? bgUrl : lightBgUrl})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
-        className="flex-1 gap-2 "
-      >
+      <div className="flex-1 gap-2 ">
         <div
-          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15  px-2 pb-4 pt-[80px] md:pt-6 w-full h-full items-start gap-6`}
+          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15  px-2 pt-[80px] pb-[200px] md:pb-[100px] w-full h-full items-start gap-6`}
         >
           {/* message timer */}
           <div className="flex justify-center w-full text-[var(--textColor)]/80">
@@ -133,14 +142,18 @@ function ChatUser() {
               className="w-8 h-8 rounded-full border border-white/20"
             />
             <div
-              className={`max-w-xs md:max-w-sm px-4 py-2 rounded-2xl backdrop-blur-xl shadow-md relative chat-tail-right  ${
+              className={`max-w-xs md:max-w-sm  rounded-2xl backdrop-blur-xl shadow-md relative chat-tail-right  ${
                 isDark ? "bg-gray-600" : "bg-white"
               }  text-[var(--textColor)]`}
             >
-              <p>Hey! How’s your app going? 🚀</p>
-              <span className="text-[10px] opacity-60 block mt-1">
-                10:20 AM
-              </span>
+                  <p className="px-4 py-2">lkwejl iou oerug;a g9areu gg</p>
+             
+                  <span className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
+                isDark ? "bg-gray-800" : "bg-gray-300"
+              }`}>
+                    {'5: 30 PM'}
+                   
+                  </span>
 
               {/* Reaction bar (on hover/long press) */}
               <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
@@ -158,20 +171,26 @@ function ChatUser() {
           </div>
 
           {/* Sent - Delivered */}
-          <div
-            className="flex pr-2 justify-end group relative"
-            onDoubleClick={() =>
-              addReply("It’s going amazing! I just added stories 🎉")
-            }
-          >
-            <div className="chat-tail-left max-w-xs md:max-w-sm px-4 text-white py-2 rounded-2xl backdrop-blur-xl bg-blue-600 shadow-md relative">
-              <p>It’s going amazing! I just added stories 🎉</p>
-              <span className="text-[10px] opacity-60 block text-right mt-1">
-                10:21 AM <span className="ml-1">✔✔</span>
-              </span>
+          {myMessages.length > 0 &&
+            myMessages.map((message, i) => (
+              <div
+                key={i}
+                className="flex pr-2 justify-end group relative"
+                onDoubleClick={() =>
+                  addReply("It’s going amazing! I just added stories 🎉")
+                }
+              >
+                <div className="chat-tail-left max-w-xs md:max-w-sm  text-white  rounded-2xl backdrop-blur-xl bg-green-700 shadow-md relative">
+                  <p className="px-4 py-2">{message.message}</p>
+                  <span className="text-[10px] px-4 rounded-b-full bg-green-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
+                    {message.date}{" "}
+                    <span className="ml-1">
+                      <CheckCheck color="aqua" size={16}/>
+                    </span>
+                  </span>
 
-              {/* Reaction bar */}
-              {/* <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+                  {/* Reaction bar */}
+                  {/* <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
                 {reactions.map((r, i) => (
                   <button
                     key={i}
@@ -182,8 +201,9 @@ function ChatUser() {
                   </button>
                 ))}
               </div> */}
-            </div>
-          </div>
+                </div>
+              </div>
+            ))}
 
           {/* Typing Indicator */}
           {/* {typing && (
@@ -251,7 +271,7 @@ function ChatUser() {
       </div>
 
       {/* 💬 Chat Input */}
-      <ChatInput setFocus={setInputFocus} />
+      <ChatInput setFocus={setInputFocus} setMyMessage={setMyMessages} />
       <div id="scrolldiv"></div>
     </div>
   );

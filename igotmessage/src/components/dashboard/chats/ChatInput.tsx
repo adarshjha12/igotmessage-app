@@ -9,21 +9,21 @@ interface ChatInputProps {
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
   setFocus?: (val: boolean) => void;
+  setMyMessage?: (val: any) => void;
 }
 
 export default function ChatInput({
   onFileUpload,
   onSend,
   setFocus,
+  setMyMessage,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [showSendButton, setShowSendButton] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [message, setMessage] = useState("");
+  const [input, setInput] = useState("");
   const isDark = useSelector((state: RootState) => state.activity.isDark);
-
-  const [myMessages, setMyMessages] = useState<{message: string, isMe: boolean}[]>([])
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prev) => !prev);
@@ -31,7 +31,7 @@ export default function ChatInput({
   // Auto-grow textarea
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    setMessage(value);
+    setInput(value);
     if (value.length >= 1) {
       setShowSendButton(true);
     } else {
@@ -42,11 +42,21 @@ export default function ChatInput({
   };
 
   const handleSend = () => {
-    setMyMessages(prev => [...prev, {message, isMe: true}])
-  }
+    if (!input.trim()) return; 
+
+    setMyMessage &&
+      setMyMessage((prev: { message: string; date: string }[]) => [
+        ...prev,
+        { message: input, date: new Date().toLocaleTimeString() },
+      ]);
+
+    setInput("");
+    setShowSendButton(false);
+    setFocus?.(true)
+  };
 
   return (
-    <div className="fixed md:sticky left-0 bottom-[56px] w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
+    <div className="fixed left-0 bottom-[56px] md:bottom-0 w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
       <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
         {/* 🔲 Inner Wrapper: File + Input + Emoji */}
         <div className="flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-[var(--borderColor)]/15 backdrop-blur-md shadow-sm">
@@ -66,7 +76,7 @@ export default function ChatInput({
           {/* 📝 Text Area */}
           <textarea
             ref={textareaRef}
-            value={message}
+            value={input}
             rows={1}
             placeholder="Message"
             onFocus={() => setFocus?.(true)}
@@ -88,7 +98,7 @@ export default function ChatInput({
               <div className="overflow-hidden rounded-2xl shadow-2xl border border-[var(--borderColor)]/20 bg-rose-700 backdrop-blur-xl">
                 <EmojiPicker
                   onEmojiClick={(emojiObject) =>
-                    setMessage((prev) => prev + emojiObject.emoji)
+                    setInput((prev) => prev + emojiObject.emoji)
                   }
                   theme={isDark ? Theme.DARK : Theme.LIGHT}
                   width="100%"
@@ -122,7 +132,7 @@ export default function ChatInput({
               if (textareaRef.current?.value.trim()) {
                 onSend?.(textareaRef.current.value.trim());
                 textareaRef.current.value = "";
-                handleInput({ target: textareaRef.current } as any);
+                handleSend();
               }
             }}
           >

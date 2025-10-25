@@ -37,7 +37,7 @@ export default function BottomNav({ pathname }: { pathname: string }) {
  
 
   return (
-    <nav className="fixed -bottom-2 left-0 w-full flex items-center justify-between pb-3
+    <nav className="fixed -bottom-1 left-0 w-full flex items-center justify-between pb-3
       bg-[var(--bgColor)]/80 backdrop-blur-xl border-t border-[var(--shadowBorder)] 
       px-2 z-20 md:hidden">
       <ul className="flex items-center justify-between w-full">
