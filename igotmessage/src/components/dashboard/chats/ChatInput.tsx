@@ -79,8 +79,13 @@ export default function ChatInput({
             value={input}
             rows={1}
             placeholder="Message"
-            onFocus={() => setFocus?.(true)}
-            onBlur={() => setFocus?.(false)}
+            autoFocus
+            onClick={() => setFocus?.(true)}
+            onBlur={(e) => {
+              setTimeout(() => {
+                e.target.focus();
+              }, 0);
+            }}
             onInput={handleInput}
             className="flex-1 bg-transparent resize-none border-none outline-none text-[var(--textColor)] text-[16.5px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
             style={{ maxHeight: "150px" }}

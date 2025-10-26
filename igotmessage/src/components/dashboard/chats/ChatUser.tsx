@@ -99,7 +99,7 @@ function ChatUser() {
           <div>
             <h2 className="text-base font-semibold">{userName}</h2>
             <p className="text-xs opacity-70">
-              {typing ? "typing..." : "online"}
+              {"online"}
             </p>
           </div>
         </div>
