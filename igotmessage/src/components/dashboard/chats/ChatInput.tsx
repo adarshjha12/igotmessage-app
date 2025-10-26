@@ -82,6 +82,7 @@ export default function ChatInput({
             autoFocus
             onClick={() => setFocus?.(true)}
             onBlur={(e) => {
+              setFocus?.(false)
               setTimeout(() => {
                 e.target.focus();
               }, 0);

@@ -98,9 +98,7 @@ function ChatUser() {
           />
           <div>
             <h2 className="text-base font-semibold">{userName}</h2>
-            <p className="text-xs opacity-70">
-              {"online"}
-            </p>
+            <p className="text-xs opacity-70">{"online"}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -146,14 +144,15 @@ function ChatUser() {
                 isDark ? "bg-gray-600" : "bg-white"
               }  text-[var(--textColor)]`}
             >
-                  <p className="px-4 py-2">lkwejl iou oerug;a g9areu gg</p>
-             
-                  <span className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
-                isDark ? "bg-gray-800" : "bg-gray-300"
-              }`}>
-                    {'5: 30 PM'}
-                   
-                  </span>
+              <p className="px-4 py-2">lkwejl iou oerug;a g9areu gg</p>
+
+              <span
+                className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
+                  isDark ? "bg-gray-800" : "bg-gray-300"
+                }`}
+              >
+                {"5: 30 PM"}
+              </span>
 
               {/* Reaction bar (on hover/long press) */}
               <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
@@ -185,7 +184,7 @@ function ChatUser() {
                   <span className="text-[10px] px-4 rounded-b-full bg-orange-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
                     {message.date}
                     <span className="ml-1">
-                      <CheckCheck color="aqua" size={16}/>
+                      <CheckCheck color="aqua" size={16} />
                     </span>
                   </span>
 
