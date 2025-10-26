@@ -20,6 +20,11 @@ class InitSocket {
       socket.on("event:message", async ({ message }: { message: string }) => {
         console.log(`new message recieved: ${message}`);
       });
+
+      socket.on("joinRoom", async ({ roomId }: { roomId: string }) => {
+        socket.join(roomId);
+        console.log("room joined", roomId);
+      });
     });
   }
 }

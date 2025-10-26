@@ -11,12 +11,16 @@ import { RootState } from "@/store/store";
 import { useSearchParams } from "next/navigation";
 import ChatInput from "./ChatInput";
 import { io } from "socket.io-client";
+import { getSocket } from "@/utils/socket";
+import axios from "axios";
 
 function ChatUser() {
   const queryParam = useSearchParams();
   const [inputFocus, setInputFocus] = useState(false);
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
+  const recieverId = queryParam.get("userId");
+  const senderId = useAppSelector((state) => state.auth.user._id);
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const [typing, setTyping] = useState(true);
   const [preview, setPreview] = useState<{ url: string; type: string } | null>({
@@ -66,7 +70,31 @@ function ChatUser() {
   }, [inputFocus]);
 
   useEffect(() => {
-    const socket = io(url);
+    let chatId;
+    async function getChatId() {
+      try {
+        const res = await axios.post(
+          `${url}/api/chat/create-chat`,
+          { senderId, recieverId },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data) {
+          chatId = res.data.chat._id;
+          console.log(chatId);
+
+          if (chatId) {
+            const socket = getSocket();
+            socket.emit("joinRoom", { roomId: chatId });
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getChatId();
 
     return () => {};
   }, []);
@@ -98,7 +126,9 @@ function ChatUser() {
           />
           <div>
             <h2 className="text-base font-semibold">{userName}</h2>
-            <p className="text-xs opacity-70">{"online"}</p>
+            <p className="text-xs opacity-70">
+              {typing ? "typing..." : "online"}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">

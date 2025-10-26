@@ -103,7 +103,7 @@ const UsersList = ({ users, myId, type }: UsersListProps) => {
           <Link
             href={
               type === "chats"
-                ? `/dash/chats/${user._id}?avatar=${user.profilePicture || user.avatar}&userName=${user.userName}`
+                ? `/dash/chats/${user._id}?avatar=${user.profilePicture || user.avatar}&userName=${user.userName}&userId=${user._id}`
                 : `/public-profile/${user._id}/myId/${myId}`
             }
             className="flex items-center gap-3 min-w-0 w-full"

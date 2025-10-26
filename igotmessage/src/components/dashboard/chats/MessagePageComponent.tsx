@@ -16,20 +16,20 @@ interface Chat {
   userName: string;
   avatar: string;
   profilePicture?: string;
-  lastMessage: {
+  lastMessage?: {
     text: string;
     createdAt: string;
   };
-  unreadMessages: number;
-  online: boolean;
-  isGroupChat: boolean;
-  groupAdmin: {
+  unreadMessages?: number;
+  online?: boolean;
+  isGroupChat?: boolean;
+  groupAdmin?: {
     _id: string;
     userName: string;
     profilePicture: string;
   };
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function ChatList() {
@@ -99,7 +99,7 @@ export default function ChatList() {
                   <div>
                     <p className="font-semibold text-base">{chat.userName}</p>
                     <p className="text-sm text-gray-300 truncate max-w-[200px]">
-                      {chat.lastMessage.text}
+                      {chat?.lastMessage?.text}
                     </p>
                   </div>
                 </div>
@@ -109,7 +109,7 @@ export default function ChatList() {
                   <span className="text-xs text-gray-400">
                     {chat.updatedAt}
                   </span>
-                  {chat.unreadMessages > 0 ? (
+                  {chat?.unreadMessages && chat.unreadMessages > 0 ? (
                     <span className="px-2 py-1 text-xs font-semibold bg-red-500 text-white rounded-full">
                       {chat.unreadMessages}
                     </span>
