@@ -183,7 +183,7 @@ function ChatUser() {
                 <div className="chat-tail-left max-w-xs md:max-w-sm  text-white  rounded-2xl backdrop-blur-xl bg-orange-700 shadow-md relative">
                   <p className="px-4 py-2">{message.message}</p>
                   <span className="text-[10px] px-4 rounded-b-full bg-orange-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
-                    {message.date}{" "}
+                    {message.date}
                     <span className="ml-1">
                       <CheckCheck color="aqua" size={16}/>
                     </span>

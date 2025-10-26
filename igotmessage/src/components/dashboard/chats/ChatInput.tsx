@@ -42,7 +42,7 @@ export default function ChatInput({
   };
 
   const handleSend = () => {
-    if (!input.trim()) return; 
+    if (!input.trim()) return;
 
     setMyMessage &&
       setMyMessage((prev: { message: string; date: string }[]) => [
@@ -52,7 +52,7 @@ export default function ChatInput({
 
     setInput("");
     setShowSendButton(false);
-    setFocus?.(true)
+    setFocus?.(true);
   };
 
   return (
