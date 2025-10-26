@@ -9,14 +9,14 @@ interface ChatInputProps {
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
   setFocus?: (val: boolean) => void;
-  setMyMessage?: (val: any) => void;
+  setAllMessage?: (val: any) => void;
 }
 
 export default function ChatInput({
   onFileUpload,
   onSend,
   setFocus,
-  setMyMessage,
+  setAllMessage,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -42,17 +42,17 @@ export default function ChatInput({
   };
 
   const handleSend = () => {
-    if (!input.trim()) return; 
+    if (!input.trim()) return;
 
-    setMyMessage &&
-      setMyMessage((prev: { message: string; date: string }[]) => [
+    setAllMessage &&
+      setAllMessage((prev: { message: string; date: string }[]) => [
         ...prev,
         { message: input, date: new Date().toLocaleTimeString() },
       ]);
 
     setInput("");
     setShowSendButton(false);
-    setFocus?.(true)
+    setFocus?.(true);
   };
 
   return (

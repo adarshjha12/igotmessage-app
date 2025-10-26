@@ -14,6 +14,14 @@ import { io } from "socket.io-client";
 import { getSocket } from "@/utils/socket";
 import axios from "axios";
 
+interface Message {
+  sender: string;
+  chat: string;
+  content: string;
+  messageType: string;
+  updatedAt: string;
+}
+
 function ChatUser() {
   const queryParam = useSearchParams();
   const [inputFocus, setInputFocus] = useState(false);
@@ -28,9 +36,7 @@ function ChatUser() {
     type: "",
   });
   const [replyTo, setReplyTo] = useState<string | null>(null);
-  const [myMessages, setMyMessages] = useState<
-    { message: string; date: string }[]
-  >([]);
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -87,6 +93,10 @@ function ChatUser() {
           if (chatId) {
             const socket = getSocket();
             socket.emit("joinRoom", { roomId: chatId });
+
+            socket.on("event:message", (data) => {
+              setAllMessages((prev) => [...prev, data]);
+            });
           }
         }
       } catch (error) {
@@ -200,8 +210,8 @@ function ChatUser() {
           </div>
 
           {/* Sent - Delivered */}
-          {myMessages.length > 0 &&
-            myMessages.map((message, i) => (
+          {allMessages.length > 0 &&
+            allMessages.map((message, i) => (
               <div
                 key={i}
                 className="flex pr-2 justify-end group relative"
@@ -210,9 +220,9 @@ function ChatUser() {
                 }
               >
                 <div className="chat-tail-left max-w-xs md:max-w-sm  text-white  rounded-2xl backdrop-blur-xl bg-orange-700 shadow-md relative">
-                  <p className="px-4 py-2">{message.message}</p>
+                  <p className="px-4 py-2">{message.content}</p>
                   <span className="text-[10px] px-4 rounded-b-full bg-orange-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
-                    {message.date}
+                    {message.updatedAt}
                     <span className="ml-1">
                       <CheckCheck color="aqua" size={16} />
                     </span>
@@ -300,7 +310,7 @@ function ChatUser() {
       </div>
 
       {/* 💬 Chat Input */}
-      <ChatInput setFocus={setInputFocus} setMyMessage={setMyMessages} />
+      <ChatInput setFocus={setInputFocus} setAllMessage={setAllMessages} />
       <div id="scrolldiv"></div>
     </div>
   );
