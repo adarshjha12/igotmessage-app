@@ -49,8 +49,6 @@ export default function ChatList() {
   const [activeTab, setActiveTab] = useState("chats");
 
   useEffect(() => {
-    const socket = io(url);
-
     async function getAllChats() {
       try {
         const res = await axios.get(`${url}/api/chats/get-all-chats/${myId}`);
@@ -61,7 +59,6 @@ export default function ChatList() {
     }
 
     return () => {
-      socket.disconnect();
     };
   }, []);
 
