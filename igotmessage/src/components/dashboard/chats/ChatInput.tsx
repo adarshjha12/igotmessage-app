@@ -53,6 +53,8 @@ export default function ChatInput({
   };
 
   const handleSend = () => {
+    if (!input.trim()) return;
+
     const socket = getSocket();
 
     socket.emit("event:message", {
@@ -62,12 +64,11 @@ export default function ChatInput({
       tempId: `${Date.now()}abc`,
     });
 
-    if (!input.trim()) return;
-
     setAllMessage &&
       setAllMessage((prev: Message[]) => [
         ...prev,
         {
+          sender: myId,
           content: input,
           updatedAt: new Date().toLocaleTimeString(),
         },

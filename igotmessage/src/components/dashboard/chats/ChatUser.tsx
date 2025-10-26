@@ -99,6 +99,9 @@ function ChatUser() {
             socket.emit("joinRoom", { roomId: chatId });
 
             socket.on("event:message", (data) => {
+              console.log("senderId", typeof data.senderId);
+              console.log("myId", typeof senderId);
+
               setAllMessages((prev: Message[]) => [
                 ...prev,
                 {
@@ -187,66 +190,80 @@ function ChatUser() {
             </p>
           </div>
           {/* Received */}
-          <div
-            className="flex items-start gap-2 group relative"
-            onDoubleClick={() => addReply("Hey! How’s your app going? 🚀")}
-          >
-            <img
-              src={avatar!}
-              alt="avatar"
-              className="w-8 h-8 rounded-full border border-white/20"
-            />
-            <div
-              className={`max-w-xs md:max-w-sm  rounded-2xl backdrop-blur-xl shadow-md relative chat-tail-right  ${
-                isDark ? "bg-gray-600" : "bg-white"
-              }  text-[var(--textColor)]`}
-            >
-              <p className="px-4 py-2">lkwejl iou oerug;a g9areu gg</p>
-
-              <span
-                className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
-                  isDark ? "bg-gray-800" : "bg-gray-300"
-                }`}
-              >
-                {"5: 30 PM"}
-              </span>
-
-              {/* Reaction bar (on hover/long press) */}
-              <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
-                {reactions.map((r, i) => (
-                  <button
-                    key={i}
-                    className="hover:scale-110 transition text-lg"
-                    onClick={() => console.log("Reacted:", r)}
+          {allMessages.length > 0 &&
+            allMessages
+              .filter(
+                (message) => message.sender?.toString() !== senderId.toString()
+              )
+              .map((message, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-2 group relative"
+                  onDoubleClick={() =>
+                    addReply("Hey! How’s your app going? 🚀")
+                  }
+                >
+                  <img
+                    src={avatar!}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full border border-white/20"
+                  />
+                  <div
+                    className={`max-w-xs md:max-w-sm  rounded-2xl backdrop-blur-xl shadow-md relative chat-tail-right  ${
+                      isDark ? "bg-gray-600" : "bg-white"
+                    }  text-[var(--textColor)]`}
                   >
-                    {r}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+                    <p className="px-4 py-2">{message.content}</p>
+
+                    <span
+                      className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
+                        isDark ? "bg-gray-800" : "bg-gray-300"
+                      }`}
+                    >
+                      {message.updatedAt}
+                    </span>
+
+                    {/* Reaction bar (on hover/long press) */}
+                    <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+                      {reactions.map((r, i) => (
+                        <button
+                          key={i}
+                          className="hover:scale-110 transition text-lg"
+                          onClick={() => console.log("Reacted:", r)}
+                        >
+                          {r}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
 
           {/* Sent - Delivered */}
           {allMessages.length > 0 &&
-            allMessages.map((message, i) => (
-              <div
-                key={i}
-                className="flex pr-2 justify-end group relative"
-                onDoubleClick={() =>
-                  addReply("It’s going amazing! I just added stories 🎉")
-                }
-              >
-                <div className="chat-tail-left max-w-xs md:max-w-sm  text-white  rounded-2xl backdrop-blur-xl bg-orange-700 shadow-md relative">
-                  <p className="px-4 py-2">{message.content}</p>
-                  <span className="text-[10px] px-4 rounded-b-full bg-orange-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
-                    {message.updatedAt}
-                    <span className="ml-1">
-                      <CheckCheck color="aqua" size={16} />
+            allMessages
+              .filter(
+                (message) => message.sender?.toString() === senderId.toString()
+              )
+              .map((message, i) => (
+                <div
+                  key={i}
+                  className="flex pr-2 justify-end group relative"
+                  onDoubleClick={() =>
+                    addReply("It’s going amazing! I just added stories 🎉")
+                  }
+                >
+                  <div className="chat-tail-left max-w-xs md:max-w-sm  text-white  rounded-2xl backdrop-blur-xl bg-orange-700 shadow-md relative">
+                    <p className="px-4 py-2">{message.content}</p>
+                    <span className="text-[10px] px-4 rounded-b-full bg-orange-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
+                      {message.updatedAt}
+                      <span className="ml-1">
+                        <CheckCheck color="aqua" size={16} />
+                      </span>
                     </span>
-                  </span>
 
-                  {/* Reaction bar */}
-                  {/* <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+                    {/* Reaction bar */}
+                    {/* <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
                 {reactions.map((r, i) => (
                   <button
                     key={i}
@@ -257,9 +274,9 @@ function ChatUser() {
                   </button>
                 ))}
               </div> */}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
           {/* Typing Indicator */}
           {/* {typing && (
