@@ -6,19 +6,20 @@ import {
   ArrowLeft,
   CheckCheck,
 } from "lucide-react";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { useSearchParams } from "next/navigation";
 import ChatInput from "./ChatInput";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { getSocket } from "@/utils/socket";
 import axios from "axios";
+import { setChatId } from "@/features/chatSlice";
 
 interface Message {
-  sender: string;
-  chat: string;
+  sender?: string;
+  chat?: string;
   content: string;
-  messageType: string;
+  messageType?: string;
   updatedAt: string;
 }
 
@@ -60,8 +61,11 @@ function ChatUser() {
 
   const addReply = (msg: string) => setReplyTo(msg);
   const cancelReply = () => setReplyTo(null);
+  const dispatch = useAppDispatch();
 
   const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
+  let socket: Socket;
+  let chatId: string | null = null;
 
   useEffect(() => {
     if (inputFocus) {
@@ -76,7 +80,6 @@ function ChatUser() {
   }, [inputFocus]);
 
   useEffect(() => {
-    let chatId;
     async function getChatId() {
       try {
         const res = await axios.post(
@@ -91,11 +94,21 @@ function ChatUser() {
           console.log(chatId);
 
           if (chatId) {
-            const socket = getSocket();
+            dispatch(setChatId(chatId));
+            socket = getSocket();
             socket.emit("joinRoom", { roomId: chatId });
 
             socket.on("event:message", (data) => {
-              setAllMessages((prev) => [...prev, data]);
+              setAllMessages((prev: Message[]) => [
+                ...prev,
+                {
+                  content: data.message,
+                  sender: data.senderId,
+                  chat: data.roomId,
+                  messageType: data.messageType,
+                  updatedAt: data.updatedAt,
+                },
+              ]);
             });
           }
         }
@@ -106,7 +119,11 @@ function ChatUser() {
 
     getChatId();
 
-    return () => {};
+    return () => {
+      socket = getSocket();
+      socket.emit("leaveRoom", { roomId: chatId });
+      socket.off("event:message");
+    };
   }, []);
 
   return (

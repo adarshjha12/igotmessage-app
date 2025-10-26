@@ -4,12 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { getSocket } from "@/utils/socket";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
   setFocus?: (val: boolean) => void;
   setAllMessage?: (val: any) => void;
+  chatId?: string | null;
+}
+interface Message {
+  sender?: string;
+  chat?: string;
+  content: string;
+  messageType?: string;
+  updatedAt: string;
 }
 
 export default function ChatInput({
@@ -24,6 +33,8 @@ export default function ChatInput({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [input, setInput] = useState("");
   const isDark = useSelector((state: RootState) => state.activity.isDark);
+  const chatId = useSelector((state: RootState) => state.chat.chatId);
+  const myId = useSelector((state: RootState) => state.auth.user._id);
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prev) => !prev);
@@ -42,12 +53,24 @@ export default function ChatInput({
   };
 
   const handleSend = () => {
+    const socket = getSocket();
+
+    socket.emit("event:message", {
+      message: input,
+      roomId: chatId,
+      senderId: myId,
+      tempId: `${Date.now()}abc`,
+    });
+
     if (!input.trim()) return;
 
     setAllMessage &&
-      setAllMessage((prev: { message: string; date: string }[]) => [
+      setAllMessage((prev: Message[]) => [
         ...prev,
-        { message: input, date: new Date().toLocaleTimeString() },
+        {
+          content: input,
+          updatedAt: new Date().toLocaleTimeString(),
+        },
       ]);
 
     setInput("");

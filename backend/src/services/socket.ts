@@ -24,20 +24,29 @@ class InitSocket {
           message,
           roomId,
           senderId,
+          tempId,
         }: {
           message: string;
           roomId: string;
           senderId: string;
+          tempId: string;
         }) => {
           console.log(`new message recieved: ${message}`);
 
-          socket.to(roomId).emit("event:message", { message, senderId });
-
-          await Message.create({
+          const newMessage = await Message.create({
             sender: senderId,
             chat: roomId,
             content: message,
             messageType: "text",
+          });
+
+          socket.to(roomId).emit("event:message", {
+            message,
+            senderId,
+            updatedAt: newMessage.updatedAt,
+            messageId: newMessage._id,
+            messageType: newMessage.messageType,
+            tempId,
           });
         }
       );

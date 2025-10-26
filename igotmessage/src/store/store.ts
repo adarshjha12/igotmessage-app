@@ -6,6 +6,7 @@ import activityReducer from "../features/activitySlice";
 import storyReducer from "../features/storySlice";
 import postReducer from "../features/postSlice";
 import reelReducer from "../features/reelSlice";
+import chatReducer from "../features/chatSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -13,6 +14,7 @@ const store = configureStore({
     story: storyReducer,
     post: postReducer,
     reel: reelReducer,
+    chat: chatReducer
   },
 });
 
