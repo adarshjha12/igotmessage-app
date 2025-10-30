@@ -19,7 +19,14 @@ async function uploadMultiple(files: File[]) {
 
     const res = await axios.post(
       "https://upload.imagekit.io/api/v1/files/upload",
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Basic ${btoa(
+            process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY + ":"
+          )}`,
+        },
+      }
     );
 
     return res.data;
