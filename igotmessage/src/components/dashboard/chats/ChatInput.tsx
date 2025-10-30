@@ -19,6 +19,7 @@ interface Message {
   content: string;
   messageType?: string;
   updatedAt: string;
+  _id?: string;
 }
 
 export default function ChatInput({
@@ -56,18 +57,19 @@ export default function ChatInput({
     if (!input.trim()) return;
 
     const socket = getSocket();
+    const tempId = `${Date.now()}abc`;
 
     socket.emit("event:message", {
-      message: input,
+      content: input,
       roomId: chatId,
       senderId: myId,
-      tempId: `${Date.now()}abc`,
+      tempId
     });
 
     setAllMessage &&
       setAllMessage((prev: Message[]) => [
         ...prev,
-        {
+        {_id: tempId,
           sender: myId,
           content: input,
           updatedAt: new Date().toLocaleTimeString(),

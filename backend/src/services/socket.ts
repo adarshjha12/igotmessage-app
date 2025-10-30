@@ -21,27 +21,27 @@ class InitSocket {
       socket.on(
         "event:message",
         async ({
-          message,
+          content,
           roomId,
           senderId,
           tempId,
         }: {
-          message: string;
+          content: string;
           roomId: string;
           senderId: string;
           tempId: string;
         }) => {
-          console.log(`new message recieved: ${message}`);
+          console.log(`new message recieved: ${content}`);
 
           const newMessage = await Message.create({
             sender: senderId,
             chat: roomId,
-            content: message,
+            content,
             messageType: "text",
           });
 
           socket.to(roomId).emit("event:message", {
-            message,
+            content,
             senderId,
             updatedAt: newMessage.updatedAt,
             messageId: newMessage._id,

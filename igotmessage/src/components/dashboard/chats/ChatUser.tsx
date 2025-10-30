@@ -21,6 +21,7 @@ interface Message {
   content: string;
   messageType?: string;
   updatedAt: string;
+  tempId?: string;
 }
 
 function ChatUser() {
@@ -36,6 +37,7 @@ function ChatUser() {
     url: "",
     type: "",
   });
+  
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
 
