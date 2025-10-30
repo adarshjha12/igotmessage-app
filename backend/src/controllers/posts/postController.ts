@@ -39,10 +39,7 @@ export const createPost = async (req: Request, res: Response): Promise<any> => {
       postType,
       poll: poll && poll !== "undefined" ? poll : undefined,
       text: text || "",
-      musicData:
-        musicData && musicData !== "undefined"
-          ? musicData
-          : undefined,
+      musicData: musicData && musicData !== "undefined" ? musicData : undefined,
       privacy: privacy || "public",
     });
 
@@ -52,6 +49,12 @@ export const createPost = async (req: Request, res: Response): Promise<any> => {
 
     await User.findByIdAndUpdate(userId, { $push: { posts: post._id } });
     console.log("User updated with new post:", userId);
+    
+    console.log("ImageKit Keys:", {
+      publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+      privateKey: process.env.IMAGEKIT_PRIVATE_KEY ? "Loaded ✅" : "Missing ❌",
+      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+    });
 
     return res
       .status(201)
