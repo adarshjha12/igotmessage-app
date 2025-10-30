@@ -1,12 +1,12 @@
 import axios from "axios";
 
 async function uploadMultiple(files: File[]) {
-    const backendUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://igotmessage-app-backend.onrender.com"
-    : "http://localhost:5000";
+  const url =
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
+      : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
-  const { data: auth } = await axios.get(`${backendUrl}/api/upload/upload-auth`);
+  const { data: auth } = await axios.get(`${url}/api/upload/upload-auth`);
 
   const uploadPromises = files.map(async (file) => {
     const formData = new FormData();
@@ -22,7 +22,7 @@ async function uploadMultiple(files: File[]) {
       formData
     );
 
-    return res.data; 
+    return res.data;
   });
 
   const uploadedFiles = await Promise.all(uploadPromises);
