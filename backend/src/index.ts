@@ -101,7 +101,7 @@ app.get("delete", (req, res) => {
   const deleteRecentPosts = async () => {
     try {
       const threeDaysAgo = new Date();
-      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 5);
 
       const result = await Post.deleteMany({
         createdAt: { $gte: threeDaysAgo },
