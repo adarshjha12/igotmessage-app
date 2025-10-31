@@ -28,6 +28,7 @@ import InitSocket from "./services/socket";
 import http from "http";
 import uploadAuth from "./routers/uploadAuth";
 import { chatRouter } from "./routers/chats/chatRouter";
+import { Post } from "./models/postModel";
 
 const PORT = process.env.PORT;
 const app = express();
@@ -80,8 +81,8 @@ app.use("/api/profile", profileRouter);
 app.use("/api/logout", logOutRouter);
 app.use("/api/text/ai", aiTextGenRouter);
 app.use("/api/search", searchRouter);
-app.use("/api/upload", uploadAuth)
-app.use("/api/chat", chatRouter)
+app.use("/api/upload", uploadAuth);
+app.use("/api/chat", chatRouter);
 
 socketService.io.attach(server, {
   cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
@@ -94,6 +95,29 @@ app.get("/", (req, res) => {
 
 app.get("/healthCheck", (req, res) => {
   res.status(200);
+});
+
+app.get("delete", (req, res) => {
+  const deleteRecentPosts = async () => {
+    try {
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+      const result = await Post.deleteMany({
+        createdAt: { $gte: threeDaysAgo },
+      });
+
+      res.status(200).json({
+        message: "Recent posts deleted successfully",
+        deletedCount: result.deletedCount,
+      });
+    } catch (error) {
+      console.error("Error deleting recent posts:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
+  deleteRecentPosts();
 });
 
 setInterval(async () => {
