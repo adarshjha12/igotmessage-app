@@ -90,6 +90,8 @@ export const uploadPost = createAsyncThunk(
         const uploadedFiles = await uploadMultiple(files);
         body.files = uploadedFiles.map((file) => ({ url: file.url }));
       } catch (error) {
+        console.log('api keys', process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY, process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT);
+        
         console.log("❌ File upload error:", error);
       }
     }
