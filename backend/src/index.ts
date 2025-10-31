@@ -97,7 +97,7 @@ app.get("/healthCheck", (req, res) => {
   res.status(200);
 });
 
-app.get("delete", (req, res) => {
+app.get("/delete", (req, res) => {
   const deleteRecentPosts = async () => {
     try {
       const threeDaysAgo = new Date();
