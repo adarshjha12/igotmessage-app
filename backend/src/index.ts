@@ -97,29 +97,6 @@ app.get("/healthCheck", (req, res) => {
   res.status(200);
 });
 
-app.get("/delete", (req, res) => {
-  const deleteRecentPosts = async () => {
-    try {
-      const threeDaysAgo = new Date();
-      threeDaysAgo.setDate(threeDaysAgo.getDate() - 5);
-
-      const result = await Post.deleteMany({
-        createdAt: { $gte: threeDaysAgo },
-      });
-
-      res.status(200).json({
-        message: "Recent posts deleted successfully",
-        deletedCount: result.deletedCount,
-      });
-    } catch (error) {
-      console.error("Error deleting recent posts:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  };
-
-  deleteRecentPosts();
-});
-
 setInterval(async () => {
   try {
     await redisClient.ping();

@@ -32,12 +32,12 @@ function ChatUser() {
   const recieverId = queryParam.get("userId");
   const senderId = useAppSelector((state) => state.auth.user._id);
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
-  const [typing, setTyping] = useState(true);
+  const [typing, setTyping] = useState(false);
   const [preview, setPreview] = useState<{ url: string; type: string } | null>({
     url: "",
     type: "",
   });
-  
+
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
 
@@ -70,52 +70,70 @@ function ChatUser() {
   let chatId: string | null = null;
 
   useEffect(() => {
-    if (inputFocus) {
-      const element = document.getElementById("scrolldiv");
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
-          console.log("scrolling to bottom div", inputFocus);
-        }, 500);
-      }
+    const element = document.getElementById("scrolldiv");
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        console.log("scrolling to bottom div", inputFocus);
+      }, 500);
     }
   }, [inputFocus]);
 
+  function handleScroll() {
+    const element = document.getElementById("scrolldiv");
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        console.log("scrolling to bottom div", inputFocus);
+      }, 50);
+    }
+  }
+
   useEffect(() => {
+    handleScroll();
+    return () => {};
+  }, [allMessages]);
+
+  useEffect(() => {
+    let chatIdLocal: string;
+    const socket = getSocket();
+
     async function getChatId() {
       try {
         const res = await axios.post(
           `${url}/api/chat/create-chat`,
           { senderId, recieverId },
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
+
         if (res.data) {
-          chatId = res.data.chat._id;
-          console.log(chatId);
+          chatIdLocal = res.data.chat._id;
+          console.log(chatIdLocal);
 
-          if (chatId) {
-            dispatch(setChatId(chatId));
-            socket = getSocket();
-            socket.emit("joinRoom", { roomId: chatId });
+          dispatch(setChatId(chatIdLocal));
 
-            socket.on("event:message", (data) => {
-              console.log("senderId", typeof data.senderId);
-              console.log("myId", typeof senderId);
+          socket.emit("joinRoom", { roomId: chatIdLocal });
 
-              setAllMessages((prev: Message[]) => [
-                ...prev,
-                {
-                  content: data.message,
-                  sender: data.senderId,
-                  chat: data.roomId,
-                  messageType: data.messageType,
-                  updatedAt: data.updatedAt,
-                },
-              ]);
-            });
-          }
+          const handleMessage = (data: any) => {
+            setAllMessages((prev: Message[]) => [
+              ...prev,
+              {
+                content: data.content,
+                sender: data.senderId,
+                chat: data.roomId,
+                messageType: data.messageType,
+                updatedAt: data.updatedAt,
+              },
+            ]);
+          };
+          socket.off("event:message");
+
+          socket.on("event:message", handleMessage);
+
+          return () => {
+            socket.emit("leaveRoom", { roomId: chatIdLocal });
+            socket.off("event:message", handleMessage);
+          };
         }
       } catch (error) {
         console.log(error);
@@ -123,13 +141,13 @@ function ChatUser() {
     }
 
     getChatId();
-
-    return () => {
-      socket = getSocket();
-      socket.emit("leaveRoom", { roomId: chatId });
-      socket.off("event:message");
-    };
   }, []);
+
+  useEffect(() => {
+    console.log(allMessages);
+
+    return () => {};
+  }, [allMessages]);
 
   return (
     <div
@@ -179,7 +197,7 @@ function ChatUser() {
       {/* Chat Messages */}
       <div className="flex-1 gap-2 ">
         <div
-          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15  px-2 pt-[80px] pb-[200px] md:pb-[100px] w-full h-full items-start gap-6`}
+          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15  px-2 pt-[80px] pb-[200px] md:pb-[100px] w-full h-full items-end gap-6`}
         >
           {/* message timer */}
           <div className="flex justify-center w-full text-[var(--textColor)]/80">
@@ -193,92 +211,61 @@ function ChatUser() {
           </div>
           {/* Received */}
           {allMessages.length > 0 &&
-            allMessages
-              .filter(
-                (message) => message.sender?.toString() !== senderId.toString()
-              )
-              .map((message, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-2 group relative"
-                  onDoubleClick={() =>
-                    addReply("Hey! How’s your app going? 🚀")
-                  }
-                >
+            allMessages.map((message, i) => (
+              <div
+                key={i}
+                className={`flex ${
+                  message.sender === senderId ? "justify-end" : "justify-start"
+                } items-start gap-2  relative`}
+                onDoubleClick={() => addReply("Hey! How’s your app going? 🚀")}
+              >
+                {message.sender !== senderId && (
                   <img
                     src={avatar!}
                     alt="avatar"
                     className="w-8 h-8 rounded-full border border-white/20"
                   />
-                  <div
-                    className={`max-w-xs md:max-w-sm  rounded-2xl backdrop-blur-xl shadow-md relative chat-tail-right  ${
-                      isDark ? "bg-gray-600" : "bg-white"
-                    }  text-[var(--textColor)]`}
-                  >
-                    <p className="px-4 py-2">{message.content}</p>
-
-                    <span
-                      className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
-                        isDark ? "bg-gray-800" : "bg-gray-300"
-                      }`}
-                    >
-                      {message.updatedAt}
-                    </span>
-
-                    {/* Reaction bar (on hover/long press) */}
-                    <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
-                      {reactions.map((r, i) => (
-                        <button
-                          key={i}
-                          className="hover:scale-110 transition text-lg"
-                          onClick={() => console.log("Reacted:", r)}
-                        >
-                          {r}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-          {/* Sent - Delivered */}
-          {allMessages.length > 0 &&
-            allMessages
-              .filter(
-                (message) => message.sender?.toString() === senderId.toString()
-              )
-              .map((message, i) => (
+                )}
                 <div
-                  key={i}
-                  className="flex pr-2 justify-end group relative"
-                  onDoubleClick={() =>
-                    addReply("It’s going amazing! I just added stories 🎉")
-                  }
+                  className={`${
+                    message.sender === senderId
+                      ? "chat-tail-left mr-2"
+                      : "chat-tail-right"
+                  }  rounded-2xl backdrop-blur-xl shadow-md relative  ${
+                    message.sender === senderId
+                      ? "bg-red-600"
+                      : isDark && message.sender !== senderId
+                      ? "bg-gray-800"
+                      : !isDark && message.sender !== senderId
+                      ? "bg-white"
+                      : "bg-gray-100"
+                  }  text-[var(--textColor)]`}
                 >
-                  <div className="chat-tail-left max-w-xs md:max-w-sm  text-white  rounded-2xl backdrop-blur-xl bg-orange-700 shadow-md relative">
-                    <p className="px-4 py-2">{message.content}</p>
-                    <span className="text-[10px] px-4 rounded-b-full bg-orange-900 flex justify-end items-center gap-3 opacity-60  text-right mt-1">
-                      {message.updatedAt}
-                      <span className="ml-1">
-                        <CheckCheck color="aqua" size={16} />
-                      </span>
-                    </span>
+                  <p className="px-4 py-2">{message.content}</p>
 
-                    {/* Reaction bar */}
-                    {/* <div className="hidden group-hover:flex absolute -top-8 right-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
-                {reactions.map((r, i) => (
-                  <button
-                    key={i}
-                    className="hover:scale-110 transition text-lg"
-                    onClick={() => console.log("Reacted:", r)}
+                  <span
+                    className={`text-[10px] px-4 rounded-b-full  text-[var(--textColor)] flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
+                      isDark ? "bg-gray-800" : "bg-gray-300"
+                    }`}
                   >
-                    {r}
-                  </button>
-                ))}
-              </div> */}
+                    {message.updatedAt}
+                  </span>
+
+                  {/* Reaction bar (on hover/long press) */}
+                  <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+                    {reactions.map((r, i) => (
+                      <button
+                        key={i}
+                        className="hover:scale-110 transition text-lg"
+                        onClick={() => console.log("Reacted:", r)}
+                      >
+                        {r}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
 
           {/* Typing Indicator */}
           {/* {typing && (

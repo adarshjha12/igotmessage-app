@@ -43,6 +43,7 @@ class InitSocket {
           socket.to(roomId).emit("event:message", {
             content,
             senderId,
+            roomId,
             updatedAt: newMessage.updatedAt,
             messageId: newMessage._id,
             messageType: newMessage.messageType,
@@ -65,9 +66,19 @@ class InitSocket {
         console.log("socket disconnected", socket.id);
       });
 
-      socket.on("typing", async ({ typing }: { typing: boolean }) => {});
+      socket.on(
+        "event:typing",
+        async ({ roomId, senderId }: { roomId: string; senderId: boolean }) => {
+          socket.to(roomId).emit("event:typing", { typing: true });
+        }
+      );
 
-      socket.on("stopTyping", async ({ typing }: { typing: boolean }) => {});
+      socket.on(
+        "event:stopTyping",
+        async ({ roomId, senderId }: { roomId: string; senderId: boolean }) => {
+          socket.to(roomId).emit("event:stopTyping", { typing: false });
+        }
+      );
     });
   }
 }

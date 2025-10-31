@@ -11,7 +11,6 @@ interface ChatInputProps {
   onSend?: (message: string) => void;
   setFocus?: (val: boolean) => void;
   setAllMessage?: (val: any) => void;
-  chatId?: string | null;
 }
 interface Message {
   sender?: string;
@@ -43,6 +42,13 @@ export default function ChatInput({
   // Auto-grow textarea
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
+
+    const socket = getSocket();
+
+    setTimeout(() => {
+      socket.emit("event:typing", { roomId: chatId, senderId: myId });
+    }, 500);
+    
     setInput(value);
     if (value.length >= 1) {
       setShowSendButton(true);
@@ -63,13 +69,14 @@ export default function ChatInput({
       content: input,
       roomId: chatId,
       senderId: myId,
-      tempId
+      tempId,
     });
 
     setAllMessage &&
       setAllMessage((prev: Message[]) => [
         ...prev,
-        {_id: tempId,
+        {
+          _id: tempId,
           sender: myId,
           content: input,
           updatedAt: new Date().toLocaleTimeString(),
