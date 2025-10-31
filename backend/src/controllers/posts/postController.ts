@@ -5,8 +5,6 @@ import { Request, Response } from "express";
 
 export const createPost = async (req: Request, res: Response): Promise<any> => {
   try {
-    console.log("Request body:", req.body);
-
     const {
       userId,
       text,

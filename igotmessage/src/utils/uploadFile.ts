@@ -1,32 +1,57 @@
-import ImageKit from "imagekit-javascript";
+import {
+  upload,
+  ImageKitInvalidRequestError,
+  ImageKitAbortError,
+  ImageKitUploadNetworkError,
+  ImageKitServerError,
+} from "@imagekit/javascript";
+import axios from "axios";
 
-async function uploadMultiple(files: File[]) {
-  // Choose backend URL dynamically (local or production)
-  const backendUrl =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL
-      : process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL;
+const url =
+  process.env.NODE_ENV === "production"
+    ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/upload/upload-auth`
+    : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/upload/upload-auth`;
 
-  // Initialize ImageKit client (frontend SDK)
-  const imagekit = new (ImageKit as any)({
-    publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!, // safe for frontend
-    urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!,
-    authenticationEndpoint: `${backendUrl}/api/upload/upload-auth`, // backend endpoint that returns signature
-  });
+const uploadFiles = async (files: File[]) => {
+  const res = await axios.get(url);
 
-  // Upload all files concurrently
-  const uploadPromises = files.map((file) =>
-    imagekit.upload({
-      file,               // actual File object
-      fileName: file.name, // name to be stored in ImageKit
-      folder: "/uploads",  // optional - set folder path in ImageKit
-    })
-  );
+  if (!res.data) throw new Error("Failed to get upload auth");
 
-  const uploadedFiles = await Promise.all(uploadPromises);
+  const { token, signature, expire } = res.data;
 
-  console.log("✅ All uploads done:", uploadedFiles);
-  return uploadedFiles;
-}
+  try {
+    const uploadedFiles = await Promise.all(
+      files.map(async (file) => {
+        const uploadOptions = {
+          file,
+          fileName: file.name,
+          token,
+          signature,
+          expire,
+          publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
+          urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!,
+        };
 
-export default uploadMultiple;
+        const response = await upload(uploadOptions);
+        console.log("✅ Upload successful:", response);
+        return response;
+      })
+    );
+
+    return uploadedFiles;
+  } catch (error) {
+    if (error instanceof ImageKitAbortError)
+      console.error("Upload aborted:", error.reason);
+    else if (error instanceof ImageKitInvalidRequestError)
+      console.error("Invalid request:", error.message);
+    else if (error instanceof ImageKitUploadNetworkError)
+      console.error("Network error:", error.message);
+    else if (error instanceof ImageKitServerError)
+      console.error("Server error:", error.message);
+    else console.error("Upload error:", error);
+
+    throw error;
+  }
+};
+
+export default uploadFiles;
