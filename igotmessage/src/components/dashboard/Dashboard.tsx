@@ -328,18 +328,6 @@ function Dashboard({ children }: { children: ReactNode }) {
                 </Link>
               )}
 
-              {/* More menu */}
-              {/* <button
-                type="button"
-                className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
-                onClick={() => setShowMoreModal((prev) => !prev)}
-              >
-                <MoreVertical
-                  size={26}
-                  strokeWidth={1.5}
-                  className={isDark ? "text-white" : "text-black"}
-                />
-              </button> */}
             </div>
 
             {/* Overlay for modal */}
@@ -453,11 +441,11 @@ function Dashboard({ children }: { children: ReactNode }) {
 
             {/* MESSAGES */}
             <Link
-              href="/dash/chats"
+              href={`/chats?userId=${myId}`}
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
               } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
-                pathname === "/dash/chats"
+                pathname === "/chats"
                   ? "bg-[var(--textColor)] text-[var(--bgColor)]"
                   : ""
               }`}

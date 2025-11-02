@@ -1,6 +1,11 @@
 "use client";
 import Image from "next/image";
-import { MessageSquare, CheckCheck, ChevronLeft } from "lucide-react";
+import {
+  MessageSquare,
+  CheckCheck,
+  ChevronLeft,
+  ChevronLeftIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
@@ -9,7 +14,7 @@ import axios from "axios";
 import NoChats from "./NoChats";
 import AddChatButton from "./AddChat";
 import AnimatedChatTabs from "./ChatTabs";
-import FollowersList from "../profile/AllUsers";
+import FollowersList from "../dashboard/profile/AllUsers";
 
 interface Chat {
   _id: string;
@@ -58,16 +63,22 @@ export default function ChatList() {
       }
     }
 
-    return () => {
-    };
+    return () => {};
   }, []);
 
   return (
-    <div className="w-full h-full bg-[var(--bgColor)] text-[var(--textColor)] py-2">
+    <div className="w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)] py-2 flex flex-col items-center sm:px-4 md:px-8">
+      {/* back button */}
+      <button
+        onClick={() => window.history.back()}
+        className="p-2 hidden sm:block fixed top-4 left-4 rounded-full hover:bg-white/10 transition"
+      >
+        <ChevronLeftIcon size={26} className="text-[var(--textColor)]" />
+      </button>
       <AnimatedChatTabs setTab={setActiveTab} />
       {loading && <div>Loading...</div>}
       {chats !== null && (
-        <div>
+        <div className="">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-bold">All Chats</h1>
@@ -135,12 +146,13 @@ export default function ChatList() {
           <button
             onClick={() => setAddChatClicked(false)}
             type="button"
-           className=" pt-4 active:scale-90 transition-all ease-in-out duration-300 pl-3 w-full flex items-center text-red-500 hover:text-green-600 hover:scale-110 origin-left font-semibold justify-start text-xl">
+            className=" pt-4 active:scale-90 transition-all ease-in-out duration-300 pl-3 w-full flex items-center text-red-500 hover:text-green-600 hover:scale-110 origin-left font-semibold justify-start text-xl"
+          >
             {/* Back button */}
-            <ChevronLeft/>
+            <ChevronLeft />
             Back
           </button>
-          <FollowersList userId={myId} type="chats"/>
+          <FollowersList userId={myId} type="chats" />
         </div>
       )}
     </div>

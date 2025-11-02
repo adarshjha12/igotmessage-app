@@ -27,14 +27,12 @@ export default function BottomNav({ pathname }: { pathname: string }) {
 
   const navItems = [
     { href: "/dash/feed", icon: HouseIcon },
-    { href: "/dash/chats", icon: ChatTextIcon  },
+    { href: `/chats?userId=${myId}`, icon: ChatTextIcon  },
     { href: "/dash/create", icon: PlusSquareIcon },
     { href: `/reels?myId=${myId}&myPic=${profilePicture || avatar}`, icon: PlayCircleIcon },
     { href: "/dash/calls", icon: PhoneIcon },
     { href: "/dash/profile", icon: UserIcon },
   ];
-
- 
 
   return (
     <nav className="fixed bottom-0 -mb-2 left-0 w-full flex items-center justify-between pb-4

@@ -69,14 +69,18 @@ class InitSocket {
       socket.on(
         "event:typing",
         async ({ roomId, senderId }: { roomId: string; senderId: boolean }) => {
-          socket.to(roomId).emit("event:typing", { typing: true });
+          console.log('user typing+++++++++++');
+          
+          socket.to(roomId).emit("event:otherTyping", { typing: true, senderId});
         }
       );
 
       socket.on(
         "event:stopTyping",
         async ({ roomId, senderId }: { roomId: string; senderId: boolean }) => {
-          socket.to(roomId).emit("event:stopTyping", { typing: false });
+          console.log('user stop typing+++++++++++++');
+          
+          socket.to(roomId).emit("event:otherStopTyping", { typing: false, senderId});
         }
       );
     });

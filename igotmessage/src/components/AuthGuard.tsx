@@ -23,6 +23,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         const response = await checkAuth();
         if (response.data?.success === true) {
           dispatch(addCurrentUserToStore(response.data.userData));
+           localStorage.setItem("userId", JSON.stringify(response.data.userData._id));
           dispatch(setAuthStatus(true));
           setVerified(true);
           setLoading(false);

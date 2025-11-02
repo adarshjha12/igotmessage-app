@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Phone,
-  Video,
-  MoreVertical,
-  ArrowLeft,
-  CheckCheck,
-} from "lucide-react";
+import { Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { useSearchParams } from "next/navigation";
@@ -29,10 +23,10 @@ function ChatUser() {
   const [inputFocus, setInputFocus] = useState(false);
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
-  const recieverId = queryParam.get("userId");
-  const senderId = useAppSelector((state) => state.auth.user._id);
+  const recieverId = queryParam.get("recieverId");
+  const senderId = queryParam.get("senderId");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
-  const [typing, setTyping] = useState(false);
+  const [isOtherTyping, setOtherTyping] = useState(false);
   const [preview, setPreview] = useState<{ url: string; type: string } | null>({
     url: "",
     type: "",
@@ -56,7 +50,7 @@ function ChatUser() {
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
   const bgUrl =
-    "https://images.unsplash.com/photo-1535868463750-c78d9543614f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=876";
+    "https://plus.unsplash.com/premium_photo-1686063717140-1cd04ce5f76e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8ZGFyayUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900";
 
   const lightBgUrl =
     "https://images.unsplash.com/photo-1639437038507-749a056cd07c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387";
@@ -127,12 +121,32 @@ function ChatUser() {
             ]);
           };
           socket.off("event:message");
+          socket.off("otherTyping");
+          socket.off("otherStopTyping");
 
           socket.on("event:message", handleMessage);
+
+          socket.on("event:otherTyping", (data: any) => {
+            console.log(data);
+            
+            if (data.senderId !== senderId) {
+              setOtherTyping(true);
+            }
+          });
+
+          socket.on("event:otherStopTyping", (data: any) => {
+            if (data.senderId !== senderId) {
+              console.log(data);
+              
+              setOtherTyping(false);
+            }
+          });
 
           return () => {
             socket.emit("leaveRoom", { roomId: chatIdLocal });
             socket.off("event:message", handleMessage);
+            socket.off("otherTyping");
+            socket.off("otherStopTyping");
           };
         }
       } catch (error) {
@@ -158,7 +172,7 @@ function ChatUser() {
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
       }}
-      className="w-full h-full flex flex-col "
+      className="w-full min-h-screen text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col "
     >
       {/* Header */}
       <div className="flex w-full fixed left-0 items-center justify-between p-3 border-b border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
@@ -177,7 +191,7 @@ function ChatUser() {
           <div>
             <h2 className="text-base font-semibold">{userName}</h2>
             <p className="text-xs opacity-70">
-              {typing ? "typing..." : "online"}
+              {isOtherTyping ? "typing..." : "online"}
             </p>
           </div>
         </div>
@@ -195,9 +209,9 @@ function ChatUser() {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 gap-2 ">
+      <div className="flex-1 gap-2 h-full">
         <div
-          className={`flex-1 flex-col space-y-6  overflow-y-auto bg-black/15  px-2 pt-[80px] pb-[200px] md:pb-[100px] w-full h-full items-end gap-6`}
+          className={`flex-1 flex-col space-y-6  overflow-y-auto  px-2 pt-[80px] pb-[100px] md:px-12 lg:px-16 w-full h-full items-end gap-6`}
         >
           {/* message timer */}
           <div className="flex justify-center w-full text-[var(--textColor)]/80">
@@ -233,9 +247,9 @@ function ChatUser() {
                       : "chat-tail-right"
                   }  rounded-2xl backdrop-blur-xl shadow-md relative  ${
                     message.sender === senderId
-                      ? "bg-red-600"
+                      ? "bg-green-700"
                       : isDark && message.sender !== senderId
-                      ? "bg-gray-800"
+                      ? "bg-gray-700"
                       : !isDark && message.sender !== senderId
                       ? "bg-white"
                       : "bg-gray-100"
@@ -268,7 +282,7 @@ function ChatUser() {
             ))}
 
           {/* Typing Indicator */}
-          {/* {typing && (
+          {isOtherTyping && (
             <div className="flex items-start gap-2">
               <img
                 src={avatar!}
@@ -281,7 +295,7 @@ function ChatUser() {
                 <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce delay-300"></span>
               </div>
             </div>
-          )} */}
+          )}
 
           {/* File Preview */}
           {/* {preview && (
@@ -308,24 +322,6 @@ function ChatUser() {
                 className="p-2 rounded-full hover:bg-white/10 transition"
               >
                 <X size={20} />
-              </button>
-            </div>
-          )} */}
-
-          {/* Reply Preview */}
-          {/* {replyTo && (
-            <div className="px-4 py-2 border-t border-white/10 backdrop-blur-lg bg-white/5 flex justify-between items-center">
-              <div className="flex items-center gap-2 text-sm">
-                <Reply size={18} />
-                <span className="opacity-80 truncate max-w-[200px]">
-                  {replyTo}
-                </span>
-              </div>
-              <button
-                onClick={cancelReply}
-                className="p-2 rounded-full hover:bg-white/10 transition"
-              >
-                <X size={18} />
               </button>
             </div>
           )} */}

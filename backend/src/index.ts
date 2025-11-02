@@ -97,14 +97,14 @@ app.get("/healthCheck", (req, res) => {
   res.status(200);
 });
 
-setInterval(async () => {
+app.get("/redis", async (req: Request, res: Response) => {
   try {
     await redisClient.ping();
     console.log("Redis pinged to keep alive");
   } catch (err) {
     console.error("Failed to ping Redis:", err);
   }
-}, 1000 * 60 * 60 * 24 * 3);
+});
 
 server.listen(PORT, () => {
   console.log(`running on ${PORT}`);

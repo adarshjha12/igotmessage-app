@@ -3,6 +3,14 @@ import { User } from "../../models/userModel";
 
 export async function getAllPeople(req: Request, res: Response): Promise<any> {
   const userId = req.query.userId;
+
+  if (!userId) {
+    console.log('userId missing');
+    
+    return res
+      .status(400)
+      .json({ success: false, message: "userId is required" });
+  }
   try {
     const users = await User.find({
       _id: { $ne: userId }, // exclude self

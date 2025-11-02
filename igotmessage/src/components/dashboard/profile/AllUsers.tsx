@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import { useAppSelector } from "@/store/hooks";
+import { useSearchParams } from "next/navigation";
 
 type User = {
   _id: string;
@@ -103,7 +104,7 @@ const UsersList = ({ users, myId, type }: UsersListProps) => {
           <Link
             href={
               type === "chats"
-                ? `/dash/chats/${user._id}?avatar=${user.profilePicture || user.avatar}&userName=${user.userName}&userId=${user._id}`
+                ? `/chats/${user._id}?avatar=${user.profilePicture || user.avatar}&userName=${user.userName}&recieverId=${user._id}&senderId=${myId}`
                 : `/public-profile/${user._id}/myId/${myId}`
             }
             className="flex items-center gap-3 min-w-0 w-full"
@@ -156,12 +157,15 @@ const UsersList = ({ users, myId, type }: UsersListProps) => {
 };
 
 export default function AllUsers({ userId, type }: FollowersListProps) {
-  const myId = useAppSelector((state) => state.auth.user._id);
+  const myId = JSON.parse(localStorage.getItem("userId") as string) 
   const [users, setUsers] = useState<User[]>([]);
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [isFollowing, setIsFollowing] = useState(false);
+  const params = useSearchParams()
+
+  const backupUserId = params.get('userId')
 
   const url =
     process.env.NODE_ENV === "production"
@@ -176,13 +180,13 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
 
         if (type === "followers" || type === "following") {
           const res = await axios.get(
-            `${url}/api/profile/get-followers?userId=${userId}&type=${type}`,
+            `${url}/api/profile/get-followers?userId=${userId || backupUserId }&type=${type}`,
             { withCredentials: true }
           );
           if (res.data) setUsers(res.data.total);
         } else {
           const res = await axios.get(
-            `${url}/api/search/get-all-people?userId=${userId}`,
+            `${url}/api/search/get-all-people?userId=${userId || backupUserId }`,
             {
               withCredentials: true,
             }
@@ -210,7 +214,7 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
       try {
         const res = await axios.post(
           `${url}/api/search/${type}?q=${query}`,
-          { userId: myId, type },
+          { userId: myId || backupUserId, type },
           { withCredentials: true }
         );
         setSearchResults(res.data.users);
@@ -250,12 +254,12 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
         </div>
       ) : query.length > 0 ? (
         searchResults.length ? (
-          <UsersList type={type} users={searchResults} myId={myId} />
+          <UsersList type={type} users={searchResults} myId={myId!} />
         ) : (
           <p className="text-center text-gray-500 py-6">No results found</p>
         )
       ) : users?.length ? (
-        <UsersList users={users} type={type} myId={myId} />
+        <UsersList users={users} type={type} myId={myId!} />
       ) : (
         <p className="text-center text-gray-500 py-6">No {type} yet.</p>
       )}

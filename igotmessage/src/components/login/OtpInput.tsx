@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { verifyOtp } from "@/utils/api";
 import { useRouter } from "next/navigation";
-import PopupMessages from "./popups/PopupMessages";
+import PopupMessages from "../popups/PopupMessages";
 import { useDispatch } from "react-redux";
 import { addCurrentUserToStore, setAuthStatus } from "@/features/authSlice";
 import {
@@ -10,7 +10,7 @@ import {
   OptionIcon,
   SignInIcon,
 } from "@phosphor-icons/react";
-import NewLoader from "./NewLoader";
+import NewLoader from "../NewLoader";
 
 interface otpInputProps {
   showOtpField: boolean;
@@ -86,6 +86,7 @@ const OtpInput = ({
         setShowSuccessPopup(true);
         dispatch(addCurrentUserToStore(response.data.user));
         dispatch(setAuthStatus(true));
+        localStorage.setItem("userId", JSON.stringify(response.data.user._id));
         router.push("/dash/feed?verification=success");
         setLoading(false);
       } else if (response.data.expired === true) {

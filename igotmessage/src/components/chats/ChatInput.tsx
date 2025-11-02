@@ -35,6 +35,8 @@ export default function ChatInput({
   const isDark = useSelector((state: RootState) => state.activity.isDark);
   const chatId = useSelector((state: RootState) => state.chat.chatId);
   const myId = useSelector((state: RootState) => state.auth.user._id);
+  let isTyping = false;
+  let typingTimeout: NodeJS.Timeout | null = null;
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prev) => !prev);
@@ -45,10 +47,20 @@ export default function ChatInput({
 
     const socket = getSocket();
 
-    setTimeout(() => {
-      socket.emit("event:typing", { roomId: chatId, senderId: myId });
-    }, 500);
-    
+    if (!isTyping) {
+      socket.emit("event:otherTyping", { roomId: chatId, senderId: myId });
+      isTyping = true;
+    }
+
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+
+    typingTimeout = setTimeout(() => {
+      socket.emit("event:otherStopTyping", { roomId: chatId, senderId: myId });
+      isTyping = false;
+    }, 4500);
+
     setInput(value);
     if (value.length >= 1) {
       setShowSendButton(true);
@@ -88,8 +100,17 @@ export default function ChatInput({
     setFocus?.(true);
   };
 
+  useEffect(() => {
+    if (input.length > 0) {
+      setShowSendButton(true);
+    } else {
+      setShowSendButton(false);
+    }
+    return () => {};
+  }, [input]);
+
   return (
-    <div className="fixed left-0 bottom-[56px] md:bottom-0 w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/60 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
+    <div className="fixed left-0  bottom-0 w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/30 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
       <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
         {/* 🔲 Inner Wrapper: File + Input + Emoji */}
         <div className="flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-[var(--borderColor)]/15 backdrop-blur-md shadow-sm">

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import OtpInput from "@/components/OtpInput";
+import OtpInput from "./OtpInput";
 import PopupMessage from "@/components/popups/PopupMessages";
 import { handleGuest, sendOtp } from "@/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
