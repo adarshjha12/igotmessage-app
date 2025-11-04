@@ -24,7 +24,7 @@ import logOutRouter from "./routers/profile/logOutRoute";
 import aiTextGenRouter from "./routers/ai/aiTextGenRoute";
 import searchRouter from "./routers/search/searchRoute";
 import { User } from "./models/userModel";
-import InitSocket from "./services/socket";
+import InitSocketIo from "./services/socket";
 import http from "http";
 import uploadAuth from "./routers/uploadAuth";
 import { chatRouter } from "./routers/chats/chatRouter";
@@ -33,7 +33,6 @@ import { Post } from "./models/postModel";
 const PORT = process.env.PORT;
 const app = express();
 const server = http.createServer(app);
-const socketService = new InitSocket();
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -84,11 +83,6 @@ app.use("/api/search", searchRouter);
 app.use("/api/upload", uploadAuth);
 app.use("/api/chat", chatRouter);
 
-socketService.io.attach(server, {
-  cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
-});
-socketService.initListners();
-
 app.get("/", (req, res) => {
   res.json({ mesage: "welcome to igotmessage" });
 });
@@ -105,6 +99,13 @@ app.get("/redis", async (req: Request, res: Response) => {
     console.error("Failed to ping Redis:", err);
   }
 });
+
+(async () => {
+  const io = await InitSocketIo();
+  io.attach(server, {
+    cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
+  });
+})();
 
 server.listen(PORT, () => {
   console.log(`running on ${PORT}`);

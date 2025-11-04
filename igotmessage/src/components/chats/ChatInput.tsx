@@ -48,7 +48,7 @@ export default function ChatInput({
     const socket = getSocket();
 
     if (!isTyping) {
-      socket.emit("event:otherTyping", { roomId: chatId, senderId: myId });
+      socket.emit("event:typing", { roomId: chatId, senderId: myId });
       isTyping = true;
     }
 
@@ -57,7 +57,7 @@ export default function ChatInput({
     }
 
     typingTimeout = setTimeout(() => {
-      socket.emit("event:otherStopTyping", { roomId: chatId, senderId: myId });
+      socket.emit("event:stopTyping", { roomId: chatId, senderId: myId });
       isTyping = false;
     }, 4500);
 
@@ -110,10 +110,10 @@ export default function ChatInput({
   }, [input]);
 
   return (
-    <div className="fixed left-0  bottom-0 w-full z-10 border-t border-[var(--borderColor)]/20 bg-[var(--bgColor)]/30 backdrop-blur-xl px-3 pt-3 pb-5 md:py-4">
+    <div className="fixed left-0  bottom-0 w-full z-10 px-3 pt-3 pb-3 md:py-4">
       <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
         {/* 🔲 Inner Wrapper: File + Input + Emoji */}
-        <div className="flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-[var(--borderColor)]/15 backdrop-blur-md shadow-sm">
+        <div className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700/70 text-white  backdrop-blur-md shadow-sm`}>
           {/* 📎 File Upload */}
           <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
             <input
@@ -124,7 +124,7 @@ export default function ChatInput({
                 e.target.files && onFileUpload?.(e.target.files[0])
               }
             />
-            <Paperclip className="w-5 h-5 text-[var(--textColor)] opacity-70 hover:opacity-100 transition" />
+            <Paperclip className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
           </label>
 
           {/* 📝 Text Area */}
@@ -136,7 +136,7 @@ export default function ChatInput({
             onFocus={() => setFocus?.(true)}
             onBlur={() => setFocus?.(false)}
             onInput={handleInput}
-            className="flex-1 w-[100px] bg-transparent resize-none border-none outline-none text-[var(--textColor)] text-[16.5px] placeholder:text-[var(--textColor)]/40 leading-relaxed scrollbar-none"
+            className="flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none"
             style={{ maxHeight: "150px" }}
           />
 
@@ -145,7 +145,7 @@ export default function ChatInput({
             onClick={toggleEmojiPicker}
             className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
           >
-            <Smile className="w-5 h-5 text-[var(--textColor)] opacity-70 hover:opacity-100" />
+            <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
           </button>
           {showEmojiPicker && (
             <div className="absolute bottom-[60px] pl-6 left-1/2 -translate-x-1/2 z-20 w-[360px]">

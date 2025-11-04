@@ -28,6 +28,7 @@ interface UserAuthInterface {
     updateProfileError: string | null;
     showProfileUpdateModal: boolean;
     logOutError: string | null;
+    lastSeen?: number | null;
   };
 }
 

@@ -35,11 +35,12 @@ const UserSchema = new mongoose.Schema(
     verified: { type: Boolean, default: false },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    lastSeen: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );
 
-UserSchema.index({ fullName: "text"});
+UserSchema.index({ fullName: "text" });
 
 const User = mongoose.model("User", UserSchema);
 export { User };

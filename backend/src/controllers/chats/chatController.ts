@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Chat } from "../../models/chatModel";
+import { User } from "../../models/userModel";
 
 export const createOrGetChat = async (
   req: Request,
@@ -13,6 +14,7 @@ export const createOrGetChat = async (
   }
   try {
     let chat;
+    const recieverLastSeen = await User.findOne({ _id: recieverId }).select("lastSeen");
     chat = await Chat.findOne({
       participants: { $all: [senderId, recieverId] },
     }).populate("participants", "userName profilePicture avatar");
@@ -22,14 +24,14 @@ export const createOrGetChat = async (
 
       return res
         .status(200)
-        .json({ success: true, message: "Chat found", chat: chat });
+        .json({ success: true, message: "Chat found", chat: chat, recieverLastSeen: recieverLastSeen?.lastSeen });
     } else {
       chat = await Chat.create({ participants: [senderId, recieverId] });
       console.log("chat created");
 
       return res
         .status(201)
-        .json({ success: true, message: "Chat created", chat: chat });
+        .json({ success: true, message: "Chat created", chat: chat, recieverLastSeen });
     }
   } catch (error) {
     console.log(error);
