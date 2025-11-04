@@ -20,7 +20,9 @@ export const sendOtp = async (req: Request, res: Response): Promise<any> => {
   }
 
   const otp = generateOTP();
-  await client.set(`otp:${email}`, otp, "EX", 300); // expire in 5 min
+  await client.set(`otp:${email}`, otp, {
+    "EX": 300,
+  }); // expire in 5 min
 
   const htmlContent = getOtpEmailHtml({ otp });
   const sendSmtpEmail = {
