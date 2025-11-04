@@ -1,10 +1,11 @@
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
-import { Mic, Paperclip, Smile, X } from "lucide-react";
+import { ImagePlusIcon, Mic, Paperclip, Send, Smile, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { getSocket } from "@/utils/socket";
+import VoiceRecorder from "./RecordAudio";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
@@ -91,7 +92,7 @@ export default function ChatInput({
           _id: tempId,
           sender: myId,
           content: input,
-          updatedAt: new Date().toLocaleTimeString(),
+          updatedAt: new Date().toISOString(),
         },
       ]);
 
@@ -124,7 +125,7 @@ export default function ChatInput({
                 e.target.files && onFileUpload?.(e.target.files[0])
               }
             />
-            <Paperclip className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
+            <ImagePlusIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
           </label>
 
           {/* 📝 Text Area */}
@@ -176,12 +177,10 @@ export default function ChatInput({
 
         {/* 🎙️ Mic / Send */}
         {!showSendButton ? (
-          <button className="p-3 rounded-full bg-rose-700 transition flex-shrink-0 shadow-sm ml-1">
-            <Mic className="w-5 h-5 text-white opacity-90" />
-          </button>
+          <VoiceRecorder/>
         ) : (
           <button
-            className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
+            className="p-3  bg-white text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
             onClick={() => {
               if (textareaRef.current?.value.trim()) {
                 onSend?.(textareaRef.current.value.trim());
@@ -190,9 +189,7 @@ export default function ChatInput({
               }
             }}
           >
-            <PaperPlaneRightIcon
-              weight="fill"
-              fill="white"
+            <Send
               className="w-5 h-5"
             />
           </button>

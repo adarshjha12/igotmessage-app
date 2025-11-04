@@ -15,7 +15,7 @@ export async function initSocketIO() {
     await User.findByIdAndUpdate(userId, { lastSeen: Date.now() });
 
     socket.broadcast.emit("userOnline", { userId });
-    socket.to(userId).emit("userOnline", { onlineUsers });
+    socket.emit("onlineUsers", { onlineUsers});
 
     console.log("🟢 socket connected:", socket.id);
 
@@ -80,7 +80,15 @@ export async function initSocketIO() {
       if (!stillOnline) {
         onlineUsers.splice(onlineUsers.indexOf(userId), 1);
         const lastSeen = Date.now();
-        socket.broadcast.emit("userOffline", { userId, lastSeen });
+        const user = await User.findByIdAndUpdate(
+          userId,
+          { lastSeen },
+          { new: true }
+        );
+        socket.broadcast.emit("userOffline", {
+          userId,
+          lastSeen: user?.lastSeen,
+        });
         console.log(`❌ User disconnected: ${userId}`);
       }
     });

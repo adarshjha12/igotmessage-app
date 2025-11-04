@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
+import {
+  Phone,
+  Video,
+  MoreVertical,
+  ArrowLeft,
+  Loader2Icon,
+  X,
+  CheckCheckIcon,
+} from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { useSearchParams } from "next/navigation";
@@ -8,8 +16,17 @@ import { io, Socket } from "socket.io-client";
 import { getSocket } from "@/utils/socket";
 import axios from "axios";
 import { setChatId } from "@/features/chatSlice";
-import { formatDistanceToNowStrict } from "date-fns";
+import {
+  format,
+  formatDate,
+  formatDistanceToNowStrict,
+  isSameDay,
+  isToday,
+  isValid,
+  isYesterday,
+} from "date-fns";
 import Link from "next/link";
+import NewLoader from "../NewLoader";
 
 interface Message {
   sender?: string;
@@ -28,6 +45,7 @@ function ChatUser() {
   const recieverId = queryParam.get("recieverId");
   const senderId = queryParam.get("senderId");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
+  const [loadingMessages, setLoadingMessages] = useState(false);
   const [isOtherTyping, setOtherTyping] = useState(false);
   const [preview, setPreview] = useState<{ url: string; type: string } | null>({
     url: "",
@@ -36,7 +54,7 @@ function ChatUser() {
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
-  const [recieverLastSeen, setRecieverLastSeen] = useState<number | null>(null);
+  const [recieverLastSeen, setRecieverLastSeen] = useState<Date | null>(null);
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -91,6 +109,34 @@ function ChatUser() {
   }, [allMessages]);
 
   useEffect(() => {
+    const socket = getSocket();
+
+    socket.on("onlineUsers", ({ onlineUsers }) => {
+      console.log("onlineUsers", onlineUsers);
+      setOnlineUsers(onlineUsers);
+    });
+
+    socket.on("userOnline", ({ userId }) => {
+      setOnlineUsers((prev) =>
+        prev ? [...new Set([...prev, userId])] : [userId]
+      );
+    });
+
+    socket.on("userOffline", ({ userId, lastSeen }) => {
+      setOnlineUsers((prev) =>
+        prev ? prev.filter((id) => id !== userId) : []
+      );
+      if (userId === recieverId) setRecieverLastSeen(lastSeen);
+    });
+
+    return () => {
+      socket.off("onlineUsers");
+      socket.off("userOnline");
+      socket.off("userOffline");
+    };
+  }, []);
+
+  useEffect(() => {
     let chatIdLocal: string;
     const socket = getSocket();
 
@@ -104,24 +150,38 @@ function ChatUser() {
 
         if (res.data) {
           chatIdLocal = res.data.chat._id;
-          setRecieverLastSeen(res.data.recieverLastSeen);
-          console.log(chatIdLocal);
-
+          setRecieverLastSeen(res.data?.recieverLastSeen);
           dispatch(setChatId(chatIdLocal));
+
+          if (chatIdLocal) {
+            setLoadingMessages(true);
+            const res = await axios.get(
+              `${url}/api/chat/get-messages?chatId=${chatIdLocal}`,
+
+              { withCredentials: true }
+            );
+
+            if (res.data) {
+              setAllMessages(res.data.messages);
+              setLoadingMessages(false);
+            }
+          }
 
           if (socket.connected) {
             socket.emit("event:joinRoom", { roomId: chatIdLocal });
-            console.log("Joined room immediately");
           } else {
             socket.once("connect", () => {
-              console.log("Connected late:", socket.id);
-              socket.emit("joinRoom", { roomId: chatIdLocal });
+              socket.emit("event:joinRoom", { roomId: chatIdLocal });
             });
           }
 
-          const handleMessage = (data: any) => {
-            console.log("💬 received message", data);
-            setAllMessages((prev: Message[]) => [
+          // Chat-specific events
+          socket.off("event:message");
+          socket.off("event:otherTyping");
+          socket.off("event:otherStopTyping");
+
+          socket.on("event:message", (data: any) => {
+            setAllMessages((prev) => [
               ...prev,
               {
                 content: data.content,
@@ -131,40 +191,14 @@ function ChatUser() {
                 updatedAt: data.updatedAt,
               },
             ]);
-          };
-          socket.off("event:message");
-          socket.off("otherTyping");
-          socket.off("otherStopTyping");
-
-          socket.on("event:message", handleMessage);
+          });
 
           socket.on("event:otherTyping", (data: any) => {
-            console.log(data);
-
-            if (data.senderId !== senderId) {
-              setOtherTyping(true);
-            }
+            if (data.senderId !== senderId) setOtherTyping(true);
           });
 
           socket.on("event:otherStopTyping", (data: any) => {
-            if (data.senderId !== senderId) {
-              console.log(data);
-
-              setOtherTyping(false);
-            }
-          });
-
-          socket.on("onlineUsers", ({ users }) => {
-            setOnlineUsers(users);
-          });
-
-          socket.on("userOnline", ({ userId }) => {
-            setOnlineUsers((prev) => [...prev, userId]);
-          });
-
-          socket.on("userOffline", ({ userId, lastSeen }) => {
-            setOnlineUsers((prev) => prev.filter((id) => id !== userId));
-            setRecieverLastSeen(lastSeen);
+            if (data.senderId !== senderId) setOtherTyping(false);
           });
         }
       } catch (error) {
@@ -175,11 +209,9 @@ function ChatUser() {
     getChatId();
 
     return () => {
-      if (chatIdLocal) {
-        socket.emit("leaveRoom", { roomId: chatIdLocal });
-      }
+      if (chatIdLocal) socket.emit("leaveRoom", { roomId: chatIdLocal });
     };
-  }, []);
+  }, [recieverId]);
 
   return (
     <div
@@ -201,7 +233,10 @@ function ChatUser() {
           >
             <ArrowLeft size={22} />
           </button>
-          <Link className="flex items-center gap-3" href={`/public-profile/${recieverId}/myId/${senderId}`}>
+          <Link
+            className="flex items-center gap-3"
+            href={`/public-profile/${recieverId}/myId/${senderId}`}
+          >
             <img
               src={avatar!}
               alt="user"
@@ -209,14 +244,24 @@ function ChatUser() {
             />
             <div>
               <h2 className="text-base font-semibold">{userName}</h2>
-              <p className="text-xs opacity-70">
-                {onlineUsers.includes(recieverId!)
-                  ? "Online"
-                  : "Last seen " +
-                    formatDistanceToNowStrict(recieverLastSeen!, {
+              <div className="text-xs opacity-70">
+                {isOtherTyping && (
+                  <span className="text-white  font-semibold">Typing...</span>
+                )}
+
+                {!isOtherTyping && onlineUsers?.includes(recieverId!) ? (
+                  "Online"
+                ) : !isOtherTyping && recieverLastSeen ? (
+                  <>
+                    Last seen{" "}
+                    {formatDistanceToNowStrict(new Date(recieverLastSeen), {
                       addSuffix: true,
                     })}
-              </p>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </Link>
         </div>
@@ -239,71 +284,110 @@ function ChatUser() {
       >
         {/* message timer */}
         <div className="flex justify-center w-full text-[var(--textColor)]/80">
-          <p
+          {/* <p
             className={` text-xs px-4 py-1 rounded-md ${
               isDark ? "bg-gray-700" : "bg-white"
             }`}
           >
             4: 45 pm
-          </p>
+          </p> */}
+          {/* loader */}
+          {loadingMessages && (
+            <div className="flex text-white items-center gap-3 bg-black/15 px-4 py-2 rounded-2xl backdrop-blur-md">
+              <Loader2Icon className="animate-spin" />
+              <p> Getting messages</p>
+            </div>
+          )}
         </div>
         {/* Received */}
         {allMessages.length > 0 &&
-          allMessages.map((message, i) => (
-            <div
-              key={i}
-              className={`flex ${
-                message.sender === senderId ? "justify-end" : "justify-start"
-              } items-start gap-2  relative`}
-              onDoubleClick={() => addReply("Hey! How’s your app going? 🚀")}
-            >
-              {message.sender !== senderId && (
-                <img
-                  src={avatar!}
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full border border-white/20"
-                />
-              )}
+          allMessages.map((message, i) => {
+            const currentDate = new Date(message.updatedAt);
+
+            const isSameDayFlag =
+              i > 0 &&
+              isSameDay(new Date(allMessages[i - 1].updatedAt), currentDate);
+
+            let formatDate = "";
+
+            if (isValid(currentDate)) {
+              if (isToday(currentDate)) {
+                formatDate = "Today";
+              } else if (isYesterday(currentDate)) {
+                formatDate = "Yesterday";
+              } else {
+                formatDate = format(currentDate, "dd/MM/yyyy");
+              }
+            }
+
+            return (
               <div
-                className={`${
-                  message.sender === senderId
-                    ? "chat-tail-left mr-2"
-                    : "chat-tail-right"
-                }  rounded-2xl backdrop-blur-xl text-white shadow-md relative  ${
-                  message.sender === senderId
-                    ? "bg-blue-500 "
-                    : isDark && message.sender !== senderId
-                    ? "bg-gray-600"
-                    : !isDark && message.sender !== senderId
-                    ? "bg-gray-600"
-                    : "bg-gray-600"
-                }  text-[var(--textColor)]`}
+                key={i}
+                className={`flex ${
+                  message.sender === senderId ? "justify-end" : "justify-start"
+                } items-start gap-2  relative`}
+                onDoubleClick={() => addReply("Hey! How’s your app going? 🚀")}
               >
-                <p className="px-4 py-2">{message.content}</p>
-
-                <span
-                  className={`text-[10px] px-4 text-white rounded-b-full flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
-                    isDark ? "bg-gray-800 " : "bg-gray-800"
-                  }`}
+                {!isSameDayFlag && (
+                  <div className="flex absolute -top-[40px] left-[50%] justify-center my-3">
+                    <span className="px-4 py-1 text-xs font-medium rounded-full bg-white/80 text-gray-900 backdrop-blur-md">
+                      <p>{formatDate} </p>
+                    </span>
+                  </div>
+                )}
+                {message.sender !== senderId && (
+                  <img
+                    src={avatar!}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full border border-white/20"
+                  />
+                )}
+                <div
+                  className={`${
+                    message.sender === senderId
+                      ? "chat-tail-left mr-2"
+                      : "chat-tail-right"
+                  }  rounded-2xl backdrop-blur-xl text-white shadow-md relative  ${
+                    message.sender === senderId
+                      ? "bg-green-600 "
+                      : isDark && message.sender !== senderId
+                      ? "bg-gray-600"
+                      : !isDark && message.sender !== senderId
+                      ? "bg-gray-600"
+                      : "bg-gray-600"
+                  }  text-[var(--textColor)]`}
                 >
-                  {message.updatedAt}
-                </span>
+                  <p className="px-4 py-2">{message.content}</p>
 
-                {/* Reaction bar (on hover/long press) */}
-                <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
-                  {reactions.map((r, i) => (
-                    <button
-                      key={i}
-                      className="hover:scale-110 transition text-lg"
-                      onClick={() => console.log("Reacted:", r)}
-                    >
-                      {r}
-                    </button>
-                  ))}
+                  <span
+                    className={`text-[10px] px-4 text-white rounded-b-full flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
+                      isDark ? "bg-gray-800 " : "bg-gray-800"
+                    }`}
+                  >
+                    {isValid(new Date(message.updatedAt)) &&
+                      format(new Date(message.updatedAt), "hh:mm a")}
+
+                    {message.sender === senderId && (
+                      <CheckCheckIcon size={15} />
+                    )}
+                  </span>
+
+                  {/* Reaction bar (on hover/long press) */}
+                  <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+                    {reactions.map((r, i) => (
+                      <button
+                        key={i}
+                        className="hover:scale-110 transition text-lg"
+                        onClick={() => console.log("Reacted:", r)}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
         {/* Typing Indicator */}
         {isOtherTyping && (
@@ -322,33 +406,33 @@ function ChatUser() {
         )}
 
         {/* File Preview */}
-        {/* {preview && (
-            <div className="p-3 flex items-center gap-3 border-t border-white/10 backdrop-blur-lg bg-white/5">
-              {preview.url !== "" && (
-                <div>
-                  {preview?.type.startsWith("image/") ? (
-                    <img
-                      src={preview.url}
-                      alt="preview"
-                      className="w-16 h-16 rounded-lg object-cover border border-white/20"
-                    />
-                  ) : (
-                    <video
-                      src={preview.url}
-                      className="w-24 h-16 rounded-lg border border-white/20"
-                      controls
-                    />
-                  )}
-                </div>
-              )}
-              <button
-                onClick={removePreview}
-                className="p-2 rounded-full hover:bg-white/10 transition"
-              >
-                <X size={20} />
-              </button>
-            </div>
-          )} */}
+        {preview?.url && (
+          <div className="p-3 flex items-center gap-3 border-t border-white/10 backdrop-blur-lg bg-white/5">
+            {preview.url !== "" && (
+              <div>
+                {preview?.type.startsWith("image/") ? (
+                  <img
+                    src={preview.url}
+                    alt="preview"
+                    className="w-16 h-16 rounded-lg object-cover border border-white/20"
+                  />
+                ) : (
+                  <video
+                    src={preview.url}
+                    className="w-24 h-16 rounded-lg border border-white/20"
+                    controls
+                  />
+                )}
+              </div>
+            )}
+            <button
+              onClick={removePreview}
+              className="p-2 rounded-full hover:bg-white/10 transition"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        )}
         <div id="scrolldiv"></div>
       </div>
 
