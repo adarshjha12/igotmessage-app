@@ -7,6 +7,7 @@ import {
   Loader2Icon,
   X,
   CheckCheckIcon,
+  ChevronLeftIcon,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
@@ -27,6 +28,7 @@ import {
 } from "date-fns";
 import Link from "next/link";
 import NewLoader from "../NewLoader";
+import MoreOption from "./MoreOption";
 
 interface Message {
   sender?: string;
@@ -47,10 +49,14 @@ function ChatUser() {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [isOtherTyping, setOtherTyping] = useState(false);
+  const [width, setWidth] = useState<number | null>(null);
+  const [moreButtonClicked, setMoreButtonClicked] = useState(false);
+
   const [preview, setPreview] = useState<{ url: string; type: string } | null>({
     url: "",
     type: "",
   });
+
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
@@ -92,6 +98,16 @@ function ChatUser() {
       }, 500);
     }
   }, [inputFocus]);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   function handleScroll() {
     const element = document.getElementById("scrolldiv");
@@ -150,7 +166,9 @@ function ChatUser() {
 
         if (res.data) {
           chatIdLocal = res.data.chat._id;
-          setRecieverLastSeen(res.data?.recieverLastSeen);
+          console.log(res.data);
+
+          setRecieverLastSeen(res.data?.receiverLastSeen ?? null);
           dispatch(setChatId(chatIdLocal));
 
           if (chatIdLocal) {
@@ -215,23 +233,25 @@ function ChatUser() {
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${isDark ? bgUrl : lightBgUrl})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-      className="w-full h-screen text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col backdrop-blur-md lg:px-[200px] xl:px-[300px]"
+      // style={{
+      //   backgroundImage: `url(${isDark ? bgUrl : lightBgUrl})`,
+      //   backgroundSize: "cover",
+      //   backgroundRepeat: "no-repeat",
+      //   backgroundPosition: "center",
+      //   backgroundAttachment: "fixed",
+      // }}
+      className="w-full h-[100dvh] relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col backdrop-blur-md lg:px-[200px] xl:px-[300px] bg-gradient-to-br from-blue-800 via-red-700 to-blue-400"
     >
+      {/* <div  className="absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-[2px] -z-10" /> */}
+
       {/* Header */}
-      <div className="flex w-full fixed left-0 items-center justify-between p-3 border-b text-white border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
+      <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
         <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
-            className="p-2 rounded-full hover:bg-white/10 transition"
+            className="py-2 pl-2 rounded-full hover:bg-white/10 transition"
           >
-            <ArrowLeft size={22} />
+            <ChevronLeftIcon size={22} />
           </button>
           <Link
             className="flex items-center gap-3"
@@ -243,7 +263,11 @@ function ChatUser() {
               className="w-10 h-10 rounded-full border border-white/20"
             />
             <div>
-              <h2 className="text-base font-semibold">{userName}</h2>
+              <h2 className="text-xl sm:text-base font-semibold">
+                {width && width < 500
+                  ? userName?.split("").splice(0, 11).join("") + "..."
+                  : userName}
+              </h2>
               <div className="text-xs opacity-70">
                 {isOtherTyping && (
                   <span className="text-white  font-semibold">Typing...</span>
@@ -259,7 +283,7 @@ function ChatUser() {
                     })}
                   </>
                 ) : (
-                  ""
+                  "Never seen"
                 )}
               </div>
             </div>
@@ -272,7 +296,11 @@ function ChatUser() {
           <button className="p-2 rounded-full hover:bg-white/10 transition">
             <Video size={20} />
           </button>
-          <button className="p-2 rounded-full hover:bg-white/10 transition">
+          <button
+            type="button"
+            onClick={() => setMoreButtonClicked((prev) => !prev)}
+            className="p-2 rounded-full hover:bg-white/10 transition"
+          >
             <MoreVertical size={20} />
           </button>
         </div>
@@ -325,55 +353,57 @@ function ChatUser() {
                 key={i}
                 className={`flex ${
                   message.sender === senderId ? "justify-end" : "justify-start"
-                } items-start gap-2  relative`}
+                } items-end gap-2 relative group transition-all`}
                 onDoubleClick={() => addReply("Hey! How’s your app going? 🚀")}
               >
+                {/* Date label */}
                 {!isSameDayFlag && (
-                  <div className="flex absolute -top-[40px] left-[50%] justify-center my-3">
-                    <span className="px-4 py-1 text-xs font-medium rounded-full bg-white/80 text-gray-900 backdrop-blur-md">
-                      <p>{formatDate} </p>
+                  <div className="absolute -top-7 left-1/2 -translate-x-1/2">
+                    <span className="px-4 py-1 text-xs font-medium rounded-full bg-white/80 dark:bg-gray-900/60 text-gray-900 dark:text-gray-200 backdrop-blur-md shadow-sm border border-white/20">
+                      {formatDate}
                     </span>
                   </div>
                 )}
+
+                {/* Avatar (only for incoming messages) */}
                 {message.sender !== senderId && (
                   <img
                     src={avatar!}
                     alt="avatar"
-                    className="w-8 h-8 rounded-full border border-white/20"
+                    className="w-8 h-8 rounded-full border border-white/20 shadow-md"
                   />
                 )}
-                <div
-                  className={`${
-                    message.sender === senderId
-                      ? "chat-tail-left mr-2"
-                      : "chat-tail-right"
-                  }  rounded-2xl backdrop-blur-xl text-white shadow-md relative  ${
-                    message.sender === senderId
-                      ? "bg-green-600 "
-                      : isDark && message.sender !== senderId
-                      ? "bg-gray-600"
-                      : !isDark && message.sender !== senderId
-                      ? "bg-gray-600"
-                      : "bg-gray-600"
-                  }  text-[var(--textColor)]`}
-                >
-                  <p className="px-4 py-2">{message.content}</p>
 
+                {/* Message bubble */}
+                <div
+                  className={`max-w-[75%] sm:max-w-[65%] rounded-2xl px-4 py-2 text-[15px] relative backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.1)] transition-all duration-300 ${
+                    message.sender === senderId
+                      ? " bg-blue-600 text-white rounded-br-none"
+                      : "bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 border border-white/20 rounded-bl-none"
+                  }`}
+                >
+                  {/* Message text */}
+                  <p className="leading-relaxed break-words">
+                    {message.content}
+                  </p>
+
+                  {/* Timestamp and ticks */}
                   <span
-                    className={`text-[10px] px-4 text-white rounded-b-full flex justify-end items-center gap-3 opacity-60  text-right mt-1 ${
-                      isDark ? "bg-gray-800 " : "bg-gray-800"
+                    className={`flex items-center gap-1 text-[10px] mt-1 ${
+                      message.sender === senderId
+                        ? "justify-end text-white/80"
+                        : "justify-start text-gray-500 dark:text-gray-400"
                     }`}
                   >
                     {isValid(new Date(message.updatedAt)) &&
                       format(new Date(message.updatedAt), "hh:mm a")}
-
                     {message.sender === senderId && (
-                      <CheckCheckIcon size={15} />
+                      <CheckCheckIcon size={13} className="opacity-70" />
                     )}
                   </span>
 
-                  {/* Reaction bar (on hover/long press) */}
-                  <div className="hidden group-hover:flex absolute -top-8 left-0 gap-2 p-1 rounded-full backdrop-blur-lg bg-white/20 shadow-md">
+                  {/* Reaction bar (appears on hover) */}
+                  <div className="hidden group-hover:flex absolute -top-8 left-1/2 -translate-x-1/2 gap-1 p-1 rounded-full backdrop-blur-lg bg-white/30 dark:bg-gray-700/40 shadow-md border border-white/20 transition-all">
                     {reactions.map((r, i) => (
                       <button
                         key={i}
@@ -438,6 +468,16 @@ function ChatUser() {
 
       {/* 💬 Chat Input */}
       <ChatInput setFocus={setInputFocus} setAllMessage={setAllMessages} />
+
+      {moreButtonClicked && (
+        <div className="">
+          <div
+            className="fixed inset-0 bg-black/50"
+            onClick={() => setMoreButtonClicked(false)}
+          />
+          <MoreOption onClose={() => setMoreButtonClicked(false)} />
+        </div>
+      )}
     </div>
   );
 }

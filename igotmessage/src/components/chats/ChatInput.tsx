@@ -114,7 +114,9 @@ export default function ChatInput({
     <div className="fixed left-0  bottom-0 w-full z-10 px-3 pt-3 pb-3 md:py-4">
       <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
         {/* 🔲 Inner Wrapper: File + Input + Emoji */}
-        <div className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700/70 text-white  backdrop-blur-md shadow-sm`}>
+        <div
+          className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700/70 text-white  backdrop-blur-md shadow-sm`}
+        >
           {/* 📎 File Upload */}
           <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
             <input
@@ -177,10 +179,10 @@ export default function ChatInput({
 
         {/* 🎙️ Mic / Send */}
         {!showSendButton ? (
-          <VoiceRecorder/>
+          <VoiceRecorder />
         ) : (
           <button
-            className="p-3  bg-white text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
+            className="p-3  bg-yellow-400 text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
             onClick={() => {
               if (textareaRef.current?.value.trim()) {
                 onSend?.(textareaRef.current.value.trim());
@@ -189,9 +191,7 @@ export default function ChatInput({
               }
             }}
           >
-            <Send
-              className="w-5 h-5"
-            />
+            <Send className="w-5 h-5" />
           </button>
         )}
       </div>

@@ -12,10 +12,8 @@ export async function initSocketIO() {
     if (!userId) return;
 
     onlineUsers.push(userId);
-    await User.findByIdAndUpdate(userId, { lastSeen: Date.now() });
-
     socket.broadcast.emit("userOnline", { userId });
-    socket.emit("onlineUsers", { onlineUsers});
+    socket.emit("onlineUsers", { onlineUsers });
 
     console.log("🟢 socket connected:", socket.id);
 

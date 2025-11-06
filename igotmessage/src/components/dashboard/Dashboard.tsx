@@ -194,7 +194,6 @@ function Dashboard({ children }: { children: ReactNode }) {
     px-3 py-2
     bg-[var(--bgColor)]/80 backdrop-blur-lg
     
-    shadow-sm
     duration-300 ${
       pathname.includes("/dash/chats") || pathname.includes("/dash/calls")
         ? "hidden"

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ChatSchema = new mongoose.Schema(
+const chatSchema = new mongoose.Schema(
   {
     isGroupChat: {
       type: Boolean,
@@ -43,5 +43,12 @@ const ChatSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+chatSchema.index(
+  { participants: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { "participants.2": { $exists: false } },
+  }
+);
 
-export const Chat = mongoose.model("Chat", ChatSchema);
+export const Chat = mongoose.model("Chat", chatSchema);
