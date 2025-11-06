@@ -91,3 +91,39 @@ export const getMessages = async (
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const getMyChats = async (req: Request, res: Response): Promise<any> => {
+  const userId = req.query.userId as string;
+
+  try {
+    // Get all chats where this user is a participant
+    const chats = await Chat.find({ participants: userId })
+      .populate("participants", "userName profilePicture avatar lastSeen")
+      .sort({ updatedAt: -1 });
+
+    // For each chat, pick the *other* participant
+    const formattedChats = chats.map((chat) => {
+      const coParticipant = chat.participants.find(
+        (p: any) => p._id.toString() !== userId
+      );
+
+      return {
+        _id: chat._id,
+        isGroupChat: chat.isGroupChat,
+        unreadMessages: chat.unreadMessages,
+        lastMessage: chat.lastMessage,
+        updatedAt: chat.updatedAt,
+        coParticipant, // other user's info
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Chats found",
+      chats: formattedChats,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
