@@ -19,6 +19,7 @@ import FollowersList from "../dashboard/profile/AllUsers";
 import ChatHeader from "./ChatHeader";
 import { format, isValid } from "date-fns";
 import { RootState } from "@/store/store";
+import AiChatCard from "./AiChat";
 
 interface Chat {
   _id: string;
@@ -31,6 +32,12 @@ interface Chat {
   lastMessage?: {
     content: string;
     createdAt: string;
+    sender: {
+      _id: string;
+      userName: string;
+      avatar: string;
+      profilePicture?: string;
+    };
   };
   unreadCount?: number;
   isGroupChat?: boolean;
@@ -98,6 +105,9 @@ export default function ChatList() {
         <div className="w-full mt-[80px] mb-12 px-2 flex justify-center">
           {/* Chat list */}
           <div className="flex max-w-[600px] w-full flex-col gap-3">
+            <div>
+              <AiChatCard myId={myId} />
+            </div>
             {chats.map((chat) => (
               <Link
                 href={`/chats/${myId}?avatar=${
@@ -139,16 +149,18 @@ export default function ChatList() {
                 {/* Right section: time + unread */}
                 <div className="flex flex-col items-end gap-1">
                   <span className="text-xs text-[var(--textColor)]/80">
-                    {chat?.updatedAt &&
-                      isValid(new Date(chat?.updatedAt)) &&
-                      format(new Date(chat.updatedAt), "hh:mm a")}
+                    {chat?.lastMessage &&
+                      isValid(new Date(chat?.lastMessage?.createdAt)) &&
+                      format(new Date(chat.lastMessage?.createdAt), "hh:mm a")}
                   </span>
                   {chat?.unreadCount && chat.unreadCount > 0 ? (
                     <span className="px-2 py-1 text-xs font-semibold bg-red-500 text-white rounded-full">
                       {chat.unreadCount}
                     </span>
                   ) : (
-                    <CheckCheck className="w-4 h-4 text-[var(--textColor)]/80" />
+                    chat?.lastMessage?.sender?._id === myId && (
+                      <CheckCheck className="w-4 h-4 text-[var(--textColor)]/80" />
+                    )
                   )}
                 </div>
               </Link>
@@ -158,11 +170,10 @@ export default function ChatList() {
       )}
       {/* No chats, groups, calls available */}
       {!chats && <NoChats tabName={activeTab} />}
-
       {!chats && (
         <div className={`flex max-w-[600px] w-full flex-col gap-3`}>
-        <FollowersList userId={myId} type="chats" />
-      </div>
+          <FollowersList userId={myId} type="chats" />
+        </div>
       )}
       <div>
         <AddChatButton onClick={() => setAddChatClicked(!addChatClicked)} />
