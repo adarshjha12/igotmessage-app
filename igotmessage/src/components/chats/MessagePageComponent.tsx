@@ -101,13 +101,15 @@ export default function ChatList() {
           <p> Getting chats</p>
         </div>
       )}{" "}
+      <div className="w-full mb-3 px-2 mt-[80px] flex justify-center" >
+        <div className="flex max-w-[600px]  w-full flex-col gap-3">
+          <AiChatCard myId={myId} />
+        </div>
+      </div>
       {chats !== null && (
-        <div className="w-full mt-[80px] mb-12 px-2 flex justify-center">
+        <div className="w-full  mb-12 px-2 flex justify-center">
           {/* Chat list */}
           <div className="flex max-w-[600px] w-full flex-col gap-3">
-            <div>
-              <AiChatCard myId={myId} />
-            </div>
             {chats.map((chat) => (
               <Link
                 href={`/chats/${myId}?avatar=${
@@ -139,7 +141,7 @@ export default function ChatList() {
                     <p className="font-semibold text-base">
                       {chat.coParticipant.userName}
                     </p>
-                    <p className="text-sm text-gray-300 truncate max-w-[200px]">
+                    <p className="text-sm text-[var(--textColor)]/80 truncate max-w-[200px]">
                       {chat?.lastMessage?.content ||
                         lastMessage?.[chat._id]?.content}
                     </p>

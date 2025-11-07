@@ -25,7 +25,7 @@ export default function AiChatCard({ myId }: { myId: string }) {
             Mistral AI
             <SparklesIcon className="w-4 h-4 text-orange-400" />
           </div>
-          <p className="text-sm text-gray-300 truncate max-w-[200px]">
+          <p className="text-sm text-[var(--textColor)]/80 truncate max-w-[200px]">
             Hello! Ask me anything 👋
           </p>
         </div>
