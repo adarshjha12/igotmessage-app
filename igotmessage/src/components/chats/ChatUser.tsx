@@ -181,14 +181,19 @@ function ChatUser() {
 
           if (chatIdLocal) {
             setLoadingMessages(true);
-            const res = await axios.get(
-              `${url}/api/chat/get-messages?chatId=${chatIdLocal}`,
+            try {
+              const res = await axios.get(
+                `${url}/api/chat/get-messages?chatId=${chatIdLocal}`,
 
-              { withCredentials: true }
-            );
+                { withCredentials: true }
+              );
 
-            if (res.data) {
-              setAllMessages(res.data.messages);
+              if (res.data) {
+                setAllMessages(res.data.messages);
+                setLoadingMessages(false);
+              }
+            } catch (error) {
+              console.log(error);
               setLoadingMessages(false);
             }
           }
@@ -311,7 +316,6 @@ function ChatUser() {
       >
         {/* message timer */}
         <div className="flex justify-center w-full text-[var(--textColor)]/80">
-         
           {/* loader */}
           {loadingMessages && (
             <div className="flex text-white items-center gap-3 bg-black/15 px-4 py-2 rounded-2xl backdrop-blur-md">
@@ -369,7 +373,7 @@ function ChatUser() {
 
                 {/* Message bubble */}
                 <div
-                  className={`max-w-[75%] sm:max-w-[65%] rounded-2xl px-4 py-2 text-[15px] relative backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.1)] transition-all duration-300 ${
+                  className={`max-w-[75%] my-2 sm:max-w-[65%] rounded-2xl px-4 py-2 text-[15px] relative backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.1)] transition-all duration-300 ${
                     message.sender === senderId
                       ? " bg-white/80 backdrop-blur-xs text-black rounded-br-none"
                       : "bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 border border-white/20 rounded-bl-none"

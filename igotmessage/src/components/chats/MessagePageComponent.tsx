@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   ChevronLeftIcon,
   MoreVertical,
+  Loader2Icon,
 } from "lucide-react";
 import Link from "next/link";
 import { io } from "socket.io-client";
@@ -62,14 +63,17 @@ export default function ChatList() {
 
   useEffect(() => {
     async function getAllChats() {
+      setLoading(true);
       try {
         const res = await axios.get(
           `${url}/api/chat/get-my-chats?userId=${myId}`
         );
         setChats(res.data.chats);
         console.log(res.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     }
 
@@ -83,7 +87,13 @@ export default function ChatList() {
       <div className="w-full">
         <ChatHeader />
       </div>
-      {loading && <div>Loading...</div>}
+      {/* loader */}
+      {loading && (
+        <div className="flex text-white items-center gap-3 bg-black/15 px-4 py-2 rounded-2xl backdrop-blur-md">
+          <Loader2Icon className="animate-spin" />
+          <p> Getting chats</p>
+        </div>
+      )}{" "}
       {chats !== null && (
         <div className="w-full mt-[80px] mb-12 px-2 flex justify-center">
           {/* Chat list */}
@@ -120,7 +130,8 @@ export default function ChatList() {
                       {chat.coParticipant.userName}
                     </p>
                     <p className="text-sm text-gray-300 truncate max-w-[200px]">
-                      {chat?.lastMessage?.content || lastMessage?.[chat._id]?.content}
+                      {chat?.lastMessage?.content ||
+                        lastMessage?.[chat._id]?.content}
                     </p>
                   </div>
                 </div>
@@ -145,15 +156,14 @@ export default function ChatList() {
           </div>
         </div>
       )}
-
       {/* No chats, groups, calls available */}
-
       {!chats && <NoChats tabName={activeTab} />}
 
-      <div className={`flex max-w-[600px] w-full flex-col gap-3`}>
+      {!chats && (
+        <div className={`flex max-w-[600px] w-full flex-col gap-3`}>
         <FollowersList userId={myId} type="chats" />
       </div>
-
+      )}
       <div>
         <AddChatButton onClick={() => setAddChatClicked(!addChatClicked)} />
       </div>
