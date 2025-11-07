@@ -16,7 +16,13 @@ import ChatInput from "./ChatInput";
 import { io, Socket } from "socket.io-client";
 import { getSocket } from "@/utils/socket";
 import axios from "axios";
-import { setChatId } from "@/features/chatSlice";
+import {
+  setChatId,
+  setLastMessage,
+  setNewOnlineUser,
+  setOfflineUser,
+  setOnlineUsers,
+} from "@/features/chatSlice";
 import {
   format,
   formatDate,
@@ -47,6 +53,8 @@ function ChatUser() {
   const recieverId = queryParam.get("recieverId");
   const senderId = queryParam.get("senderId");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
+  const onlineUsers = useAppSelector((state) => state.chat.onlineUsers);
+
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [isOtherTyping, setOtherTyping] = useState(false);
   const [width, setWidth] = useState<number | null>(null);
@@ -56,8 +64,13 @@ function ChatUser() {
     url: "",
     type: "",
   });
+  const addReply = (msg: string) => setReplyTo(msg);
+  const cancelReply = () => setReplyTo(null);
+  const dispatch = useAppDispatch();
 
-  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
+  let socket: Socket;
+  let chatId: string | null = null;
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [recieverLastSeen, setRecieverLastSeen] = useState<Date | null>(null);
@@ -81,21 +94,15 @@ function ChatUser() {
   const lightBgUrl =
     "https://images.unsplash.com/photo-1503149779833-1de50ebe5f8a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxlYWZ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900";
 
-  const addReply = (msg: string) => setReplyTo(msg);
-  const cancelReply = () => setReplyTo(null);
-  const dispatch = useAppDispatch();
-
-  const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
-  let socket: Socket;
-  let chatId: string | null = null;
-
   useEffect(() => {
-    const element = document.getElementById("scrolldiv");
-    if (element) {
-      setTimeout(() => {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-        console.log("scrolling to bottom div", inputFocus);
-      }, 500);
+    if (inputFocus) {
+      const element = document.getElementById("scrolldiv");
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          console.log("scrolling to bottom div", inputFocus);
+        }, 500);
+      }
     }
   }, [inputFocus]);
 
@@ -121,27 +128,28 @@ function ChatUser() {
 
   useEffect(() => {
     handleScroll();
+    if (allMessages.length > 0) {
+      const latest = allMessages.at(-1);
+      dispatch(setLastMessage({ chatId: latest?.chat, message: latest }));
+    }
+
     return () => {};
-  }, [allMessages]);
+  }, [allMessages, dispatch]);
 
   useEffect(() => {
     const socket = getSocket();
 
     socket.on("onlineUsers", ({ onlineUsers }) => {
       console.log("onlineUsers", onlineUsers);
-      setOnlineUsers(onlineUsers);
+      dispatch(setOnlineUsers(onlineUsers));
     });
 
     socket.on("userOnline", ({ userId }) => {
-      setOnlineUsers((prev) =>
-        prev ? [...new Set([...prev, userId])] : [userId]
-      );
+      dispatch(setNewOnlineUser(userId));
     });
 
     socket.on("userOffline", ({ userId, lastSeen }) => {
-      setOnlineUsers((prev) =>
-        prev ? prev.filter((id) => id !== userId) : []
-      );
+      dispatch(setOfflineUser(userId));
       if (userId === recieverId) setRecieverLastSeen(lastSeen);
     });
 
@@ -232,17 +240,8 @@ function ChatUser() {
   }, [recieverId]);
 
   return (
-    <div
-      // style={{
-      //   backgroundImage: `url(${isDark ? bgUrl : lightBgUrl})`,
-      //   backgroundSize: "cover",
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundPosition: "center",
-      //   backgroundAttachment: "fixed",
-      // }}
-      className="w-full h-[100dvh] relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col backdrop-blur-md lg:px-[200px] xl:px-[300px] bg-gradient-to-br from-blue-800 via-red-700 to-blue-400"
-    >
-      {/* <div  className="absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-[2px] -z-10" /> */}
+    <div className="w-full h-[100dvh] relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col backdrop-blur-md lg:px-[200px] xl:px-[300px] bg-gradient-to-br from-blue-800 via-red-700 to-rose-600">
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px] -z-10" />
 
       {/* Header */}
       <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 backdrop-blur-lg bg-white/5 top-0 z-10">
@@ -308,17 +307,11 @@ function ChatUser() {
 
       {/* Chat Messages */}
       <div
-        className={`flex-1 flex-col space-y-6  overflow-y-auto  px-2 pt-[80px] pb-[100px] md:px-12 lg:px-16 w-full items-end gap-6`}
+        className={`flex-1 flex-col space-y-6  overflow-y-auto  px-2 pt-[95px] pb-[100px] md:px-12 lg:px-16 w-full items-end gap-6`}
       >
         {/* message timer */}
         <div className="flex justify-center w-full text-[var(--textColor)]/80">
-          {/* <p
-            className={` text-xs px-4 py-1 rounded-md ${
-              isDark ? "bg-gray-700" : "bg-white"
-            }`}
-          >
-            4: 45 pm
-          </p> */}
+         
           {/* loader */}
           {loadingMessages && (
             <div className="flex text-white items-center gap-3 bg-black/15 px-4 py-2 rounded-2xl backdrop-blur-md">
@@ -359,7 +352,7 @@ function ChatUser() {
                 {/* Date label */}
                 {!isSameDayFlag && (
                   <div className="absolute -top-7 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1 text-xs font-medium rounded-full bg-white/80 dark:bg-gray-900/60 text-gray-900 dark:text-gray-200 backdrop-blur-md shadow-sm border border-white/20">
+                    <span className="px-4  py-1 text-xs font-medium rounded-full bg-white/80 dark:bg-gray-900/60 text-gray-900 dark:text-gray-200 backdrop-blur-md shadow-sm border border-white/20">
                       {formatDate}
                     </span>
                   </div>
@@ -378,12 +371,12 @@ function ChatUser() {
                 <div
                   className={`max-w-[75%] sm:max-w-[65%] rounded-2xl px-4 py-2 text-[15px] relative backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.1)] transition-all duration-300 ${
                     message.sender === senderId
-                      ? " bg-blue-600 text-white rounded-br-none"
+                      ? " bg-white/80 backdrop-blur-xs text-black rounded-br-none"
                       : "bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 border border-white/20 rounded-bl-none"
                   }`}
                 >
                   {/* Message text */}
-                  <p className="leading-relaxed break-words">
+                  <p className="leading-relaxed text-lg sm:text-base break-words">
                     {message.content}
                   </p>
 
@@ -391,7 +384,7 @@ function ChatUser() {
                   <span
                     className={`flex items-center gap-1 text-[10px] mt-1 ${
                       message.sender === senderId
-                        ? "justify-end text-white/80"
+                        ? "justify-end text-black/80"
                         : "justify-start text-gray-500 dark:text-gray-400"
                     }`}
                   >
@@ -403,7 +396,7 @@ function ChatUser() {
                   </span>
 
                   {/* Reaction bar (appears on hover) */}
-                  <div className="hidden group-hover:flex absolute -top-8 left-1/2 -translate-x-1/2 gap-1 p-1 rounded-full backdrop-blur-lg bg-white/30 dark:bg-gray-700/40 shadow-md border border-white/20 transition-all">
+                  {/* <div className="hidden group-hover:flex absolute -top-8 left-1/2 -translate-x-1/2 gap-1 p-1 rounded-full backdrop-blur-lg bg-white/30 dark:bg-gray-700/40 shadow-md border border-white/20 transition-all">
                     {reactions.map((r, i) => (
                       <button
                         key={i}
@@ -413,7 +406,7 @@ function ChatUser() {
                         {r}
                       </button>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             );

@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { useAppSelector } from "@/store/hooks";
 import { useSearchParams } from "next/navigation";
+import { UsersThreeIcon } from "@phosphor-icons/react";
 
 type User = {
   _id: string;
@@ -104,7 +105,11 @@ const UsersList = ({ users, myId, type }: UsersListProps) => {
           <Link
             href={
               type === "chats"
-                ? `/chats/${user._id}?avatar=${user.profilePicture || user.avatar}&userName=${user.userName}&recieverId=${user._id}&senderId=${myId}`
+                ? `/chats/${user._id}?avatar=${
+                    user.profilePicture || user.avatar
+                  }&userName=${user.userName}&recieverId=${
+                    user._id
+                  }&senderId=${myId}`
                 : `/public-profile/${user._id}/myId/${myId}`
             }
             className="flex items-center gap-3 min-w-0 w-full"
@@ -157,15 +162,15 @@ const UsersList = ({ users, myId, type }: UsersListProps) => {
 };
 
 export default function AllUsers({ userId, type }: FollowersListProps) {
-  const myId = JSON.parse(localStorage.getItem("userId") as string) 
+  const myId = JSON.parse(localStorage.getItem("userId") as string);
   const [users, setUsers] = useState<User[]>([]);
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [isFollowing, setIsFollowing] = useState(false);
-  const params = useSearchParams()
+  const params = useSearchParams();
 
-  const backupUserId = params.get('userId')
+  const backupUserId = params.get("userId");
 
   const url =
     process.env.NODE_ENV === "production"
@@ -180,13 +185,15 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
 
         if (type === "followers" || type === "following") {
           const res = await axios.get(
-            `${url}/api/profile/get-followers?userId=${userId || backupUserId }&type=${type}`,
+            `${url}/api/profile/get-followers?userId=${
+              userId || backupUserId
+            }&type=${type}`,
             { withCredentials: true }
           );
           if (res.data) setUsers(res.data.total);
         } else {
           const res = await axios.get(
-            `${url}/api/search/get-all-people?userId=${userId || backupUserId }`,
+            `${url}/api/search/get-all-people?userId=${userId || backupUserId}`,
             {
               withCredentials: true,
             }
@@ -229,42 +236,55 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
   }, [query]);
 
   return (
-  <div className="flex flex-col items-center w-full h-screen px-4 py-4 shadow-sm">
-    {/* 🔍 Search Bar (sticky at top) */}
-    <div className="w-full max-w-[600px] sticky top-4 z-10">
-      <div className="flex items-center gap-2 py-3 px-3 sm:px-4 rounded-xl bg-[var(--wrapperColor)]">
-        <Search size={18} className="text-gray-400 flex-shrink-0" />
-        <input
-          type="text"
-          placeholder={`Search ${type}...`}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 bg-transparent outline-none text-sm text-[var(--textColor)] placeholder-gray-400"
-        />
+    <div className="flex flex-col items-center w-full px-4 py-4 ">
+      {/* 🔍 Search Bar (sticky at top) */}
+      {type !== "chats" && (
+        <div className="w-full max-w-[600px] sticky top-4 z-10">
+          <div className="flex items-center gap-2 py-3 px-3 sm:px-4 rounded-xl bg-[var(--wrapperColor)]">
+            <Search size={18} className="text-gray-400 flex-shrink-0" />
+            <input
+              type="text"
+              placeholder={`Search ${type}...`}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1 bg-transparent outline-none text-sm text-[var(--textColor)] placeholder-gray-400"
+            />
+          </div>
+        </div>
+      )}
+
+      {type === "chats" && (
+        <div className="font-bold text-xl gap-4 tracking-wider flex w-full items-center justify-center py-2 px-4 rounded-md ">
+          <div className="p-2 bg-[var(--textColor)]/15 rounded-full">
+            <UsersThreeIcon size={30}/>
+          </div>
+          Recommended Chats
+        </div>
+      )}
+
+      {/* Scrollable User List */}
+      <div className="flex-1 mt-4 overflow-y-auto w-full max-w-[600px]">
+        {loading ? (
+          <div className="animate-pulse w-full space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="h-14 bg-[var(--wrapperColor)] rounded-xl"
+              />
+            ))}
+          </div>
+        ) : query.length > 0 ? (
+          searchResults.length ? (
+            <UsersList type={type} users={searchResults} myId={myId!} />
+          ) : (
+            <p className="text-center text-gray-500 py-6">No results found</p>
+          )
+        ) : users?.length ? (
+          <UsersList users={users} type={type} myId={myId!} />
+        ) : (
+          <p className="text-center text-gray-500 py-6">No {type} yet.</p>
+        )}
       </div>
     </div>
-
-    {/* Scrollable User List */}
-    <div className="flex-1 mt-4 overflow-y-auto w-full max-w-[600px]">
-      {loading ? (
-        <div className="animate-pulse w-full space-y-3">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-14 bg-[var(--wrapperColor)] rounded-xl" />
-          ))}
-        </div>
-      ) : query.length > 0 ? (
-        searchResults.length ? (
-          <UsersList type={type} users={searchResults} myId={myId!} />
-        ) : (
-          <p className="text-center text-gray-500 py-6">No results found</p>
-        )
-      ) : users?.length ? (
-        <UsersList users={users} type={type} myId={myId!} />
-      ) : (
-        <p className="text-center text-gray-500 py-6">No {type} yet.</p>
-      )}
-    </div>
-  </div>
-);
-
+  );
 }

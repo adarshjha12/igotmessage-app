@@ -16,7 +16,7 @@ export default function PopupMenu({ onClose }: PopupMenuProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: -10 }}
         transition={{ duration: 0.15 }}
-        className="absolute right-0 top-11 mt-2 w-48 rounded-2xl bg-white/80 dark:bg-gray-900/70 backdrop-blur-md shadow-xl border border-white/20 dark:border-gray-700 overflow-hidden z-20"
+        className="absolute right-0 top-11 mt-2 w-48 rounded-2xl bg-[var(--bgColor)]/80  backdrop-blur-md shadow-xl border border-[var(--borderColor)]/20  overflow-hidden z-50"
       >
         <MenuItem
           href="/dash/profile/settings"
@@ -50,9 +50,9 @@ function MenuItem({
     <Link
       href={href}
       onClick={onClick}
-      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100/60 dark:hover:bg-gray-800/60 transition"
+      className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--textColor)]  hover:bg-gray-500/60  transition"
     >
-      <span className="text-gray-600 dark:text-gray-400">{icon}</span>
+      <span className="text-gray-600 ">{icon}</span>
       <span>{label}</span>
     </Link>
   );

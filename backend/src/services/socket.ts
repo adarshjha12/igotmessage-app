@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import { Message } from "../models/messageModel";
 import { User } from "../models/userModel";
+import { Chat } from "../models/chatModel";
 
 export async function initSocketIO() {
   const onlineUsers: string[] = [];
@@ -23,11 +24,13 @@ export async function initSocketIO() {
         content,
         roomId,
         senderId,
+        receiverId,
         tempId,
       }: {
         content: string;
         roomId: string;
         senderId: string;
+        receiverId: string;
         tempId: string;
       }) => {
         console.log("💬 New message:", content, roomId, senderId);
@@ -38,6 +41,20 @@ export async function initSocketIO() {
           content,
           messageType: "text",
         });
+
+        await Chat.findByIdAndUpdate(
+          roomId,
+          {
+            $set: {
+              lastMessage: newMessage._id,
+              updatedAt: Date.now(),
+            },
+            $inc: {
+              [`unreadCounts.${receiverId}`]: 1,
+            },
+          },
+          { new: true }
+        );
 
         socket.to(roomId).emit("event:message", {
           content,

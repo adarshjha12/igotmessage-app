@@ -33,9 +33,10 @@ const chatSchema = new mongoose.Schema(
       ref: "Message",
     },
 
-    unreadMessages: {
-      type: Number,
-      default: 0,
+    unreadCounts: {
+      type: Map,
+      of: Number,
+      default: {},
     },
 
     // Optionally store chat avatar or group photo

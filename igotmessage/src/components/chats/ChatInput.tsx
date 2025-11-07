@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { getSocket } from "@/utils/socket";
 import VoiceRecorder from "./RecordAudio";
+import { useSearchParams } from "next/navigation";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
@@ -36,6 +37,8 @@ export default function ChatInput({
   const isDark = useSelector((state: RootState) => state.activity.isDark);
   const chatId = useSelector((state: RootState) => state.chat.chatId);
   const myId = useSelector((state: RootState) => state.auth.user._id);
+  const params = useSearchParams();
+const receiverId = params.get("recieverId");
   let isTyping = false;
   let typingTimeout: NodeJS.Timeout | null = null;
 
@@ -82,6 +85,7 @@ export default function ChatInput({
       content: input,
       roomId: chatId,
       senderId: myId,
+      receiverId: receiverId,
       tempId,
     });
 
@@ -115,7 +119,7 @@ export default function ChatInput({
       <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
         {/* 🔲 Inner Wrapper: File + Input + Emoji */}
         <div
-          className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700/70 text-white  backdrop-blur-md shadow-sm`}
+          className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700 text-white  backdrop-blur-md shadow-sm`}
         >
           {/* 📎 File Upload */}
           <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">

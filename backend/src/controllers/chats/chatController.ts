@@ -37,6 +37,10 @@ export const createOrGetChat = async (
     }).populate("participants", "userName profilePicture avatar");
 
     if (chat) {
+      await Chat.findByIdAndUpdate(chat._id, {
+        $set: { [`unreadCounts.${senderId}`]: 0 },
+      });
+
       console.log("Existing chat found");
       console.log({
         senderId,
@@ -99,6 +103,10 @@ export const getMyChats = async (req: Request, res: Response): Promise<any> => {
     // Get all chats where this user is a participant
     const chats = await Chat.find({ participants: userId })
       .populate("participants", "userName profilePicture avatar lastSeen")
+      .populate({
+        path: "lastMessage",
+        populate: { path: "sender", select: "userName profilePicture" },
+      })
       .sort({ updatedAt: -1 });
 
     // For each chat, pick the *other* participant
@@ -110,7 +118,7 @@ export const getMyChats = async (req: Request, res: Response): Promise<any> => {
       return {
         _id: chat._id,
         isGroupChat: chat.isGroupChat,
-        unreadMessages: chat.unreadMessages,
+        unreadCount: chat.unreadCounts.get(userId),
         lastMessage: chat.lastMessage,
         updatedAt: chat.updatedAt,
         coParticipant, // other user's info
