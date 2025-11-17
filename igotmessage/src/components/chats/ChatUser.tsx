@@ -312,7 +312,7 @@ function ChatUser() {
 
       {/* Chat Messages */}
       <div
-        className={`flex-1 flex-col space-y-6  overflow-y-auto  px-2 pt-[95px] pb-[100px] md:px-12 lg:px-16 w-full items-end gap-6`}
+        className={`flex-1 overflow-y-auto  px-2 pt-[95px] pb-[100px] md:px-12 lg:px-16 w-full items-end `}
       >
         {/* message timer */}
         <div className="flex justify-center w-full text-[var(--textColor)]/80">
@@ -373,7 +373,7 @@ function ChatUser() {
 
                 {/* Message bubble */}
                 <div
-                  className={`max-w-[75%] my-2 sm:max-w-[65%] rounded-2xl px-4 py-2 text-[15px] relative backdrop-blur-md shadow-[0_4px_14px_rgba(0,0,0,0.1)] transition-all duration-300 ${
+                  className={`max-w-[75%] mb-6 my-2 sm:max-w-[65%] rounded-2xl px-4 py-2 text-[15px] relative  transition-all duration-300 ${
                     message.sender === senderId
                       ? " bg-white/80 backdrop-blur-xs text-black rounded-br-none"
                       : "bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 border border-white/20 rounded-bl-none"

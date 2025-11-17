@@ -101,7 +101,7 @@ export default function ChatList() {
           <p> Getting chats</p>
         </div>
       )}{" "}
-      <div className="w-full mb-3 px-2 mt-[80px] flex justify-center" >
+      <div className="w-full mb-3 px-2 mt-[80px] flex justify-center">
         <div className="flex max-w-[600px]  w-full flex-col gap-3">
           <AiChatCard myId={myId} />
         </div>
