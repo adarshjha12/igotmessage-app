@@ -55,7 +55,7 @@ function ChatUser() {
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const onlineUsers = useAppSelector((state) => state.chat.onlineUsers);
 
-  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(true);
   const [isOtherTyping, setOtherTyping] = useState(false);
   const [width, setWidth] = useState<number | null>(null);
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);

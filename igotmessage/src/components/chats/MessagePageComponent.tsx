@@ -62,7 +62,7 @@ export default function ChatList() {
 
   const [chats, setChats] = useState<Chat[] | null>(null);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("chats");
   const lastMessage = useAppSelector(
     (state: RootState) => state.chat.lastMessage
