@@ -69,7 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montez.variable} ${exo2.variable} ${audioWide.variable}`}>
       
-      <body className="flex items-center justify-center h-full w-full">
+      <body className="flex bg-black items-center justify-center h-full w-full">
         <ReduxProvider>
           <ThemeProvider>
               {children}
