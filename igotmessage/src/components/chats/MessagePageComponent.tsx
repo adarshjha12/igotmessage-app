@@ -96,7 +96,7 @@ export default function ChatList() {
       </div>
       {/* loader */}
       {loading && (
-        <div className="flex text-white items-center gap-3 bg-black/15 px-4 py-2 rounded-2xl backdrop-blur-md">
+        <div className="flex mt-[80px] text-[var(--bgColor)] items-center gap-3 bg-[var(--textColor)]/80 px-4 py-2 rounded-2xl backdrop-blur-md">
           <Loader2Icon className="animate-spin" />
           <p> Getting chats</p>
         </div>
@@ -171,8 +171,8 @@ export default function ChatList() {
         </div>
       )}
       {/* No chats, groups, calls available */}
-      {!chats && <NoChats tabName={activeTab} />}
-      {!chats && (
+      {!chats && !loading && <NoChats tabName={activeTab} />}
+      {!chats && !loading && (
         <div className={`flex max-w-[600px] w-full flex-col gap-3`}>
           <FollowersList userId={myId} type="chats" />
         </div>
