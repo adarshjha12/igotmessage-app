@@ -16,25 +16,25 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const montez = Montez({ 
-  subsets: ["latin"], 
-  weight: "400", 
-  variable: "--font-montez", 
-  display: "swap" 
+const montez = Montez({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-montez",
+  display: "swap",
 });
 
-const exo2 = Exo_2({ 
-  subsets: ["latin"], 
-  weight: "400", 
-  variable: "--font-exo2", 
-  display: "swap" 
+const exo2 = Exo_2({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-exo2",
+  display: "swap",
 });
 
-const audioWide = Audiowide({ 
-  subsets: ["latin"], 
-  weight: "400", 
-  variable: "--font-audioWide", 
-  display: "swap" 
+const audioWide = Audiowide({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-audioWide",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -45,20 +45,20 @@ export const metadata: Metadata = {
       {
         url: "/logos/icon.png",
         type: "image/png",
-        media: "(prefers-color-scheme: dark)"
+        media: "(prefers-color-scheme: dark)",
       },
     ],
-    shortcut: "/logos/icon.png"
-  }
+    shortcut: "/logos/icon.png",
+  },
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
-  ]
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
 };
 
 export default function RootLayout({
@@ -67,13 +67,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montez.variable} ${exo2.variable} ${audioWide.variable}`}>
-      
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${montez.variable} ${exo2.variable} ${audioWide.variable}`}
+    >
       <body className="flex bg-black items-center justify-center h-full w-full">
         <ReduxProvider>
-          <ThemeProvider>
-              {children}
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </ReduxProvider>
       </body>
     </html>

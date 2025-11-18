@@ -580,7 +580,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
           {/* nav for mobile starts here */}
 
-          {/* <BottomNav pathname={pathname} /> */}
+          <BottomNav pathname={pathname} />
 
           {/* nav for mobile ends here */}
 
