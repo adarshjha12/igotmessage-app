@@ -11,7 +11,7 @@ function ChatHeader() {
     <div>
       {/* Chat Header */}
       <div
-        className="flex fixed top-0 left-0 z-50 items-center mb-4 justify-between w-full pr-4 py-3 bg-[var(--wrapperColor)] shadow backdrop-blur-md "
+        className="flex fixed top-0 left-0 z-50 items-center mb-4 justify-between w-full pr-4 py-3 bg-[var(--bgColor)] shadow backdrop-blur-md "
         
       >
         <div className="flex items-center gap-3">

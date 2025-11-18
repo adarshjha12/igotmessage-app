@@ -90,7 +90,7 @@ export default function ChatList() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-[var(--wrapperColor)] text-[var(--textColor)] py-0 flex flex-col items-center sm:px-4 md:px-8">
+    <div className="w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)] py-0 flex flex-col items-center sm:px-4 md:px-8">
       <div className="w-full">
         <ChatHeader />
       </div>
