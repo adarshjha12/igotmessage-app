@@ -22,7 +22,7 @@ export const createOrGetChat = async (
     const senderObjId = new mongoose.Types.ObjectId(senderId);
     const receiverObjId = new mongoose.Types.ObjectId(recieverId);
 
-    const receiver = await User.findById(receiverObjId).select("_id lastSeen");
+    const receiver = await User.findById(receiverObjId).select("_id lastSeen").lean();
 
     if (!receiver) {
       console.log("Receiver user not found in DB:", receiverObjId);

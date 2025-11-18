@@ -47,7 +47,7 @@ const getMyStoryController = async (
         select: "userName profilePicture isGuest avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
       })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }).lean();
 
     const filteredStories = myStories.filter((story) => story.user);
 
@@ -74,7 +74,7 @@ const getOtherStoryController = async (
       select: "userName profilePicture isGuest avatar",
       match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
     })
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 }).lean();
 
   const filteredStories = otherStories.filter((story) => story.user);
 
@@ -101,7 +101,7 @@ const getStoryByIdController = async (
     const stories = await Story.find({ user: userId }).populate(
       "user",
       "userName profilePicture avatar"
-    );
+    ).lean();
     if (!stories || stories.length === 0)
       return res
         .status(404)

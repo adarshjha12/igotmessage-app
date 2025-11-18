@@ -53,7 +53,7 @@ export default profileUpdateController;
 export const getProfile = async (req: Request, res: Response): Promise<any> => {
   const userId = req.query.userId;
   try {
-    const profile = await User.findById(userId);
+    const profile = await User.findById(userId).lean();
     if (!profile) {
       return res
         .status(404)

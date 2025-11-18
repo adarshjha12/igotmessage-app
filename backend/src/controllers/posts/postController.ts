@@ -143,7 +143,7 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
         path: "whoReposted",
         select: "userName profilePicture isGuest avatar",
         match: { $or: [{ isGuest: false }, { isGuest: { $exists: false } }] },
-      });
+      }).lean();
     const filteredPosts = posts.filter((post) => post.user);
 
     const total = await Post.countDocuments();
