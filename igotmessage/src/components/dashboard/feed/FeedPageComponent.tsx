@@ -19,14 +19,14 @@ function StorySkeleton() {
       {[...Array(4)].map((_, i) => (
         <div key={i} className="flex flex-col items-center">
           <Skeleton
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             circle
             width={60}
             height={60}
           />
           <Skeleton
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             width={50}
             height={12}
@@ -48,21 +48,21 @@ function PostsSkeleton() {
         <div key={i} className="rounded-2xl overflow-hidden p-4">
           <Skeleton
             borderRadius={10}
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             height={20}
             width={120}
           />
           <Skeleton
             borderRadius={10}
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             height={250}
             className="mt-2 rounded-xl"
           />
           <Skeleton
             borderRadius={10}
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             highlightColor={isDark ? "#232323" : "#f5f5f5"}
             height={20}
             width={`80%`}

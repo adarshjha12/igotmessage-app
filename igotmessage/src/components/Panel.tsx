@@ -164,11 +164,7 @@ function Panel() {
             <div
               className={`mt-3 flex items-center justify-center gap-2 font-medium text-sm text-[var(--textColor)]/80`}
             >
-              <img
-                src="/images/lion.png"
-                className="w-12 h-auto"
-                alt=""
-              />
+              <img src="/images/lion.png" className="w-12 h-auto" alt="" />
               <p> A Make in India Initiative</p>
             </div>
           </div>

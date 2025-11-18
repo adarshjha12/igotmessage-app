@@ -15,6 +15,13 @@ function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setIsMounted(true);
     const theme = localStorage.getItem("theme");
+    if (!theme) {
+      localStorage.setItem("theme", "dark");
+      dispatch(setDarkMode(true));
+      document.documentElement.classList.add("dark");
+    }
+    console.log("theme", theme);
+
     if (theme === "dark") {
       dispatch(setDarkMode(true));
       document.documentElement.classList.add("dark");
@@ -23,10 +30,13 @@ function ThemeProvider({ children }: { children: ReactNode }) {
       dispatch(setDarkMode(false));
     }
     console.log("isdark", isDark);
-    
   }, []);
 
-  return isMounted ? <div className={`w-full h-full${isDark ? "bg-black": "bg-white"}`}>{children}</div> : null;
+  return isMounted ? (
+    <div className={`w-full h-full${isDark ? "bg-black" : "bg-white"}`}>
+      {children}
+    </div>
+  ) : null;
 }
 
 export default ThemeProvider;
