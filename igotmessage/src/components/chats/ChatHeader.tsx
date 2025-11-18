@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, MessageSquare, MoreVertical } from "lucide-react";
+import { ChevronLeftIcon, MessageSquare, MoreVertical, PhoneIcon } from "lucide-react";
 import React, { useState } from "react";
 import PopupMenu from "./MoreOption";
 import { useAppSelector } from "@/store/hooks";
@@ -11,7 +11,7 @@ function ChatHeader() {
     <div>
       {/* Chat Header */}
       <div
-        className="flex fixed top-0 left-0 z-50 items-center mb-4 justify-between w-full pr-4 py-3 bg-[var(--bgColor)]/80 backdrop-blur-md "
+        className="flex fixed top-0 left-0 z-50 items-center mb-4 justify-between w-full pr-4 py-3 bg-[var(--wrapperColor)] shadow backdrop-blur-md "
         
       >
         <div className="flex items-center gap-3">
@@ -39,6 +39,16 @@ function ChatHeader() {
          
         </div> */}
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setMoreButtonClicked((prev) => !prev)}
+            className="p-2 rounded-full hover:bg-white/10 transition"
+          >
+            <PhoneIcon
+              size={22}
+              className="text-[var(--textColor)] opacity-80 hover:opacity-100"
+            />
+          </button>
           <button
             type="button"
             onClick={() => setMoreButtonClicked((prev) => !prev)}

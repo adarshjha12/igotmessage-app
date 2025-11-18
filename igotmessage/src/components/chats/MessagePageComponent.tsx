@@ -90,7 +90,7 @@ export default function ChatList() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-[var(--bgColor)] text-[var(--textColor)] py-0 flex flex-col items-center sm:px-4 md:px-8">
+    <div className="w-full min-h-screen bg-[var(--wrapperColor)] text-[var(--textColor)] py-0 flex flex-col items-center sm:px-4 md:px-8">
       <div className="w-full">
         <ChatHeader />
       </div>
@@ -118,7 +118,7 @@ export default function ChatList() {
                   chat.coParticipant._id
                 }&senderId=${myId}`}
                 key={chat.coParticipant._id}
-                className="flex items-center justify-between p-3 rounded-2xl bg-[var(--wrapperColor)] backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
+                className="flex items-center justify-between p-3 rounded-2xl  backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
               >
                 {/* Left section: avatar + text */}
                 <div className="flex items-center gap-3">

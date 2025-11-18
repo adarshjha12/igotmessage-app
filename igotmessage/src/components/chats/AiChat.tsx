@@ -8,7 +8,7 @@ export default function AiChatCard({ myId }: { myId: string }) {
   return (
     <Link
       href={`/chats/${myId}?avatar=${aiAvatar}&userName=MistralAI&receiverId=ai_bot&senderId=${myId}`}
-      className="flex items-center justify-between p-3 rounded-2xl bg-[var(--wrapperColor)] backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
+      className="flex items-center justify-between p-3 rounded-2xl  backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
     >
       {/* Left: avatar + name + last message */}
       <div className="flex items-center gap-3">

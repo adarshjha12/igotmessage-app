@@ -15,7 +15,7 @@
 
 :root {
   /* --font-default: var(--font-montez); */
-  --bgColor: #ffffff;
+  --bgColor: #EEF2F6;
   --borderColor: #000000;
   --textColor: #000000;
   --textGrayColor: #888585;
@@ -29,7 +29,7 @@
 }
 
 .dark {
-  --bgColor: #000000;
+  --bgColor: #1e2838;
   --borderColor: #ffffff;
   --textColor: #ffffff;
   --textGrayColor: #c9c8c8;
