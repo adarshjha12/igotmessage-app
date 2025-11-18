@@ -23,7 +23,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         const response = await checkAuth();
         if (response.data?.success === true) {
           dispatch(addCurrentUserToStore(response.data.userData));
-           localStorage.setItem("userId", JSON.stringify(response.data.userData._id));
+          localStorage.setItem(
+            "userId",
+            JSON.stringify(response.data.userData._id)
+          );
           dispatch(setAuthStatus(true));
           setVerified(true);
           setLoading(false);
@@ -40,36 +43,16 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className=" w-full flex min-h-screen items-start justify-center bg-[var(--bgColor)]">
-        <div className=" hidden sm:flex max-w-[500px] justify-center bg-[var(--bgColor)] gap-4 overflow-x-auto py-3">
-             {[...Array(5)].map((_, i) => (
-               <div key={i} className="flex flex-col items-center">
-                 <Skeleton
-                   baseColor={isDark ? "#2e302e" : "#ececec"}
-                   highlightColor={isDark ? "#232323" : "#f5f5f5"}
-                   circle
-                   width={60}
-                   height={60}
-                 />
-                 <Skeleton
-                   baseColor={isDark ? "#2e302e" : "#ececec"}
-                   highlightColor={isDark ? "#232323" : "#f5f5f5"}
-                   width={50}
-                   height={12}
-                   className="mt-2 rounded"
-                 />
-               </div>
-             ))}
-           </div>
-        <div className="p-4 flex whitespace-nowrap sticky top-0 overflow-y-auto scroll-hidden flex-col sm:hidden bg-[var(--bgColor)] gap-3 w-full z-50">
+      <div className=" w-full flex min-h-screen items-start justify-center bg-[var(--wrapperColor)]">
+        <div className="p-4 flex whitespace-nowrap sticky top-0 overflow-y-auto scroll-hidden flex-col  bg-[var(--wrapperColor)] gap-3 max-w-[600px] z-50">
           <div className="flex whitespace-nowrap gap-4 overflow-x-auto scroll-hidden">
             <Skeleton
               height={80}
               width={80}
               borderRadius={100}
-              baseColor={isDark ? "#2e302e" : "#ececec"}
+              baseColor={isDark ? "#082443" : "#85b6ee"}
               className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#ececec"}
+              highlightColor={isDark ? "#232323" : "#85b6ee"}
               count={1}
               style={{ marginBottom: "1rem" }}
             />
@@ -77,9 +60,9 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
               height={80}
               width={80}
               borderRadius={100}
-              baseColor={isDark ? "#2e302e" : "#ececec"}
+              baseColor={isDark ? "#082443" : "#85b6ee"}
               className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#ececec"}
+              highlightColor={isDark ? "#232323" : "#85b6ee"}
               count={1}
               style={{ marginBottom: "1rem" }}
             />
@@ -87,27 +70,27 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
               height={80}
               width={80}
               borderRadius={100}
-              baseColor={isDark ? "#2e302e" : "#ececec"}
+              baseColor={isDark ? "#082443" : "#85b6ee"}
               className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#ececec"}
+              highlightColor={isDark ? "#232323" : "#85b6ee"}
               count={1}
             />
             <Skeleton
               height={80}
               width={80}
               borderRadius={100}
-              baseColor={isDark ? "#2e302e" : "#ececec"}
+              baseColor={isDark ? "#082443" : "#85b6ee"}
               className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#ececec"}
+              highlightColor={isDark ? "#232323" : "#85b6ee"}
               count={1}
             />
             <Skeleton
               height={80}
               width={80}
               borderRadius={100}
-              baseColor={isDark ? "#2e302e" : "#ececec"}
+              baseColor={isDark ? "#082443" : "#85b6ee"}
               className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#ececec"}
+              highlightColor={isDark ? "#232323" : "#85b6ee"}
               count={1}
             />
           </div>
@@ -117,30 +100,30 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
                 height={40}
                 width={40}
                 borderRadius={100}
-                baseColor={isDark ? "#2e302e" : "#ececec"}
+                baseColor={isDark ? "#082443" : "#85b6ee"}
                 className=" rounded-full "
                 count={1}
-                highlightColor={isDark ? "#232323" : "#ececec"}
+                highlightColor={isDark ? "#232323" : "#85b6ee"}
               />
               <div className="flex flex-col gap-2">
                 <Skeleton
                   height={20}
                   width={190}
                   borderRadius={10}
-                  baseColor={isDark ? "#2e302e" : "#ececec"}
+                  baseColor={isDark ? "#082443" : "#85b6ee"}
                   className=" rounded-full "
                   count={1}
-                  highlightColor={isDark ? "#232323" : "#ececec"}
+                  highlightColor={isDark ? "#232323" : "#85b6ee"}
                 />
 
                 <Skeleton
                   height={20}
                   width={50}
                   borderRadius={10}
-                  baseColor={isDark ? "#2e302e" : "#ececec"}
+                  baseColor={isDark ? "#082443" : "#85b6ee"}
                   className=" rounded-full "
                   count={1}
-                  highlightColor={isDark ? "#232323" : "#ececec"}
+                  highlightColor={isDark ? "#232323" : "#85b6ee"}
                 />
               </div>
             </div>
@@ -148,9 +131,9 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
           <Skeleton
             height={300}
             borderRadius={10}
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             className=" rounded-full "
-            highlightColor={isDark ? "#232323" : "#ececec"}
+            highlightColor={isDark ? "#232323" : "#85b6ee"}
             count={1}
             style={{ marginBottom: "3rem" }}
           />
@@ -160,30 +143,30 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
                 height={40}
                 width={40}
                 borderRadius={100}
-                baseColor={isDark ? "#2e302e" : "#ececec"}
+                baseColor={isDark ? "#082443" : "#85b6ee"}
                 className=" rounded-full "
                 count={1}
-                highlightColor={isDark ? "#232323" : "#ececec"}
+                highlightColor={isDark ? "#232323" : "#85b6ee"}
               />
               <div className="flex flex-col gap-2">
                 <Skeleton
                   height={20}
                   width={190}
                   borderRadius={10}
-                  baseColor={isDark ? "#2e302e" : "#ececec"}
+                  baseColor={isDark ? "#082443" : "#85b6ee"}
                   className=" rounded-full "
                   count={1}
-                  highlightColor={isDark ? "#232323" : "#ececec"}
+                  highlightColor={isDark ? "#232323" : "#85b6ee"}
                 />
 
                 <Skeleton
                   height={20}
                   width={50}
                   borderRadius={10}
-                  baseColor={isDark ? "#2e302e" : "#ececec"}
+                  baseColor={isDark ? "#082443" : "#85b6ee"}
                   className=" rounded-full "
                   count={1}
-                  highlightColor={isDark ? "#232323" : "#ececec"}
+                  highlightColor={isDark ? "#232323" : "#85b6ee"}
                 />
               </div>
             </div>
@@ -191,7 +174,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
           <Skeleton
             height={300}
             borderRadius={10}
-            baseColor={isDark ? "#2e302e" : "#ececec"}
+            baseColor={isDark ? "#082443" : "#85b6ee"}
             className=" rounded-full "
             highlightColor={isDark ? "#232323" : "#ececec"}
             count={1}

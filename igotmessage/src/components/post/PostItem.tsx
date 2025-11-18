@@ -208,29 +208,35 @@ export default function PostItem({
             <MoreVertical className="text-[var(--textColor)]" size={20} />
           </button>
           {showMore && (
-            <div className="absolute z-30 right-0 mt-3 w-48 bg-gradient-to-br from-blue-600/90 to-blue-800/90 backdrop-blur-lg border border-white/10 rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
-              {/* Profile Link */}
-              <Link
-                href={`/public-profile/${post?.user?._id}/myId/${userId}`}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all"
-              >
-                <ArrowSquareUpRightIcon className=" w-5 h-5 text-white/80" />
-                View Profile
-              </Link>
-
-              {/* Divider */}
-              <div className="h-px bg-white/10 mx-2" />
-
-              {/* Save / Download */}
-              {post.mediaUrls?.[0] && (
-                <button
-                  onClick={() => setShowDownloadPopup(true)}
+            <div>
+              <div
+                onClick={() => setShowMore(!showMore)}
+                className="inset-0 fixed z-30"
+              ></div>
+              <div className="absolute z-40 right-0 mt-3 w-48 bg-gradient-to-br from-blue-600/90 to-blue-800/90 backdrop-blur-lg border border-white/10 rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
+                {/* Profile Link */}
+                <Link
+                  href={`/public-profile/${post?.user?._id}/myId/${userId}`}
                   className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all"
                 >
-                  <Download className=" w-5 h-5" strokeWidth={1.5} />
-                  Save this media
-                </button>
-              )}
+                  <ArrowSquareUpRightIcon className=" w-5 h-5 text-white/80" />
+                  View Profile
+                </Link>
+
+                {/* Divider */}
+                <div className="h-px bg-white/10 mx-2" />
+
+                {/* Save / Download */}
+                {post.mediaUrls?.[0] && (
+                  <button
+                    onClick={() => setShowDownloadPopup(true)}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all"
+                  >
+                    <Download className=" w-5 h-5" strokeWidth={1.5} />
+                    Save this media
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>
