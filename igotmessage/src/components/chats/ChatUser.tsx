@@ -245,7 +245,7 @@ function ChatUser() {
   }, [recieverId]);
 
   return (
-    <div className="w-full h-[100svh] relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col bg-gradient-to-br from-blue-800 via-red-700 to-rose-600">
+    <div className="w-full h-[100dvh] relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col bg-gradient-to-br from-blue-800 via-red-700 to-rose-600">
       {/* Fixed Header */}
       <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 bg-white/10 backdrop-blur-sm top-0 z-10">
         <div className="flex items-center gap-3">
