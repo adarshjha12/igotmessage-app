@@ -18,20 +18,23 @@ function StorySkeleton() {
     <div className="flex gap-4 overflow-x-auto px-4 py-3">
       {[...Array(4)].map((_, i) => (
         <div key={i} className="flex flex-col items-center">
-          <Skeleton
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            highlightColor={isDark ? "#232323" : "#f5f5f5"}
-            circle
-            width={60}
-            height={60}
-          />
-          <Skeleton
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            highlightColor={isDark ? "#232323" : "#f5f5f5"}
-            width={50}
-            height={12}
+          <div
+            className="rounded-full"
+            style={{
+              width: 60,
+              height: 60,
+              backgroundColor: "var(--wrapperColor)",
+            }}
+          ></div>
+
+          <div
             className="mt-2 rounded"
-          />
+            style={{
+              width: 50,
+              height: 12,
+              backgroundColor: "var(--wrapperColor)",
+            }}
+          ></div>
         </div>
       ))}
     </div>
@@ -45,29 +48,42 @@ function PostsSkeleton() {
   return (
     <div className="flex flex-col gap-4 px-4">
       {[...Array(3)].map((_, i) => (
-        <div key={i} className="rounded-2xl overflow-hidden p-4">
-          <Skeleton
-            borderRadius={10}
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            highlightColor={isDark ? "#232323" : "#f5f5f5"}
-            height={20}
-            width={120}
-          />
-          <Skeleton
-            borderRadius={10}
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            highlightColor={isDark ? "#232323" : "#f5f5f5"}
-            height={250}
+        <div
+          key={i}
+          className="rounded-2xl overflow-hidden p-4"
+          style={{
+            backgroundColor: "transparent",
+          }}
+        >
+          {/* Username bar */}
+          <div
+            className="rounded-md"
+            style={{
+              width: 120,
+              height: 20,
+              backgroundColor: "var(--wrapperColor)",
+            }}
+          ></div>
+
+          {/* Big post area */}
+          <div
             className="mt-2 rounded-xl"
-          />
-          <Skeleton
-            borderRadius={10}
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            highlightColor={isDark ? "#232323" : "#f5f5f5"}
-            height={20}
-            width={`80%`}
-            className="mt-2"
-          />
+            style={{
+              height: 250,
+              width: "100%",
+              backgroundColor: "var(--wrapperColor)",
+            }}
+          ></div>
+
+          {/* Bottom bar */}
+          <div
+            className="mt-2 rounded-md"
+            style={{
+              height: 20,
+              width: "80%",
+              backgroundColor: "var(--wrapperColor)",
+            }}
+          ></div>
         </div>
       ))}
     </div>

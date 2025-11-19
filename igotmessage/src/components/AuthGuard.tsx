@@ -43,143 +43,112 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className=" w-full flex min-h-screen items-start justify-center bg-[var(--wrapperColor)]">
-        <div className="p-4 flex whitespace-nowrap sticky top-0 overflow-y-auto scroll-hidden flex-col  bg-[var(--wrapperColor)] gap-3 max-w-[600px] z-50">
+      <div className="w-full flex min-h-screen items-start justify-center bg-[var(--wrapperColor)]">
+        <div className="p-4 flex whitespace-nowrap sticky top-0 overflow-y-auto scroll-hidden flex-col bg-[var(--wrapperColor)] gap-3 max-w-[600px] z-50">
+          {/* Top Horizontal Circles */}
           <div className="flex whitespace-nowrap gap-4 overflow-x-auto scroll-hidden">
-            <Skeleton
-              height={80}
-              width={80}
-              borderRadius={100}
-              baseColor={isDark ? "#082443" : "#85b6ee"}
-              className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#85b6ee"}
-              count={1}
-              style={{ marginBottom: "1rem" }}
-            />
-            <Skeleton
-              height={80}
-              width={80}
-              borderRadius={100}
-              baseColor={isDark ? "#082443" : "#85b6ee"}
-              className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#85b6ee"}
-              count={1}
-              style={{ marginBottom: "1rem" }}
-            />
-            <Skeleton
-              height={80}
-              width={80}
-              borderRadius={100}
-              baseColor={isDark ? "#082443" : "#85b6ee"}
-              className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#85b6ee"}
-              count={1}
-            />
-            <Skeleton
-              height={80}
-              width={80}
-              borderRadius={100}
-              baseColor={isDark ? "#082443" : "#85b6ee"}
-              className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#85b6ee"}
-              count={1}
-            />
-            <Skeleton
-              height={80}
-              width={80}
-              borderRadius={100}
-              baseColor={isDark ? "#082443" : "#85b6ee"}
-              className=" rounded-full "
-              highlightColor={isDark ? "#232323" : "#85b6ee"}
-              count={1}
-            />
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-full"
+                style={{
+                  width: 80,
+                  height: 80,
+                  backgroundColor: "var(--wrapperColor)",
+                }}
+              ></div>
+            ))}
           </div>
+
+          {/* First profile + text */}
           <div className="flex pt-8 gap-4">
             <div className="flex gap-4">
-              <Skeleton
-                height={40}
-                width={40}
-                borderRadius={100}
-                baseColor={isDark ? "#082443" : "#85b6ee"}
-                className=" rounded-full "
-                count={1}
-                highlightColor={isDark ? "#232323" : "#85b6ee"}
-              />
-              <div className="flex flex-col gap-2">
-                <Skeleton
-                  height={20}
-                  width={190}
-                  borderRadius={10}
-                  baseColor={isDark ? "#082443" : "#85b6ee"}
-                  className=" rounded-full "
-                  count={1}
-                  highlightColor={isDark ? "#232323" : "#85b6ee"}
-                />
+              <div
+                className="rounded-full"
+                style={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: "var(--wrapperColor)",
+                }}
+              ></div>
 
-                <Skeleton
-                  height={20}
-                  width={50}
-                  borderRadius={10}
-                  baseColor={isDark ? "#082443" : "#85b6ee"}
-                  className=" rounded-full "
-                  count={1}
-                  highlightColor={isDark ? "#232323" : "#85b6ee"}
-                />
+              <div className="flex flex-col gap-2">
+                <div
+                  className="rounded"
+                  style={{
+                    width: 190,
+                    height: 20,
+                    backgroundColor: "var(--wrapperColor)",
+                  }}
+                ></div>
+
+                <div
+                  className="rounded"
+                  style={{
+                    width: 50,
+                    height: 20,
+                    backgroundColor: "var(--wrapperColor)",
+                  }}
+                ></div>
               </div>
             </div>
           </div>
-          <Skeleton
-            height={300}
-            borderRadius={10}
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            className=" rounded-full "
-            highlightColor={isDark ? "#232323" : "#85b6ee"}
-            count={1}
-            style={{ marginBottom: "3rem" }}
-          />
+
+          {/* First big post placeholder */}
+          <div
+            className="rounded-xl"
+            style={{
+              width: "100%",
+              height: 300,
+              backgroundColor: "var(--wrapperColor)",
+              marginBottom: "3rem",
+            }}
+          ></div>
+
+          {/* Second profile + text */}
           <div className="flex pt-8 gap-4">
             <div className="flex gap-4">
-              <Skeleton
-                height={40}
-                width={40}
-                borderRadius={100}
-                baseColor={isDark ? "#082443" : "#85b6ee"}
-                className=" rounded-full "
-                count={1}
-                highlightColor={isDark ? "#232323" : "#85b6ee"}
-              />
-              <div className="flex flex-col gap-2">
-                <Skeleton
-                  height={20}
-                  width={190}
-                  borderRadius={10}
-                  baseColor={isDark ? "#082443" : "#85b6ee"}
-                  className=" rounded-full "
-                  count={1}
-                  highlightColor={isDark ? "#232323" : "#85b6ee"}
-                />
+              <div
+                className="rounded-full"
+                style={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: "var(--wrapperColor)",
+                }}
+              ></div>
 
-                <Skeleton
-                  height={20}
-                  width={50}
-                  borderRadius={10}
-                  baseColor={isDark ? "#082443" : "#85b6ee"}
-                  className=" rounded-full "
-                  count={1}
-                  highlightColor={isDark ? "#232323" : "#85b6ee"}
-                />
+              <div className="flex flex-col gap-2">
+                <div
+                  className="rounded"
+                  style={{
+                    width: 190,
+                    height: 20,
+                    backgroundColor: "var(--wrapperColor)",
+                  }}
+                ></div>
+
+                <div
+                  className="rounded"
+                  style={{
+                    width: 50,
+                    height: 20,
+                    backgroundColor: "var(--wrapperColor)",
+                  }}
+                ></div>
               </div>
             </div>
           </div>
-          <Skeleton
-            height={300}
-            borderRadius={10}
-            baseColor={isDark ? "#082443" : "#85b6ee"}
-            className=" rounded-full "
-            highlightColor={isDark ? "#232323" : "#ececec"}
-            count={1}
-            style={{ marginBottom: "3rem" }}
-          />
+
+          {/* Second big post placeholder */}
+          <div
+            className="rounded-xl"
+            style={{
+              width: "100%",
+              height: 300,
+              backgroundColor: "var(--wrapperColor)",
+              marginBottom: "3rem",
+            }}
+          ></div>
         </div>
       </div>
     );
