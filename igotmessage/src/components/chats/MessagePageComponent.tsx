@@ -153,7 +153,7 @@ export default function ChatList() {
                   <span className="text-xs text-[var(--textColor)]/80">
                     {chat?.lastMessage &&
                       isValid(new Date(chat?.lastMessage?.createdAt)) &&
-                      format(new Date(chat.lastMessage?.createdAt), "hh:mm a")}
+                      format(new Date(chat.lastMessage?.createdAt), "dd/MM/y")}
                   </span>
                   {chat?.unreadCount && chat.unreadCount > 0 ? (
                     <span className="px-2 py-1 text-xs font-semibold bg-red-500 text-white rounded-full">

@@ -165,6 +165,8 @@ function ChatUser() {
     const socket = getSocket();
 
     async function getChatId() {
+      setLoadingMessages(true);
+
       try {
         const res = await axios.post(
           `${url}/api/chat/create-chat`,
@@ -176,27 +178,10 @@ function ChatUser() {
           chatIdLocal = res.data.chat._id;
           console.log(res.data);
 
+          setAllMessages(res.data.allMessages);
+          setLoadingMessages(false);
           setRecieverLastSeen(res.data?.receiverLastSeen ?? null);
           dispatch(setChatId(chatIdLocal));
-
-          if (chatIdLocal) {
-            setLoadingMessages(true);
-            try {
-              const res = await axios.get(
-                `${url}/api/chat/get-messages?chatId=${chatIdLocal}`,
-
-                { withCredentials: true }
-              );
-
-              if (res.data) {
-                setAllMessages(res.data.messages);
-                setLoadingMessages(false);
-              }
-            } catch (error) {
-              console.log(error);
-              setLoadingMessages(false);
-            }
-          }
 
           if (socket.connected) {
             socket.emit("event:joinRoom", { roomId: chatIdLocal });
@@ -233,6 +218,7 @@ function ChatUser() {
           });
         }
       } catch (error) {
+        setLoadingMessages(false);
         console.log(error);
       }
     }

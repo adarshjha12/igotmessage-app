@@ -20,7 +20,6 @@ function ThemeProvider({ children }: { children: ReactNode }) {
       dispatch(setDarkMode(true));
       document.documentElement.classList.add("dark");
     }
-    console.log("theme", theme);
 
     if (theme === "dark") {
       dispatch(setDarkMode(true));
@@ -29,7 +28,6 @@ function ThemeProvider({ children }: { children: ReactNode }) {
       document.documentElement.classList.remove("dark");
       dispatch(setDarkMode(false));
     }
-    console.log("isdark", isDark);
   }, []);
 
   return isMounted ? (

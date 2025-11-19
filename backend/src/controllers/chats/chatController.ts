@@ -5,96 +5,78 @@ import { Message } from "../../models/messageModel";
 
 import mongoose from "mongoose";
 
-export const createOrGetChat = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
+export const createOrGetChat = async (req: Request, res: Response): Promise<any> => {
   try {
     const { senderId, recieverId } = req.body;
 
-    if (!senderId || !recieverId) {
-      console.log("Required id not provided");
+    if (!senderId || !recieverId)
       return res
         .status(400)
         .json({ message: "Missing senderId or recieverId" });
-    }
 
-    const senderObjId = new mongoose.Types.ObjectId(senderId);
-    const receiverObjId = new mongoose.Types.ObjectId(recieverId);
+    const receiver = await User.findById(recieverId)
+      .select("_id lastSeen")
+      .lean();
 
-    const receiver = await User.findById(receiverObjId).select("_id lastSeen").lean();
-
-    if (!receiver) {
-      console.log("Receiver user not found in DB:", receiverObjId);
-      return res.status(404).json({
-        success: false,
-        message: "Receiver not found",
-      });
-    }
-    // Find chat that has *exactly* these two participants
     let chat = await Chat.findOne({
-      participants: { $size: 2, $all: [senderObjId, receiverObjId] },
-    }).populate("participants", "userName profilePicture avatar");
+      participants: { $all: [senderId, recieverId], $size: 2 },
+    })
+      .populate("participants", "userName profilePicture avatar")
+      .lean();
 
+    // ✔️ If chat exists → load messages
     if (chat) {
-      await Chat.findByIdAndUpdate(chat._id, {
-        $set: { [`unreadCounts.${senderId}`]: 0 },
-      });
+      // Reset unread count
+      await Chat.updateOne(
+        { _id: chat._id },
+        { [`unreadCounts.${senderId}`]: 0 }
+      );
 
-      console.log("Existing chat found");
-      console.log({
-        senderId,
-        recieverId,
-        senderLastSeen: (await User.findById(senderId).select("lastSeen"))
-          ?.lastSeen,
-        recieverLastSeen: (await User.findById(recieverId).select("lastSeen"))
-          ?.lastSeen,
-      });
+      // Get last 30 messages
+      const messages = await Message.find({ chat: chat._id })
+        .sort({ createdAt: -1 })
+        .lean();
 
       return res.status(200).json({
         success: true,
-        message: "Chat found",
         chat,
-        receiverLastSeen: receiver?.lastSeen || null,
-        receiverId: receiver?._id,
+        allMessages: messages.reverse(), // return oldest → latest order
+        receiverLastSeen: receiver?.lastSeen ?? null,
       });
     }
 
-    // If no chat, create new one
-    chat = await Chat.create({
-      participants: [senderObjId, receiverObjId],
+    // ✔️ Create new chat
+    const newChat = await Chat.create({
+      participants: [senderId, recieverId],
     });
-
-    console.log("New chat created");
 
     return res.status(201).json({
       success: true,
-      message: "Chat created",
-      chat,
-      receiverLastSeen: receiver?.lastSeen || null,
-      receiverId: receiver?._id,
+      chat: newChat,
+      messages: [], // no messages yet
+      receiverLastSeen: receiver?.lastSeen ?? null,
     });
-  } catch (error) {
-    console.error("createOrGetChat error:", error);
-    return res.status(500).json({ success: false, message: "Server error" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
-export const getMessages = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
-  const chatId = req.query.chatId;
-  try {
-    const messages = await Message.find({ chat: chatId });
-    return res
-      .status(200)
-      .json({ success: true, message: "messages found", messages });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ success: false, message: "Server error" });
-  }
-};
+// export const getMessages = async (
+//   req: Request,
+//   res: Response
+// ): Promise<any> => {
+//   const chatId = req.query.chatId;
+//   try {
+//     const messages = await Message.find({ chat: chatId });
+//     return res
+//       .status(200)
+//       .json({ success: true, message: "messages found", messages });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ success: false, message: "Server error" });
+//   }
+// };
 
 export const getMyChats = async (req: Request, res: Response): Promise<any> => {
   const userId = req.query.userId as string;
