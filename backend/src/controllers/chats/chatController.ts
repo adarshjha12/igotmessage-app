@@ -3,8 +3,6 @@ import { Chat } from "../../models/chatModel";
 import { User } from "../../models/userModel";
 import { Message } from "../../models/messageModel";
 
-import mongoose from "mongoose";
-
 export const createOrGetChat = async (req: Request, res: Response): Promise<any> => {
   try {
     const { senderId, recieverId } = req.body;
@@ -62,21 +60,6 @@ export const createOrGetChat = async (req: Request, res: Response): Promise<any>
   }
 };
 
-// export const getMessages = async (
-//   req: Request,
-//   res: Response
-// ): Promise<any> => {
-//   const chatId = req.query.chatId;
-//   try {
-//     const messages = await Message.find({ chat: chatId });
-//     return res
-//       .status(200)
-//       .json({ success: true, message: "messages found", messages });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ success: false, message: "Server error" });
-//   }
-// };
 
 export const getMyChats = async (req: Request, res: Response): Promise<any> => {
   const userId = req.query.userId as string;
