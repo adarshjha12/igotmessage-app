@@ -6,7 +6,7 @@ import NewLoader from '@/components/NewLoader'
 
 
 const Chat = dynamic(
-  () => import("@/components/chats/ChatUser"),
+  () => import("@/components/chats/SingleChat"),
   {
     ssr: false,
     loading: () => <div className='w-full h-screen bg-[var(--bgColor)} text-[var(--textColor)] flex justify-center items-center'>

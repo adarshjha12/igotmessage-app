@@ -10,10 +10,15 @@ interface Message {
   tempId?: string;
 }
 
+interface ChatList{
+   
+}
+
 interface ChatState {
   chatId: string;
   onlineUsers: string[]
   lastMessage: Record<string, Message> | null
+  chatList?: any
 }
 
 const initialState: ChatState = {
@@ -45,6 +50,10 @@ const chatSlice = createSlice({
     setLastMessage: (state, action) => {
       const { chatId, message } = action.payload;
       state.lastMessage = { ...state.lastMessage, [chatId]: message };
+    },
+
+    setChatList: (state, action) => {
+      state.chatList = action.payload;
     },
   },
 });

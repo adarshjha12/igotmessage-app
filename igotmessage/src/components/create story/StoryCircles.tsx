@@ -50,7 +50,9 @@ function Story() {
   );
 
   useEffect(() => {
-    getStories();
+    if (myStories.length === 0 || otherStories.length === 0) {
+      getStories();
+    }
   }, [storyUploadStatus]);
 
   return (
