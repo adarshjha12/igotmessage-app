@@ -3,8 +3,9 @@ import {
   MessageSquare,
   MessageSquareDashed,
 } from "lucide-react"; // or import from phosphor-react
+import React from "react";
 
-export default function NoChats({ tabName }: { tabName: string }) {
+const  NoChats = React.memo(({ tabName }: { tabName: string }) =>{
   return (
     <div className="flex flex-col mt-[60px] py-16 items-center justify-start text-[var(--textColor)] p-2 ">
       <div className="text-center flex gap-4 items-center text-xl font-semibold">
@@ -19,4 +20,6 @@ export default function NoChats({ tabName }: { tabName: string }) {
       </div>
     </div>
   );
-}
+})
+
+export default NoChats

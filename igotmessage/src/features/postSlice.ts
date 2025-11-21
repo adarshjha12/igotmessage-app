@@ -1,3 +1,4 @@
+import { Post } from "@/components/post/Posts";
 import uploadMultiple from "@/utils/uploadFile";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -48,12 +49,14 @@ interface PostState {
   postId?: string;
   userIdInPost?: string;
   globalPostImage?: string;
+  posts: Post[];
 }
 
 const initialState: PostState = {
   uploadPostStatus: "idle",
   uploadPostError: null,
   showPostUploadModal: false,
+  posts: [],
 };
 
 const backendUrl =
@@ -90,7 +93,6 @@ export const uploadPost = createAsyncThunk(
         const uploadedFiles = await uploadMultiple(files);
         body.files = uploadedFiles.map((file: any) => ({ url: file.url }));
       } catch (error) {
-
         console.log("❌ File upload error:", error);
       }
     }
@@ -140,6 +142,17 @@ const postSlice = createSlice({
     setUploadPostStatus: (state, action) => {
       state.uploadPostStatus = action.payload;
     },
+    setPosts: (state, action) => {
+      const incoming = action.payload; // parsedPosts
+      const merged = [...state.posts, ...incoming];
+
+      const unique = Array.from(
+        new Map(merged.map((post) => [post._id, post])).values()
+      );
+
+      unique.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      state.posts = unique;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(uploadPost.fulfilled, (state, action) => {
@@ -182,6 +195,7 @@ export const {
   setShowPostUploadModal,
   setGlobalPostImage,
   setUploadPostStatus,
+  setPosts
 } = postSlice.actions;
 
 export default postSlice.reducer;

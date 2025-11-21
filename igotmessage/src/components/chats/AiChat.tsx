@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { CheckCheck, SparklesIcon } from "lucide-react";
+import React from "react";
 
-export default function AiChatCard({ myId }: { myId: string }) {
+const AiChatCard = React.memo(({ myId }: { myId: string }) => {
   const aiAvatar =
     "https://imgs.search.brave.com/WTc4RIEDsPQMAXReQAyCgYhK48SuMwGpSuGBbi1STRY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/anNkZWxpdnIubmV0/L2doL2hvbWFyci1s/YWJzL2Rhc2hib2Fy/ZC1pY29ucy9wbmcv/bWlzdHJhbC1haS5w/bmc";
 
@@ -38,4 +39,6 @@ export default function AiChatCard({ myId }: { myId: string }) {
       </div>
     </Link>
   );
-}
+})
+
+export default AiChatCard

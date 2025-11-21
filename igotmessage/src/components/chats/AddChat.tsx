@@ -1,6 +1,7 @@
 import { MessageSquare, MessageSquarePlus } from "lucide-react";
+import React from "react";
 
-export default function FloatingAddChat({ onClick }: { onClick: () => void }) {
+const FloatingAddChat = React.memo(({ onClick }: { onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
@@ -22,4 +23,6 @@ export default function FloatingAddChat({ onClick }: { onClick: () => void }) {
       <MessageSquarePlus className="w-7 h-7 " />
     </button>
   );
-}
+});
+
+export default FloatingAddChat;

@@ -1,6 +1,6 @@
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { ImagePlusIcon, Mic, Paperclip, Send, Smile, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -23,12 +23,12 @@ interface Message {
   _id?: string;
 }
 
-export default function ChatInput({
+const ChatInput = React.memo(({
   onFileUpload,
   onSend,
   setFocus,
   setAllMessage,
-}: ChatInputProps) {
+}: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [showSendButton, setShowSendButton] = useState(false);
@@ -201,4 +201,6 @@ const receiverId = params.get("recieverId");
       </div>
     </div>
   );
-}
+})
+
+export default ChatInput

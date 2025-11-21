@@ -1,19 +1,21 @@
-import { ChevronLeftIcon, MessageSquare, MoreVertical, PhoneIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  MessageSquare,
+  MoreVertical,
+  PhoneIcon,
+} from "lucide-react";
 import React, { useState } from "react";
 import PopupMenu from "./MoreOption";
 import { useAppSelector } from "@/store/hooks";
 
-function ChatHeader() {
+const ChatHeader = React.memo(() => {
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);
   const user = useAppSelector((state) => state.auth.user);
 
   return (
     <div>
       {/* Chat Header */}
-      <div
-        className="flex fixed top-0 left-0 z-50 items-center mb-4 justify-between w-full pr-4 py-3 bg-[var(--bgColor)] shadow backdrop-blur-md "
-        
-      >
+      <div className="flex fixed top-0 left-0 z-50 items-center mb-4 justify-between w-full pr-4 py-3 bg-[var(--bgColor)] shadow backdrop-blur-md ">
         <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
@@ -29,9 +31,7 @@ function ChatHeader() {
               height={30}
               className="rounded-full border border-white/20"
             />
-            <p className="text-lg font-semibold tracking-wide">
-              My Chats
-            </p>
+            <p className="text-lg font-semibold tracking-wide">My Chats</p>
           </div>
         </div>
 
@@ -72,6 +72,6 @@ function ChatHeader() {
       )}
     </div>
   );
-}
+});
 
 export default ChatHeader;

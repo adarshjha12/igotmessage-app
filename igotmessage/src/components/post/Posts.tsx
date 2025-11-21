@@ -5,6 +5,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import PostItem from "./PostItem";
 import NewLoader from "@/components/NewLoader";
 import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { RootState } from "@/store/store";
+import { setPosts } from "@/features/postSlice";
 
 export interface MusicData {
   title?: string;
@@ -48,10 +51,10 @@ export interface Post {
 }
 
 export default function Posts() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const posts = useAppSelector((state: RootState) => state.post.posts);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-
+  const dispatch = useAppDispatch();
   const url =
     process.env.NODE_ENV === "production"
       ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
@@ -64,19 +67,14 @@ export default function Posts() {
     const parsedPosts =
       typeof data.posts === "string" ? JSON.parse(data.posts) : data.posts;
 
-    setPosts((prev) => {
-      const merged = [...prev, ...parsedPosts];
-      const uniquePosts = Array.from(
-        new Map(merged.map((post) => [post._id, post])).values()
-      );
-
-      return uniquePosts.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    });
+    dispatch(setPosts(parsedPosts));
     setHasMore(data.hasMore);
   };
 
   useEffect(() => {
-    fetchPosts();
+    if (posts.length === 0) {
+      fetchPosts();
+    }
   }, [page]);
 
   return (
