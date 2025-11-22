@@ -1,9 +1,8 @@
-
-import MessagePageComponent from '@/components/chats/ChatList'
-import React from 'react'
+import ChatList from "@/components/chats/ChatList";
+import React from "react";
 
 function page() {
-  return <MessagePageComponent/>
+  return <ChatList />;
 }
 
-export default page
+export default page;

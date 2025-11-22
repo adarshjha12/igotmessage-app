@@ -176,8 +176,8 @@ function Dashboard({ children }: { children: ReactNode }) {
         <div
           className={`
     w-full min-h-screen grid grid-cols-1 sm:gap-2 
-    justify-items-stretch sm:justify-items-center
-    items-center sm:items-start
+     sm:justify-items-center
+    items-start sm:items-start
     ${
       sidebarOpen
         ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1.5fr]"
@@ -326,7 +326,6 @@ function Dashboard({ children }: { children: ReactNode }) {
                   />
                 </Link>
               )}
-
             </div>
 
             {/* Overlay for modal */}

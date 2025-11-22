@@ -236,7 +236,7 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
   }, [query]);
 
   return (
-    <div className="flex flex-col items-center w-full px-4 py-4 ">
+    <div className="flex flex-col h-screen items-center w-full px-4 py-4 ">
       {/* 🔍 Search Bar (sticky at top) */}
       {type !== "chats" && (
         <div className="w-full max-w-[600px] sticky top-4 z-10">
@@ -256,7 +256,7 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
       {type === "chats" && (
         <div className="font-bold text-xl gap-4 tracking-wider flex w-full items-center justify-center py-2 px-4 rounded-md ">
           <div className="p-2 bg-[var(--textColor)]/15 rounded-full">
-            <UsersThreeIcon size={30}/>
+            <UsersThreeIcon size={30} />
           </div>
           Recommended Chats
         </div>

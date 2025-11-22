@@ -41,16 +41,16 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     getAuthDetails();
   }, [router]);
 
-  if (loading) {
+  if (!loading) {
     return (
       <div className="w-full flex min-h-screen items-start justify-center bg-[var(--bgColor)]">
         <div className="p-4 flex whitespace-nowrap sticky top-0 overflow-y-auto scroll-hidden flex-col bg-[var(--bgColor)] gap-3 max-w-[600px] z-50">
           {/* Top Horizontal Circles */}
-          <div className="flex whitespace-nowrap gap-4 overflow-x-auto scroll-hidden">
+          <div className="flex  whitespace-nowrap gap-4 overflow-x-auto scroll-hidden">
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
-                className="rounded-full"
+                className="rounded-full shrink-0"
                 style={{
                   width: 80,
                   height: 80,

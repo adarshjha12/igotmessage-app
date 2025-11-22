@@ -1,17 +1,8 @@
-"use client"
-import React from 'react'
-import dynamic from 'next/dynamic'
-import NewLoader from '@/components/NewLoader';
-
-const OptimizedCreatePageComponent = dynamic(() => import("@/components/dashboard/create/CreatePageComponent"), {
-  ssr: false,
-  loading: () => <div className='flex items-center justify-center h-screen w-full bg-[var(--bgColor)]'>
-    <NewLoader color='[var(--textColor)]'/>
-  </div>
-});
+import React from "react";
+import CreateWrapper from "@/components/dashboard/create/CreateWrapper";
 
 function Page() {
-  return <OptimizedCreatePageComponent/>
+  return <CreateWrapper />;
 }
 
-export default Page
+export default Page;

@@ -1,19 +1,8 @@
-"use client"
+import ReelsWrapper from "@/components/reels/ReelsWrapper";
 import React from "react";
-import dynamic from "next/dynamic";
-import NewLoader from "@/components/NewLoader";
-
-const Reels = dynamic(() => import("@/components/reels/ReelsPageComponent"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-screen w-full bg-[var(--bgColor)]">
-      <NewLoader color="[var(--textColor)]" />
-    </div>
-  ),
-});
 
 function Page() {
-  return <Reels />;
+  return <ReelsWrapper />;
 }
 
 export default Page;

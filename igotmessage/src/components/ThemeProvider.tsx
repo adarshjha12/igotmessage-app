@@ -31,7 +31,7 @@ function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return isMounted ? (
-    <div className={`w-full h-full${isDark ? "bg-black" : "bg-white"}`}>
+    <div className={`w-full h-full ${isDark ? "bg-black" : "bg-white"}`}>
       {children}
     </div>
   ) : null;
