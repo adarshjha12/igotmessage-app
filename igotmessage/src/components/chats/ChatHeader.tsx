@@ -24,13 +24,15 @@ const ChatHeader = React.memo(() => {
             <ChevronLeftIcon size={26} className="text-[var(--textColor)]" />
           </button>
           <div className="flex items-center gap-2">
-            <img
-              src={user?.avatar!}
-              alt={user?.userName!}
-              width={30}
-              height={30}
-              className="rounded-full border border-white/20"
-            />
+            {user.avatar && (
+              <img
+                src={user?.avatar!}
+                alt={user?.userName!}
+                width={30}
+                height={30}
+                className="rounded-full border border-white/20"
+              />
+            )}
             <p className="text-lg font-semibold tracking-wide">My Chats</p>
           </div>
         </div>

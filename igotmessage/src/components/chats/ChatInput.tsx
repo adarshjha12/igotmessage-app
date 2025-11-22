@@ -7,6 +7,8 @@ import { RootState } from "@/store/store";
 import { getSocket } from "@/utils/socket";
 import VoiceRecorder from "./RecordAudio";
 import { useSearchParams } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { setNewMessages } from "@/features/chatSlice";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
@@ -23,184 +25,186 @@ interface Message {
   _id?: string;
 }
 
-const ChatInput = React.memo(({
-  onFileUpload,
-  onSend,
-  setFocus,
-  setAllMessage,
-}: ChatInputProps) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+const ChatInput = React.memo(
+  ({ onFileUpload, onSend, setFocus }: ChatInputProps) => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const dispatch = useAppDispatch();
 
-  const [showSendButton, setShowSendButton] = useState(false);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [input, setInput] = useState("");
-  const isDark = useSelector((state: RootState) => state.activity.isDark);
-  const chatId = useSelector((state: RootState) => state.chat.chatId);
-  const myId = useSelector((state: RootState) => state.auth.user._id);
-  const params = useSearchParams();
-const receiverId = params.get("recieverId");
-  let isTyping = false;
-  let typingTimeout: NodeJS.Timeout | null = null;
+    const [showSendButton, setShowSendButton] = useState(false);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [input, setInput] = useState("");
+    const isDark = useSelector((state: RootState) => state.activity.isDark);
+    const chatId = useSelector((state: RootState) => state.chat.chatId);
+    const params = useSearchParams();
+    const receiverId = params.get("recieverId");
+    const myId = params.get("senderId");
 
-  const toggleEmojiPicker = () => {
-    setShowEmojiPicker((prev) => !prev);
-  };
-  // Auto-grow textarea
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+    let isTyping = false;
+    let typingTimeout: NodeJS.Timeout | null = null;
 
-    const socket = getSocket();
+    const toggleEmojiPicker = () => {
+      setShowEmojiPicker((prev) => !prev);
+    };
+    // Auto-grow textarea
+    const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value;
 
-    if (!isTyping) {
-      socket.emit("event:typing", { roomId: chatId, senderId: myId });
-      isTyping = true;
-    }
+      const socket = getSocket();
 
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
+      if (!isTyping) {
+        socket.emit("event:typing", { roomId: chatId, senderId: myId });
+        isTyping = true;
+      }
 
-    typingTimeout = setTimeout(() => {
-      socket.emit("event:stopTyping", { roomId: chatId, senderId: myId });
-      isTyping = false;
-    }, 4500);
+      if (typingTimeout) {
+        clearTimeout(typingTimeout);
+      }
 
-    setInput(value);
-    if (value.length >= 1) {
-      setShowSendButton(true);
-    } else {
+      typingTimeout = setTimeout(() => {
+        socket.emit("event:stopTyping", { roomId: chatId, senderId: myId });
+        isTyping = false;
+      }, 4500);
+
+      setInput(value);
+      if (value.length >= 1) {
+        setShowSendButton(true);
+      } else {
+        setShowSendButton(false);
+      }
+      e.target.style.height = "auto";
+      e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`; // max 160px
+    };
+
+    const handleSend = () => {
+      if (!input.trim()) return;
+
+      const socket = getSocket();
+      const tempId = `${Date.now()}abc`;
+
+      socket.emit("event:message", {
+        content: input,
+        roomId: chatId,
+        senderId: myId,
+        receiverId: receiverId,
+        tempId,
+      });
+
+      dispatch(
+        setNewMessages({
+          chatId,
+          messages: [
+            {
+              _id: tempId,
+              sender: myId,
+              content: input,
+              updatedAt: new Date().toISOString(),
+            },
+          ],
+        })
+      );
+
+      setInput("");
       setShowSendButton(false);
-    }
-    e.target.style.height = "auto";
-    e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`; // max 160px
-  };
+      setFocus?.(true);
+    };
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+    useEffect(() => {
+      if (input.length > 0) {
+        setShowSendButton(true);
+      } else {
+        setShowSendButton(false);
+      }
+      return () => {};
+    }, [input]);
 
-    const socket = getSocket();
-    const tempId = `${Date.now()}abc`;
-
-    socket.emit("event:message", {
-      content: input,
-      roomId: chatId,
-      senderId: myId,
-      receiverId: receiverId,
-      tempId,
-    });
-
-    setAllMessage &&
-      setAllMessage((prev: Message[]) => [
-        ...prev,
-        {
-          _id: tempId,
-          sender: myId,
-          content: input,
-          updatedAt: new Date().toISOString(),
-        },
-      ]);
-
-    setInput("");
-    setShowSendButton(false);
-    setFocus?.(true);
-  };
-
-  useEffect(() => {
-    if (input.length > 0) {
-      setShowSendButton(true);
-    } else {
-      setShowSendButton(false);
-    }
-    return () => {};
-  }, [input]);
-
-  return (
-    <div className="fixed left-0  bottom-0 w-full z-10 px-3 pt-3 pb-3 md:py-4">
-      <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
-        {/* 🔲 Inner Wrapper: File + Input + Emoji */}
-        <div
-          className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700 text-white  backdrop-blur-md shadow-sm`}
-        >
-          {/* 📎 File Upload */}
-          <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
-            <input
-              type="file"
-              accept="image/*,video/*"
-              className="hidden"
-              onChange={(e) =>
-                e.target.files && onFileUpload?.(e.target.files[0])
-              }
-            />
-            <ImagePlusIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
-          </label>
-
-          {/* 📝 Text Area */}
-          <textarea
-            ref={textareaRef}
-            value={input}
-            rows={1}
-            placeholder="Message"
-            onFocus={() => setFocus?.(true)}
-            onBlur={() => setFocus?.(false)}
-            onInput={handleInput}
-            className="flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none"
-            style={{ maxHeight: "150px" }}
-          />
-
-          {/* 😄 Emoji Icon */}
-          <button
-            onClick={toggleEmojiPicker}
-            className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
+    return (
+      <div className="fixed left-0  bottom-0 w-full z-10 px-3 pt-3 pb-3 md:py-4">
+        <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
+          {/* 🔲 Inner Wrapper: File + Input + Emoji */}
+          <div
+            className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700 text-white  backdrop-blur-md shadow-sm`}
           >
-            <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
-          </button>
-          {showEmojiPicker && (
-            <div className="absolute bottom-[60px] pl-6 left-1/2 -translate-x-1/2 z-20 w-[360px]">
-              <div className="overflow-hidden rounded-2xl shadow-2xl border border-[var(--borderColor)]/20 bg-rose-700 backdrop-blur-xl">
-                <EmojiPicker
-                  onEmojiClick={(emojiObject) =>
-                    setInput((prev) => prev + emojiObject.emoji)
-                  }
-                  theme={isDark ? Theme.DARK : Theme.LIGHT}
-                  width="100%"
-                  height={400}
-                />
+            {/* 📎 File Upload */}
+            <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
+              <input
+                type="file"
+                accept="image/*,video/*"
+                className="hidden"
+                onChange={(e) =>
+                  e.target.files && onFileUpload?.(e.target.files[0])
+                }
+              />
+              <ImagePlusIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
+            </label>
 
-                {/* Cancel Button */}
-                <button
-                  onClick={() => setShowEmojiPicker(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 border-t border-[var(--borderColor)]/20 text-white font-medium hover:bg-[var(--borderColor)]/10 active:scale-[0.98] active:scale-90 transition-all"
-                >
-                  <div className="rounded-full p-1 bg-white/30">
-                    <X className="w-5 h-5 opacity-80" />
-                  </div>
-                  <span>Cancel</span>
-                </button>
+            {/* 📝 Text Area */}
+            <textarea
+              ref={textareaRef}
+              value={input}
+              rows={1}
+              placeholder="Message"
+              onFocus={() => setFocus?.(true)}
+              onBlur={() => setFocus?.(false)}
+              onInput={handleInput}
+              className="flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none"
+              style={{ maxHeight: "150px" }}
+            />
+
+            {/* 😄 Emoji Icon */}
+            <button
+              onClick={toggleEmojiPicker}
+              className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
+            >
+              <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
+            </button>
+            {showEmojiPicker && (
+              <div className="absolute bottom-[60px] pl-6 left-1/2 -translate-x-1/2 z-20 w-[360px]">
+                <div className="overflow-hidden rounded-2xl shadow-2xl border border-[var(--borderColor)]/20 bg-rose-700 backdrop-blur-xl">
+                  <EmojiPicker
+                    onEmojiClick={(emojiObject) =>
+                      setInput((prev) => prev + emojiObject.emoji)
+                    }
+                    theme={isDark ? Theme.DARK : Theme.LIGHT}
+                    width="100%"
+                    height={400}
+                  />
+
+                  {/* Cancel Button */}
+                  <button
+                    onClick={() => setShowEmojiPicker(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3 border-t border-[var(--borderColor)]/20 text-white font-medium hover:bg-[var(--borderColor)]/10 active:scale-[0.98] active:scale-90 transition-all"
+                  >
+                    <div className="rounded-full p-1 bg-white/30">
+                      <X className="w-5 h-5 opacity-80" />
+                    </div>
+                    <span>Cancel</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+
+          {/* 🎙️ Mic / Send */}
+          {!showSendButton ? (
+            <VoiceRecorder />
+          ) : (
+            <button
+              className="p-3  bg-yellow-400 text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
+              onClick={() => {
+                if (textareaRef.current?.value.trim()) {
+                  onSend?.(textareaRef.current.value.trim());
+                  textareaRef.current.value = "";
+                  handleSend();
+                }
+              }}
+            >
+              <Send className="w-5 h-5" />
+            </button>
           )}
         </div>
-
-        {/* 🎙️ Mic / Send */}
-        {!showSendButton ? (
-          <VoiceRecorder />
-        ) : (
-          <button
-            className="p-3  bg-yellow-400 text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
-            onClick={() => {
-              if (textareaRef.current?.value.trim()) {
-                onSend?.(textareaRef.current.value.trim());
-                textareaRef.current.value = "";
-                handleSend();
-              }
-            }}
-          >
-            <Send className="w-5 h-5" />
-          </button>
-        )}
       </div>
-    </div>
-  );
-})
+    );
+  }
+);
 
-export default ChatInput
+export default ChatInput;

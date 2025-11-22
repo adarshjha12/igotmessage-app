@@ -41,7 +41,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     getAuthDetails();
   }, [router]);
 
-  if (!loading) {
+  if (loading) {
     return (
       <div className="w-full flex min-h-screen items-start justify-center bg-[var(--bgColor)]">
         <div className="p-4 flex whitespace-nowrap sticky top-0 overflow-y-auto scroll-hidden flex-col bg-[var(--bgColor)] gap-3 max-w-[600px] z-50">

@@ -19,6 +19,9 @@ import axios from "axios";
 import {
   setChatId,
   setLastMessage,
+  setLastSeen,
+  setMessages,
+  setNewMessages,
   setNewOnlineUser,
   setOfflineUser,
   setOnlineUsers,
@@ -35,8 +38,10 @@ import {
 import Link from "next/link";
 import NewLoader from "../NewLoader";
 import MoreOption from "./MoreOption";
+import { MessagesList } from "./ChatBuubble";
 
 interface Message {
+  _id?: string;
   sender?: string;
   chat?: string;
   content: string;
@@ -52,10 +57,11 @@ function ChatUser() {
   const userName = queryParam.get("userName");
   const recieverId = queryParam.get("recieverId");
   const senderId = queryParam.get("senderId");
+  const chatId = queryParam.get("chatId");
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const onlineUsers = useAppSelector((state) => state.chat.onlineUsers);
 
-  const [loadingMessages, setLoadingMessages] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
   const [isOtherTyping, setOtherTyping] = useState(false);
   const [width, setWidth] = useState<number | null>(null);
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);
@@ -67,13 +73,15 @@ function ChatUser() {
   const addReply = (msg: string) => setReplyTo(msg);
   const cancelReply = () => setReplyTo(null);
   const dispatch = useAppDispatch();
+  const allMessages = useAppSelector((state) => state.chat.messages);
 
   const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
   let socket: Socket;
-  let chatId: string | null = null;
   const [replyTo, setReplyTo] = useState<string | null>(null);
-  const [allMessages, setAllMessages] = useState<Message[]>([]);
-  const [recieverLastSeen, setRecieverLastSeen] = useState<Date | null>(null);
+  // const [allMessages, setAllMessages] = useState<Message[]>([]);
+  const recieverLastSeen = useAppSelector(
+    (state: RootState) => state.chat.recieverLastSeen
+  );
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -128,8 +136,10 @@ function ChatUser() {
 
   useEffect(() => {
     handleScroll();
-    if (allMessages.length > 0) {
-      const latest = allMessages.at(-1);
+    if (!chatId || !allMessages?.[chatId]) return;
+
+    if (allMessages[chatId]?.length > 0) {
+      const latest = allMessages[chatId].at(-1);
       dispatch(setLastMessage({ chatId: latest?.chat, message: latest }));
     }
 
@@ -150,7 +160,7 @@ function ChatUser() {
 
     socket.on("userOffline", ({ userId, lastSeen }) => {
       dispatch(setOfflineUser(userId));
-      if (userId === recieverId) setRecieverLastSeen(lastSeen);
+      dispatch(setLastSeen({ chatId, date: lastSeen ?? null }));
     });
 
     return () => {
@@ -161,8 +171,7 @@ function ChatUser() {
   }, []);
 
   useEffect(() => {
-    let chatIdLocal: string;
-    const socket = getSocket();
+    console.log("chatId", chatId);
 
     async function getChatId() {
       setLoadingMessages(true);
@@ -175,60 +184,61 @@ function ChatUser() {
         );
 
         if (res.data) {
-          chatIdLocal = res.data.chat._id;
           console.log(res.data);
 
-          setAllMessages(res.data.allMessages);
+          dispatch(
+            setMessages({ chatId: chatId, messages: res.data.allMessages })
+          );
           setLoadingMessages(false);
-          setRecieverLastSeen(res.data?.receiverLastSeen ?? null);
-          dispatch(setChatId(chatIdLocal));
-
-          if (socket.connected) {
-            socket.emit("event:joinRoom", { roomId: chatIdLocal });
-          } else {
-            socket.once("connect", () => {
-              socket.emit("event:joinRoom", { roomId: chatIdLocal });
-            });
-          }
-
-          // Chat-specific events
-          socket.off("event:message");
-          socket.off("event:otherTyping");
-          socket.off("event:otherStopTyping");
-
-          socket.on("event:message", (data: any) => {
-            setAllMessages((prev) => [
-              ...prev,
-              {
-                content: data.content,
-                sender: data.senderId,
-                chat: data.roomId,
-                messageType: data.messageType,
-                updatedAt: data.updatedAt,
-              },
-            ]);
-          });
-
-          socket.on("event:otherTyping", (data: any) => {
-            if (data.senderId !== senderId) setOtherTyping(true);
-          });
-
-          socket.on("event:otherStopTyping", (data: any) => {
-            if (data.senderId !== senderId) setOtherTyping(false);
-          });
+          // setRecieverLastSeen(res.data?.receiverLastSeen ?? null);
+          dispatch(
+            setLastSeen({ chatId, date: res.data?.receiverLastSeen ?? null })
+          );
+          dispatch(setChatId(chatId));
         }
       } catch (error) {
         setLoadingMessages(false);
         console.log(error);
       }
     }
+    if (!chatId) return;
+    if (!allMessages?.[chatId]) {
+      getChatId();
+    }
+  }, []);
 
-    getChatId();
+  useEffect(() => {
+    const socket = getSocket();
+
+    if (socket.connected) {
+      socket.emit("event:joinRoom", { roomId: chatId });
+    } else {
+      socket.once("connect", () => {
+        socket.emit("event:joinRoom", { roomId: chatId });
+      });
+    }
+
+    // Chat-specific events
+    socket.off("event:message");
+    socket.off("event:otherTyping");
+    socket.off("event:otherStopTyping");
+
+    socket.on("event:message", (data: any) => {
+      dispatch(setNewMessages({ chatId, messages: [data] }));
+    });
+
+    socket.on("event:otherTyping", (data: any) => {
+      if (data.senderId !== senderId) setOtherTyping(true);
+    });
+
+    socket.on("event:otherStopTyping", (data: any) => {
+      if (data.senderId !== senderId) setOtherTyping(false);
+    });
 
     return () => {
-      if (chatIdLocal) socket.emit("leaveRoom", { roomId: chatIdLocal });
+      if (chatId) socket.emit("leaveRoom", { roomId: chatId });
     };
-  }, [recieverId]);
+  }, [chatId]);
 
   return (
     <div className="w-full h-screen relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col bg-gradient-to-br from-blue-800 via-red-700 to-rose-600">
@@ -265,12 +275,15 @@ function ChatUser() {
                   <span className="text-white font-semibold">Typing...</span>
                 ) : onlineUsers?.includes(recieverId!) ? (
                   "Online"
-                ) : recieverLastSeen ? (
+                ) : chatId && recieverLastSeen?.[chatId] ? (
                   <>
                     Last seen{" "}
-                    {formatDistanceToNowStrict(new Date(recieverLastSeen), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceToNowStrict(
+                      new Date(recieverLastSeen[chatId]),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
                   </>
                 ) : (
                   "Never seen"
@@ -316,79 +329,16 @@ function ChatUser() {
         </div>
 
         {/* Messages */}
-        {allMessages.length > 0 &&
-          allMessages.map((message, i) => {
-            const currentDate = new Date(message.updatedAt);
-            const isSameDayFlag =
-              i > 0 &&
-              isSameDay(new Date(allMessages[i - 1].updatedAt), currentDate);
-
-            let formatDate = "";
-            if (isValid(currentDate)) {
-              if (isToday(currentDate)) formatDate = "Today";
-              else if (isYesterday(currentDate)) formatDate = "Yesterday";
-              else formatDate = format(currentDate, "dd/MM/yyyy");
-            }
-
-            const isSender = message.sender === senderId;
-
-            return (
-              <div
-                key={i}
-                className={`flex ${
-                  isSender ? "justify-end" : "justify-start"
-                } items-end gap-2 relative group transition-all`}
-                onDoubleClick={() => addReply(message.content)}
-              >
-                {/* Date Separator */}
-                {!isSameDayFlag && (
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1 text-xs font-medium rounded-full bg-white/60 text-black shadow border border-white/30">
-                      {formatDate}
-                    </span>
-                  </div>
-                )}
-
-                {/* Avatar */}
-                {!isSender && (
-                  <img
-                    src={avatar!}
-                    loading="lazy"
-                    alt="avatar"
-                    className="w-8 h-8 rounded-full border border-white/20 shadow"
-                  />
-                )}
-
-                {/* Bubble */}
-                <div
-                  className={`max-w-[75%] sm:max-w-[65%] mb-6 my-2 rounded-2xl px-4 py-2 text-[15px] relative transition-all duration-200 ${
-                    isSender
-                      ? "bg-white/85 text-black rounded-br-none"
-                      : "bg-white/70 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 border border-white/20 rounded-bl-none"
-                  } shadow`}
-                >
-                  <p className="leading-relaxed text-lg sm:text-base break-words">
-                    {message.content}
-                  </p>
-
-                  <span
-                    className={`flex items-center gap-1 text-[10px] mt-1 ${
-                      isSender
-                        ? "justify-end text-black/70"
-                        : "justify-start text-gray-500 dark:text-gray-400"
-                    }`}
-                  >
-                    {isValid(new Date(message.updatedAt)) &&
-                      format(new Date(message.updatedAt), "hh:mm a")}
-
-                    {isSender && (
-                      <CheckCheckIcon size={13} className="opacity-70" />
-                    )}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+       {(chatId &&
+          allMessages?.[chatId] &&
+          allMessages?.[chatId].length > 0) && (
+            <MessagesList
+              allMessages={allMessages[chatId]}
+              senderId={senderId!}
+              avatar={avatar!}
+              addReply={addReply}
+            />
+          )}
 
         {/* Typing */}
         {isOtherTyping && (
@@ -411,7 +361,7 @@ function ChatUser() {
       </div>
 
       {/* Input */}
-      <ChatInput setFocus={setInputFocus} setAllMessage={setAllMessages} />
+      <ChatInput setFocus={setInputFocus} />
 
       {/* More Options Overlay */}
       {moreButtonClicked && (

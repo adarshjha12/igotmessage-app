@@ -1,5 +1,5 @@
+import { Chat } from "@/components/chats/ChatList";
 import { createSlice } from "@reduxjs/toolkit";
-
 
 interface Message {
   sender?: string;
@@ -10,21 +10,21 @@ interface Message {
   tempId?: string;
 }
 
-interface ChatList{
-   
-}
-
 interface ChatState {
-  chatId: string;
-  onlineUsers: string[]
-  lastMessage: Record<string, Message> | null
-  chatList?: any
+  chatId: string | null;
+  onlineUsers: string[];
+  lastMessage: Record<string, Message> | null;
+  chatList: Chat[] | null;
+  messages: Record<string, Message[]> | null;
+  recieverLastSeen?: Record<string, Date> | null;
 }
 
 const initialState: ChatState = {
-  chatId: "",
+  chatId: null,
   onlineUsers: [],
-  lastMessage: null
+  lastMessage: null,
+  chatList: null,
+  messages: null,
 };
 
 const chatSlice = createSlice({
@@ -40,7 +40,9 @@ const chatSlice = createSlice({
     },
 
     setOfflineUser: (state, action) => {
-      state.onlineUsers = state.onlineUsers.filter((user) => user !== action.payload);
+      state.onlineUsers = state.onlineUsers.filter(
+        (user) => user !== action.payload
+      );
     },
 
     setNewOnlineUser: (state, action) => {
@@ -55,9 +57,45 @@ const chatSlice = createSlice({
     setChatList: (state, action) => {
       state.chatList = action.payload;
     },
+
+    setMessages: (state, action) => {
+      if (!state.messages) {
+        state.messages = {};
+      }
+      state.messages[action.payload.chatId] = action.payload.messages;
+    },
+
+    setNewMessages: (state, action) => {
+      if (!state.messages) {
+        state.messages = {};
+      }
+
+      const prevMessages = state.messages[action.payload.chatId] || [];
+      state.messages[action.payload.chatId] = [
+        ...prevMessages,
+        ...action.payload.messages,
+      ];
+    },
+
+    setLastSeen: (state, action) => {
+      if (!state.recieverLastSeen) {
+        state.recieverLastSeen = {};
+      }
+      state.recieverLastSeen[action.payload.chatId] = action.payload.date;
+    },
   },
 });
 
 export default chatSlice.reducer;
 
-export const { setChatId, setOnlineUsers, setOfflineUser, setNewOnlineUser, setLastMessage } = chatSlice.actions;
+export const {
+  setChatId,
+  setOnlineUsers,
+  setOfflineUser,
+  setNewOnlineUser,
+  setLastMessage,
+  setChatList,
+  setMessages,
+  setNewMessages,
+  setLastSeen
+} = chatSlice.actions;

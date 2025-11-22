@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import axios from "axios";
 import NoChats from "./NoChats";
 import AddChatButton from "./AddChat";
@@ -20,8 +20,10 @@ import ChatHeader from "./ChatHeader";
 import { format, isValid } from "date-fns";
 import { RootState } from "@/store/store";
 import AiChatCard from "./AiChat";
+import { useSearchParams } from "next/navigation";
+import { setChatList } from "@/features/chatSlice";
 
-interface Chat {
+export interface Chat {
   _id: string;
   coParticipant: {
     _id: string;
@@ -51,7 +53,10 @@ interface Chat {
 }
 
 export default function ChatList() {
-  const myId = useAppSelector((state) => state.auth.user._id);
+  const params = useSearchParams();
+  const dispatch = useAppDispatch();
+
+  const myId = params.get("userId");
   const [addChatClicked, setAddChatClicked] = useState(false);
   const onlineUsers = useAppSelector((state) => state.chat.onlineUsers);
 
@@ -60,31 +65,33 @@ export default function ChatList() {
       ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
       : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}`;
 
-  const [chats, setChats] = useState<Chat[] | null>(null);
+  const chatList = useAppSelector((state: RootState) => state.chat.chatList);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("chats");
   const lastMessage = useAppSelector(
     (state: RootState) => state.chat.lastMessage
   );
 
-  useEffect(() => {
-    async function getAllChats() {
-      setLoading(true);
-      try {
-        const res = await axios.get(
-          `${url}/api/chat/get-my-chats?userId=${myId}`
-        );
-        setChats(res.data.chats);
-        console.log(res.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
+  async function getAllChats() {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${url}/api/chat/get-my-chats?userId=${myId}`
+      );
+      dispatch(setChatList(res.data.chats));
+      console.log(res.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
+  }
 
-    getAllChats();
+  useEffect(() => {
+    if (!chatList) {
+      getAllChats();
+    }
 
     return () => {};
   }, []);
@@ -103,20 +110,20 @@ export default function ChatList() {
       )}{" "}
       <div className="w-full mb-3 px-2 mt-[80px] flex justify-center">
         <div className="flex max-w-[600px]  w-full flex-col gap-3">
-          <AiChatCard myId={myId} />
+          <AiChatCard myId={myId!} />
         </div>
       </div>
-      {chats !== null && (
+      {chatList !== null && (
         <div className="w-full  mb-12 px-2 flex justify-center">
           {/* Chat list */}
           <div className="flex max-w-[600px] w-full flex-col gap-3">
-            {chats.map((chat) => (
+            {chatList.map((chat) => (
               <Link
                 href={`/chats/${myId}?avatar=${
                   chat.coParticipant.profilePicture || chat.coParticipant.avatar
                 }&userName=${chat.coParticipant.userName}&recieverId=${
                   chat.coParticipant._id
-                }&senderId=${myId}`}
+                }&senderId=${myId}&&chatId=${chat._id}`}
                 key={chat.coParticipant._id}
                 className="flex items-center justify-between p-3 rounded-2xl  backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
               >
@@ -171,10 +178,10 @@ export default function ChatList() {
         </div>
       )}
       {/* No chats, groups, calls available */}
-      {!chats && !loading && <NoChats tabName={activeTab} />}
-      {!chats && !loading && (
+      {!chatList && !loading && <NoChats tabName={activeTab} />}
+      {!chatList && !loading && (
         <div className={`flex max-w-[600px] w-full flex-col gap-3`}>
-          <FollowersList userId={myId} type="chats" />
+          <FollowersList userId={myId!} type="chats" />
         </div>
       )}
       <div>
@@ -191,7 +198,7 @@ export default function ChatList() {
             <ChevronLeft />
             Back
           </button>
-          <FollowersList userId={myId} type="chats" />
+          <FollowersList userId={myId!} type="chats" />
         </div>
       )}
     </div>
