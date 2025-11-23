@@ -118,7 +118,7 @@ function ChatUser() {
         () => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
         },
-        type === "input" ? 100 : 50
+        type === "input" ? 500 : 50
       );
     }
   }
@@ -343,6 +343,8 @@ function ChatUser() {
             </div>
           </div>
         )}
+
+        <div id="scrolldiv"></div>
       </div>
 
       {/* Input */}
@@ -358,7 +360,6 @@ function ChatUser() {
           <MoreOption onClose={() => setMoreButtonClicked(false)} />
         </>
       )}
-      <div id="scrolldiv"></div>
     </div>
   );
 }
