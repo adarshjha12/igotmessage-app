@@ -3,17 +3,18 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Mousewheel } from "swiper/modules";
-import {
-  ChevronLeftIcon,
- 
-} from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Post } from "../post/Posts";
 import axios from "axios";
 import ReelSlide from "./reelSlide";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { RootState } from "@/store/store";
+import { setReels } from "@/features/reelSlice";
 
 export default function Reels() {
-  const [reels, setReels] = useState<Post[]>([]);
+  const reels = useAppSelector((state: RootState) => state.reel.reels);
+  const dispatch = useAppDispatch();
   const url =
     process.env.NODE_ENV === "production"
       ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}`
@@ -27,20 +28,16 @@ export default function Reels() {
       const parsedReels =
         typeof data.reels === "string" ? JSON.parse(data.reels) : data.reels;
 
-      setReels((prev) => {
-        const merged = [...prev, ...parsedReels];
-        const uniqueReels = Array.from(
-          new Map(merged.map((reel) => [reel._id, reel])).values()
-        );
-        return uniqueReels;
-      });
+      dispatch(setReels(parsedReels));
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchReels();
+    if (!reels) {
+      fetchReels();
+    }
   }, []);
 
   useEffect(() => {
@@ -68,7 +65,7 @@ export default function Reels() {
           modules={[Pagination, Mousewheel]}
           className="h-full"
         >
-          {reels.map((reel) => (
+          {reels?.map((reel) => (
             <SwiperSlide
               key={reel._id}
               className="h-full flex items-center justify-center bg-black"

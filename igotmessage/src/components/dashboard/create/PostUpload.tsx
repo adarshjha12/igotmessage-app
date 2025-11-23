@@ -32,6 +32,7 @@ import { setShowPostUploadModal, uploadPost } from "@/features/postSlice";
 import PopupWithLink from "@/components/popups/PopupWithLink";
 import { setPostId } from "@/features/authSlice";
 import { StackIcon } from "@phosphor-icons/react";
+import PostButton from "./PostButton";
 
 interface MusicData {
   title: string;
@@ -102,10 +103,10 @@ export default function PostUpload() {
   const [showInvalidFileError, setShowInvalidFileError] = useState(false);
 
   const canPost =
-    (text.trim().length > 0 ||
+    (Boolean(text.trim()) ||
       previews.length > 0 ||
-      pollQuestion.trim() ||
-      templateImage) &&
+      Boolean(pollQuestion.trim()) ||
+      Boolean(templateImage)) &&
     remaining >= 0;
 
   // helper: unique id
@@ -505,21 +506,14 @@ export default function PostUpload() {
             )}
           </div>
           {/* post button */}
-          <div className="flex items-center mb-8 justify-between">
-            <span
-              className={`text-sm ${
-                remaining < 0 ? "text-red-400" : "text-[var(--textColor)]"
-              }`}
-            >
-              {remaining} characters left
-            </span>
-            <button
-              onClick={handleSubmit}
-              disabled={!canPost || posting}
-              className="bg-[var(--textColor)] text-[var(--bgColor)] px-6 py-2 rounded-full flex items-center gap-2 disabled:opacity-50"
-            >
-              {posting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Post"}
-            </button>
+          <div className="mb-4">
+            <PostButton
+              remaining={remaining}
+              showPoll={showPoll}
+              handleSubmit={handleSubmit}
+              canPost={canPost}
+              posting={posting}
+            />
           </div>
 
           {/* previews */}
@@ -695,19 +689,29 @@ export default function PostUpload() {
             exit={{ opacity: 0, y: -8 }}
             className="p-5 w-full border border-[var(--textColor)]/30 outline-none rounded-2xl bg-[var(--bgColor)] text-[var(--textColor)] shadow-md mb-4"
           >
-            <button
-              onClick={() => {
-                setShowPoll(false);
-                setPostType("normal");
-              }}
-              className="flex items-center gap-2 mb-4 px-4 py-1 rounded-xl font-medium bg-gradient-to-r from-rose-500 to-rose-700 text-white hover:opacity-90 transition shadow-md"
-            >
-              <div className="p-2.5 rounded-full bg-black/10">
-                <X className="w-5 h-5 text-white" />
-              </div>
-              Cancel
-            </button>
+            <div className="flex items-center mb-8 justify-between">
+              <button
+                onClick={() => {
+                  setShowPoll(false);
+                  setPostType("normal");
+                }}
+                className="flex items-center gap-2  px-4 py-1 rounded-xl font-medium bg-gradient-to-r from-rose-500 to-rose-700 text-white hover:opacity-90 transition shadow-md"
+              >
+                <div className="p-2.5 rounded-full bg-black/10">
+                  <X className="w-5 h-5 text-white" />
+                </div>
+                Cancel
+              </button>
 
+              {/* post button */}
+              <PostButton
+                remaining={remaining}
+                showPoll={showPoll}
+                handleSubmit={handleSubmit}
+                canPost={canPost}
+                posting={posting}
+              />
+            </div>
             <textarea
               value={pollQuestion}
               onChange={(e) => setPollQuestion(e.target.value)}

@@ -1,3 +1,4 @@
+import { Post } from "@/components/post/Posts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -5,6 +6,7 @@ interface ReelState {
   showReelUploadModal: boolean;
   uploadReelStatus: "idle" | "loading" | "succeeded" | "failed";
   uploadReelError: string | null;
+  reels: Post[] | null
 }
 
 interface payload {
@@ -15,6 +17,7 @@ const initialState: ReelState = {
   showReelUploadModal: false,
   uploadReelStatus: "idle",
   uploadReelError: null,
+  reels: null
 };
 
 const backendUrl =
@@ -46,9 +49,20 @@ const reelSlice = createSlice({
     setShowReelUploadModal: (state, action) => {
       state.showReelUploadModal = action.payload;
     },
+
+    setReels: (state, action) => {
+      if (!state.reels) {
+        state.reels = [];
+      }
+      const merge = [...state.reels, ...action.payload];
+       const uniqueReels = Array.from(
+          new Map(merge.map((reel) => [reel._id, reel])).values()
+        );
+        state.reels = uniqueReels;
+    },
   },
 });
 
 const { reducer } = reelSlice;
 export default reducer;
-export const { setShowReelUploadModal } = reelSlice.actions;
+export const { setShowReelUploadModal , setReels} = reelSlice.actions;
