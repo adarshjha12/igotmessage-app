@@ -1,5 +1,5 @@
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
-import { ImagePlusIcon, Mic, Paperclip, Send, Smile, X } from "lucide-react";
+import { ImagePlusIcon, Mic, Paperclip, Send, Smile, SparklesIcon, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useSelector } from "react-redux";
@@ -9,11 +9,14 @@ import VoiceRecorder from "./RecordAudio";
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
 import { setNewMessages } from "@/features/chatSlice";
+import { useUIStore } from "@/store/zustandStore";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
   setFocus?: (val: "normal" | "input") => void;
+  receiverId?: string;
+  isAiChat?: boolean;
   setAllMessage?: (val: any) => void;
 }
 interface Message {
@@ -26,9 +29,10 @@ interface Message {
 }
 
 const ChatInput = React.memo(
-  ({ onFileUpload, onSend, setFocus }: ChatInputProps) => {
+  ({ onFileUpload, onSend, setFocus, isAiChat }: ChatInputProps) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const dispatch = useAppDispatch();
+    const {aiChatSuggestions} = useUIStore();
 
     const [showSendButton, setShowSendButton] = useState(false);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -116,6 +120,13 @@ const ChatInput = React.memo(
       return () => {};
     }, [input]);
 
+    useEffect(() => {
+      if (isAiChat) {
+        setInput(aiChatSuggestions);
+      }
+      
+    }, [aiChatSuggestions]);
+
     return (
       <div className="fixed left-0  bottom-0 w-full z-10 px-3 pt-3 pb-3 md:py-4">
         <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
@@ -124,17 +135,23 @@ const ChatInput = React.memo(
             className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700 text-white  backdrop-blur-md shadow-sm`}
           >
             {/* 📎 File Upload */}
-            <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
-              <input
-                type="file"
-                accept="image/*,video/*"
-                className="hidden"
-                onChange={(e) =>
-                  e.target.files && onFileUpload?.(e.target.files[0])
-                }
-              />
-              <ImagePlusIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
-            </label>
+            {!isAiChat && (
+              <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  className="hidden"
+                  onChange={(e) =>
+                    e.target.files && onFileUpload?.(e.target.files[0])
+                  }
+                />
+                <ImagePlusIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
+              </label>
+            )}
+
+            {isAiChat && (
+               <SparklesIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
+            )}
 
             {/* 📝 Text Area */}
             <textarea
@@ -143,19 +160,21 @@ const ChatInput = React.memo(
               rows={1}
               placeholder="Message"
               onClick={() => setFocus && setFocus("input")}
-            
               onInput={handleInput}
-              className="flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none"
+              className={`flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none ${isAiChat && "placeholder:pl-4"}`}
               style={{ maxHeight: "150px" }}
             />
 
             {/* 😄 Emoji Icon */}
-            <button
+            {!isAiChat && (
+              <button
               onClick={toggleEmojiPicker}
               className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
             >
               <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
             </button>
+            )}
+
             {showEmojiPicker && (
               <div className="absolute bottom-[60px] pl-6 left-1/2 -translate-x-1/2 z-20 w-[360px]">
                 <div className="overflow-hidden rounded-2xl shadow-2xl border border-[var(--borderColor)]/20 bg-rose-700 backdrop-blur-xl">
@@ -184,7 +203,7 @@ const ChatInput = React.memo(
           </div>
 
           {/* 🎙️ Mic / Send */}
-          {!showSendButton ? (
+          {(!showSendButton && !isAiChat) ? (
             <VoiceRecorder />
           ) : (
             <button

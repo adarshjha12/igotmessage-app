@@ -52,7 +52,7 @@ function MenuItem({
       onClick={onClick}
       className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--textColor)]  hover:bg-gray-500/60  transition"
     >
-      <span className="text-gray-600 ">{icon}</span>
+      <span >{icon}</span>
       <span>{label}</span>
     </Link>
   );

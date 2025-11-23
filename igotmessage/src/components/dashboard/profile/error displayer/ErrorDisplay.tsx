@@ -1,4 +1,10 @@
-import { BarChart3, ImageOff, VideoOff } from "lucide-react";
+import {
+  BarChart3,
+  ImageIcon,
+  ImageOff,
+  VideoIcon,
+  VideoOff,
+} from "lucide-react";
 
 function NoVisualsMessage({
   type,
@@ -8,9 +14,9 @@ function NoVisualsMessage({
   return (
     <div className="flex flex-col items-center justify-center w-full py-6 bg-[var(--wrapperColor)]  text-center text-gray-500">
       {type === "visuals" ? (
-        <ImageOff strokeWidth={1} className="w-18 h-18 mb-4 " />
+        <ImageIcon strokeWidth={1} className="w-18 h-18 mb-4 " />
       ) : type === "reels" ? (
-        <VideoOff strokeWidth={1} className="w-18 h-18 mb-4 " />
+        <VideoIcon strokeWidth={1} className="w-18 h-18 mb-4 " />
       ) : (
         <BarChart3 strokeWidth={1} className="w-18 h-18 mb-4 " />
       )}

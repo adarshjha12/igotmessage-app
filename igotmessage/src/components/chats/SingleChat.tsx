@@ -8,6 +8,8 @@ import {
   X,
   CheckCheckIcon,
   ChevronLeftIcon,
+  Sparkles,
+  Check,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
@@ -39,6 +41,7 @@ import Link from "next/link";
 import NewLoader from "../NewLoader";
 import MoreOption from "./MoreOption";
 import { MessagesList } from "./ChatBuubble";
+import WelcomeScreen from "./WelcomeAi";
 
 interface Message {
   _id?: string;
@@ -50,13 +53,14 @@ interface Message {
   tempId?: string;
 }
 
-function ChatUser() {
+function SingleChat() {
   const queryParam = useSearchParams();
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
   const recieverId = queryParam.get("recieverId");
   const senderId = queryParam.get("senderId");
   const chatId = queryParam.get("chatId");
+  const isAiChat = Boolean(queryParam.get("aiChat"));
   const isDark = useAppSelector((state: RootState) => state.activity.isDark);
   const onlineUsers = useAppSelector((state) => state.chat.onlineUsers);
 
@@ -231,7 +235,7 @@ function ChatUser() {
   }, [chatId]);
 
   return (
-    <div className="w-full h-screen py-18  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]">
+    <div className="w-full h-screen  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]">
       {/* Fixed Header */}
       <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 bg-white/10 backdrop-blur-sm top-0 z-10">
         <div className="flex items-center gap-3">
@@ -246,19 +250,34 @@ function ChatUser() {
             className="flex items-center gap-3"
             href={`/public-profile/${recieverId}/myId/${senderId}`}
           >
-            <img
-              src={avatar!}
-              alt="user"
-              loading="lazy"
-              className="w-10 h-10 rounded-full border border-white/20"
-            />
+            {avatar && (
+              <img
+                src={avatar!}
+                alt="user"
+                loading="lazy"
+                className="w-10 h-10 rounded-full border border-white/20"
+              />
+            )}
+
+            {!avatar && isAiChat && (
+              <div className="h-10 w-10 flex items-center bg-gradient-to-br from-indigo-500 to-purple-600 p-2 rounded-full shadow-lg">
+                <Sparkles className="w-10 h-10 text-white" />
+              </div>
+            )}
 
             <div>
-              <h2 className="text-xl sm:text-base font-semibold">
-                {width && width < 500
-                  ? userName?.split("").splice(0, 11).join("") + "..."
-                  : userName}
-              </h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl sm:text-base font-semibold">
+                  {width && width < 500 && userName?.length! > 11
+                    ? userName?.split("").splice(0, 11).join("") + "..."
+                    : userName}
+                </h2>
+                {isAiChat && (
+                  <div className="bg-blue-500 rounded-full p-[1px]">
+                    <Check size={16} strokeWidth={4} className="text-white" />
+                  </div>
+                )}
+              </div>
 
               <div className="text-xs opacity-70">
                 {isOtherTyping ? (
@@ -275,6 +294,8 @@ function ChatUser() {
                       }
                     )}
                   </>
+                ) : isAiChat ? (
+                  "online"
                 ) : (
                   "Never seen"
                 )}
@@ -284,12 +305,16 @@ function ChatUser() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="p-2 rounded-full hover:bg-white/10 transition">
-            <Phone size={20} />
-          </button>
-          <button className="p-2 rounded-full hover:bg-white/10 transition">
-            <Video size={20} />
-          </button>
+          {!isAiChat && (
+            <>
+              <button className="p-2 rounded-full hover:bg-white/10 transition">
+                <Phone size={20} />
+              </button>
+              <button className="p-2 rounded-full hover:bg-white/10 transition">
+                <Video size={20} />
+              </button>
+            </>
+          )}
           <button
             type="button"
             onClick={() => setMoreButtonClicked((prev) => !prev)}
@@ -302,12 +327,13 @@ function ChatUser() {
 
       {/* Scrollable Chat Area */}
       <div
-        className="flex-1 overflow-y-auto px-2 pt-[50px] pb-[10px] md:px-12 lg:px-16 w-full items-end"
+        className="flex-1 overflow-y-auto px-2 pt-[100px] pb-[100px] md:px-12 lg:px-16 w-full items-start"
         style={{
           willChange: "scroll-position",
           WebkitOverflowScrolling: "touch",
         }}
       >
+        {isAiChat && <WelcomeScreen />}
         {/* Loader */}
         <div className="flex justify-center w-full text-white/80">
           {loadingMessages && (
@@ -351,7 +377,11 @@ function ChatUser() {
       </div>
 
       {/* Input */}
-      <ChatInput setFocus={handleFocus} />
+      <ChatInput
+        setFocus={handleFocus}
+        receiverId={recieverId!}
+        isAiChat={isAiChat!}
+      />
 
       {/* More Options Overlay */}
       {moreButtonClicked && (
@@ -367,4 +397,4 @@ function ChatUser() {
   );
 }
 
-export default ChatUser;
+export default SingleChat;

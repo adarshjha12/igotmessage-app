@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCheck, SparklesIcon } from "lucide-react";
+import { CheckCheck, Sparkles, SparklesIcon } from "lucide-react";
 import React from "react";
 
 const AiChatCard = React.memo(({ myId }: { myId: string }) => {
@@ -8,22 +8,25 @@ const AiChatCard = React.memo(({ myId }: { myId: string }) => {
 
   return (
     <Link
-      href={`/chats/${myId}?avatar=${aiAvatar}&userName=MistralAI&receiverId=ai_bot&senderId=${myId}`}
+      href={`/chats/${myId}?userName=IGM AI&receiverId=ai_bot&senderId=${myId}&chatId=ai_bot&aiChat=true`}
       className="flex items-center justify-between p-3 rounded-2xl  backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
     >
       {/* Left: avatar + name + last message */}
       <div className="flex items-center gap-3">
         <div className="relative w-[50px] h-[50px]">
-          <img
+          {/* <img
             src={aiAvatar}
             alt="OpenAI"
             className="w-full h-full rounded-full object-cover border border-white/20"
-          />
+          /> */}
+          <div className=" h-full w-full flex items-center bg-gradient-to-br from-indigo-500 to-purple-600 p-2 rounded-2xl shadow-lg">
+            <Sparkles className="w-10 h-10 text-white" />
+          </div>
         </div>
 
         <div>
           <div className="font-semibold flex gap-3 items-center text-base">
-            Mistral AI
+            IGM AI
             <SparklesIcon className="w-4 h-4 text-orange-400" />
           </div>
           <p className="text-sm text-[var(--textColor)]/80 truncate max-w-[200px]">
@@ -39,6 +42,6 @@ const AiChatCard = React.memo(({ myId }: { myId: string }) => {
       </div>
     </Link>
   );
-})
+});
 
-export default AiChatCard
+export default AiChatCard;

@@ -215,7 +215,7 @@ export default function ProfileComponent() {
             : "grid grid-cols-3 gap-[1px]"
         } mt-2`}
       >
-        {/* Visuals tab → images only */}
+        {/* Visuals tab → images only  */}
         {activeTab === "visuals" &&
           normalPosts
             .filter(
