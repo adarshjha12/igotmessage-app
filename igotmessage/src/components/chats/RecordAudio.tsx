@@ -56,7 +56,7 @@ const AudioRecorderPopup = () => {
         className={`p-3 rounded-full font-semibold text-white shadow-md transition-all ${
           isRecording
             ? "bg-red-500 animate-pulse"
-            : "bg-blue-600 hover:bg-blue-700"
+            : "bg-[#6d28d9] hover:bg-blue-700"
         }`}
       >
         {isRecording ? <RecordIcon size={28}/> : <Mic size={24} />}

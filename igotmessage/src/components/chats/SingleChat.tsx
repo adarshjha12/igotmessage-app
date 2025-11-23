@@ -52,7 +52,6 @@ interface Message {
 
 function ChatUser() {
   const queryParam = useSearchParams();
-  const [inputFocus, setInputFocus] = useState(false);
   const avatar = queryParam.get("avatar");
   const userName = queryParam.get("userName");
   const recieverId = queryParam.get("recieverId");
@@ -103,17 +102,6 @@ function ChatUser() {
     "https://images.unsplash.com/photo-1503149779833-1de50ebe5f8a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxlYWZ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900";
 
   useEffect(() => {
-    if (inputFocus) {
-      const element = document.getElementById("scrolldiv");
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 500);
-      }
-    }
-  }, [inputFocus]);
-
-  useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     setWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
@@ -123,17 +111,20 @@ function ChatUser() {
     };
   }, []);
 
-  function handleScroll() {
+  function handleFocus(type: "input" | "normal") {
     const element = document.getElementById("scrolldiv");
     if (element) {
-      setTimeout(() => {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 50);
+      setTimeout(
+        () => {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        },
+        type === "input" ? 500 : 50
+      );
     }
   }
 
   useEffect(() => {
-    handleScroll();
+    handleFocus("normal");
     if (!chatId || !allMessages?.[chatId]) return;
 
     if (allMessages[chatId]?.length > 0) {
@@ -237,7 +228,9 @@ function ChatUser() {
   }, [chatId]);
 
   return (
-    <div className="w-full h-screen relative text-[var(--textColor)] sm:px-4 md:px-8 flex flex-col bg-gradient-to-br from-blue-800 via-red-700 to-rose-600">
+    <div
+      className="w-full h-screen py-18  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]"
+    >
       {/* Fixed Header */}
       <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 bg-white/10 backdrop-blur-sm top-0 z-10">
         <div className="flex items-center gap-3">
@@ -308,7 +301,7 @@ function ChatUser() {
 
       {/* Scrollable Chat Area */}
       <div
-        className="flex-1 overflow-y-auto px-2 pt-[95px] pb-[100px] md:px-12 lg:px-16 w-full items-end"
+        className="flex-1 overflow-y-auto px-2 pt-[50px] pb-[10px] md:px-12 lg:px-16 w-full items-end"
         style={{
           willChange: "scroll-position",
           WebkitOverflowScrolling: "touch",
@@ -325,9 +318,9 @@ function ChatUser() {
         </div>
 
         {/* Messages */}
-       {(chatId &&
+        {chatId &&
           allMessages?.[chatId] &&
-          allMessages?.[chatId].length > 0) && (
+          allMessages?.[chatId].length > 0 && (
             <MessagesList
               allMessages={allMessages[chatId]}
               senderId={senderId!}
@@ -357,7 +350,7 @@ function ChatUser() {
       </div>
 
       {/* Input */}
-      <ChatInput setFocus={setInputFocus} />
+      <ChatInput setFocus={handleFocus} />
 
       {/* More Options Overlay */}
       {moreButtonClicked && (

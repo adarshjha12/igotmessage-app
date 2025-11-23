@@ -60,26 +60,25 @@ function MediaItem({
 
   // Auto pause when out of view
   useEffect(() => {
-  if (!isVideo || !loaded || !videoRef.current) return;
+    if (!isVideo || !loaded || !videoRef.current) return;
 
-  const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
-      if (!videoRef.current) return;
-      if (!entry.isIntersecting && !videoRef.current.paused) {
-        videoRef.current.pause();
-        setPlaying(false);
-      }
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (!videoRef.current) return;
+        if (!entry.isIntersecting && !videoRef.current.paused) {
+          videoRef.current.pause();
+          setPlaying(false);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, {
+      threshold: 0.6,
     });
-  };
 
-  const observer = new IntersectionObserver(handleIntersect, {
-    threshold: 0.6,
-  });
-
-  observer.observe(videoRef.current);
-  return () => observer.disconnect();
-}, [isVideo, loaded]);
-
+    observer.observe(videoRef.current);
+    return () => observer.disconnect();
+  }, [isVideo, loaded]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -97,26 +96,27 @@ function MediaItem({
     return (
       <div className="relative flex items-center justify-center bg-[var(--bgColor)]/50 max-h-[600px] w-full overflow-hidden">
         {/* Placeholder while loading */}
-        {!loaded && (
+        {/* {!loaded && (
           <div className="w-full h-[300px] bg-[var(--wrapperColor)] flex items-center justify-center text-gray-400">
             <div className="flex items-center animate-pulse px-4 border-2 border-[var(--borderColor)] rounded-2xl">
               <Play strokeWidth={1} className="w-18 h-18" />
             </div>
           </div>
-        )} 
+        )} */}
 
         {/* Video */}
-        {loaded && (
+       
           <video
             ref={videoRef}
             src={url}
+            preload="metadata"
+            onLoadedData={() => setLoaded(true)}
             playsInline
             loop
             onClick={togglePlay}
             className="w-full max-w-full object-contain transition-opacity duration-300 opacity-100"
           />
-        )}
-
+        
         {/* Play button overlay */}
         {!playing && loaded && (
           <button
@@ -133,15 +133,6 @@ function MediaItem({
           <div className="absolute top-2 right-2 z-30 rounded-xl bg-white/80 px-2 py-1 font-medium text-sm text-black">
             {mediaIndex}/{totalMediaCount}
           </div>
-        )}
-
-        {/* Hidden video loader */}
-        {!loaded && (
-          <video
-            src={url}
-            onLoadedData={() => setLoaded(true)}
-            className="hidden"
-          />
         )}
       </div>
     );

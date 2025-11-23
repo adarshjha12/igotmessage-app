@@ -118,62 +118,70 @@ export default function ChatList() {
         <div className="w-full  mb-12 px-2 flex justify-center">
           {/* Chat list */}
           <div className="flex max-w-[600px] w-full flex-col gap-3">
-            {chatList.map((chat) => (
-              <Link
-                href={`/chats/${myId}?avatar=${
-                  chat.coParticipant.profilePicture || chat.coParticipant.avatar
-                }&userName=${chat.coParticipant.userName}&recieverId=${
-                  chat.coParticipant._id
-                }&senderId=${myId}&&chatId=${chat._id}`}
-                key={chat.coParticipant._id}
-                className="flex items-center justify-between p-3 rounded-2xl  backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
-              >
-                {/* Left section: avatar + text */}
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <img
-                      src={
-                        chat?.coParticipant?.profilePicture ||
-                        chat?.coParticipant?.avatar!
-                      }
-                      alt={chat?.coParticipant?.userName}
-                      width={50}
-                      height={50}
-                      className="rounded-full border border-white/20"
-                    />
-                    {onlineUsers.includes(chat.coParticipant._id) && (
-                      <span className="absolute bottom-1 right-1 block w-3 h-3 rounded-full bg-green-500 " />
-                    )}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-base">
-                      {chat.coParticipant.userName}
-                    </p>
-                    <p className="text-sm text-[var(--textColor)]/80 truncate max-w-[200px]">
-                      {chat?.lastMessage?.content ||
-                        lastMessage?.[chat._id]?.content}
-                    </p>
-                  </div>
-                </div>
+            {chatList.map((chat, i) => (
+              <div key={i}>
+                {chat.lastMessage && (
+                  <Link
+                    href={`/chats/${myId}?avatar=${
+                      chat.coParticipant.profilePicture ||
+                      chat.coParticipant.avatar
+                    }&userName=${chat.coParticipant.userName}&recieverId=${
+                      chat.coParticipant._id
+                    }&senderId=${myId}&&chatId=${chat._id}`}
+                    key={chat.coParticipant._id}
+                    className="flex items-center justify-between p-3 rounded-2xl  backdrop-blur-lg hover:bg-white/10 transition cursor-pointer"
+                  >
+                    {/* Left section: avatar + text */}
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <img
+                          src={
+                            chat?.coParticipant?.profilePicture ||
+                            chat?.coParticipant?.avatar!
+                          }
+                          alt={chat?.coParticipant?.userName}
+                          width={50}
+                          height={50}
+                          className="rounded-full border border-white/20"
+                        />
+                        {onlineUsers.includes(chat.coParticipant._id) && (
+                          <span className="absolute bottom-1 right-1 block w-3 h-3 rounded-full bg-green-500 " />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-base">
+                          {chat.coParticipant.userName}
+                        </p>
+                        <p className="text-sm text-[var(--textColor)]/80 truncate max-w-[200px]">
+                          {chat?.lastMessage?.content ||
+                            lastMessage?.[chat._id]?.content}
+                        </p>
+                      </div>
+                    </div>
 
-                {/* Right section: time + unread */}
-                <div className="flex flex-col items-end gap-1">
-                  <span className="text-xs text-[var(--textColor)]/80">
-                    {chat?.lastMessage &&
-                      isValid(new Date(chat?.lastMessage?.createdAt)) &&
-                      format(new Date(chat.lastMessage?.createdAt), "dd/MM/y")}
-                  </span>
-                  {chat?.unreadCount && chat.unreadCount > 0 ? (
-                    <span className="px-2 py-1 text-xs font-semibold bg-red-500 text-white rounded-full">
-                      {chat.unreadCount}
-                    </span>
-                  ) : (
-                    chat?.lastMessage?.sender?._id === myId && (
-                      <CheckCheck className="w-4 h-4 text-[var(--textColor)]/80" />
-                    )
-                  )}
-                </div>
-              </Link>
+                    {/* Right section: time + unread */}
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="text-xs text-[var(--textColor)]/80">
+                        {chat?.lastMessage &&
+                          isValid(new Date(chat?.lastMessage?.createdAt)) &&
+                          format(
+                            new Date(chat.lastMessage?.createdAt),
+                            "dd/MM/y"
+                          )}
+                      </span>
+                      {chat?.unreadCount && chat.unreadCount > 0 ? (
+                        <span className="px-2 py-1 text-xs font-semibold bg-red-500 text-white rounded-full">
+                          {chat.unreadCount}
+                        </span>
+                      ) : (
+                        chat?.lastMessage?.sender?._id === myId && (
+                          <CheckCheck className="w-4 h-4 text-[var(--textColor)]/80" />
+                        )
+                      )}
+                    </div>
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
         </div>
@@ -202,8 +210,7 @@ export default function ChatList() {
           <FollowersList userId={myId!} type="chats" />
         </div>
       )}
-
-      <BottomNav pathname={pathName}/>
+      <BottomNav pathname={pathName} />
     </div>
   );
 }

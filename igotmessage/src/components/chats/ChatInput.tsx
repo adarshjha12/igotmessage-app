@@ -13,7 +13,7 @@ import { setNewMessages } from "@/features/chatSlice";
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
   onSend?: (message: string) => void;
-  setFocus?: (val: boolean) => void;
+  setFocus?: (val: "normal" | "input") => void;
   setAllMessage?: (val: any) => void;
 }
 interface Message {
@@ -105,7 +105,6 @@ const ChatInput = React.memo(
 
       setInput("");
       setShowSendButton(false);
-      setFocus?.(true);
     };
 
     useEffect(() => {
@@ -143,8 +142,8 @@ const ChatInput = React.memo(
               value={input}
               rows={1}
               placeholder="Message"
-              onFocus={() => setFocus?.(true)}
-              onBlur={() => setFocus?.(false)}
+              onClick={() => setFocus && setFocus("input")}
+            
               onInput={handleInput}
               className="flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none"
               style={{ maxHeight: "150px" }}
@@ -189,7 +188,7 @@ const ChatInput = React.memo(
             <VoiceRecorder />
           ) : (
             <button
-              className="p-3  bg-yellow-400 text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
+              className="p-3  bg-[#D4AF37] text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
               onClick={() => {
                 if (textareaRef.current?.value.trim()) {
                   onSend?.(textareaRef.current.value.trim());

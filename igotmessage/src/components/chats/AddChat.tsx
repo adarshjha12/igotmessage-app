@@ -6,7 +6,7 @@ const FloatingAddChat = React.memo(({ onClick }: { onClick: () => void }) => {
     <button
       onClick={onClick}
       className="
-        fixed bottom-26 sm:bottom-14 left-[80%] sm:left-[80%] md:left-[80%] lg:left-[50%]
+        fixed bottom-26 sm:bottom-18 left-[80%] sm:left-[80%] md:left-[80%] lg:left-[50%]
         w-14 h-14
         bg-green-600
         text-white
