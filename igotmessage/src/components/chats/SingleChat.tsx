@@ -343,8 +343,6 @@ function ChatUser() {
             </div>
           </div>
         )}
-
-        <div id="scrolldiv"></div>
       </div>
 
       {/* Input */}
@@ -360,6 +358,7 @@ function ChatUser() {
           <MoreOption onClose={() => setMoreButtonClicked(false)} />
         </>
       )}
+      <div id="scrolldiv"></div>
     </div>
   );
 }
