@@ -108,7 +108,6 @@ function ChatUser() {
       if (element) {
         setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
-          console.log("scrolling to bottom div", inputFocus);
         }, 500);
       }
     }
@@ -129,7 +128,6 @@ function ChatUser() {
     if (element) {
       setTimeout(() => {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
-        console.log("scrolling to bottom div", inputFocus);
       }, 50);
     }
   }
@@ -171,8 +169,6 @@ function ChatUser() {
   }, []);
 
   useEffect(() => {
-    console.log("chatId", chatId);
-
     async function getChatId() {
       setLoadingMessages(true);
 
@@ -249,7 +245,7 @@ function ChatUser() {
             onClick={() => window.history.back()}
             className="py-2 pl-2 rounded-full hover:bg-white/10 transition"
           >
-            <ChevronLeftIcon size={22} />
+            <ChevronLeftIcon size={30} />
           </button>
 
           <Link

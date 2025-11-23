@@ -21,7 +21,7 @@ const ChatHeader = React.memo(() => {
             onClick={() => window.history.back()}
             className="p-2 rounded-full hover:bg-white/10 transition duration-200"
           >
-            <ChevronLeftIcon size={26} className="text-[var(--textColor)]" />
+            <ChevronLeftIcon size={30} className="text-[var(--textColor)]" />
           </button>
           <div className="flex items-center gap-2">
             {user.avatar && (

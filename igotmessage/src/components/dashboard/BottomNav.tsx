@@ -3,23 +3,17 @@
 import Link from "next/link";
 import {
   HouseIcon,
-  ChatCircleIcon,
   PlusSquareIcon,
   PlayCircleIcon,
-  VideoCameraIcon,
   UserIcon,
-  ChatCircleTextIcon,
-  ChatsTeardropIcon,
-  ChatsCircleIcon,
-  PhoneCallIcon,
   PhoneIcon,
   ChatTextIcon,
 } from "@phosphor-icons/react";
 import { useAppSelector } from "@/store/hooks";
+import React, { useEffect } from "react";
 
-export default function BottomNav({ pathname }: { pathname: string }) {
-
-   const avatar = useAppSelector((state) => state.auth.user.avatar);
+const BottomNav = React.memo(({ pathname }: { pathname: string }) => {
+  const avatar = useAppSelector((state) => state.auth.user.avatar);
   const myId = useAppSelector((state) => state.auth.user._id);
   const profilePicture = useAppSelector(
     (state) => state.auth.user.profilePicture
@@ -27,20 +21,26 @@ export default function BottomNav({ pathname }: { pathname: string }) {
 
   const navItems = [
     { href: "/dash/feed", icon: HouseIcon },
-    { href: `/chats?userId=${myId}`, icon: ChatTextIcon  },
+    { href: `/chats?userId=${myId}`, icon: ChatTextIcon },
     { href: "/dash/create", icon: PlusSquareIcon },
-    { href: `/reels?myId=${myId}&myPic=${profilePicture || avatar}`, icon: PlayCircleIcon },
+    {
+      href: `/reels?myId=${myId}&myPic=${profilePicture || avatar}`,
+      icon: PlayCircleIcon,
+    },
     { href: "/dash/calls", icon: PhoneIcon },
     { href: "/dash/profile", icon: UserIcon },
   ];
 
   return (
-    <nav className="fixed -bottom-2 left-0 w-full flex items-center justify-between pb-2
+    <nav
+      className="fixed -bottom-2 left-0 w-full flex items-center justify-between pb-2
       bg-[var(--bgColor)]/80 backdrop-blur-xl border-t border-[var(--shadowBorder)] 
-      px-2 z-20 md:hidden">
+      px-2 z-20 md:hidden"
+    >
       <ul className="flex items-center justify-between w-full">
         {navItems.map(({ href, icon: Icon }) => {
-          const isActive = pathname === href;
+          const baseHref = href.split("?")[0];
+          const isActive = pathname.startsWith(baseHref);
           return (
             <li key={href}>
               <Link
@@ -84,4 +84,6 @@ export default function BottomNav({ pathname }: { pathname: string }) {
       </ul>
     </nav>
   );
-}
+});
+
+export default BottomNav;

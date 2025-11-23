@@ -20,8 +20,9 @@ import ChatHeader from "./ChatHeader";
 import { format, isValid } from "date-fns";
 import { RootState } from "@/store/store";
 import AiChatCard from "./AiChat";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { setChatList } from "@/features/chatSlice";
+import BottomNav from "../dashboard/BottomNav";
 
 export interface Chat {
   _id: string;
@@ -54,6 +55,7 @@ export interface Chat {
 
 export default function ChatList() {
   const params = useSearchParams();
+  const pathName = usePathname();
   const dispatch = useAppDispatch();
 
   const myId = params.get("userId");
@@ -80,7 +82,6 @@ export default function ChatList() {
         `${url}/api/chat/get-my-chats?userId=${myId}`
       );
       dispatch(setChatList(res.data.chats));
-      console.log(res.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -201,6 +202,8 @@ export default function ChatList() {
           <FollowersList userId={myId!} type="chats" />
         </div>
       )}
+
+      <BottomNav pathname={pathName}/>
     </div>
   );
 }
