@@ -118,7 +118,7 @@ function ChatUser() {
         () => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
         },
-        type === "input" ? 500 : 50
+        type === "input" ? 100 : 50
       );
     }
   }
@@ -228,9 +228,7 @@ function ChatUser() {
   }, [chatId]);
 
   return (
-    <div
-      className="w-full h-screen py-18  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]"
-    >
+    <div className="w-full h-screen py-18  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]">
       {/* Fixed Header */}
       <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 bg-white/10 backdrop-blur-sm top-0 z-10">
         <div className="flex items-center gap-3">

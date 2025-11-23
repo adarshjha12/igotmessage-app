@@ -75,9 +75,9 @@ const MessageBubble = React.memo(function MessageBubble({
 
       {/* BUBBLE */}
       <div
-        className={`max-w-[75%] sm:max-w-[65%] mb-6 my-2 rounded-2xl px-4 py-2 text-[15px] relative transition-all duration-200 ${
+        className={`max-w-[75%] sm:max-w-[65%] mb-6 my-2 rounded-2xl px-4 py-2 text-[15px] relative transition-all ${!isSameDayFlag && "mt-12"} duration-200 ${
           isSender
-            ? "bg-[#6d28d9] text-white shadow-[0_0_12px_#6d28d9aa] rounded-br-none"
+            ? "bg-[#6d28d9] text-white rounded-br-none"
             : "bg-[#dfdee2] text-[#06000e]  border-[#6d28d955]  shadow-[0_0_12px_#6d28d9aa] rounded-bl-none"
         } shadow`}
       >
