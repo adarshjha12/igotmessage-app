@@ -124,8 +124,11 @@ function ChatUser() {
   }
 
   useEffect(() => {
-    handleFocus("normal");
     if (!chatId || !allMessages?.[chatId]) return;
+
+    if (allMessages[chatId]?.length > 0) {
+      handleFocus("normal");
+    }
 
     if (allMessages[chatId]?.length > 0) {
       const latest = allMessages[chatId].at(-1);

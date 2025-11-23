@@ -4,11 +4,11 @@ import React from "react";
 function layout({children} : {children: React.ReactNode}) {
   return (
     <div className='w-full min-h-screen'>
-      {/* <AuthGuard> */}
+      <AuthGuard>
           <div className='w-full h-full flex justify-center'>
             {children}
           </div>
-      {/* </AuthGuard> */}
+      </AuthGuard>
     </div>
   )
 }

@@ -13,33 +13,37 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   const isDark = useSelector((state: RootState) => state.activity.isDark);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-  const [verified, setVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const authenticated = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
+
+  async function getAuthDetails() {
+    setLoading(true);
+    try {
+      const response = await checkAuth();
+      if (response.data?.success === true) {
+        dispatch(addCurrentUserToStore(response.data.userData));
+        localStorage.setItem(
+          "userId",
+          JSON.stringify(response.data.userData._id)
+        );
+        dispatch(setAuthStatus(true));
+        setLoading(false);
+      }
+    } catch (error) {
+      router.replace("/login?error=unauthorized");
+      setLoading(false);
+      console.log(error);
+      throw error;
+    }
+  }
 
   useEffect(() => {
-    async function getAuthDetails() {
-      setLoading(true);
-      try {
-        const response = await checkAuth();
-        if (response.data?.success === true) {
-          dispatch(addCurrentUserToStore(response.data.userData));
-          localStorage.setItem(
-            "userId",
-            JSON.stringify(response.data.userData._id)
-          );
-          dispatch(setAuthStatus(true));
-          setVerified(true);
-          setLoading(false);
-        }
-      } catch (error) {
-        router.replace("/login?error=unauthorized");
-        setLoading(false);
-        console.log(error);
-        throw error;
-      }
+    if (!authenticated) {
+      getAuthDetails();
     }
-    getAuthDetails();
-  }, [router]);
+  }, [authenticated]);
 
   if (loading) {
     return (
