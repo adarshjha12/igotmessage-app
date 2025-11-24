@@ -38,8 +38,7 @@ It’s more than a portfolio project — it’s a Make in India initiative, desi
 
 Built with modern engineering, cutting-edge UI, and deep AI integration, IGotMessage delivers everything users expect from a global social platform — stories, reels, chats, video calls, AI content, and more — while focusing on speed, privacy, creativity, and empowerment.
 
-🚀 NextGen Social Media App — Highlights
-🔥 Core Features
+## Nextgen Features
 
 📸 Stories with Music Integration
 Add images, text, and music with auto-play logic & smooth transitions.
@@ -81,8 +80,8 @@ Real-time updates for likes, messages, followers, etc.
 🛡 API Optimization
 Rate limiting, caching, and best practices for production-grade performance.
 
-🛠 Tech Stack
-Frontend
+## 🛠 Tech Stack
+## Frontend
 
 Next.js (App Router)
 
@@ -100,7 +99,9 @@ Framer Motion
 
 ImageKit / Cloudinary (media handling)
 
-Backend
+
+
+## Backend
 
 Node.js + Express.js
 
@@ -124,7 +125,9 @@ Cloud hosting (VPS / Render / Vercel combo)
 
 Media CDN for fast delivery
 
-📱 Platforms
+
+
+## 📱 Platforms
 
 🌐 Web App (Next.js) — Live & under continuous development
 
@@ -132,14 +135,18 @@ Media CDN for fast delivery
 
 🍏 iOS App — Coming soon
 
+
+## Developer
+
 Made with ❤️ by Adarsh
 
-© 2025 IGotMessage — Jha Inc.
+© 2025 IGotMessage — DevFoxLite LLC.
 All rights reserved.
 
 📧 Email: jhaa50872@gmail.com
 
 📞 Phone: +91 70793 93887
-🔗 LinkedIn: adarsh-jha1
+
+🔗 LinkedIn: https://www.linkedin.com/in/adarsh-jha1/
 
 🇮🇳 A Make in India Initiative
