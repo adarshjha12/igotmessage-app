@@ -2,31 +2,30 @@ IGotMessage app link - https://igotmessage-app-frontend.vercel.app/
 
 ## 📸 App Screenshots
 
-📱 App Screenshots
 <div align="center">
-🏠 Home
+<span style="font-size: 3rem;">🏠 Home</span>
 <p> <img src="./frontend/public/screenshots/home1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph2.png" width="500" /> </p>
-📸 Stories
+<span style="font-size: 3rem;">📸 Stories</span>
 <p float="left"> <img src="./frontend/public/screenshots/story1.png" width="260" /> <img src="./frontend/public/screenshots/story2.png" width="260" /> <img src="./frontend/public/screenshots/story3.png" width="260" /> <img src="./frontend/public/screenshots/story4.png" width="260" /> </p>
-🎥 Reels
+<span style="font-size: 3rem;">🎥 Reels</span>
 <p> <img src="./frontend/public/screenshots/reel_ph1.png" width="500" /> <img src="./frontend/public/screenshots/reel_ph2.png" width="500" /> </p>
-💬 Chat
+<span style="font-size: 3rem;">💬 Chat</span>
 <p float="left"> <img src="./frontend/public/screenshots/chat1.png" width="260" /> <img src="./frontend/public/screenshots/chat2.png" width="260" /> <img src="./frontend/public/screenshots/chat_ph1.png" width="260" /> <img src="./frontend/public/screenshots/chat_ph2.png" width="260" /> </p>
-🤖 AI Chat
+<span style="font-size: 3rem;">🤖 AI Chat</span>
 <p> <img src="./frontend/public/screenshots/ai1.png" width="500" /> <img src="./frontend/public/screenshots/chat_ph3.png" width="260" /> </p>
-🖋️ Create
+<span style="font-size: 3rem;">🖋️ Create</span>
 <p> <img src="./frontend/public/screenshots/create1.png" width="500" /> <img src="./frontend/public/screenshots/create2.png" width="500" /> </p>
-🧑‍🏫 Profile
+<span style="font-size: 3rem;">🧑‍🏫 Profile</span>
 <p> <img src="./frontend/public/screenshots/profile1.png" width="500" /> <img src="./frontend/public/screenshots/profile2.png" width="500" /> <img src="./frontend/public/screenshots/profile_ph1.png" width="500" /> </p>
-🔏 Auth
+<span style="font-size: 3rem;">🔏 Auth</span>
 <p> <img src="./frontend/public/screenshots/login1.png" width="500" /> <img src="./frontend/public/screenshots/login2.png" width="500" /> <img src="./frontend/public/screenshots/login3.png" width="500" /> </p>
-‼️ Error Handling
+<span style="font-size: 3rem;">‼️ Error Handling</span>
 <p> <img src="./frontend/public/screenshots/error handling.png" width="500" /> </p>
-📞 Calls
+<span style="font-size: 3rem;">📞 Calls</span>
 
 🚧 Coming soon
 
-🔔 Notifications
+<span style="font-size: 3rem;">🔔 Notifications</span>
 
 🚧 Coming soon
 
