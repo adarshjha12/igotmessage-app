@@ -81,27 +81,27 @@ const OtpInput = ({
     setLoading(true);
     try {
       const response = await verifyOtp(email, finalInputOtp);
+      console.log("+++++++++++++++++++++++++++++", response);
 
-      if (response.data?.success === true) {
+      if (response.data?.success) {
         setShowSuccessPopup(true);
-        dispatch(addCurrentUserToStore(response.data.user));
-        dispatch(setAuthStatus(true));
-        localStorage.setItem("userId", JSON.stringify(response.data.user._id));
-        router.push("/dash/feed?verification=success");
+        localStorage.setItem(
+          "userId",
+          JSON.stringify(response.data.userData._id)
+        );
+        router.push("/dash/feed");
         setLoading(false);
-      } else if (response.data.expired === true) {
+      } else if (response.data.expired) {
         setShowErrorPopup(true);
         setOtpExpired(true);
         setLoading(false);
       } else {
-        window.location.reload();
         router.push("/login");
         setShowErrorPopup(true);
         setLoading(false);
       }
     } catch (error) {
       console.log(error);
-      window.location.reload();
       router.push("/login");
       setShowErrorPopup(true);
       setLoading(false);

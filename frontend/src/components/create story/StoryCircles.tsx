@@ -71,11 +71,15 @@ function Story() {
               alt="Profile"
             />
           ) : (
-            <img
+            <div>
+              {avatar && (
+                <img
               className="w-full h-full rounded-full object-contain"
               src={avatar!}
               alt="Profile"
             />
+              )}
+            </div>
           )}
 
           <div className="absolute bottom-0.5 -right-1 bg-blue-600  rounded-full p-0.5 shadow-sm">

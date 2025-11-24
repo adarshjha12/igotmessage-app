@@ -122,12 +122,6 @@ function Dashboard({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!userName && !isGuest) {
-      setShowCreateProfileModal(true);
-    }
-  }, [userName]);
-
-  useEffect(() => {
     if (
       updateProfileStatus === "succeeded" ||
       uploadStoryStatus === "succeeded" ||
@@ -512,11 +506,15 @@ function Dashboard({ children }: { children: ReactNode }) {
                     className="w-6 h-6 rounded-xl"
                   />
                 ) : (
-                  <img
-                    src={avatar!}
-                    alt="avatar"
-                    className="w-6 h-6 rounded-xl"
-                  />
+                  <div>
+                    {avatar && (
+                      <img
+                        src={avatar!}
+                        alt="avatar"
+                        className="w-6 h-6 rounded-xl"
+                      />
+                    )}
+                  </div>
                 )}
               </div>
               <p className={`${sidebarOpen ? "" : "hidden"} text-(textColor)`}>
@@ -610,14 +608,14 @@ function Dashboard({ children }: { children: ReactNode }) {
         )}
       </div>
 
-      {/* moodal for create profile if no username exist */}
+      {/* moodal for create profile if no username exist
       {showCreateProfileModal && (
         <CreateProfileModal
           isOpen={showCreateProfileModal}
           newUser={true}
           onClose={() => setShowCreateProfileModal(false)}
         />
-      )}
+      )} */}
 
       {/* modal for story upload  */}
       {/* when user upload story inside create-story page whether upload success or not, we show this modal*/}

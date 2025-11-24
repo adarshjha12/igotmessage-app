@@ -193,7 +193,7 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
           if (res.data) setUsers(res.data.total);
         } else {
           const res = await axios.get(
-            `${url}/api/search/get-all-people?userId=${userId || backupUserId}`,
+            `${url}/api/search/get-all-people?userId=${userId ?? backupUserId}`,
             {
               withCredentials: true,
             }
@@ -206,7 +206,11 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
         setLoading(false);
       }
     };
-    fetchUsers();
+
+    if (userId || backupUserId) {
+      fetchUsers();
+    }
+
   }, [userId, type]);
 
   // Search effect

@@ -111,7 +111,6 @@ function Login() {
     setLoading(true);
     try {
       const response = await sendOtp(email);
-      console.log(response);
 
       if (response?.data.success === true) {
         timer();

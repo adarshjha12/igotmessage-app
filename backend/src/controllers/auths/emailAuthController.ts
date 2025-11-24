@@ -10,6 +10,7 @@ const generateOTP = (): string =>
 
 const randomNumber = Math.floor(Math.random() * 100000 + 1);
 const randomAvatarNums = Math.floor(Math.random() * 1000 + 1);
+client.connect();
 
 export const sendOtp = async (req: Request, res: Response): Promise<any> => {
   const { email } = req.body;
@@ -53,6 +54,8 @@ export const verifyOtp = async (req: Request, res: Response): Promise<any> => {
   }
 
   const storedOtp = await client.get(`otp:${email}`);
+  console.log('storedOtp', storedOtp);
+  
   if (!storedOtp) {
     return res
       .status(400)

@@ -162,15 +162,6 @@ export default function ReelSlide({ reel }: { reel: Post }) {
 
   return (
     <div className="relative w-full h-full">
-      {!loaded && (
-        <div className="w-full h-full bg-gray-700 flex flex-col gap-4 items-center justify-center text-gray-400">
-          <div className="flex items-center animate-pulse px-2 py-6 border-2 border-white rounded-xl">
-            <Play strokeWidth={1} className="w-12 h-12" />
-          </div>
-          <NewLoader color="white" />
-        </div>
-      )}
-
       <video
         ref={reelRef}
         src={reel?.mediaUrls?.[0]}
@@ -257,7 +248,7 @@ export default function ReelSlide({ reel }: { reel: Post }) {
             <HeartIcon
               size={26}
               weight="fill"
-              className="text-rose-500 scale-125"
+              className="text-blue-500  scale-125"
             />
           ) : (
             <HeartIcon

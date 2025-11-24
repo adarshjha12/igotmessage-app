@@ -328,11 +328,13 @@ export default function ProfileComponent() {
           >
             <XIcon color="white" size={30} />
           </button>
-          <img
-            src={user?.profilePicture || user?.avatar!}
-            alt="post media"
-            className="max-w-full max-h-[90vh] object-contain"
-          />
+          {(user.profilePicture || user.avatar) && (
+            <img
+              src={user?.profilePicture || user?.avatar!}
+              alt="post media"
+              className="max-w-full max-h-[90vh] object-contain"
+            />
+          )}
         </div>
       )}
     </div>
