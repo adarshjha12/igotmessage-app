@@ -6,7 +6,7 @@ IGotMessage app link - https://igotmessage-app-frontend.vercel.app/
 <span style="font-size: 3rem;">🏠 Home</span>
 <p> <img src="./frontend/public/screenshots/home1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph2.png" width="500" /> </p>
 <span style="font-size: 3rem;">📸 Stories</span>
-<p float="left"> <img src="./frontend/public/screenshots/story1.png" width="260" /> <img src="./frontend/public/screenshots/story2.png" width="260" /> <img src="./frontend/public/screenshots/story3.png" width="260" /> <img src="./frontend/public/screenshots/story4.png" width="260" /> </p>
+<p float="left"> <img src="./frontend/public/screenshots/story1.png" width="260" /> <img src="./frontend/public/screenshots/story2.png" width="260" /> <img src="./frontend/public/screenshots/story3.png" width="260" /> <img src="./frontend/public/screenshots/story_ph5.png" width="260" /> </p>
 <span style="font-size: 3rem;">🎥 Reels</span>
 <p> <img src="./frontend/public/screenshots/reel_ph1.png" width="500" /> <img src="./frontend/public/screenshots/reel_ph2.png" width="500" /> </p>
 <span style="font-size: 3rem;">💬 Chat</span>
