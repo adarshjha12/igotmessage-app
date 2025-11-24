@@ -2,36 +2,26 @@ IGotMessage app link - https://igotmessage-app-frontend.vercel.app/
 
 ## 📸 App Screenshots
 
+📱 App Screenshots
 <div align="center">
 🏠 Home
-<p> <img src="./frontend/public/screenshots/home1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph1.png" width="500" /><img src="./frontend/public/screenshots/home_ph2.png" width="500" /> </p>
+<p> <img src="./frontend/public/screenshots/home1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph1.png" width="500" /> <img src="./frontend/public/screenshots/home_ph2.png" width="500" /> </p>
 📸 Stories
 <p float="left"> <img src="./frontend/public/screenshots/story1.png" width="260" /> <img src="./frontend/public/screenshots/story2.png" width="260" /> <img src="./frontend/public/screenshots/story3.png" width="260" /> <img src="./frontend/public/screenshots/story4.png" width="260" /> </p>
 🎥 Reels
-<p> <img src="./frontend/public/screenshots/reels_ph1.png" width="500" /> <img src="./frontend/public/screenshots/reels_ph2.png" width="500" /> </p>
+<p> <img src="./frontend/public/screenshots/reel_ph1.png" width="500" /> <img src="./frontend/public/screenshots/reel_ph2.png" width="500" /> </p>
 💬 Chat
-<p float="left"> <img src="./frontend/public/screenshots/chat1.png" width="260" /> <img src="./frontend/public/screenshots/chat2.png" width="260" /> <img src="./frontend/public/screenshots/chat_ph1.png" width="260" /> <img src="./frontend/public/screenshots/chat_ph2.png" width="260" />  </p>
-
-🤖 Ai Chat
-
-<p> <img src="./frontend/public/screenshots/ai1.png" width="500" />  <img src="./frontend/public/screenshots/chat_ph3.png" width="260" /> </p>
-
+<p float="left"> <img src="./frontend/public/screenshots/chat1.png" width="260" /> <img src="./frontend/public/screenshots/chat2.png" width="260" /> <img src="./frontend/public/screenshots/chat_ph1.png" width="260" /> <img src="./frontend/public/screenshots/chat_ph2.png" width="260" /> </p>
+🤖 AI Chat
+<p> <img src="./frontend/public/screenshots/ai1.png" width="500" /> <img src="./frontend/public/screenshots/chat_ph3.png" width="260" /> </p>
 🖋️ Create
-
-<p> <img src="./frontend/public/screenshots/create1.png" width="500" /><img src="./frontend/public/screenshots/create2.png" width="500" />  width="500" /> </p>
-
+<p> <img src="./frontend/public/screenshots/create1.png" width="500" /> <img src="./frontend/public/screenshots/create2.png" width="500" /> </p>
 🧑‍🏫 Profile
-
-<p> <img src="./frontend/public/screenshots/profile1.png" width="500" /><img src="./frontend/public/screenshots/profile2.png" width="500" /> <img src="./frontend/public/screenshots/profile_ph1.png" width="500" /> </p>
-
+<p> <img src="./frontend/public/screenshots/profile1.png" width="500" /> <img src="./frontend/public/screenshots/profile2.png" width="500" /> <img src="./frontend/public/screenshots/profile_ph1.png" width="500" /> </p>
 🔏 Auth
-
-<p>  <img src="./frontend/public/screenshots/login1.png" width="500" />  <img src="./frontend/public/screenshots/login2.png" width="500" />  <img src="./frontend/public/screenshots/login3.png" width="500" /> </p>
-
-‼️Error handling
-
-<p>  <img src="./frontend/public/screenshots/error.handling.png" width="500" />  </p>
-
+<p> <img src="./frontend/public/screenshots/login1.png" width="500" /> <img src="./frontend/public/screenshots/login2.png" width="500" /> <img src="./frontend/public/screenshots/login3.png" width="500" /> </p>
+‼️ Error Handling
+<p> <img src="./frontend/public/screenshots/error handling.png" width="500" /> </p>
 📞 Calls
 
 🚧 Coming soon
