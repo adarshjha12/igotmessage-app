@@ -1,5 +1,27 @@
 IGotMessage app link - https://igotmessage-app-frontend.vercel.app/
 
+## 📸 App Screenshots
+
+<div align="center">
+
+### 🏠 Home  
+<img src="./frontend/public/project-images/home.png" width="400" />
+
+### 📸 Stories  
+<img src="./public/project-images/stories.png" width="400" />
+
+### 🎥 Reels  
+<img src="./public/project-images/reels.png" width="400" />
+
+### 💬 Chat  
+<img src="./public/project-images/chat.png" width="400" />
+
+### 🎁 Rewards  
+<img src="./public/project-images/rewards.png" width="400" />
+
+</div>
+
+
 IGotMessage is an **indigenous, AI-powered next-gen social media platform** built with the vision of giving India its own digital stage.  
 It’s not just a project to showcase my full-stack development skills — it’s a **Make in India initiative** to create a world-class platform where Indians can connect, share, and grow without relying on foreign tech giants.  
 

@@ -263,13 +263,13 @@ export default function AllUsers({ userId, type }: FollowersListProps) {
       )}
 
       {/* Scrollable User List */}
-      <div className="flex-1 mt-4 overflow-y-auto w-full max-w-[600px]">
+      <div className="flex-1 mt-4 overflow-y-auto scroll-hidden w-full max-w-[600px]">
         {loading ? (
           <div className="animate-pulse w-full space-y-3">
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
-                className="h-14 bg-[var(--wrapperColor)] rounded-xl"
+                className="h-14 bg-(--wrapperColor) rounded-xl"
               />
             ))}
           </div>

@@ -34,7 +34,7 @@ const BottomNav = React.memo(({ pathname }: { pathname: string }) => {
   return (
     <nav
       className="fixed -bottom-2 left-0 w-full flex items-center justify-between pb-2
-      bg-[var(--bgColor)]/80 backdrop-blur-xl border-t border-[var(--shadowBorder)] 
+      bg-(--bgColor)/80 backdrop-blur-xl border-t border-(--shadowBorder)
       px-2 z-20 md:hidden"
     >
       <ul className="flex items-center justify-between w-full">
@@ -51,15 +51,15 @@ const BottomNav = React.memo(({ pathname }: { pathname: string }) => {
                 <div
                   className={`p-3 rounded-xl flex items-center justify-center transition-colors duration-200 ${
                     isActive
-                      ? "text-[var(--accentColor)]"
-                      : "text-[var(--textColor)]"
+                      ? "text-(--accentColor)"
+                      : "text-(--textColor)"
                   }`}
                 >
                   {href === "/dash/profile" && avatar ? (
                     <div
                       className={`w-8 h-8 rounded-full overflow-hidden flex items-center justify-center ring-2 transition-all duration-200 ${
                         isActive
-                          ? "ring-[var(--accentColor)]"
+                          ? "ring-(--accentColor)"
                           : "ring-transparent"
                       }`}
                     >

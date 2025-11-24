@@ -168,7 +168,7 @@ function Dashboard({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`w-full z-20 min-h-screen bg-[var(--bgColor)] text-[var(--textColor)]  flex items-start justify-center relative`}
+      className={`w-full z-20 min-h-screen bg-(--bgColor) text-(--textColor) flex items-start justify-center relative`}
     >
       <div
         className={` w-full h-full flex items-start justify-center transition-colors duration-200 relative `}
@@ -180,8 +180,8 @@ function Dashboard({ children }: { children: ReactNode }) {
     items-start sm:items-start
     ${
       sidebarOpen
-        ? "md:[grid-template-columns:1fr_2fr] lg:[grid-template-columns:1fr_2fr_1.5fr]"
-        : "md:[grid-template-columns:0.2fr_2fr] lg:[grid-template-columns:0.5fr_4fr_2fr]"
+        ? "md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_1.5fr]"
+        : "md:grid-cols-[0.2fr_2fr] lg:grid-cols-[0.5fr_4fr_2fr]"
     }
     transition-all duration-200 ease-in
   `}
@@ -192,7 +192,7 @@ function Dashboard({ children }: { children: ReactNode }) {
     md:hidden sticky top-0 z-20
     w-full flex items-center justify-between
     px-3 py-2
-    bg-[var(--bgColor)]/80 backdrop-blur-lg
+    bg-(--bgColor)/80 backdrop-blur-lg
     
     duration-300 ${
       pathname.includes("/dash/chats") || pathname.includes("/dash/calls")
@@ -206,7 +206,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname !== "/dash/feed" && (
                 <button
                   type="button"
-                  className="px-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-90 transition"
+                  className="px-2 rounded-full hover:bg-(--wrapperColor)/40 active:scale-90 transition"
                   onClick={() => router.back()}
                 >
                   <ChevronLeftIcon size={34} strokeWidth={2} />
@@ -256,7 +256,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname === "/dash/feed" && (
                 <button
                   onClick={() => setCameraClick((prev) => !prev)}
-                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  className="p-2 rounded-full hover:bg-(--wrapperColor)/40 active:scale-110 transition"
                   type="button"
                 >
                   <CameraIcon size={28} strokeWidth={1.5} />
@@ -267,7 +267,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname === "/dash/feed" && (
                 <Link
                   href={"/dash/search"}
-                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  className="p-2 rounded-full hover:bg-(--wrapperColor)/40 active:scale-110 transition"
                   type="button"
                 >
                   <MagnifyingGlassIcon
@@ -284,7 +284,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname === "/dash/profile" && (
                 <Link
                   href={"/dash/profile/bookmarks"}
-                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  className="p-2 rounded-full hover:bg-(--wrapperColor)/40 active:scale-110 transition"
                   type="button"
                 >
                   <BookmarkSimpleIcon
@@ -301,7 +301,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname === "/dash/profile" && (
                 <Link
                   href={"/dash/profile/settings"}
-                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  className="p-2 rounded-full hover:bg-(--wrapperColor)/40 active:scale-110 transition"
                   type="button"
                 >
                   <LucideSettings size={26} strokeWidth={1.5} />
@@ -312,7 +312,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               {pathname === "/dash/feed" && (
                 <Link
                   href={"/dash/notifications"}
-                  className="p-2 rounded-full hover:bg-[var(--wrapperColor)]/40 active:scale-110 transition"
+                  className="p-2 rounded-full hover:bg-(--wrapperColor)/40 active:scale-110 transition"
                   type="button"
                 >
                   <HeartIcon
@@ -343,11 +343,11 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for desktop starts here (1st column for desktop) */}
 
           <nav
-            className={`hidden md:flex col-span-1 px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-[var(--borderColor)] pb-20 right-slide my-2 rounded-xl flex-col gap-4 sticky top-3 text-[var(--textColor)] justify-start `}
+            className={`hidden md:flex scroll-hidden col-span-1 px-4 mt-1 overflow-y-auto  h-screen transition-all duration-200 ease-in border-(--borderColor) pb-20 right-slide my-2 rounded-xl flex-col gap-4 sticky top-3 text-(--textColor) justify-start `}
           >
             <div
               className={`flex items-center justify-center gap-3 
-              bg-[var(--bgColor)] py-2 mb-8 rounded-full text-[var(--textColor)]
+              bg-(--bgColor) py-2 mb-8 rounded-full text-(--textColor)
               ${sidebarOpen ? "px-4" : "px-0 bg-transparent"}
             `}
             >
@@ -365,7 +365,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                 onClick={() => setSidebarOpen((prev) => !prev)}
                 type="button"
                 title={sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
-                className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-[var(--wrapperColor)] transition"
+                className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-(--wrapperColor) transition"
               >
                 {sidebarOpen ? (
                   <SidebarCloseIcon
@@ -388,9 +388,9 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/feed"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm ease-in px-3 py-1 rounded-full cursor-pointer active:bg-(--wrapperColor) hover:bg-(--wrapperColor) hover:text-(--textColor) active:rounded-full active:scale-90 ${
                 pathname === "/dash/feed"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
+                  ? "bg-(--textColor) text-(--bgColor)"
                   : ""
               }`}
             >
@@ -403,7 +403,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               onClick={() => setCameraClick((prev) => !prev)}
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) ease-in px-3 py-1 rounded-full cursor-pointer active:bg-(--wrapperColor) active:rounded-full active:scale-90`}
               type="button"
             >
               <CameraIcon strokeWidth={1.5} size={22} />
@@ -415,7 +415,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               href={"/dash/search"}
               className={` ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] hidden md:flex lg:hidden ease-in px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90`}
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) hidden md:flex lg:hidden ease-in px-3 py-1 rounded-full cursor-pointer active:bg-(--wrapperColor) active:rounded-full active:scale-90`}
               type="button"
             >
               <SearchIcon strokeWidth={1.5} size={22} />
@@ -427,9 +427,9 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/create"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) px-3 py-1 rounded-full cursor-pointer ease-in active:bg-(--wrapperColor) active:rounded-full active:scale-90 ${
                 pathname === "/dash/create"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
+                  ? "bg-(--textColor) text-(--bgColor)"
                   : ""
               }`}
             >
@@ -442,10 +442,8 @@ function Dashboard({ children }: { children: ReactNode }) {
               href={`/chats?userId=${myId}`}
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
-                pathname === "/chats"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
-                  : ""
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) px-3 py-1 rounded-full cursor-pointer ease-in active:bg-(--wrapperColor) active:rounded-full active:scale-90 ${
+                pathname === "/chats" ? "bg-(--textColor) text-(--bgColor)" : ""
               }`}
             >
               <ChatTextIcon strokeWidth={1.5} size={22} />
@@ -457,10 +455,8 @@ function Dashboard({ children }: { children: ReactNode }) {
               href={`/reels?myId=${myId}&myPic=${profilePicture || avatar}`}
               className={`font-medium ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } gap-2 justify-start px-3 text-xl sm:text-sm py-1 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] rounded-full flex items-center cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
-                pathname === "/reels"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
-                  : ""
+              } gap-2 justify-start px-3 text-xl sm:text-sm py-1 hover:bg-(--wrapperColor) hover:text-(--textColor) rounded-full flex items-center cursor-pointer active:bg-(--wrapperColor) active:rounded-full active:scale-90 ${
+                pathname === "/reels" ? "bg-(--textColor) text-(--bgColor)" : ""
               }`}
             >
               <PlaySquare strokeWidth={1.5} size={22} />
@@ -472,9 +468,9 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/calls"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } font-medium justify-start items-center gap-2 text-xl sm:text-sm px-3 hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } font-medium justify-start items-center gap-2 text-xl sm:text-sm px-3 hover:bg-(--wrapperColor) hover:text-(--textColor) py-1 rounded-full cursor-pointer ease-in active:bg-(--wrapperColor) active:rounded-full active:scale-90 ${
                 pathname === "/dash/calls"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
+                  ? "bg-(--textColor) text-(--bgColor)"
                   : ""
               }`}
             >
@@ -487,9 +483,9 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/notifications"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer ease-in active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) px-3 py-1 rounded-full cursor-pointer ease-in active:bg-(--wrapperColor) active:rounded-full active:scale-90 ${
                 pathname === "/dash/notifications"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
+                  ? "bg-(--textColor) text-(--bgColor)"
                   : ""
               }`}
             >
@@ -502,13 +498,13 @@ function Dashboard({ children }: { children: ReactNode }) {
               href="/dash/profile"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full cursor-pointer active:bg-[var(--wrapperColor)] active:rounded-full active:scale-90 ${
+              } justify-start items-center gap-2 font-medium text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) px-3 py-1 rounded-full cursor-pointer active:bg-(--wrapperColor) active:rounded-full active:scale-90 ${
                 pathname === "/dash/profile"
-                  ? "bg-[var(--textColor)] text-[var(--bgColor)]"
+                  ? "bg-(--textColor) text-(--bgColor)"
                   : ""
               }`}
             >
-              <div className=" flex items-center justify-center rounded-full bg-gradient-to-br   hover:scale-105 transition-transform duration-300 ease-out">
+              <div className=" flex items-center justify-center rounded-full bg-linear-to-br   hover:scale-105 transition-transform duration-300 ease-out">
                 {profilePic ? (
                   <img
                     src={profilePic}
@@ -523,11 +519,7 @@ function Dashboard({ children }: { children: ReactNode }) {
                   />
                 )}
               </div>
-              <p
-                className={`${
-                  sidebarOpen ? "" : "hidden"
-                } text-[var(textColor)]`}
-              >
+              <p className={`${sidebarOpen ? "" : "hidden"} text-(textColor)`}>
                 {userName !== "" ? userName + " (You)" : "You"}
               </p>
             </Link>
@@ -538,7 +530,7 @@ function Dashboard({ children }: { children: ReactNode }) {
               type="button"
               className={`flex ${
                 sidebarOpen ? "w-full" : "w-fit"
-              } justify-start items-center gap-2 active:bg-[var(--wrapperColor)] text-xl sm:text-sm hover:bg-[var(--wrapperColor)] hover:text-[var(--textColor)] px-3 py-1 rounded-full active:rounded-full active:scale-90 font-medium cursor-pointer z-10`}
+              } justify-start items-center gap-2 active:bg-(--wrapperColor) text-xl sm:text-sm hover:bg-(--wrapperColor) hover:text-(--textColor) px-3 py-1 rounded-full active:rounded-full active:scale-90 font-medium cursor-pointer z-10`}
             >
               <div
                 className={`${
@@ -584,8 +576,8 @@ function Dashboard({ children }: { children: ReactNode }) {
           {/* nav for mobile ends here */}
 
           {/* third column for desktop starts here */}
-          <div className="col-span-1 hidden w-full sticky top-2 lg:block my-2 mx-2">
-            <div className="overflow-y-auto max-h-[90vh]">
+          <div className="col-span-1  hidden w-full sticky top-2 lg:block my-2 mx-2">
+            <div className="overflow-y-auto scroll-hidden max-h-[90vh]">
               <FollowersList userId={myId} type="people" />
             </div>
           </div>
