@@ -143,7 +143,7 @@ Media CDN for fast delivery
 
 Made with ❤️ by Adarsh
 
-© 2025 IGotMessage — DevFoxLite LLC.
+© 2025 IGotMessage — Bluearray LLC.
 All rights reserved.
 
 📧 Email: jhaa50872@gmail.com
