@@ -1,6 +1,6 @@
 import React from "react";
 import { Sparkles, MessageSquare, Lightbulb, Code, Bot } from "lucide-react";
-import { useUIStore } from "@/store/zustandStore";
+import { useUIStore } from "@/store/zustand/chatStore";
 
 
 

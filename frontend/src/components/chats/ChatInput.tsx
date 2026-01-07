@@ -9,7 +9,7 @@ import VoiceRecorder from "./RecordAudio";
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
 import { setNewMessages } from "@/features/chatSlice";
-import { useUIStore } from "@/store/zustandStore";
+import { useUIStore } from "@/store/zustand/chatStore";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
