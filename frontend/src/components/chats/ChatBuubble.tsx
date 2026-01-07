@@ -57,7 +57,7 @@ const MessageBubble = React.memo(function MessageBubble({
       {/* DATE SEPARATOR */}
       {!isSameDayFlag && (
         <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-          <span className="px-4 py-1 text-xs font-medium rounded-full bg-[#D4AF37] text-black shadow border border-white/30">
+          <span className="px-4 py-1 text-xs font-medium rounded-full bg-[#e6dfdfd7] text-black shadow border border-white/30">
             {formatDate}
           </span>
         </div>
