@@ -132,14 +132,14 @@ const ChatInput = React.memo(
         <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
           {/* 🔲 Inner Wrapper: File + Input + Emoji */}
           <div
-            className={`flex relative flex-1 items-center gap-2 px-3 py-2 rounded-3xl bg-gray-700 text-white  backdrop-blur-md shadow-sm`}
+            className={`flex relative flex-1 items-center gap-2 px-3 py-3 rounded-3xl bg-gray-700 text-white  backdrop-blur-md shadow-sm`}
           >
             {/* 📎 File Upload */}
             {!isAiChat && (
-              <label className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
+              <label className="px-2 rounded-full hover:bg-[var(--borderColor)]/15 transition cursor-pointer flex-shrink-0">
                 <input
                   type="file"
-                  accept="image/*,video/*"
+                  accept="image/*"
                   className="hidden"
                   onChange={(e) =>
                     e.target.files && onFileUpload?.(e.target.files[0])
@@ -169,7 +169,7 @@ const ChatInput = React.memo(
             {!isAiChat && (
               <button
               onClick={toggleEmojiPicker}
-              className="p-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
+              className="px-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
             >
               <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
             </button>
@@ -202,10 +202,7 @@ const ChatInput = React.memo(
             )}
           </div>
 
-          {/* 🎙️ Mic / Send */}
-          {(!showSendButton && !isAiChat) ? (
-            <VoiceRecorder />
-          ) : (
+        
             <button
               className="p-3  bg-[#D4AF37] text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
               onClick={() => {
@@ -218,7 +215,6 @@ const ChatInput = React.memo(
             >
               <Send className="w-5 h-5" />
             </button>
-          )}
         </div>
       </div>
     );
