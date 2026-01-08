@@ -1,5 +1,4 @@
 import axios from "axios";
-import { headers } from "next/headers";
 
 const checkAuth = async function () {
   const url =
