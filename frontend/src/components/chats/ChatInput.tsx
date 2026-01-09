@@ -106,6 +106,7 @@ const ChatInput = React.memo(
         senderId: myId,
         receiverId: receiverId,
         tempId,
+        messageType: "text",
       });
 
       dispatch(
@@ -117,6 +118,7 @@ const ChatInput = React.memo(
               sender: myId,
               content: input,
               updatedAt: new Date().toISOString(),
+              messageType: "text",
             },
           ],
         })

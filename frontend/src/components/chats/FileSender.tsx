@@ -2,6 +2,12 @@ import uploadFiles from "@/utils/uploadFile";
 import { Image, Send, X } from "lucide-react";
 import React, { useEffect } from "react";
 import { useUIStore } from "@/store/zustand/chatStore";
+import { useAppDispatch } from "@/store/hooks";
+import { getSocket } from "@/utils/socket";
+import { setNewMessages } from "@/features/chatSlice";
+import { useSearchParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 function FilePreview() {
   const {
@@ -9,11 +15,16 @@ function FilePreview() {
     filePreview,
     setFilePreview: setPreview,
     setMainFile,
-    finalFile,
-    setFinalFile,
     isFileUploading,
     setIsFileuploading,
+    setFileUploaded,
   } = useUIStore();
+
+  const dispatch = useAppDispatch();
+  const chatId = useSelector((state: RootState) => state.chat.chatId);
+  const params = useSearchParams();
+  const receiverId = params.get("recieverId");
+  const myId = params.get("senderId");
 
   async function handleFileUploadAndDelivery() {
     // lets upload file first broooo.
@@ -22,10 +33,40 @@ function FilePreview() {
     setIsFileuploading(true);
     const response = await uploadFiles([mainFile]);
     if (response[0].url) {
-      setFinalFile(response[0].url);
-
       console.log("imagekitt file response----------------", response);
+
+      const socket = getSocket();
+      const tempId = `${Date.now()}abc`;
+
+      socket.emit("event:message", {
+        content: response[0].url,
+        roomId: chatId,
+        messageType: "image",
+        senderId: myId,
+        receiverId: receiverId,
+        tempId,
+      });
+
+      dispatch(
+        setNewMessages({
+          chatId,
+          messages: [
+            {
+              _id: tempId,
+              sender: myId,
+              content: response[0].url,
+              messageTyppe: "image",
+              updatedAt: new Date().toISOString(),
+            },
+          ],
+        })
+      );
     }
+
+    setFileUploaded();
+    setIsFileuploading(false);
+    setMainFile(null);
+    setPreview(null);
   }
 
   return (

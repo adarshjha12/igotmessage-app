@@ -44,7 +44,7 @@ import NewLoader from "../NewLoader";
 import MoreOption from "./MoreOption";
 import { MessagesList } from "./ChatBuubble";
 import WelcomeScreen from "./WelcomeAi";
-import FilePreview from "./FilePreview";
+import FilePreview from "./FileSender";
 import { useUIStore } from "@/store/zustand/chatStore";
 import FileSendingVisual from "./FileSendingVisual";
 
@@ -75,7 +75,7 @@ function SingleChat() {
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const { filePreview } = useUIStore();
+  const { filePreview , isFileUploading, setIsFileuploading , isFileUploaded} = useUIStore();
   const dispatch = useAppDispatch();
   const allMessages = useAppSelector((state) => state.chat.messages);
 
@@ -226,7 +226,7 @@ function SingleChat() {
   useEffect(() => {
     handleFocus("normal");
     return () => {};
-  }, [filePreview]);
+  }, [filePreview, isFileUploading]);
 
   return (
     <div className="w-full h-screen  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]">
@@ -349,9 +349,9 @@ function SingleChat() {
             />
           )}
 
-        {filePreview && <FilePreview />}
+        {(filePreview && !isFileUploading) && <FilePreview />}
 
-        {filePreview && <FileSendingVisual />}
+        {(filePreview && isFileUploading && !isFileUploaded) && <FileSendingVisual />}
 
         {/* Typing */}
         {isOtherTyping && (

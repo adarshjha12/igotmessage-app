@@ -14,7 +14,7 @@ const store = configureStore({
     story: storyReducer,
     post: postReducer,
     reel: reelReducer,
-    chat: chatReducer
+    chat: chatReducer,
   },
 });
 

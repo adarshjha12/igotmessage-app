@@ -26,20 +26,22 @@ export async function initSocketIO() {
         senderId,
         receiverId,
         tempId,
+        messageType
       }: {
         content: string;
         roomId: string;
         senderId: string;
         receiverId: string;
         tempId: string;
+        messageType: string
       }) => {
-        console.log("💬 New message:", content, roomId, senderId);
+        console.log("💬 New message:", content, roomId, senderId, messageType);
 
         const newMessage = await Message.create({
           sender: senderId,
           chat: roomId,
           content,
-          messageType: "text",
+          messageType: messageType || "text",
         });
 
         await Chat.findByIdAndUpdate(
