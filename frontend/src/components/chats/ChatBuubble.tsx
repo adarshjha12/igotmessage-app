@@ -16,14 +16,12 @@ export interface MessageBubbleProps {
   previousMessage: Message | null;
   avatar: string;
   senderId: string;
-  addReply: (msg: string) => void;
 }
 
 export interface MessagesListProps {
   allMessages: Message[];
   senderId: string;
   avatar: string;
-  addReply: (msg: string) => void;
 }
 
 const MessageBubble = React.memo(function MessageBubble({
@@ -31,7 +29,6 @@ const MessageBubble = React.memo(function MessageBubble({
   previousMessage,
   avatar,
   senderId,
-  addReply,
 }: MessageBubbleProps) {
   const currentDate = new Date(message.updatedAt);
   const isSender = message.sender === senderId;
@@ -52,7 +49,6 @@ const MessageBubble = React.memo(function MessageBubble({
       className={`flex ${
         isSender ? "justify-end" : "justify-start"
       } items-end gap-2 relative group transition-all`}
-      onDoubleClick={() => addReply(message.content)}
     >
       {/* DATE SEPARATOR */}
       {!isSameDayFlag && (
@@ -106,7 +102,6 @@ const MessagesList = React.memo(function MessagesList({
   allMessages,
   senderId,
   avatar,
-  addReply,
 }: MessagesListProps) {
   return (
     <>
@@ -117,7 +112,6 @@ const MessagesList = React.memo(function MessagesList({
           previousMessage={i > 0 ? allMessages[i - 1] : null}
           avatar={avatar}
           senderId={senderId}
-          addReply={addReply}
         />
       ))}
     </>

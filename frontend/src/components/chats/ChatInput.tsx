@@ -1,5 +1,13 @@
 import { PaperPlaneIcon, PaperPlaneRightIcon } from "@phosphor-icons/react";
-import { ImagePlusIcon, Mic, Paperclip, Send, Smile, SparklesIcon, X } from "lucide-react";
+import {
+  ImagePlusIcon,
+  Mic,
+  Paperclip,
+  Send,
+  Smile,
+  SparklesIcon,
+  X,
+} from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useSelector } from "react-redux";
@@ -29,10 +37,17 @@ interface Message {
 }
 
 const ChatInput = React.memo(
-  ({ onFileUpload, onSend, setFocus, isAiChat }: ChatInputProps) => {
+  ({ onSend, setFocus, isAiChat }: ChatInputProps) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const dispatch = useAppDispatch();
-    const {aiChatSuggestions} = useUIStore();
+    const { aiChatSuggestions } = useUIStore();
+    const {
+      mainFile,
+      filePreview,
+      setMainFile,
+      setFilePreview,
+      removeFilePreview,
+    } = useUIStore();
 
     const [showSendButton, setShowSendButton] = useState(false);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -111,6 +126,19 @@ const ChatInput = React.memo(
       setShowSendButton(false);
     };
 
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+
+      setMainFile(file);
+      setFilePreview(url);
+
+      if (url) {
+        URL.revokeObjectURL(filePreview || "");
+      }
+    };
+
     useEffect(() => {
       if (input.length > 0) {
         setShowSendButton(true);
@@ -124,8 +152,14 @@ const ChatInput = React.memo(
       if (isAiChat) {
         setInput(aiChatSuggestions);
       }
-      
     }, [aiChatSuggestions]);
+
+    useEffect(() => {
+      console.log("mainFile", mainFile);
+      console.log("filePreview", filePreview);
+
+      return () => {};
+    }, [mainFile, filePreview]);
 
     return (
       <div className="fixed left-0  bottom-0 w-full z-10 px-3 pt-3 pb-3 md:py-4">
@@ -141,16 +175,14 @@ const ChatInput = React.memo(
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) =>
-                    e.target.files && onFileUpload?.(e.target.files[0])
-                  }
+                  onChange={handleFileUpload}
                 />
                 <ImagePlusIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
               </label>
             )}
 
             {isAiChat && (
-               <SparklesIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
+              <SparklesIcon className="w-5 h-5  opacity-70 hover:opacity-100 transition" />
             )}
 
             {/* 📝 Text Area */}
@@ -161,18 +193,20 @@ const ChatInput = React.memo(
               placeholder="Message"
               onClick={() => setFocus && setFocus("input")}
               onInput={handleInput}
-              className={`flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none ${isAiChat && "placeholder:pl-4"}`}
+              className={`flex-1 w-[100px] bg-transparent resize-none border-none outline-none  text-[16.5px] placeholder:/40 leading-relaxed scrollbar-none ${
+                isAiChat && "placeholder:pl-4"
+              }`}
               style={{ maxHeight: "150px" }}
             />
 
             {/* 😄 Emoji Icon */}
             {!isAiChat && (
               <button
-              onClick={toggleEmojiPicker}
-              className="px-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
-            >
-              <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
-            </button>
+                onClick={toggleEmojiPicker}
+                className="px-2 rounded-full hover:bg-[var(--borderColor)]/15 transition flex-shrink-0"
+              >
+                <Smile className="w-5 h-5  opacity-70 hover:opacity-100" />
+              </button>
             )}
 
             {showEmojiPicker && (
@@ -202,19 +236,18 @@ const ChatInput = React.memo(
             )}
           </div>
 
-        
-            <button
-              className="p-3  bg-[#D4AF37] text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
-              onClick={() => {
-                if (textareaRef.current?.value.trim()) {
-                  onSend?.(textareaRef.current.value.trim());
-                  textareaRef.current.value = "";
-                  handleSend();
-                }
-              }}
-            >
-              <Send className="w-5 h-5" />
-            </button>
+          <button
+            className="p-3  bg-[#D4AF37] text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
+            onClick={() => {
+              if (textareaRef.current?.value.trim()) {
+                onSend?.(textareaRef.current.value.trim());
+                textareaRef.current.value = "";
+                handleSend();
+              }
+            }}
+          >
+            <Send className="w-5 h-5" />
+          </button>
         </div>
       </div>
     );

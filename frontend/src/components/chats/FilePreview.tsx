@@ -1,16 +1,36 @@
+import uploadFiles from "@/utils/uploadFile";
 import { Image, Send, X } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useUIStore } from "@/store/zustand/chatStore";
 
-function FilePreview({
-  url,
-  setPreview,
-}: {
-  url: string;
-  setPreview: (val: null) => void | null;
-}) {
+function FilePreview() {
+  const {
+    mainFile,
+    filePreview,
+    setFilePreview: setPreview,
+    setMainFile,
+    finalFile,
+    setFinalFile,
+    isFileUploading,
+    setIsFileuploading,
+  } = useUIStore();
+
+  async function handleFileUploadAndDelivery() {
+    // lets upload file first broooo.
+    if (!mainFile) return;
+
+    setIsFileuploading(true);
+    const response = await uploadFiles([mainFile]);
+    if (response[0].url) {
+      setFinalFile(response[0].url);
+
+      console.log("imagekitt file response----------------", response);
+    }
+  }
+
   return (
     <>
-      {url && (
+      {filePreview && (
         <div
           className="flex items-center justify-between gap-4
                w-full px-3 py-3
@@ -28,7 +48,7 @@ function FilePreview({
                    bg-black/30"
             >
               <img
-                src={url}
+                src={filePreview}
                 alt="preview"
                 className="w-full h-full object-cover"
               />
@@ -46,7 +66,10 @@ function FilePreview({
           {/* Right: Actions */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setPreview(null)}
+              onClick={() => {
+                setPreview(null);
+                setMainFile(null);
+              }}
               className="flex items-center justify-center w-9 h-9 rounded-full
                    bg-white/10 hover:bg-rose-500/20
                    text-white/80 hover:text-rose-400
@@ -56,6 +79,7 @@ function FilePreview({
             </button>
 
             <button
+              onClick={handleFileUploadAndDelivery}
               className="flex items-center justify-center w-10 h-10 rounded-full
                    bg-violet-600 hover:bg-violet-700
                    text-white

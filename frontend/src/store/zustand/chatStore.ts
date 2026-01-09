@@ -1,46 +1,47 @@
 import { create } from "zustand";
 
 interface UIState {
-  theme: "light" | "dark";
-  isSidebarOpen: boolean;
-  storyViewer: {
-    isOpen: boolean;
-    initialIndex: number;
-  };
+  isFileUploaded: boolean;
+  isFileUploading: boolean;
+  mainFile: File | null;
+  filePreview: string | null;
+  finalFile: string | null;
   aiChatSuggestions: string;
-  openSidebar: () => void;
-  closeSidebar: () => void;
-  toggleTheme: () => void;
-  openStoryViewer: (index: number) => void;
-  closeStoryViewer: () => void;
+
   setAiChatSuggestions: (suggestion: string) => void;
+  setFileUploaded: () => void;
+  setMainFile: (file: File | null) => void;
+  setFilePreview: (url: string | null) => void;
+  removeFilePreview: () => void;
+  setFinalFile: (url: string | null) => void;
+  setIsFileuploading: (val: boolean) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
-  theme: "light",
-  isSidebarOpen: false,
   aiChatSuggestions: "",
-  storyViewer: {
-    isOpen: false,
-    initialIndex: 0,
+  isFileUploaded: false,
+  isFileUploading: false,
+  mainFile: null,
+  filePreview: null,
+  finalFile: null,
+
+  setFileUploaded: () => {
+    set({ isFileUploaded: true }),
+      setTimeout(() => {
+        set({ isFileUploaded: false });
+      }, 3000);
   },
-
-  toggleTheme: () =>
-    set((s) => ({ theme: s.theme === "light" ? "dark" : "light" })),
-
-  openSidebar: () => set({ isSidebarOpen: true }),
-  closeSidebar: () => set({ isSidebarOpen: false }),
-
-  openStoryViewer: (index) =>
-    set({
-      storyViewer: { isOpen: true, initialIndex: index },
-    }),
-
-  closeStoryViewer: () =>
-    set({
-      storyViewer: { isOpen: false, initialIndex: 0 },
-    }),
 
   setAiChatSuggestions: (suggestion: string) =>
     set((s) => ({ aiChatSuggestions: suggestion })),
+
+  setMainFile: (file: File | null) => set((s) => ({ mainFile: file })),
+
+  setFilePreview: (url: string | null) => set((s) => ({ filePreview: url })),
+
+  removeFilePreview: () => set((s) => ({ filePreview: null })),
+
+  setFinalFile: (url: string | null) => set((s) => ({ finalFile: url })),
+
+  setIsFileuploading: (val: boolean) => set((s) => ({ isFileUploading: val })),
 }));

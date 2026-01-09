@@ -45,6 +45,8 @@ import MoreOption from "./MoreOption";
 import { MessagesList } from "./ChatBuubble";
 import WelcomeScreen from "./WelcomeAi";
 import FilePreview from "./FilePreview";
+import { useUIStore } from "@/store/zustand/chatStore";
+import FileSendingVisual from "./FileSendingVisual";
 
 interface Message {
   _id?: string;
@@ -73,29 +75,13 @@ function SingleChat() {
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const [preview, setPreview] = useState<{ url: string } | null>({
-    url: "",
-  });
-  const addReply = (msg: string) => setReplyTo(msg);
-  const cancelReply = () => setReplyTo(null);
+  const { filePreview } = useUIStore();
   const dispatch = useAppDispatch();
   const allMessages = useAppSelector((state) => state.chat.messages);
 
-  const reactions = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
-  let socket: Socket;
-  const [replyTo, setReplyTo] = useState<string | null>(null);
-  // const [allMessages, setAllMessages] = useState<Message[]>([]);
   const recieverLastSeen = useAppSelector(
     (state: RootState) => state.chat.recieverLastSeen
   );
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setPreview({ url });
-  };
-
-  const removePreview = () => setPreview(null);
 
   const url =
     process.env.NODE_ENV === "production"
@@ -238,18 +224,9 @@ function SingleChat() {
   }, [chatId]);
 
   useEffect(() => {
-    console.log("file--------------", file);
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreview({ url });
-
-      handleFocus("normal");
-
-      if (preview?.url) {
-        URL.revokeObjectURL(preview.url);
-      }
-    }
-  }, [file]);
+    handleFocus("normal");
+    return () => {};
+  }, [filePreview]);
 
   return (
     <div className="w-full h-screen  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]">
@@ -369,68 +346,12 @@ function SingleChat() {
               allMessages={allMessages[chatId]}
               senderId={senderId!}
               avatar={avatar!}
-              addReply={addReply}
             />
           )}
 
-        {preview?.url && (
-          <FilePreview setPreview={setPreview} url={preview.url}/>
-          // <div
-          //   className="flex items-center justify-between gap-4
-          //      w-full px-3 py-3
-          //      rounded-2xl
-          //      bg-violet-600/10 backdrop-blur-md
-          //      border border-violet-500/30
-          //      shadow-lg shadow-violet-600/20"
-          // >
-          //   {/* Left: Preview section */}
-          //   <div className="flex items-center gap-3">
-          //     <div
-          //       className="relative w-[120px] rounded-xl rounded-br-md
-          //          overflow-hidden
-          //          border border-violet-500/30
-          //          bg-black/30"
-          //     >
-          //       <img
-          //         src={preview.url}
-          //         alt="preview"
-          //         className="w-full h-full object-cover"
-          //       />
-          //     </div>
+        {filePreview && <FilePreview />}
 
-          //     <div className="flex flex-col gap-1">
-          //       <div className="flex items-center gap-2 text-violet-300 text-sm">
-          //         <Image size={14} />
-          //         <span>Image preview</span>
-          //       </div>
-          //       <span className="text-xs text-white/60">Ready to send</span>
-          //     </div>
-          //   </div>
-
-          //   {/* Right: Actions */}
-          //   <div className="flex items-center gap-2">
-          //     <button
-          //       onClick={() => setPreview(null)}
-          //       className="flex items-center justify-center w-9 h-9 rounded-full
-          //          bg-white/10 hover:bg-rose-500/20
-          //          text-white/80 hover:text-rose-400
-          //          transition active:scale-95"
-          //     >
-          //       <X size={16} />
-          //     </button>
-
-          //     <button
-          //       className="flex items-center justify-center w-10 h-10 rounded-full
-          //          bg-violet-600 hover:bg-violet-700
-          //          text-white
-          //          shadow-md shadow-violet-600/30
-          //          transition active:scale-95"
-          //     >
-          //       <Send size={18} />
-          //     </button>
-          //   </div>
-          // </div>
-        )}
+        {filePreview && <FileSendingVisual />}
 
         {/* Typing */}
         {isOtherTyping && (
@@ -454,7 +375,6 @@ function SingleChat() {
 
       {/* Input */}
       <ChatInput
-        onFileUpload={setFile}
         setFocus={handleFocus}
         receiverId={recieverId!}
         isAiChat={isAiChat!}
