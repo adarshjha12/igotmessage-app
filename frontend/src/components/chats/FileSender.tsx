@@ -55,7 +55,7 @@ function FilePreview() {
               _id: tempId,
               sender: myId,
               content: response[0].url,
-              messageTyppe: "image",
+              messageType: "image",
               updatedAt: new Date().toISOString(),
             },
           ],

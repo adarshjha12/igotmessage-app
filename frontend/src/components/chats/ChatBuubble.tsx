@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { isToday, isYesterday, isSameDay, isValid, format } from "date-fns";
 import { CheckCheckIcon } from "lucide-react";
+import FullImageViewer from "./FullImageViewer";
 
 interface Message {
   _id?: string;
@@ -34,6 +35,7 @@ const MessageBubble = React.memo(function MessageBubble({
 }: MessageBubbleProps) {
   const currentDate = new Date(message.updatedAt);
   const isSender = message.sender === senderId;
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
 
   const isSameDayFlag =
     previousMessage &&
@@ -82,7 +84,12 @@ const MessageBubble = React.memo(function MessageBubble({
         } shadow`}
       >
         {messageType === "image" ? (
-          <img src={message.content} className="w-[200px] h-auto rounded-2xl border-2 border-violet-600" alt="" />
+          <img
+            onClick={() => setPreviewSrc(message?.content)}
+            src={message.content}
+            className="w-[200px] h-auto rounded-2xl border-0 border-violet-600"
+            alt=""
+          />
         ) : (
           <p className="leading-relaxed text-lg sm:text-base break-words">
             {message.content}
@@ -100,7 +107,14 @@ const MessageBubble = React.memo(function MessageBubble({
 
           {isSender && <CheckCheckIcon size={13} className="opacity-70" />}
         </span>
+
+         {/*Full PREVIEW IMAGE */}
+      {previewSrc && (
+        <FullImageViewer src={previewSrc} onClose={() => setPreviewSrc(null)} />
+      )}
       </div>
+
+     
     </div>
   );
 });

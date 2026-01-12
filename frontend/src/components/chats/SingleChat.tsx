@@ -75,7 +75,8 @@ function SingleChat() {
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const { filePreview , isFileUploading, setIsFileuploading , isFileUploaded} = useUIStore();
+  const { filePreview, isFileUploading, setIsFileuploading, isFileUploaded } =
+    useUIStore();
   const dispatch = useAppDispatch();
   const allMessages = useAppSelector((state) => state.chat.messages);
 
@@ -173,7 +174,6 @@ function SingleChat() {
             setMessages({ chatId: chatId, messages: res.data.allMessages })
           );
           setLoadingMessages(false);
-          // setRecieverLastSeen(res.data?.receiverLastSeen ?? null);
           dispatch(
             setLastSeen({ chatId, date: res.data?.receiverLastSeen ?? null })
           );
@@ -349,9 +349,11 @@ function SingleChat() {
             />
           )}
 
-        {(filePreview && !isFileUploading) && <FilePreview />}
+        {filePreview && !isFileUploading && <FilePreview />}
 
-        {(filePreview && isFileUploading && !isFileUploaded) && <FileSendingVisual />}
+        {filePreview && isFileUploading && !isFileUploaded && (
+          <FileSendingVisual />
+        )}
 
         {/* Typing */}
         {isOtherTyping && (
