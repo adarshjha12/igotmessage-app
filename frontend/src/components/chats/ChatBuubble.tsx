@@ -16,6 +16,7 @@ export interface MessageBubbleProps {
   previousMessage: Message | null;
   avatar: string;
   senderId: string;
+  messageType?: string;
 }
 
 export interface MessagesListProps {
@@ -28,6 +29,7 @@ const MessageBubble = React.memo(function MessageBubble({
   message,
   previousMessage,
   avatar,
+  messageType,
   senderId,
 }: MessageBubbleProps) {
   const currentDate = new Date(message.updatedAt);
@@ -71,15 +73,21 @@ const MessageBubble = React.memo(function MessageBubble({
 
       {/* BUBBLE */}
       <div
-        className={`max-w-[75%] sm:max-w-[65%] mb-6 my-2 rounded-2xl px-4 py-2 text-[15px] relative transition-all ${!isSameDayFlag && "mt-12"} duration-200 ${
+        className={`max-w-[75%] sm:max-w-[65%] mb-6 my-2 rounded-2xl px-4 py-2 text-[15px] relative transition-all ${
+          !isSameDayFlag && "mt-12"
+        } duration-200 ${
           isSender
             ? "bg-[#6d28d9] text-white rounded-br-none"
             : "bg-[#dfdee2] text-[#06000e]  border-[#6d28d955]  shadow-[0_0_12px_#6d28d9aa] rounded-bl-none"
         } shadow`}
       >
-        <p className="leading-relaxed text-lg sm:text-base break-words">
-          {message.content}
-        </p>
+        {messageType === "image" ? (
+          <img src={message.content} className="w-[200px] h-auto rounded-2xl border-2 border-violet-600" alt="" />
+        ) : (
+          <p className="leading-relaxed text-lg sm:text-base break-words">
+            {message.content}
+          </p>
+        )}
 
         <span
           className={`flex items-center gap-1 text-[10px] mt-1 ${
@@ -109,6 +117,7 @@ const MessagesList = React.memo(function MessagesList({
         <MessageBubble
           key={msg._id || i}
           message={msg}
+          messageType={msg.messageType}
           previousMessage={i > 0 ? allMessages[i - 1] : null}
           avatar={avatar}
           senderId={senderId}
