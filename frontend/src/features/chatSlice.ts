@@ -10,6 +10,14 @@ interface Message {
   tempId?: string;
 }
 
+interface AiMessage {
+  sender?: string;
+  chat?: string;
+  content: string;
+  updatedAt: string;
+  tempId?: string;
+}
+
 interface ChatState {
   chatId: string | null;
   onlineUsers: string[];
@@ -17,6 +25,7 @@ interface ChatState {
   chatList: Chat[] | null;
   messages: Record<string, Message[]> | null;
   recieverLastSeen?: Record<string, Date> | null;
+  aiMessage?: AiMessage[] | null;
 }
 
 const initialState: ChatState = {
@@ -25,6 +34,7 @@ const initialState: ChatState = {
   lastMessage: null,
   chatList: null,
   messages: null,
+  aiMessage: null,
 };
 
 const chatSlice = createSlice({
@@ -77,6 +87,16 @@ const chatSlice = createSlice({
       ];
     },
 
+    setAiMessages: (state, action) => {
+      if (!state.aiMessage) {
+        state.aiMessage = [];
+      }
+
+      const prevMessages = state.aiMessage;
+
+      state.aiMessage = [...prevMessages, ...action.payload];
+    },
+
     setLastSeen: (state, action) => {
       if (!state.recieverLastSeen) {
         state.recieverLastSeen = {};
@@ -97,5 +117,6 @@ export const {
   setChatList,
   setMessages,
   setNewMessages,
-  setLastSeen
+  setLastSeen,
+  setAiMessages,
 } = chatSlice.actions;

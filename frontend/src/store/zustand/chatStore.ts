@@ -6,6 +6,7 @@ interface UIState {
   mainFile: File | null;
   filePreview: string | null;
   aiChatSuggestions: string;
+  sendingMesaageToAi: boolean
 
   setAiChatSuggestions: (suggestion: string) => void;
   setFileUploaded: () => void;
@@ -13,6 +14,7 @@ interface UIState {
   setFilePreview: (url: string | null) => void;
   removeFilePreview: () => void;
   setIsFileuploading: (val: boolean) => void;
+  setSendingMessageToAi: (val:  boolean) => void
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -21,6 +23,7 @@ export const useUIStore = create<UIState>((set) => ({
   isFileUploading: false,
   mainFile: null,
   filePreview: null,
+  sendingMesaageToAi: false,
 
   setFileUploaded: () => {
     set({ isFileUploaded: true }),
@@ -40,4 +43,6 @@ export const useUIStore = create<UIState>((set) => ({
 
 
   setIsFileuploading: (val: boolean) => set((s) => ({ isFileUploading: val })),
+
+  setSendingMessageToAi: (val: boolean) => set((s) => ({ sendingMesaageToAi: val }))
 }));

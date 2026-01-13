@@ -16,7 +16,7 @@ import { getSocket } from "@/utils/socket";
 import VoiceRecorder from "./RecordAudio";
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { setNewMessages } from "@/features/chatSlice";
+import { setAiMessages, setNewMessages } from "@/features/chatSlice";
 import { useUIStore } from "@/store/zustand/chatStore";
 import axios from "axios";
 
@@ -41,7 +41,7 @@ const ChatInput = React.memo(
   ({ onSend, setFocus, isAiChat }: ChatInputProps) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const dispatch = useAppDispatch();
-    const { aiChatSuggestions } = useUIStore();
+    const { aiChatSuggestions, setSendingMessageToAi } = useUIStore();
     const {
       mainFile,
       filePreview,
@@ -134,8 +134,13 @@ const ChatInput = React.memo(
         setInput("");
         setShowSendButton(false);
       } else {
+        setSendingMessageToAi(true);
+        setInput("");
         const res = await axios.post(AI_URL, { prompt: input, type: "post" });
         const output = res?.data?.output ?? "";
+        dispatch(setAiMessages({ sender: "ai", content: output }));
+
+        setSendingMessageToAi(false);
       }
     };
 
