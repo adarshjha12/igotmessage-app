@@ -7,15 +7,23 @@ const aiTextGenController = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { prompt } = req.body;
+  const { prompt, type } = req.body;
 
   try {
     const response = await axios.post(
       "https://api.mistral.ai/v1/chat/completions",
       {
         model,
-        messages: [{ role: "user", content: `write a social media post for, or about- ${prompt} and don't ask for follow ups. just write the post.` }],
-        max_tokens: 700,
+        messages: [
+          {
+            role: "user",
+            content:
+              type === "post"
+                ? `write a social media post for, or about- ${prompt} and don't ask for follow ups. just write the post.`
+                : `${prompt}`,
+          },
+        ],
+        max_tokens: type === "post" ? 700 : 1200,
         stream: false,
       },
       {
@@ -26,9 +34,11 @@ const aiTextGenController = async (
       }
     );
 
-    console.log(response.data)
+    console.log(response.data);
 
-    return res.json({success: true, message: "text generated successfully",
+    return res.json({
+      success: true,
+      message: "text generated successfully",
       output: response.data.choices?.[0]?.message?.content || "",
     });
   } catch (err: any) {

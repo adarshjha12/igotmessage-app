@@ -257,7 +257,7 @@ export default function PostUpload() {
     if (!inputText) return;
     setAiTextLoading(true);
     try {
-      const res = await axios.post(AI_URL, { prompt: inputText });
+      const res = await axios.post(AI_URL, { prompt: inputText, type: "post" });
       const output = res?.data?.output ?? "";
       setText(output);
       startStreaming(output);

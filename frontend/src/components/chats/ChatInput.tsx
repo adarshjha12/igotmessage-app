@@ -18,6 +18,7 @@ import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
 import { setNewMessages } from "@/features/chatSlice";
 import { useUIStore } from "@/store/zustand/chatStore";
+import axios from "axios";
 
 interface ChatInputProps {
   onFileUpload?: (file: File) => void;
@@ -48,6 +49,11 @@ const ChatInput = React.memo(
       setFilePreview,
       removeFilePreview,
     } = useUIStore();
+
+    const AI_URL =
+      process.env.NODE_ENV === "production"
+        ? `${process.env.NEXT_PUBLIC_PRODUCTION_BACKEND_URL}/api/text/ai`
+        : `${process.env.NEXT_PUBLIC_LOCAL_BACKEND_URL}/api/text/ai`;
 
     const [showSendButton, setShowSendButton] = useState(false);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -94,38 +100,43 @@ const ChatInput = React.memo(
       e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`; // max 160px
     };
 
-    const handleSend = () => {
+    const handleSend = async () => {
       if (!input.trim()) return;
 
-      const socket = getSocket();
-      const tempId = `${Date.now()}abc`;
+      if (!isAiChat) {
+        const socket = getSocket();
+        const tempId = `${Date.now()}abc`;
 
-      socket.emit("event:message", {
-        content: input,
-        roomId: chatId,
-        senderId: myId,
-        receiverId: receiverId,
-        tempId,
-        messageType: "text",
-      });
+        socket.emit("event:message", {
+          content: input,
+          roomId: chatId,
+          senderId: myId,
+          receiverId: receiverId,
+          tempId,
+          messageType: "text",
+        });
 
-      dispatch(
-        setNewMessages({
-          chatId,
-          messages: [
-            {
-              _id: tempId,
-              sender: myId,
-              content: input,
-              updatedAt: new Date().toISOString(),
-              messageType: "text",
-            },
-          ],
-        })
-      );
+        dispatch(
+          setNewMessages({
+            chatId,
+            messages: [
+              {
+                _id: tempId,
+                sender: myId,
+                content: input,
+                updatedAt: new Date().toISOString(),
+                messageType: "text",
+              },
+            ],
+          })
+        );
 
-      setInput("");
-      setShowSendButton(false);
+        setInput("");
+        setShowSendButton(false);
+      } else {
+        const res = await axios.post(AI_URL, { prompt: input, type: "post" });
+        const output = res?.data?.output ?? "";
+      }
     };
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
