@@ -239,7 +239,7 @@ const ChatInput = React.memo(
           </div>
 
           <button
-            className="p-3  bg-[#D4AF37] text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
+            className="p-3  bg-[#ffffff] text-black rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-1"
             onClick={() => {
               if (textareaRef.current?.value.trim()) {
                 onSend?.(textareaRef.current.value.trim());

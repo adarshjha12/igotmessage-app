@@ -110,7 +110,7 @@ function SingleChat() {
     if (element) {
       setTimeout(
         () => {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          element.scrollIntoView({ behavior: "instant", block: "center" });
         },
         type === "input" ? 500 : 50
       );
@@ -229,7 +229,7 @@ function SingleChat() {
   }, [filePreview, isFileUploading]);
 
   return (
-    <div className="w-full h-screen  relative  sm:px-4 md:px-8 flex flex-col bg-gradient-to-b from-[#1a102a] via-[#2a1456] to-[#090417]">
+    <div className="w-full h-screen  relative  sm:px-4 md:px-8 flex flex-col bg-[#1e2838]">
       {/* Fixed Header */}
       <div className="flex w-full fixed left-0 items-center justify-between py-3 border-b text-white border-white/10 bg-white/10 backdrop-blur-sm top-0 z-10">
         <div className="flex items-center gap-3">

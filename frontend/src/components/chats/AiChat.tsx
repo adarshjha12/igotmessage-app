@@ -26,7 +26,7 @@ const AiChatCard = React.memo(({ myId }: { myId: string }) => {
 
         <div>
           <div className="font-semibold flex gap-3 items-center text-base">
-            IGM AI
+            IGotMessage AI
             <SparklesIcon className="w-4 h-4 text-orange-400" />
           </div>
           <p className="text-sm text-[var(--textColor)]/80 truncate max-w-[200px]">
