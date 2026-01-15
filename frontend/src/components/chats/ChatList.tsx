@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import axios from "axios";
 import NoChats from "./NoChats";
-import AddChatButton from "./AddChat";
 import FollowersList from "../dashboard/profile/AllUsers";
 import ChatHeader from "./ChatHeader";
 import { format, isValid } from "date-fns";
@@ -23,6 +22,7 @@ import AiChatCard from "./AiChat";
 import { usePathname, useSearchParams } from "next/navigation";
 import { setChatList } from "@/features/chatSlice";
 import BottomNav from "../dashboard/BottomNav";
+import FloatingAddChat from "./AddChat";
 
 export interface Chat {
   _id: string;
@@ -194,7 +194,7 @@ export default function ChatList() {
         </div>
       )}
       <div>
-        <AddChatButton onClick={() => setAddChatClicked(!addChatClicked)} />
+        <FloatingAddChat onClick={() => setAddChatClicked(!addChatClicked)} />
       </div>
       {addChatClicked && (
         <div className="fixed top-0 left-0 w-full h-full bg-[var(--bgColor)] z-50 flex flex-col items-center justify-start">

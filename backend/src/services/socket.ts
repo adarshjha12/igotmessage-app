@@ -26,14 +26,14 @@ export async function initSocketIO() {
         senderId,
         receiverId,
         tempId,
-        messageType
+        messageType,
       }: {
         content: string;
         roomId: string;
         senderId: string;
         receiverId: string;
         tempId: string;
-        messageType: string
+        messageType: string;
       }) => {
         console.log("💬 New message:", content, roomId, senderId, messageType);
 

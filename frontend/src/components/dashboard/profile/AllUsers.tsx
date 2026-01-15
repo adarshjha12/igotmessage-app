@@ -105,7 +105,7 @@ const UsersList = ({ users, myId, type }: UsersListProps) => {
           <Link
             href={
               type === "chats"
-                ? `/chats/${user._id}?avatar=${
+                ? `/chats/create-chat-id?avatar=${
                     user.profilePicture || user.avatar
                   }&userName=${user.userName}&recieverId=${
                     user._id

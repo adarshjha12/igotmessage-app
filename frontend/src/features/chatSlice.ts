@@ -14,11 +14,12 @@ interface AiMessage {
   sender?: string;
   chat?: string;
   content: string;
-  updatedAt: string;
+  updatedAt?: string;
   tempId?: string;
 }
 
 interface ChatState {
+  allChatIds: string[];
   chatId: string | null;
   onlineUsers: string[];
   lastMessage: Record<string, Message> | null;
@@ -35,6 +36,7 @@ const initialState: ChatState = {
   chatList: null,
   messages: null,
   aiMessage: null,
+  allChatIds: [],
 };
 
 const chatSlice = createSlice({
@@ -43,6 +45,7 @@ const chatSlice = createSlice({
   reducers: {
     setChatId: (state, action) => {
       state.chatId = action.payload;
+      state.allChatIds.push(action.payload);
     },
 
     setOnlineUsers: (state, action) => {
@@ -92,9 +95,7 @@ const chatSlice = createSlice({
         state.aiMessage = [];
       }
 
-      const prevMessages = state.aiMessage;
-
-      state.aiMessage = [...prevMessages, ...action.payload];
+      state.aiMessage.push(action.payload);
     },
 
     setLastSeen: (state, action) => {

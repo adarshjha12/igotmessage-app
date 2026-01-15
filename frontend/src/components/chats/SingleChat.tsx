@@ -47,6 +47,7 @@ import WelcomeScreen from "./WelcomeAi";
 import FilePreview from "./FileSender";
 import { useUIStore } from "@/store/zustand/chatStore";
 import FileSendingVisual from "./FileSendingVisual";
+import AiBubble from "./AiBubble";
 
 interface Message {
   _id?: string;
@@ -74,6 +75,7 @@ function SingleChat() {
   const [width, setWidth] = useState<number | null>(null);
   const [moreButtonClicked, setMoreButtonClicked] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const aiMessage = useAppSelector((state) => state.chat.aiMessage);
 
   const { filePreview, isFileUploading, setIsFileuploading, isFileUploaded } =
     useUIStore();
@@ -348,6 +350,12 @@ function SingleChat() {
               avatar={avatar!}
             />
           )}
+
+        {/* ai messages */}
+
+        {isAiChat && aiMessage && aiMessage.length > 0 && (
+          <AiBubble messages={aiMessage} />
+        )}
 
         {filePreview && !isFileUploading && <FilePreview />}
 

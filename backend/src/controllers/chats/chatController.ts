@@ -3,7 +3,10 @@ import { Chat } from "../../models/chatModel";
 import { User } from "../../models/userModel";
 import { Message } from "../../models/messageModel";
 
-export const createOrGetChat = async (req: Request, res: Response): Promise<any> => {
+export const createOrGetChat = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const { senderId, recieverId } = req.body;
 
@@ -30,6 +33,9 @@ export const createOrGetChat = async (req: Request, res: Response): Promise<any>
         { [`unreadCounts.${senderId}`]: 0 }
       );
 
+      console.log('chat found+++++++++++++++++++++');
+      
+
       // Get last 30 messages
       const messages = await Message.find({ chat: chat._id })
         .sort({ createdAt: -1 })
@@ -38,16 +44,19 @@ export const createOrGetChat = async (req: Request, res: Response): Promise<any>
       return res.status(200).json({
         success: true,
         chat,
-        allMessages: messages.reverse(), // return oldest → latest order
+        allMessages: messages.reverse(),
         receiverLastSeen: receiver?.lastSeen ?? null,
       });
     }
+
 
     // ✔️ Create new chat
     const newChat = await Chat.create({
       participants: [senderId, recieverId],
     });
 
+    console.log('chat created++++++++++++++++++');
+    
     return res.status(201).json({
       success: true,
       chat: newChat,
@@ -59,7 +68,6 @@ export const createOrGetChat = async (req: Request, res: Response): Promise<any>
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 
 export const getMyChats = async (req: Request, res: Response): Promise<any> => {
   const userId = req.query.userId as string;
