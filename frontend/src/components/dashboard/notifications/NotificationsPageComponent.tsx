@@ -46,7 +46,7 @@ export default function Notifications() {
           </h2>
 
           <p className="mt-2 text-sm text-zinc-400">
-            Seamless audio & video calls are on the way 🚀
+            notifications are on the way. stay tuned 🚀
           </p>
         </div>
       </div>
