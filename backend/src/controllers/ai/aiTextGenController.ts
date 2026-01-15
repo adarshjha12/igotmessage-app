@@ -1,29 +1,42 @@
 import { Request, Response } from "express";
 import axios from "axios";
 
-const model = process.env.MISTRAL_MODEL || "open-mistral-7b";
+const MODEL = process.env.MISTRAL_MODEL || "open-mistral-7b";
+const MISTRAL_URL = "https://api.mistral.ai/v1/chat/completions";
 
-const aiTextGenController = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
+const aiTextGenController = async (req: Request, res: Response) => {
   const { prompt, type } = req.body;
+
+  if (!prompt || !type) {
+    return res.status(400).json({
+      success: false,
+      message: "prompt and type are required",
+    });
+  }
+
+  // ✅ Hard rule: model behavior decided here
+  const systemMessage =
+    type === "post"
+      ? "You are a professional social media content writer. Write only the post. Do not ask questions or add explanations."
+      : "You are a helpful AI chat assistant. Respond conversationally and naturally.";
 
   try {
     const response = await axios.post(
-      "https://api.mistral.ai/v1/chat/completions",
+      MISTRAL_URL,
       {
-        model,
+        model: MODEL,
         messages: [
           {
+            role: "system",
+            content: systemMessage,
+          },
+          {
             role: "user",
-            content:
-              type === "post"
-                ? `write a social media post for, or about- ${prompt} and don't ask for follow ups. just write the post.`
-                : `${prompt}`,
+            content: prompt,
           },
         ],
         max_tokens: type === "post" ? 700 : 1200,
+        temperature: type === "post" ? 0.7 : 0.4,
         stream: false,
       },
       {
@@ -34,16 +47,17 @@ const aiTextGenController = async (
       }
     );
 
-    console.log(response.data);
-
     return res.json({
       success: true,
-      message: "text generated successfully",
-      output: response.data.choices?.[0]?.message?.content || "",
+      output: response.data.choices?.[0]?.message?.content ?? "",
     });
-  } catch (err: any) {
-    console.error("Mistral error:", err.response?.data || err.message);
-    return res.status(err.response?.status || 500).json({ error: err.message });
+  } catch (error: any) {
+    console.error("Mistral Error:", error.response?.data || error.message);
+
+    return res.status(error.response?.status || 500).json({
+      success: false,
+      message: "AI generation failed",
+    });
   }
 };
 

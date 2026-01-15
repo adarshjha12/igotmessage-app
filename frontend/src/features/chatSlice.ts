@@ -11,7 +11,7 @@ interface Message {
 }
 
 interface AiMessage {
-  sender?: string;
+  reciever?: string;
   chat?: string;
   content: string;
   updatedAt?: string;

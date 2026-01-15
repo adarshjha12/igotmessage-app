@@ -135,12 +135,13 @@ const ChatInput = React.memo(
         setShowSendButton(false);
       } else {
         setSendingMessageToAi(true);
-        setInput("");
-        const res = await axios.post(AI_URL, { prompt: input, type: "post" });
+        dispatch(setAiMessages({ reciever: "ai", content: input }));
+        const res = await axios.post(AI_URL, { prompt: input, type: "chat" });
         const output = res?.data?.output ?? "";
-        dispatch(setAiMessages({ sender: "ai", content: output }));
+        dispatch(setAiMessages({ reciever: myId, content: output }));
 
         setSendingMessageToAi(false);
+        setInput("");
       }
     };
 
