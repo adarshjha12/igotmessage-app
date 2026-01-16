@@ -4,7 +4,10 @@ import axios from "axios";
 const MODEL = process.env.MISTRAL_MODEL || "open-mistral-7b";
 const MISTRAL_URL = "https://api.mistral.ai/v1/chat/completions";
 
-const aiTextGenController = async (req: Request, res: Response) => {
+const aiTextGenController = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   const { prompt, type } = req.body;
 
   if (!prompt || !type) {
